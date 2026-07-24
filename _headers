@@ -1,0 +1,32 @@
+# ---------------------------------------------------------------------------
+# HSTS is deliberately NOT enabled yet.
+#
+# It tells browsers "only ever reach this site over HTTPS, for a year".
+# Turning it on before the Let's Encrypt certificate is live locks visitors
+# out entirely: HTTP is refused, HTTPS fails, and there is no way to bypass it.
+#
+# Once https://trantofire.au loads with a padlock and Force HTTPS is on,
+# uncomment the line below and redeploy.
+#
+#   Strict-Transport-Security: max-age=31536000; includeSubDomains
+#
+# Leave "preload" off unless you are certain — it is submitted to a list baked
+# into browsers and is very difficult to reverse.
+# ---------------------------------------------------------------------------
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://cusdis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+
+/js/*
+  Cache-Control: no-cache
+/*.html
+  Cache-Control: no-cache
+/mark.png
+  Cache-Control: public, max-age=604800
+/favicon.png
+  Cache-Control: public, max-age=604800

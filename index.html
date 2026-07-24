@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tran to Fire — Building wealth on purpose, from Sydney</title>
+<link rel="icon" href="favicon.png">
+<meta property="og:image" content="og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;
+    --blush:#EDD9D2;
+    --blush-soft:#F6EAE6;
+    --plum:#3A2B31;
+    --plum-deep:#2A1E23;
+    --brass:#B0894F;
+    --sage:#8D9C86;
+    --clay:#C08872;
+    --muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ivory);color:var(--plum);
+    font-family:var(--body);font-size:17px;font-weight:400;line-height:1.75;
+    font-variant-numeric:tabular-nums;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(44px,7vw,86px);font-weight:300}
+  h2{font-size:clamp(32px,4.6vw,52px);font-weight:300;margin-bottom:22px}
+  h3{font-size:26px;margin-bottom:10px}
+  p{margin:0 0 22px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+
+  .eyebrow{
+    font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--brass);margin:0 0 22px;
+  }
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  .fine{font-size:15px;line-height:1.7;color:var(--muted)}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+
+  /* ornament */
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{
+    content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;
+    margin-left:-3.5px;background:var(--brass);transform:rotate(45deg);
+  }
+
+  /* ---------- nav ---------- */
+  .nav{background:var(--ivory);border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover{opacity:1;border-bottom:1px solid var(--brass)}
+  .nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:96px 0 24px;position:relative;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;top:-140px;right:-160px;width:520px;height:520px;
+    border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--blush) 0%,rgba(237,217,210,0) 70%);
+    opacity:.85;pointer-events:none;
+  }
+  .hero-in{position:relative}
+  .hero h1{max-width:15ch;margin:0 auto}
+  .hero .lede{max-width:60ch;margin:30px auto 0}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:40px 0 0}
+  .btn{
+    font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    text-decoration:none;padding:17px 34px;border-radius:100px;display:inline-block;transition:.25s ease;
+  }
+  .btn-solid{background:var(--plum);color:var(--ivory)}
+  .btn-solid:hover{background:var(--brass)}
+  .btn-line{border:1px solid var(--hair);color:var(--plum)}
+  .btn-line:hover{border-color:var(--brass);color:var(--brass)}
+
+  /* ---------- figures strip ---------- */
+  .strip{background:var(--blush-soft);margin-top:80px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+  .strip-grid div{padding:38px 20px;border-left:1px solid rgba(58,43,49,.09)}
+  .strip-grid div:first-child{border-left:0}
+  .strip-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .strip-grid dd{margin:0;font-family:var(--display);font-size:30px;font-weight:400;line-height:1.15}
+  .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px;letter-spacing:.02em}
+
+
+  /* live signal band */
+  .signal-band{padding:70px 0 10px}
+  .sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .sig-card{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px;text-align:center}
+  .sig-card dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .sig-card dd{margin:0;font-family:var(--display);font-size:clamp(38px,4.6vw,52px);font-weight:300;line-height:1;letter-spacing:-.02em}
+  .sig-card .sub{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+  .sig-card.act{background:var(--plum);border-color:var(--plum);color:#EFE5E7}
+  .sig-card.act dt{color:var(--brass)}
+  .sig-card.act dd{color:#fff}
+  .sig-card.act .sub{color:#C7B5BA}
+  .sig-card.act.t1{background:var(--blush);border-color:rgba(58,43,49,.12)}
+  .sig-card.act.t1 dt{color:#8A6A2E}
+  .sig-card.act.t1 dd{color:var(--plum)}
+  .sig-card.act.t1 .sub{color:#6B5A5F}
+  .sig-card.act.t2{background:var(--clay);border-color:rgba(58,43,49,.12)}
+  .sig-card.act.t2 dt{color:#7A5A22}
+  .sig-card.act.t2 dd{color:var(--plum)}
+  .sig-card.act.t2 .sub{color:#5F4E53}
+  .live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5E7A55;margin-right:7px;vertical-align:middle}
+  .sig-foot{text-align:center;font-size:13.5px;color:var(--muted);margin:26px 0 0}
+  .sig-foot a{color:var(--brass)}
+  @media (max-width:860px){
+    .signal-band{padding:52px 0 0}
+    .sig-grid{grid-template-columns:1fr;gap:16px}
+    .sig-card{padding:28px 24px}
+  }
+
+  /* ---------- sections ---------- */
+  .band{padding:104px 0}
+  .band-blush{background:var(--blush-soft)}
+
+  /* the 1 July 2027 split — soft card pair */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px}
+  .card{border-radius:18px;padding:44px 40px}
+  .card .when{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin:0 0 18px}
+  .card h3{font-size:29px;margin-bottom:14px}
+  .card p{margin:0;font-size:16px;line-height:1.7}
+  .card-old{background:#fff;border:1px solid var(--hair)}
+  .card-old .when{color:var(--muted)}
+  .card-old p{color:#54424A}
+  .card-new{background:var(--plum);color:#F0E7E4}
+  .card-new .when{color:var(--brass)}
+  .card-new h3{color:#fff}
+  .card-new p{color:#CFC0C4}
+  .split-pin{
+    text-align:center;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--brass);margin:30px 0 0;
+  }
+
+  /* consequences */
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:56px}
+  .grid2 li{list-style:none;padding:32px 0;border-top:1px solid var(--hair)}
+  .grid2 h3{font-size:23px;margin-bottom:8px}
+  .grid2 p{margin:0;font-size:16px;line-height:1.7;color:#5A4850}
+
+  /* benchmarks */
+  .bench{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
+  .bench th{
+    text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass);
+  }
+  .bench td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+  .bench tr:last-child td{border-bottom:0}
+  .bench .tick{font-family:var(--display);font-size:25px;white-space:nowrap}
+  .bench .why{color:#5A4850;line-height:1.65}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  /* risk — kept heavy on purpose */
+  .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
+  .risk h2{color:#fff}
+  .risk .eyebrow{color:var(--brass)}
+  .risk .lede{color:#C3B2B7}
+  .risk .orn{background:var(--brass)}
+  .risk-list{list-style:none;padding:0;margin:52px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+  .risk-list li{padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .risk-list h3{color:#fff;font-size:23px;margin-bottom:8px}
+  .risk-list p{margin:0;font-size:16px;line-height:1.7;color:#B3A2A8}
+
+  /* doors */
+  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+  .door{
+    background:#fff;border:1px solid var(--hair);border-radius:18px;padding:40px 34px;
+    text-decoration:none;color:var(--plum);display:block;transition:.28s ease;
+  }
+  .door:hover{border-color:var(--brass);transform:translateY(-4px)}
+  .door .k{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:16px}
+  .door h3{font-size:27px;margin-bottom:12px}
+  .door p{margin:0;font-size:15.5px;line-height:1.65;color:#5A4850}
+
+  /* signup */
+  .signup{background:var(--blush);padding:96px 0}
+  .signup h2{max-width:20ch;margin-left:auto;margin-right:auto}
+  .signup .lede{max-width:52ch;margin:0 auto;color:#5A4850}
+  .form{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:38px auto 0;max-width:540px}
+  .form input{
+    flex:1 1 260px;font-family:var(--body);font-size:15px;padding:17px 22px;
+    border:1px solid rgba(58,43,49,.2);background:rgba(255,255,255,.72);color:var(--plum);border-radius:100px;
+  }
+  .form input::placeholder{color:#A2908F}
+  .form button{
+    font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    padding:17px 34px;border:0;border-radius:100px;background:var(--plum);color:var(--ivory);cursor:pointer;transition:.25s;
+  }
+  .form button:hover{background:var(--brass)}
+  .signup small{display:block;font-size:12.5px;color:#7A6469;margin-top:20px;letter-spacing:.02em}
+
+  /* footer */
+  .foot{padding:64px 0 80px;background:var(--ivory);border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+
+  @media (max-width:900px){
+    .strip-grid{grid-template-columns:repeat(2,1fr)}
+    .strip-grid div:nth-child(3){border-left:0}
+    .strip-grid div:nth-child(3),.strip-grid div:nth-child(4){border-top:1px solid rgba(58,43,49,.09)}
+    .split{grid-template-columns:1fr;gap:18px}
+    .grid2,.risk-list{grid-template-columns:1fr;gap:0}
+    .doors{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:60px 0 12px}
+    .band,.risk,.signup{padding:70px 0}
+    .card{padding:34px 28px}
+    .nav-links{gap:18px;font-size:10.5px}
+    .strip-grid div{padding:28px 14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;scroll-behavior:auto}
+    .door:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="index.html"><img class="mk" src="mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="strategy/index.html">The Strategy</a>
+      <a href="progress/index.html">Progress</a>
+      <a href="updates/index.html">Updates</a>
+      <a href="about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">Sydney · A monthly journal</p>
+    <h1>Twenty years of investing, <em>written down as it happens</em>.</h1>
+    <p class="lede">I'm Tran. Every month I put US$1,500 into a leveraged Nasdaq-100 fund, following rules I wrote down before I started. Then I publish what happened. I'm not counting down to a retirement date and I have nothing to sell you. This is one experiment with part of my portfolio, not all of my money. Every number from it goes up here until I know whether it was a good idea.</p>
+    <div class="cta-row">
+      <a class="btn btn-solid" href="strategy/index.html">Read the strategy</a>
+      <a class="btn btn-line" href="progress/index.html">See the numbers</a>
+    </div>
+  </div>
+</header>
+
+<section class="signal-band">
+  <div class="wrap">
+    <p class="eyebrow center" style="margin-bottom:26px">The signal right now</p>
+    <div class="sig-grid">
+
+      <div class="sig-card">
+        <dt>High-water mark</dt>
+        <dd id="sg-ath">$88.09</dd>
+        <p class="sub">TQQQ record high, 3 June 2026. Every tier is measured from this one number.</p>
+      </div>
+
+      <div class="sig-card">
+        <dt>TQQQ now</dt>
+        <dd id="sg-price">—</dd>
+        <p class="sub" id="sg-price-sub">First reading lands with the August buy.</p>
+      </div>
+
+      <div class="sig-card act" id="sg-act">
+        <dt>What the rules say</dt>
+        <dd id="sg-deploy">—</dd>
+        <p class="sub" id="sg-deploy-sub">Deploy this share of all available cash.</p>
+      </div>
+
+    </div>
+    <p class="sig-foot">Worked out from the rules, not typed in by hand. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap">
+    <dl class="strip-grid">
+      <div><dt>Holding</dt><dd>TQQQ<small>3× Nasdaq-100</small></dd></div>
+      <div><dt>Each month</dt><dd>US$1,500<small>Converted from AUD</small></dd></div>
+      <div><dt>First buy</dt><dd>Aug 2026<small>Running now</small></dd></div>
+      <div><dt>Horizon</dt><dd>20 years<small>Aug 2026 – 2046</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Why now</p>
+    <h2>Australia has changed the rules on long-term gains.</h2>
+    <p class="lede">The Treasury Laws Amendment (Tax Reform No. 1) Act 2026 passed on 25 June 2026 and received Royal Assent the following day. For individuals, trusts and partnerships, the 50% CGT discount is replaced with cost base indexation to CPI plus a minimum 30% tax rate on real gains, and it applies to shares and units in trusts, not only property.</p>
+  </div>
+  <div class="wrap">
+    <div class="split">
+      <div class="card card-old">
+        <p class="when">Gains accruing to 30 June 2027</p>
+        <h3>The 50% discount</h3>
+        <p>Hold longer than twelve months, halve the nominal gain, pay your marginal rate on what remains. The rule Australians have planned around since 1999.</p>
+      </div>
+      <div class="card card-new">
+        <p class="when">Gains accruing from 1 July 2027</p>
+        <h3>Indexation &amp; a 30% floor</h3>
+        <p>Index the cost base to inflation, then pay your marginal rate on the real gain, with a minimum of 30%. Inflation is shielded. Everything above it is not.</p>
+      </div>
+    </div>
+    <p class="split-pin">◆ &nbsp;The change is prospective — most portfolios will straddle the line</p>
+
+    <ul class="grid2 narrow" style="max-width:none">
+      <li>
+        <h3>Indexation punishes high real returns</h3>
+        <p>Only the inflation portion of a gain is shielded. The better your real return, the smaller the share of it that's protected, so the assets most exposed to this reform are precisely the high-growth ones.</p>
+      </li>
+      <li>
+        <h3>A 30% floor, whatever you earn</h3>
+        <p>Low-income years no longer produce low-tax realisations. Selling down slowly at a low marginal rate in early retirement is a much weaker lever than it was.</p>
+      </li>
+      <li>
+        <h3>Never selling is worth more</h3>
+        <p>With no discount waiting at the end, the timing of realisation is one of the few levers left, which happens to suit an accumulation strategy with no sell rule.</p>
+      </li>
+      <li>
+        <h3>Super looks better, and that's the problem</h3>
+        <p>Concessional rates inside super are relatively more attractive now. But super is locked until preservation age, which is the opposite of retiring early. That tension just got sharper.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">What I'm trying</p>
+    <h2>A question I couldn't answer, so I'm answering it slowly.</h2>
+    <p class="lede">The standard Australian answer is a low-cost index fund held forever. It's a good answer and I'm not arguing with it. But I wanted to know what happens if you hold most of your money in cash while the market is near its high, then convert it into a 3× Nasdaq-100 fund as the market falls. 20% of the pile near the high. A third at −20%. Two thirds at −40%. All of it at −60%. Nobody in Australia seems to have written that down over a full cycle, so I'm doing it.</p>
+  </div>
+</section>
+
+<section class="risk">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Please read this part twice</p>
+    <h2>How this goes wrong.</h2>
+    <p class="lede">A nice-looking website doesn't make a leveraged strategy safe. I've given the ways this fails the same space as the ways it works. A page that only lists the upside is a sales pitch, not a plan.</p>
+  </div>
+  <div class="wrap">
+    <ul class="risk-list">
+      <li>
+        <h3>−60% is not the floor</h3>
+        <p>Backtests of a simulated 3× Nasdaq-100 through the 2000–2002 crash show it falling around 99%. My deepest rule fires at −60%. After that I have nothing left.</p>
+      </li>
+      <li>
+        <h3>Daily reset, not 3× the period</h3>
+        <p>These funds track three times the index's daily move, not its yearly one. In choppy markets the compounding works against you. Over a long enough sideways stretch the fund can lose money while the index goes nowhere.</p>
+      </li>
+      <li>
+        <h3>The cash is a drag</h3>
+        <p>If markets just grind upward for a decade, my reserve sits earning cash rates while most of my contributions miss the run. Buying the same fund every month with no rules at all would have beaten me. The numbers here will show it.</p>
+      </li>
+      <li>
+        <h3>I have never done this in a crash</h3>
+        <p>Rules are easy on a spreadsheet. Sending $12,000 into a market that has halved, in the same month my job might be at risk, is a different thing entirely. I don't know yet whether I can do it.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Where to start</p>
+    <h2>Three pages, and nothing to buy.</h2>
+  </div>
+  <div class="wrap">
+    <div class="doors">
+      <a class="door" href="strategy/index.html">
+        <div class="k">The rules</div>
+        <h3>The Strategy</h3>
+        <p>The full tier ladder, a worked example at US$1,500, what I ruled out, and every way this can fail.</p>
+      </a>
+      <a class="door" href="progress/index.html">
+        <div class="k">The receipts</div>
+        <h3>Progress</h3>
+        <p>Every month since August 2026: price, drawdown from the high, shares bought, cash reserve and running return.</p>
+      </a>
+      <a class="door" href="updates/index.html">
+        <div class="k">The commentary</div>
+        <h3>Updates</h3>
+        <p>What I actually did and how it felt. Short in the quiet months, longer in the ugly ones.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="signup">
+  <div class="wrap center">
+    <span class="orn"></span>
+    <p class="eyebrow">Once a month, nothing else</p>
+    <h2>One email with the numbers in it.</h2>
+    <p class="lede">Sent the first week of every month: the update, the table, and any change to the rules. No course, no coaching, no affiliate links. I'm not selling anything.</p>
+    <div class="form">
+      <label for="email" style="position:absolute;left:-9999px">Email address</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+      <button type="button">Join</button>
+    </div>
+    <small>Unsubscribe any time. Connect this to your email provider before launch.</small>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio.</p>
+    <p>The information here is general in nature and does not take into account your objectives, financial situation or needs. Before acting on anything you read, consider whether it is appropriate for you, read the relevant Product Disclosure Statement, and seek advice from a licensed financial adviser and a registered tax agent — particularly regarding the 2027 capital gains transitional rules.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Figures on this site are in US dollars, because TQQQ is US-listed and I contribute a fixed US$1,500 each month. The AUD cost of that varies with the exchange rate, and that movement is part of my return whether I like it or not. Tax settings described here reflect Australian law as at 24 July 2026.</p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+
+<script src="js/config.js?v=3" defer></script>
+<script src="js/data.js?v=3" defer></script>
+<script src="js/engine.js?v=3" defer></script>
+<script src="js/signal.js?v=3" defer></script>
+
+</body>
+</html>
