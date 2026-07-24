@@ -45,7 +45,7 @@ window.TTF_DATA = [
   // Nothing logged yet. After your first buy, delete the // in front of the
   // line below and put in the real price:
 
-  { month: "2026-08", price: 66.00 },
+  //{ month: "2026-08", price: 66.00 },
   //{ month: "2026-09", price: 70.00 },
   //{ month: "2026-10", price: 50.00 },
    
