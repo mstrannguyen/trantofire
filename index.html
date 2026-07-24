@@ -236,6 +236,67 @@
     *{transition:none!important;scroll-behavior:auto}
     .door:hover{transform:none}
   }
+
+  /* ---------- how it works: pairing + drawdown ladder ---------- */
+  .ladder{margin:54px 0 0;border-top:1px solid var(--hair)}
+  .rung{display:grid;grid-template-columns:158px 1fr auto;align-items:baseline;gap:30px;padding:27px 2px;border-bottom:1px solid var(--hair)}
+  .rung-mark{font-family:var(--display);font-size:clamp(23px,3.1vw,31px);font-weight:300;color:var(--plum);line-height:1.05;white-space:nowrap}
+  .rung-cond{font-size:15.5px;line-height:1.55;color:#5A4850}
+  .rung-deploy{font-family:var(--display);font-size:clamp(30px,4vw,42px);font-weight:300;color:var(--brass);white-space:nowrap;line-height:1;text-align:right}
+  .rung-deploy small{display:block;font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .ladder-note{margin:24px 0 0}
+
+  /* ---------- the engine: growth-of-$10k comparison ---------- */
+  .growth{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:42px 42px 34px;margin-top:52px}
+  .growth-h{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);margin:0 0 5px}
+  .growth-sub{font-size:13.5px;color:var(--muted);margin:0 0 32px}
+  .gr-row{display:grid;grid-template-columns:184px 1fr;gap:16px;align-items:center;margin:0 0 24px}
+  .gr-row:last-of-type{margin-bottom:4px}
+  .gr-name{font-size:15px;font-weight:600;color:var(--plum);line-height:1.25}
+  .gr-name span{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:4px}
+  .gr-track{position:relative;display:flex;align-items:center;min-height:38px}
+  .gr-bar{height:38px;border-radius:4px;min-width:3px;display:flex;align-items:center}
+  .gr-qqq{width:6.5%;background:var(--sage)}
+  .gr-exp{width:19.4%;background:transparent;border:1.5px dashed var(--clay)}
+  .gr-tqqq{width:100%;background:linear-gradient(90deg,var(--brass) 0%,var(--plum) 92%)}
+  .gr-val{font-size:13.5px;font-weight:600;color:var(--plum);white-space:nowrap;padding-left:12px}
+  .gr-val span{font-weight:400;color:var(--muted)}
+  .gr-in{color:#fff;padding-left:15px}
+  .gr-in span{color:rgba(255,255,255,.74)}
+  .gr-annot{display:flex;flex-wrap:wrap;gap:10px 22px;margin:26px 0 0;padding-top:20px;border-top:1px solid var(--hair)}
+  .gr-chip{font-size:13.5px;color:#5A4850;line-height:1.5}
+  .gr-chip b{color:var(--brass);font-weight:700}
+  .engine-close{margin-top:36px}
+  .engine-src{margin:20px 0 0}
+
+  @media (max-width:860px){
+    .rung{grid-template-columns:104px 1fr;row-gap:5px;column-gap:22px}
+    .rung-mark{grid-row:1 / span 2;align-self:center}
+    .rung-cond{grid-column:2}
+    .rung-deploy{grid-column:2;text-align:left}
+    .rung-deploy small{margin-top:4px}
+    .gr-row{grid-template-columns:1fr;gap:10px}
+    .growth{padding:32px 24px 28px}
+  }
+
+  /* engine: TQQQ vs QQQ */
+  .cmp-chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:30px 26px 20px}
+  .cmp-chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .cmp-legend{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:22px;font-size:13.5px;color:#5A4850}
+  .cmp-legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
+  .annual{width:100%;border-collapse:collapse;font-size:15.5px;margin-top:38px}
+  .annual caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .annual th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
+  .annual th:first-child,.annual td:first-child{text-align:left}
+  .annual td{text-align:right;padding:13px 16px 13px 0;border-bottom:1px solid var(--hair)}
+  .annual .q{color:#5E7350}
+  .annual .t{color:#8A6A2E;font-weight:600}
+  .annual .neg{color:#A85A48}
+  .annual tr.crash td{background:rgba(168,90,72,.06)}
+  .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
+  .annual tfoot .q,.annual tfoot .t{font-weight:400}
+  .cmp-note{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:18px;margin-top:8px}
+
 </style>
 </head>
 <body>
@@ -356,6 +417,97 @@
   </div>
 </section>
 
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">How it works</p>
+    <h2>Dollar-cost averaging, with a plan for the dips.</h2>
+    <p class="lede">Two ideas doing one job. The first is deliberately dull. The second is what turns a falling market from something to dread into a schedule of larger purchases.</p>
+  </div>
+  <div class="wrap">
+    <div class="split">
+      <div class="card card-old">
+        <p class="when">Every month, no exceptions</p>
+        <h3>Dollar-cost averaging</h3>
+        <p>A fixed US$1,000 goes in every month, whatever the price is doing. It takes the decision I'm worst at, picking the right moment, off the table completely. Part of it buys shares now. The rest waits as cash.</p>
+      </div>
+      <div class="card card-new">
+        <p class="when">Only as the market falls</p>
+        <h3>Buying the dips</h3>
+        <p>How much of that cash I deploy is set by one number: how far TQQQ sits below its high. Near the top I spend a little and let the reserve grow. The deeper the fall, the more I commit.</p>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-mark">Near the high</div>
+        <div class="rung-cond">Within 20% of the record. The market is calm, or still climbing.</div>
+        <div class="rung-deploy">20%<small>of all cash on hand</small></div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−20%</div>
+        <div class="rung-cond">The first real pullback.</div>
+        <div class="rung-deploy">33%</div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−40%</div>
+        <div class="rung-cond">A proper correction, the kind that makes headlines.</div>
+        <div class="rung-deploy">67%</div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−60% or worse</div>
+        <div class="rung-cond">A full crash, with everyone else selling.</div>
+        <div class="rung-deploy">100%</div>
+      </div>
+    </div>
+    <p class="fine center ladder-note">Each figure is a share of all the cash on hand: this month's US$1,000 plus everything already waiting in reserve. Whole shares only, and the remainder rolls into next month. Drawdown is measured from TQQQ's record high of $88.09, set 3 June 2026.</p>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The engine</p>
+    <h2>Three times the day, not three times the decade.</h2>
+    <p class="lede">TQQQ aims for triple the Nasdaq-100's move on a single day, then resets and does it again tomorrow. Because those daily results compound on one another, a long climb carries the fund far past a plain 3× the index. Here is the whole of its life so far, priced against the plain index and against a straight triple of it.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="cmp-chart" id="cmp-chart"></div>
+    <div class="cmp-legend">
+      <span><i style="background:var(--sage)"></i>QQQ · the plain index</span>
+      <span><i style="background:#7BA0C4"></i>3× QQQ · what "triple" sounds like</span>
+      <span><i style="background:var(--brass)"></i>TQQQ · what it actually did</span>
+    </div>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="annual">
+        <caption>Annual total return, dividends reinvested. Source: Yahoo Finance. QQQ column derived from Nasdaq-100 total return; "3× QQQ" is QQQ tripled, shown for scale, not a real fund.</caption>
+        <thead><tr><th>Year</th><th>QQQ</th><th>TQQQ</th><th>$10k in TQQQ becomes</th></tr></thead>
+        <tbody>
+          <tr><td>2011</td><td class="q">−8%</td><td class="t neg">−8%</td><td>$9,195</td></tr>
+          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td>$33,570</td></tr>
+          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td>$150,147</td></tr>
+          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td>$591,370</td></tr>
+          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td>$1,082,089</td></tr>
+          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td>$226,373</td></tr>
+          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td>$675,180</td></tr>
+          <tr><td>2025</td><td class="q">+26%</td><td class="t">+34%</td><td>$1,435,525</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>2011–25</td><td class="q">+1,229%</td><td class="t">+14,255%</td><td>$1.44M</td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">QQQ, the plain tracker, turned $10,000 into about $133,000. Tripling that return would have reached roughly $379,000. TQQQ actually reached about $1.44 million. That is not three times QQQ. It is close to twelve times it, and about four times what tripling the index implies. The daily reset, compounding day after day through one of the strongest runs the Nasdaq has ever had, is the whole reason.</p>
+    <p>It cuts both ways, and hard. Look at 2022: the index fell 33% and TQQQ fell 79%, wiping out four fifths of a balance in a single year. The same compounding that built the tall line hollows the fund out in any market that chops sideways or falls. That is the <a href="strategy/index.html">risk this whole plan is built around</a>, not a footnote to it.</p>
+    <p class="cmp-note">Split-adjusted price, February 2010 to July 2026 — the same all-time view you get on Google or Yahoo Finance. The table beside it uses total return (price plus reinvested dividends), which runs a little higher. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
+  </div>
+</section>
+
 <section class="risk">
   <div class="wrap narrow center">
     <span class="orn"></span>
@@ -443,5 +595,6 @@
 <script src="js/engine.js?v=3" defer></script>
 <script src="js/signal.js?v=3" defer></script>
 
+<script src="js/compare.js?v=5" defer></script>
 </body>
 </html>
