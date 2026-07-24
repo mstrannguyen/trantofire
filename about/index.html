@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Story — Tran to Fire</title>
+<link rel="icon" href="../favicon.png">
+<meta property="og:image" content="../og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
+    --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.78;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:680px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(42px,6.6vw,80px);font-weight:300}
+  h2{font-size:clamp(29px,4.1vw,46px);font-weight:300;margin:0 0 24px}
+  h3{font-size:25px;margin-bottom:10px}
+  p{margin:0 0 24px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+  a{color:var(--brass)}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+  .fill{background:rgba(176,137,79,.2);border-bottom:1.5px dashed var(--brass);padding:1px 5px;border-radius:3px;color:#6B4E1E;font-size:.94em}
+
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
+
+  .nav{border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover,.nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  .hero{padding:96px 0 24px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-150px;right:-170px;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle at 40% 40%,var(--blush) 0%,rgba(237,217,210,0) 70%);opacity:.85;pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:17ch;margin:0 auto}
+  .hero .lede{max-width:58ch;margin:30px auto 0}
+
+  .band{padding:92px 0}
+  .band-blush{background:var(--blush-soft)}
+  .chapter{margin-bottom:14px}
+
+  /* pull quote */
+  .quote{
+    margin:44px 0;padding:0 0 0 30px;border-left:3px solid var(--brass);
+    font-family:var(--display);font-size:clamp(23px,2.9vw,31px);font-weight:300;
+    line-height:1.32;color:var(--plum);
+  }
+  .quote p{margin:0}
+
+  /* source cards */
+  .sources{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:44px 0 0}
+  .src{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 32px}
+  .src .kind{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
+  .src h3{font-size:23px;line-height:1.2;margin-bottom:10px}
+  .src .by{font-size:14px;color:var(--muted);margin:0 0 14px}
+  .src p{margin:0;font-size:15.5px;line-height:1.62;color:#5A4850}
+  .src a{font-size:14px;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(176,137,79,.5)}
+
+
+  /* comparison table */
+  .compare{width:100%;border-collapse:collapse;font-size:16px;margin-top:40px}
+  .compare caption{text-align:center;font-size:14.5px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+  .compare th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:0 16px 16px 0;border-bottom:1px solid var(--brass);vertical-align:bottom}
+  .compare td{padding:18px 16px 18px 0;border-bottom:1px solid var(--hair);vertical-align:top;line-height:1.5}
+  .compare tr:last-child td{border-bottom:0}
+  .compare .rowlab{font-size:14px;color:var(--muted);white-space:nowrap}
+  .compare .hi{font-family:var(--display);font-size:26px;color:var(--plum)}
+  .src-note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:36px}
+
+  /* misconception cards */
+  .myths{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .myths li{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:38px 40px}
+  .myth-n{display:block;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:12px}
+  .myths h3{font-size:23px;line-height:1.26;margin-bottom:20px}
+  .myths p{margin:0 0 16px;font-size:16px;line-height:1.68;color:#5A4850}
+  .myths p:last-child{margin-bottom:0}
+  .myths strong{color:var(--plum)}
+
+  /* ledger */
+  .ledger-band{background:var(--plum-deep);color:#E4D9DC;padding:96px 0}
+  .ledger-band h2{color:#fff}
+  .ledger-band .eyebrow{color:var(--brass)}
+  .ledger-band .lede{color:#C3B2B7}
+  .ledger-band .orn{background:var(--brass)}
+  .ledger{margin:48px auto 0;max-width:780px;border-top:1px solid rgba(255,255,255,.2)}
+  .ledger-row{display:grid;grid-template-columns:36px 1fr 130px;gap:22px;align-items:baseline;padding:19px 0;border-bottom:1px solid rgba(255,255,255,.13)}
+  .ledger-row .g{font-size:18px;line-height:1;font-weight:600}
+  .ledger-row .item{font-size:17px;line-height:1.5;color:#E4D9DC}
+  .ledger-row .val{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-align:right;color:#9E8B91}
+  .no .g{color:#7A666D}
+  .yes .g,.yes .val{color:var(--brass)}
+  .ledger-head{display:grid;grid-template-columns:36px 1fr 130px;gap:22px;padding:0 0 14px;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#9E8B91}
+  .ledger-head span:last-child{text-align:right}
+  .ledger-note{font-size:15px;line-height:1.75;color:#B3A2A8;margin:32px auto 0;max-width:780px}
+
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:48px;padding:0;list-style:none}
+  .grid2 li{padding:30px 0;border-top:1px solid var(--hair)}
+  .grid2 h3{font-size:22px;margin-bottom:8px}
+  .grid2 p{margin:0;font-size:16px;line-height:1.7;color:#5A4850}
+
+  .contact{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:44px}
+  .contact div{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 32px}
+  .contact h3{font-size:23px}
+  .contact p{margin:0;font-size:16px;line-height:1.65;color:#5A4850}
+
+  .foot{padding:64px 0 80px;border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+
+  @media (max-width:1000px){
+    .sources,.myths{grid-template-columns:1fr;gap:20px}
+  }
+  @media (max-width:900px){
+    .grid2,.contact{grid-template-columns:1fr;gap:0}
+    .contact div{margin-top:20px}
+    .grid2 li{padding:26px 0}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .compare .hi{font-size:22px}
+    .compare td,.compare th{padding-right:12px}
+    .hero{padding:58px 0 12px}
+    .band,.ledger-band{padding:64px 0}
+    .nav-links{gap:18px;font-size:10.5px}
+    .quote{padding-left:22px}
+    .ledger-row,.ledger-head{grid-template-columns:28px 1fr;gap:16px}
+    .ledger-row .val{grid-column:2;text-align:left;margin-top:6px}
+    .ledger-head span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="../index.html"><img class="mk" src="../mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../strategy/index.html">The Strategy</a>
+      <a href="../progress/index.html">Progress</a>
+      <a href="../updates/index.html">Updates</a>
+      <a href="../about/index.html" aria-current="page">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">My Story</p>
+    <h1>I'm not trying to escape my job. <em>I love my job.</em></h1>
+    <p class="lede">Which makes me a strange fit for a FIRE blog, I know. I'm Tran, I live in Sydney, and I'm not counting down to a retirement date. I'm doing this because I want financial freedom to be a real option one day instead of a maybe, and I don't think the standard index-fund answer gets me there on its own.</p>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap narrow">
+    <p class="eyebrow center">Chapter one</p>
+    <h2 class="center chapter">Sydney does the maths for you.</h2>
+    <p>You don't need me to explain what living here costs. Anyone who has looked at a rental listing or a mortgage repayment already knows. Sydney has a way of making a good income feel like a treadmill.</p>
+    <p>The moment it landed was pretty boring. I had a spreadsheet open with the mortgage on one side and a projection of index returns on the other. I'd spent years filing one under "debt" and the other under "investing", like they belonged to different parts of my life. Side by side as plain numbers they weren't different at all. They were two prices for the same spare dollar, and the risky one wasn't paying much extra.</p>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow">
+    <p class="eyebrow center">Chapter two</p>
+    <h2 class="center chapter">Then the hurdle moved twice in the same year.</h2>
+    <p>Two things happened in 2026 that changed the arithmetic for anyone with a mortgage and a share portfolio.</p>
+    <p><strong>Rates went up.</strong> After three cuts in 2025, the Reserve Bank started hiking again in February and has now lifted the cash rate three times to 4.35%, driven by an energy shock and inflation sitting well above target. The average owner-occupier variable home loan is around 6.7%, and higher again if you haven't refinanced in a while.</p>
+    <p><strong>And capital gains tax was rewritten.</strong> From 1 July 2027 the 50% discount is replaced by indexing your cost base to inflation and paying your marginal rate on the real gain, with a floor of 30%. It passed in June and it applies to shares, not just property.</p>
+    <p>Individually, neither is dramatic. Together they squeeze the gap between the safest thing I can do with a spare dollar and the riskiest thing I'd normally consider.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="compare">
+        <caption>A dollar of surplus, three ways. Assumes the top marginal rate of 47%, 10% nominal returns and 3% inflation. The two "keep" rows matter: tax deferred for two decades is worth a great deal.</caption>
+        <thead><tr><th>&nbsp;</th><th>Pay down the mortgage</th><th>Shares, old rules</th><th>Shares, from Jul 2027</th></tr></thead>
+        <tbody>
+          <tr><td class="rowlab">Headline return</td><td>6.7%</td><td>~10%</td><td>~10%</td></tr>
+          <tr><td class="rowlab">What tax takes</td><td>Nothing</td><td>Half the gain is exempt</td><td>Inflation exempt, rest at 47%</td></tr>
+          <tr><td class="rowlab">Keep, if you sold this year</td><td class="hi">6.7%</td><td class="hi">7.7%</td><td class="hi">6.7%</td></tr>
+          <tr><td class="rowlab">Keep, held 20 years then sold</td><td class="hi">6.7%</td><td class="hi">8.8%</td><td class="hi">7.7%</td></tr>
+          <tr><td class="rowlab">Risk you carry</td><td>None</td><td>The whole market</td><td>The whole market</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="wrap narrow" style="margin-top:40px">
+    <div class="quote"><p>The premium I get paid for carrying the entire market on my back just halved.</p></div>
+    <p>That's the honest version, and it's less dramatic than the version I first talked myself into. Shares still win. Over twenty years, 7.7% after tax beats 6.7% guaranteed, and deferring the tax bill for two decades is worth about a full percentage point a year on its own. Anyone telling you the mortgage now beats the market has done the sum for a single year and stopped there.</p>
+    <p>But look at the gap. Under the old rules I was paid roughly 2.1 percentage points a year for taking on every bit of market risk. Under the new ones it's closer to 1.0. Paying down a home loan is the nearest thing to a risk-free return an Australian can get. It can't fall, it isn't taxed, and it doesn't care what the Nasdaq does this decade. Halving the reward for choosing risk over that is a real change, even if it isn't the dramatic one.</p>
+    <p>One wrinkle worth knowing: indexation gets <em>more</em> generous as inflation rises, so with inflation currently above target the squeeze is milder than the table suggests — and would sharpen again if inflation came back down. Either way the direction holds. The reward for taking risk got thinner, and I didn't want to respond by accepting a longer timeline.</p>
+    <p class="src-note">Cash rate and mortgage figures: RBA and Canstar, July 2026. Tax treatment: Treasury Laws Amendment (Tax Reform No. 1) Act 2026. Twenty-year figures assume a single sale at the end and ignore dividends, franking credits and brokerage. I'm not a tax agent, so check your own position with one.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow">
+    <p class="eyebrow center">Chapter three</p>
+    <h2 class="center chapter">Index funds are a good answer to a slightly different question.</h2>
+    <p>This is where most people will disagree with me, and they might be right. A low-cost index fund, bought every month and held for decades, is an excellent plan. It has beaten most professionals. It asks almost nothing of you. If a friend with no interest in this stuff asked me what to do, that is what I'd tell them.</p>
+    <p>But I want more than "don't lose". I'd like to build something well past the market average, over a long enough horizon that a bad decade can happen and I'm still standing. The index gives me the market. I wanted to know what else was available, and whether the reasons everyone avoids it are actually good reasons.</p>
+    <div class="quote"><p>Most of what I'd absorbed about leveraged ETFs turned out to be things I'd never checked.</p></div>
+    <p>That's the uncomfortable part. I'd repeated the standard warnings for years without ever checking one of them. Two of them turned out to deserve more scrutiny than I'd given them.</p>
+  </div>
+
+  <div class="wrap">
+    <ul class="myths">
+      <li>
+        <div class="myth-h"><span class="myth-n">What I had wrong</span><h3>"Decay drags them to zero."</h3></div>
+        <p><strong>The maths says otherwise.</strong> Collins works a case where the index falls one percent a day. After ten days the unleveraged fund is down about 9% and the 3× is down about 26%, or 2.88 times worse, not three. Push it to a hundred days and the index is down 64% while the 3× is down 95%: only 1.48 times worse. As the price falls, the multiplier compresses. It approaches zero without arriving.</p>
+        <p><strong>What's still true.</strong> Ninety-five percent down is not a rescue. "Doesn't reach zero" and "survivable" are different claims, and only the first one is proven.</p>
+      </li>
+      <li>
+        <div class="myth-h"><span class="myth-n">What I had wrong</span><h3>"Volatility drag is the problem."</h3></div>
+        <p><strong>It isn't unique to leverage.</strong> Every volatile asset has drag, including a plain index fund. If 1× is safe to hold forever despite it, drag alone can't be the objection, which leaves the harder question of where the line actually sits, and why it's drawn at exactly 1×.</p>
+        <p><strong>What's still true.</strong> The reliable cost isn't drag, it's fees. Roughly 1% a year, every year, whatever the market does. No tier schedule makes that go away.</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wrap narrow" style="margin-top:44px">
+    <p><strong>And the part the enthusiasts skip.</strong> The S&amp;P 500 had recovered its late-2021 level by the end of 2023 while a 2× S&amp;P fund was still about 12% underwater. Collins is blunter still: the Nasdaq fell more than 80% in the dot-com crash and 55% in 2008, and a 3× product would have dropped roughly 95% in the second one alone. He also concedes, in a book arguing for these instruments, that they have no real place in conventional investing and exist for a narrow set of experienced traders.</p>
+    <p>That admission is a big part of why I trusted the rest of it.</p>
+  </div>
+
+  <div class="wrap narrow" style="margin-top:44px">
+    <p><strong>And here's the part the enthusiasts skip.</strong> The S&amp;P 500 had climbed back to its late-2021 level by the end of 2023, and a 2× S&amp;P fund was still about 12% underwater at that point. Not a thought experiment. That happened, on a two-times product, over about two years. Mine is three times.</p>
+    <p>The other thing worth saying plainly: most of the evidence that makes leveraged ETFs look good is drawn from the last fifteen years, which have been an almost uninterrupted bull market with one brief crash. That's not a conspiracy, it's just the data that exists. It's also exactly the shape of period in which this strategy looks its best.</p>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow">
+    <p class="eyebrow center">Chapter four</p>
+    <h2 class="center chapter">The two things that changed how I thought about it.</h2>
+    <p>Neither of these is gospel and I'm not asking you to take them on faith. They're just where my thinking shifted. I'd rather name my sources than pretend I worked it out alone.</p>
+  </div>
+  <div class="wrap">
+    <div class="sources">
+      <div class="src">
+        <div class="kind">The book</div>
+        <h3>$1,000 to $1,000,000</h3>
+        <p class="by">B.D. Collins · Proven Strategies for Triple Leveraged ETF Success</p>
+        <p>Works through the arithmetic of decay rather than asserting it, tests two methods, dollar-cost averaging and a moving-average system, and insists any strategy be measured against simply buying and holding the index. It made me realise the case against leverage is usually argued at the level of a slogan.</p>
+        <p style="margin-top:16px"><a href="https://www.amazon.com.au/000-Proven-Strategies-Leveraged-Success-ebook/dp/B0D9KWXZ2T" rel="noopener nofollow">Find it on Amazon →</a></p>
+      </div>
+      <div class="src">
+        <div class="kind">The method</div>
+        <h3>Counter-cyclical leverage</h3>
+        <p class="by">Henrique Centieiro · Limitless Investor</p>
+        <p>His question stuck with me: if 1× leverage is fine, why is 1.2× or 1.5× automatically reckless? Where exactly is the line, and who drew it? His adaptation turns that into a rule set: hold cash near highs, convert it as the market falls.</p>
+        <p style="margin-top:16px"><a href="https://medium.com/limitless-investor/leveraged-etfs-is-the-risk-worth-it-bcdaeadeaf98" rel="noopener nofollow">Read the article →</a></p>
+      </div>
+      <div class="src">
+        <div class="kind">The walkthrough</div>
+        <h3>Both methods, side by side</h3>
+        <p class="by">Video explainer · plus the TradingView tester</p>
+        <p>Collins and Centieiro are both coded into one public indicator, so you can run either against real price history rather than take anyone's word for it. Collins runs four tiers at −20/−40/−60/−80%. Centieiro simplifies to three at −20/−40/−60%. I'm following the second one.</p>
+        <p style="margin-top:16px"><a href="https://www.youtube.com/watch?v=6XK39whYzAQ" rel="noopener nofollow">Watch the video →</a><br><a href="https://www.tradingview.com/script/UnTAKUJc-Leveraged-ETF-Strategy-Tester/" rel="noopener nofollow" style="display:inline-block;margin-top:8px">Open the strategy tester →</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap narrow" style="margin-top:44px">
+    <p><strong>Both of them have an interest in you agreeing with them</strong> — one sells a book, the other runs a paid investing academy. That doesn't make them wrong, and I found the arguments genuinely persuasive. It does mean I should say it out loud on the page where I credit them, and that I should test the claims with my own money rather than repeat them.</p>
+    <p>Which is what this site is. Not a summary of their work. A live, dated, Australian test of it, published monthly whether it flatters the idea or not.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow">
+    <p class="eyebrow center">Chapter five</p>
+    <h2 class="center chapter">Where I am right now.</h2>
+    <p>Exploring and testing. That's the honest version, and I want it written down before there's any track record to point at.</p>
+    <p><strong>One thing to be clear about:</strong> this is a carve-out, not my whole financial life. I have a mortgage, super, and boring holdings that aren't discussed here. What you see on this site is a defined slice I've set aside to test an idea with, sized so that if it goes badly wrong, it hurts without being ruinous. Every figure published here is that slice only.</p>
+    <p>From August 2026 I'm putting US$1,500 a month into TQQQ under Henrique's original rules. 20% of my available cash near the high, a third at −20%, two thirds at −40%, all of it at −60%. Every month I'll publish the price, the drawdown, what I bought, what's left in cash, and how the whole thing compares to simply buying the same fund every month without any rules at all.</p>
+    <p>I don't know how this ends. The tiers might add nothing and I'd have been better off with a boring monthly purchase. Or a 2000-style crash arrives in year three and takes most of it. Both are real outcomes and I'll publish them at the same size as the good months.</p>
+    <p>I publish it for accountability, mostly. A strategy that lives only in a spreadsheet is easy to quietly drop in month forty, when the market is down and the rules say to spend the reserve. One that strangers are watching is harder to walk away from. I'd rather say that than pretend I'm doing it to be helpful.</p>
+    <div class="quote"><p>I'm not on my way to retirement. I'm on my way to having the choice.</p></div>
+    <p>That's the whole ambition. Keep doing work I like, in a city that isn't cheap, while building something underneath it so the choice is mine rather than my employer's. If leverage helps, good. If it doesn't, this site is the record of why not.</p>
+  </div>
+</section>
+
+<section class="ledger-band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Follow the money</p>
+    <h2>How this site makes money.</h2>
+    <p class="lede">It doesn't. That's deliberate. Anyone writing publicly about a 3× leveraged fund has every reason to make it sound better than it is, and taking the money out is the only way I know to reduce that.</p>
+  </div>
+  <div class="wrap">
+    <div class="ledger">
+      <div class="ledger-head"><span></span><span>Revenue source</span><span>Status</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Advertising</span><span class="val">None</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Sponsored posts</span><span class="val">None</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Affiliate links, including the book above</span><span class="val">None</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Broker referral codes</span><span class="val">None</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Courses, coaching, paid community</span><span class="val">None</span></div>
+      <div class="ledger-row no"><span class="g">✕</span><span class="item">Paid newsletter tier</span><span class="val">None</span></div>
+      <div class="ledger-row yes"><span class="g">→</span><span class="item">Running costs for the site</span><span class="val">Paid by me</span></div>
+      <div class="ledger-row yes"><span class="g">→</span><span class="item">Positions I hold in anything I write about</span><span class="val">Disclosed</span></div>
+    </div>
+    <p class="ledger-note">I hold TQQQ and I hold cash. Those are the only two positions on this site, and you'll see both, in dollars, every month. The links to Collins and Centieiro above are plain links. I earn nothing if you click them. If any line here ever changes, it changes here first, with the date it changed and why.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Read me sceptically</p>
+    <h2>Reasons to discount everything I say.</h2>
+    <p class="lede">I'd rather list these myself than have you find them.</p>
+  </div>
+  <div class="wrap">
+    <ul class="grid2">
+      <li><h3>I'm one person, running one path</h3><p>Whatever happens here is one sample from a very wide distribution. If it works it might be luck. If it fails it might also be luck. One person's twenty years proves less than it feels like it should.</p></li>
+      <li><h3>I'm talking my own book</h3><p>I own the thing I'm writing about. Even with no money coming in, publicly committing to a strategy makes it psychologically harder to admit it's wrong.</p></li>
+      <li><h3>You're only reading the survivors</h3><p>People who tried leveraged strategies and were wiped out in 2000 or 2008 mostly didn't stick around to blog about it. That's true of this whole genre, mine included, and of the backtests that made it look appealing.</p></li>
+      <li><h3>I'm not a financial adviser</h3><p>I don't hold an AFSL and I'm not licensed to advise anyone, so nothing here carries any professional weight. Everything is reasoning you can check yourself, which is exactly why the rules and the numbers are published in full.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Get in touch</p>
+    <h2>Corrections welcome, especially the annoying ones.</h2>
+  </div>
+  <div class="wrap narrow">
+    <div class="contact">
+      <div><h3>Email</h3><p><span class="fill">[hello@trantofire.au]</span> — I read everything. I answer most things, eventually.</p></div>
+      <div><h3>Comments</h3><p>Open on every update. Disagreement is the point. If you think this whole approach is a mistake, say so there where everyone can see it.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Books and articles linked from this page are the work of their authors, who have their own commercial interests; linking is not endorsement. Consider your own circumstances and seek licensed advice before acting on anything you read here.</p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progress — Tran to Fire</title>
+<link rel="icon" href="../favicon.png">
+<meta property="og:image" content="../og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
+    --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(42px,6.6vw,80px);font-weight:300}
+  h2{font-size:clamp(29px,4.1vw,46px);font-weight:300;margin:0 0 22px}
+  h3{font-size:24px;margin-bottom:10px}
+  p{margin:0 0 22px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+  a{color:var(--brass)}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
+
+  .nav{border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover,.nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  .hero{padding:86px 0 0;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-160px;right:-170px;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle at 40% 40%,var(--blush) 0%,rgba(237,217,210,0) 70%);opacity:.85;pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:16ch;margin:0 auto}
+  .hero .lede{max-width:58ch;margin:28px auto 0}
+
+  .band{padding:80px 0}
+  .band-blush{background:var(--blush-soft)}
+
+  /* status states */
+  .state{max-width:640px;margin:64px auto;text-align:center;padding:44px 36px;border:1px solid var(--hair);border-radius:18px;background:#fff}
+  .state h3{margin-bottom:12px}
+  .state p{margin:0;color:#5A4850;font-size:16px}
+  .state code{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;background:var(--blush-soft);padding:2px 7px;border-radius:4px;word-break:break-all}
+  .state.err{border-color:rgba(176,137,79,.5)}
+  .spin{width:26px;height:26px;border:2px solid rgba(58,43,49,.15);border-top-color:var(--brass);border-radius:50%;margin:0 auto 20px;animation:sp .9s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .hidden{display:none!important}
+
+  /* headline stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
+  .stat{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:28px 26px}
+  .stat dt{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .stat dd{margin:0;font-family:var(--display);font-size:clamp(26px,3vw,34px);font-weight:300;line-height:1.1}
+  .stat dd small{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:9px;letter-spacing:.01em;line-height:1.5}
+  .pos{color:#5E7A55}
+  .neg{color:#A85A48}
+
+  .tierpill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border-radius:100px;background:var(--brass);color:#fff}
+  .tierpill.t0{background:#fff;color:var(--plum);border:1px solid rgba(176,137,79,.55)}
+  .tierpill.t1{background:var(--blush);color:var(--plum)}
+  .tierpill.t2{background:var(--clay);color:var(--plum)}
+  .tierpill.t3{background:var(--plum);color:#fff}
+
+
+  /* latest buy receipt */
+  .receipt{background:var(--plum);color:#EFE5E7;border-radius:20px;padding:40px 42px;margin-top:8px}
+  .receipt .eyebrow{color:var(--brass);margin-bottom:10px}
+  .receipt h3{color:#fff;font-size:clamp(28px,3.4vw,38px);font-weight:300;margin:0 0 20px}
+  .receipt-line{font-size:clamp(17px,1.9vw,20px);line-height:1.6;color:#DCCFD3;margin:0 0 30px;max-width:52ch}
+  .receipt-line b{color:#fff;font-weight:600}
+  .receipt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:0;padding-top:28px;border-top:1px solid rgba(255,255,255,.18)}
+  .receipt-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#A08D93;margin-bottom:10px}
+  .receipt-grid dd{margin:0;font-family:var(--display);font-size:clamp(24px,2.6vw,30px);font-weight:300;line-height:1.1;color:#fff}
+  @media (max-width:760px){
+    .receipt{padding:30px 26px}
+    .receipt-grid{grid-template-columns:repeat(2,1fr);gap:22px}
+  }
+  /* charts */
+  .chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px 26px;margin-top:26px}
+  .chart h3{font-size:22px;margin-bottom:4px}
+  .chart .sub{font-size:14.5px;color:var(--muted);margin:0 0 22px}
+  .chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .legend{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px;font-size:13.5px;color:#5A4850}
+  .legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
+
+  /* table */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:30px;border:1px solid var(--hair);border-radius:18px;background:#fff}
+  table.log{width:100%;border-collapse:collapse;font-size:14.5px;min-width:900px}
+  table.log th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:20px 14px;border-bottom:1px solid var(--brass);white-space:nowrap;background:#fff;position:sticky;top:0}
+  table.log th:first-child,table.log td:first-child{text-align:left;padding-left:24px}
+  table.log th:last-child,table.log td:last-child{padding-right:24px}
+  table.log td{text-align:right;padding:16px 14px;border-bottom:1px solid var(--hair);white-space:nowrap}
+  table.log tr:last-child td{border-bottom:0}
+  table.log tbody tr:hover{background:var(--blush-soft)}
+  .mth{font-family:var(--display);font-size:18px}
+  .sig{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--blush-soft);color:#6B4E1E}
+  .sig.s1{background:var(--blush)}
+  .sig.s2{background:var(--clay)}
+  .sig.s3{background:var(--plum);color:#fff}
+
+
+  .sheet-embed{border:1px solid var(--hair);border-radius:18px;overflow:hidden;background:#fff}
+  .sheet-embed iframe{width:100%;height:640px;border:0;display:block}
+  @media (max-width:640px){ .sheet-embed iframe{height:460px} }
+  .dev{display:inline-block;margin-left:7px;color:#A85A48;font-weight:600;cursor:help}
+  .note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:32px}
+
+  .foot{padding:60px 0 78px;border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:24px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+
+  @media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:54px 0 0}
+    .band{padding:56px 0}
+    .nav-links{gap:18px;font-size:10.5px}
+    .stats{grid-template-columns:1fr}
+    .chart{padding:26px 20px 20px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="../index.html"><img class="mk" src="../mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../strategy/index.html">The Strategy</a>
+      <a href="../progress/index.html" aria-current="page">Progress</a>
+      <a href="../updates/index.html">Updates</a>
+      <a href="../about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">Progress</p>
+    <h1>Every month, <em>whatever it says</em>.</h1>
+    <p class="lede">Each month I log one number: the price I paid. Everything else on this page is worked out from the rules rather than typed in by me, so I can't quietly round a bad month in my favour. Figures in US dollars.</p>
+  </div>
+</header>
+
+<main>
+  <!-- LOADING -->
+  <div id="loading" class="state">
+    <div class="spin"></div>
+    <h3>Loading the numbers</h3>
+    <p>Reading the latest rows from the tracker.</p>
+  </div>
+
+
+
+  <!-- EMPTY -->
+  <div id="empty" class="state hidden">
+    <h3>Nothing logged yet</h3>
+    <p>The first row lands after the August 2026 buy. Until then there's genuinely nothing to show, and I'd rather leave it blank than fill it with projections.</p>
+  </div>
+
+  <!-- DATA -->
+  <div id="data" class="hidden">
+    <section class="band">
+      <div class="wrap narrow" style="margin-bottom:44px">
+        <div class="receipt">
+          <p class="eyebrow">The latest buy</p>
+          <h3 id="r-month">—</h3>
+          <p class="receipt-line" id="r-line">—</p>
+          <dl class="receipt-grid">
+            <div><dt>Price paid</dt><dd id="r-price">—</dd></div>
+            <div><dt>Deployed</dt><dd id="r-spend">—</dd></div>
+            <div><dt>Shares bought</dt><dd id="r-shares">—</dd></div>
+            <div><dt>Reserve carried</dt><dd id="r-reserve">—</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="center" style="margin-bottom:34px">
+          <span class="orn"></span>
+          <p class="eyebrow">Where things stand</p>
+          <h2 id="asof">—</h2>
+          <span id="tier" class="tierpill">—</span>
+        </div>
+        <dl class="stats">
+          <div class="stat"><dt>Portfolio value</dt><dd id="s-value">—<small id="s-value-sub">shares plus cash</small></dd></div>
+          <div class="stat"><dt>Total money in</dt><dd id="s-in">—<small id="s-in-sub">contributions to date</small></dd></div>
+          <div class="stat"><dt>Profit / loss</dt><dd id="s-pl">—<small id="s-pl-sub">on money in</small></dd></div>
+          <div class="stat"><dt>Drawdown from high</dt><dd id="s-dd">—<small id="s-dd-sub">measured on TQQQ</small></dd></div>
+          <div class="stat"><dt>Shares held</dt><dd id="s-sh">—<small id="s-sh-sub">whole shares only</small></dd></div>
+          <div class="stat"><dt>Average cost</dt><dd id="s-avg">—<small id="s-avg-sub">per share</small></dd></div>
+          <div class="stat"><dt>Cash reserve</dt><dd id="s-cash">—<small id="s-cash-sub">waiting to deploy</small></dd></div>
+          <div class="stat"><dt>Allocation</dt><dd id="s-alloc">—<small id="s-alloc-sub">TQQQ vs cash</small></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="band band-blush" style="padding-top:0;background:transparent">
+      <div class="wrap">
+        <div class="chart">
+          <h3>Portfolio value against money in</h3>
+          <p class="sub">The gap between the two lines is the entire point of the exercise.</p>
+          <div id="chart1"></div>
+          <div class="legend">
+            <span><i style="background:var(--brass)"></i>Portfolio value</span>
+            <span><i style="background:var(--sage)"></i>Total contributed</span>
+          </div>
+        </div>
+
+        <div class="chart">
+          <h3>Drawdown from the high-water mark</h3>
+          <p class="sub">Shaded bands mark the tiers. The deeper the line, the harder the rules make me buy.</p>
+          <div id="chart2"></div>
+          <div class="legend">
+            <span><i style="background:var(--blush)"></i>−20% · deploy 33%</span>
+            <span><i style="background:var(--clay)"></i>−40% · deploy 67%</span>
+            <span><i style="background:var(--plum)"></i>−60% · deploy 100%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" style="padding-top:20px">
+      <div class="wrap">
+        <div class="center">
+          <span class="orn"></span>
+          <p class="eyebrow">The full log</p>
+          <h2>Every month since August 2026.</h2>
+        </div>
+        <div class="tbl-wrap">
+          <table class="log">
+            <thead>
+              <tr>
+                <th>Month</th><th>Price</th><th>Drawdown</th><th>Tier</th>
+                <th>Deploy</th><th>Cash available</th><th>Spent</th><th>Shares bought</th>
+                <th>Total shares</th><th>Avg cost</th><th>Cash reserve</th>
+                <th>Portfolio</th><th>Money in</th><th>Return</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they ignore brokerage, FX conversion costs, tax and dividends. The real return is a little worse than what you see here, and I'd rather say so than quietly leave it out.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence and I am not a registered tax agent. Nothing here is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Figures are in US dollars, because TQQQ is US-listed and I contribute a fixed US$1,500 each month; the AUD cost of that moves with the exchange rate.</p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+<script src="../js/config.js?v=3" defer></script>
+<script src="../js/data.js?v=3" defer></script>
+<script src="../js/engine.js?v=3" defer></script>
+<script src="../js/progress.js?v=3" defer></script>
+
+</body>
+</html>

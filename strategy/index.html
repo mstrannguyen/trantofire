@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Strategy — Tran to Fire</title>
+<link rel="icon" href="../favicon.png">
+<meta property="og:image" content="../og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
+    --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(44px,7vw,86px);font-weight:300}
+  h2{font-size:clamp(32px,4.6vw,52px);font-weight:300;margin-bottom:22px}
+  h3{font-size:26px;margin-bottom:10px}
+  p{margin:0 0 22px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
+
+  .nav{border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover,.nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  .hero{padding:96px 0 0;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-160px;left:-180px;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle at 60% 40%,var(--blush) 0%,rgba(237,217,210,0) 70%);opacity:.8;pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:16ch;margin:0 auto}
+  .hero .lede{max-width:60ch;margin:30px auto 0}
+
+  .strip{background:var(--blush-soft);margin-top:80px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+  .strip-grid div{padding:38px 20px;border-left:1px solid rgba(58,43,49,.09)}
+  .strip-grid div:first-child{border-left:0}
+  .strip-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .strip-grid dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.15}
+  .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px}
+
+  .band{padding:104px 0}
+  .band-blush{background:var(--blush-soft)}
+
+  /* counter-cyclical diagram */
+  .figure{margin:52px auto 0;max-width:960px}
+  .figure svg{width:100%;height:auto;display:block}
+  .figcap{text-align:center;font-size:14.5px;line-height:1.7;color:var(--muted);margin:22px auto 0;max-width:64ch}
+  .figcap a{color:var(--brass)}
+
+  .hwm{display:inline-block;border:1px solid rgba(176,137,79,.4);border-radius:100px;padding:14px 30px;margin:8px 0 0;background:#fff}
+  .hwm dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .hwm dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.1}
+  .hwm dd small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);margin-top:4px}
+
+  .gauge{margin-top:48px;display:grid;gap:16px}
+  .rung{display:grid;grid-template-columns:190px 1fr;align-items:center;gap:34px;border-radius:18px;padding:38px 42px;border:1px solid var(--hair)}
+  .rung .depth{text-align:center}
+  .rung .num{font-family:var(--display);font-size:clamp(38px,5vw,54px);font-weight:300;line-height:1;display:block}
+  .rung .lab{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-top:12px;display:block}
+  .rung h3{font-size:27px;margin-bottom:12px}
+  .deploy{font-size:16px;line-height:1.7;margin:0 0 12px;font-weight:500}
+  .deploy .amt{font-family:var(--display);font-size:26px;color:var(--brass);font-weight:500}
+  .rung-note{margin:0;font-size:15.5px;line-height:1.65;opacity:.82}
+  .r0{background:#fff;border-color:rgba(176,137,79,.55)}
+  .r1{background:var(--blush-soft)}
+  .r2{background:var(--clay)}
+  .r3{background:var(--plum);color:#EFE5E7;border-color:var(--plum)}
+  .r3 h3{color:#fff}
+  .r3 .deploy .amt{color:#E0B978}
+  .r3 .rung-note{color:#C7B5BA}
+  .flag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:var(--brass);color:#fff;padding:6px 14px;border-radius:100px;margin-bottom:14px}
+  .gauge-foot{text-align:center;font-size:14.5px;color:var(--muted);margin:30px 0 0}
+
+  .money{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
+  .money caption{text-align:center;font-size:15.5px;color:var(--muted);margin-bottom:26px;line-height:1.6}
+  .money th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass)}
+  .money td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair)}
+  .money tr:last-child td{border-bottom:0}
+  .money .band-name{font-family:var(--display);font-size:23px;white-space:nowrap}
+  .money .total{font-weight:600}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:52px;padding:0;list-style:none}
+  .grid2 li{padding:32px 0;border-top:1px solid var(--hair)}
+  .grid2 h3{font-size:23px;margin-bottom:8px}
+  .grid2 p{margin:0;font-size:16px;line-height:1.7;color:#5A4850}
+
+  .ruled{list-style:none;padding:0;margin:48px 0 0}
+  .ruled li{display:grid;grid-template-columns:190px 1fr;gap:34px;padding:32px 0;border-top:1px solid var(--hair)}
+  .ruled .what{font-family:var(--display);font-size:27px;color:var(--brass);line-height:1.2}
+  .ruled p{margin:0;font-size:16.5px;line-height:1.7;color:#5A4850}
+
+  .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
+  .risk h2{color:#fff}
+  .risk .eyebrow{color:var(--brass)}
+  .risk .lede{color:#C3B2B7}
+  .risk .orn{background:var(--brass)}
+  .risk-list{list-style:none;padding:0;margin:52px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+  .risk-list li{padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .risk-list h3{color:#fff;font-size:23px;margin-bottom:8px}
+  .risk-list p{margin:0;font-size:16px;line-height:1.7;color:#B3A2A8}
+  .pull{font-family:var(--display);font-weight:300;font-size:clamp(26px,3.6vw,40px);line-height:1.24;color:#fff;margin:64px auto 0;max-width:22ch;text-align:center}
+  .pull span{color:var(--brass);font-style:italic}
+
+  .foot{padding:64px 0 80px;border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+
+  @media (max-width:900px){
+    .strip-grid{grid-template-columns:repeat(2,1fr)}
+    .strip-grid div:nth-child(3){border-left:0}
+    .strip-grid div:nth-child(3),.strip-grid div:nth-child(4){border-top:1px solid rgba(58,43,49,.09)}
+    .rung{grid-template-columns:1fr;gap:20px;text-align:center;padding:34px 28px}
+    .rung .depth{display:flex;align-items:baseline;justify-content:center;gap:16px}
+    .rung .lab{margin-top:0}
+    .grid2,.risk-list{grid-template-columns:1fr;gap:0}
+    .ruled li{grid-template-columns:1fr;gap:10px}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:60px 0 0}
+    .band,.risk{padding:70px 0}
+    .nav-links{gap:18px;font-size:10.5px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="../index.html"><img class="mk" src="../mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../strategy/index.html" aria-current="page">The Strategy</a>
+      <a href="../progress/index.html">Progress</a>
+      <a href="../updates/index.html">Updates</a>
+      <a href="../about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">The Strategy</p>
+    <h1>My rules, written down <em>before I needed them</em>.</h1>
+    <p class="lede">US$1,500 a month into a 3× leveraged Nasdaq-100 fund. Near an all-time high I invest only a fifth of the cash I'm holding and bank the rest. The further the fund falls below its high, the bigger the share I spend. At −60% I spend all of it. I'm publishing the whole rule set so that if I break it in a bad month, you'll know.</p>
+  </div>
+</header>
+
+<section class="strip">
+  <div class="wrap">
+    <dl class="strip-grid">
+      <div><dt>Holding</dt><dd>TQQQ<small>3× Nasdaq-100, daily reset</small></dd></div>
+      <div><dt>Contribution</dt><dd>US$1,500<small>Fixed in USD, converted from AUD</small></dd></div>
+      <div><dt>Started</dt><dd>Aug 2026<small>First buy</small></dd></div>
+      <div><dt>Horizon</dt><dd>20 years<small>240 monthly buys</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The intention</p>
+    <h2>Take more risk when risk is cheap.</h2>
+    <p class="lede">Most people do the opposite without meaning to. Confidence rises with the market, so we buy hardest near the top and go quiet after a crash, which is when future returns are best. Counter-cyclical leverage flips that instinct and makes it mechanical, so it doesn't depend on how brave I feel that week.</p>
+    <p class="lede">On the way up my leverage falls. I buy a small slice and let cash pile up next to it. On the way down it rises. The cash converts into shares, faster the deeper it goes. The cash isn't sitting idle. It's waiting for a trigger I already agreed to.</p>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 960 440" role="img" aria-labelledby="ccl-title ccl-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ccl-title">Counter-cyclical leverage</title>
+      <desc id="ccl-desc">A market price line rising over time with two drawdowns. Cash accumulates while the market climbs, and is deployed into shares at the bottom of each fall.</desc>
+
+      <defs>
+        <linearGradient id="under" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#EDD9D2" stop-opacity=".75"/>
+          <stop offset="100%" stop-color="#EDD9D2" stop-opacity="0"/>
+        </linearGradient>
+        <marker id="arrowDown" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto">
+          <path d="M0,0 L9,0 L4.5,9 Z" fill="#B0894F"/>
+        </marker>
+        <marker id="arrowUp" markerWidth="9" markerHeight="9" refX="4.5" refY="1" orient="auto">
+          <path d="M4.5,0 L9,9 L0,9 Z" fill="#8D9C86"/>
+        </marker>
+      </defs>
+
+      <!-- baseline -->
+      <line x1="40" y1="392" x2="920" y2="392" stroke="#3A2B31" stroke-opacity=".18"/>
+      <text x="40" y="418" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">TIME</text>
+
+      <!-- area under curve -->
+      <path d="M40,300 C110,268 150,214 210,206 C270,198 288,290 340,318 C392,346 424,268 480,236
+               C536,204 556,318 606,348 C656,378 690,236 748,178 C806,120 860,104 920,88
+               L920,392 L40,392 Z" fill="url(#under)"/>
+
+      <!-- price line -->
+      <path d="M40,300 C110,268 150,214 210,206 C270,198 288,290 340,318 C392,346 424,268 480,236
+               C536,204 556,318 606,348 C656,378 690,236 748,178 C806,120 860,104 920,88"
+            fill="none" stroke="#3A2B31" stroke-width="2.4" stroke-linecap="round"/>
+
+      <!-- high-water marks -->
+      <line x1="210" y1="206" x2="470" y2="206" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
+      <line x1="480" y1="236" x2="600" y2="236" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
+      <text x="216" y="196" font-family="Karla,sans-serif" font-size="11.5" font-weight="600" fill="#B0894F" letter-spacing="2">HIGH-WATER MARK</text>
+
+      <!-- deploy arrows at troughs — labels sit in a clear band above the curve -->
+      <line x1="340" y1="162" x2="340" y2="304" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
+      <circle cx="340" cy="318" r="6.5" fill="#B0894F"/>
+      <text x="340" y="150" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" font-weight="600" fill="#B0894F">Cash → shares</text>
+
+      <line x1="606" y1="162" x2="606" y2="334" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
+      <circle cx="606" cy="348" r="8" fill="#B0894F"/>
+      <text x="606" y="150" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" font-weight="600" fill="#B0894F">Deeper fall, bigger buy</text>
+
+      <!-- accumulate arrows on the climbs -->
+      <line x1="128" y1="300" x2="128" y2="252" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="128" y="326" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <line x1="440" y1="330" x2="440" y2="282" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="440" y="356" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <line x1="812" y1="250" x2="812" y2="202" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="812" y="276" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <!-- legend -->
+      <circle cx="46" cy="46" r="5.5" fill="#B0894F"/>
+      <text x="60" y="51" font-family="Karla,sans-serif" font-size="13.5" fill="#5A4850">Leverage up — spend the reserve</text>
+      <circle cx="360" cy="46" r="5.5" fill="#8D9C86"/>
+      <text x="374" y="51" font-family="Karla,sans-serif" font-size="13.5" fill="#5A4850">Leverage down — rebuild the reserve</text>
+    </svg>
+  </div>
+  <p class="figcap">The concept is Henrique Centieiro's counter-cyclical leverage framework, published on TradingView. The drawing is mine; any clumsiness in it is mine too.</p>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The tier ladder</p>
+    <h2>How much I deploy, by depth.</h2>
+    <p class="lede">One number decides everything: how far TQQQ has fallen from its record high. That sets the percentage. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$1,500.</p>
+    <dl class="hwm"><dt>High-water mark</dt><dd>$88.09<small>TQQQ record high, 3 June 2026</small></dd></dl>
+  </div>
+  <div class="wrap">
+    <div class="gauge">
+      <div class="rung r0">
+        <div class="depth"><span class="num">0–19%</span><span class="lab">Baseline</span></div>
+        <div>
+          <span class="flag">Where we are now</span>
+          <h3>Near the high</h3>
+          <p class="deploy">Deploy <span class="amt">20%</span> of all available cash</p>
+          <p class="rung-note">Four fifths of everything I hold stays in cash. This is the boring state and it might last years. Most of the work is not spending money.</p>
+        </div>
+      </div>
+      <div class="rung r1">
+        <div class="depth"><span class="num">−20%</span><span class="lab">Dip</span></div>
+        <div>
+          <h3>Correction</h3>
+          <p class="deploy">Deploy <span class="amt">33%</span> of all available cash</p>
+          <p class="rung-note">A third of the pile. On a 3× fund a −20% print means the Nasdaq-100 itself has barely moved.</p>
+        </div>
+      </div>
+      <div class="rung r2">
+        <div class="depth"><span class="num">−40%</span><span class="lab">Deep dip</span></div>
+        <div>
+          <h3>Bear market</h3>
+          <p class="deploy">Deploy <span class="amt">67%</span> of all available cash</p>
+          <p class="rung-note">Two thirds, in one order. Whatever is left carries into next month and gets counted again.</p>
+        </div>
+      </div>
+      <div class="rung r3">
+        <div class="depth"><span class="num">−60%</span><span class="lab">Crash</span></div>
+        <div>
+          <h3>Everything in</h3>
+          <p class="deploy">Deploy <span class="amt">100%</span> of all available cash</p>
+          <p class="rung-note">The entire reserve, in the month the headlines are worst. After that I'm fully invested and all I have left is next month's US$1,500. This is the tier I'll find hardest to do, and the one most likely to hurt.</p>
+        </div>
+      </div>
+    </div>
+    <p class="gauge-foot">Drawdown is measured on TQQQ itself, not on the Nasdaq-100. The fund falls roughly three times as hard, so these tiers fire far more readily than the index would suggest.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Worked example</p>
+    <h2>The same pile, four ways.</h2>
+  </div>
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="money">
+        <caption>All figures in US dollars. Say the reserve has built to $10,000 and this month's $1,500 lands on top — $11,500 available.</caption>
+        <thead><tr><th>Tier</th><th>Deploy</th><th>Spend</th><th>Carried forward</th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">Baseline</td><td>20%</td><td class="total">$2,300</td><td>$9,200</td></tr>
+          <tr><td class="band-name">Dip</td><td>33%</td><td class="total">$3,795</td><td>$7,705</td></tr>
+          <tr><td class="band-name">Deep dip</td><td>67%</td><td class="total">$7,705</td><td>$3,795</td></tr>
+          <tr><td class="band-name">Crash</td><td>100%</td><td class="total">$11,500</td><td>$0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The mechanics</p>
+    <h2>The unglamorous rules.</h2>
+  </div>
+  <div class="wrap">
+    <ul class="grid2">
+      <li><h3>All available cash, not just the contribution</h3><p>The percentage applies to the prior cumulative reserve plus the new US$1,500. There is no separate reserve overlay and no second calculation. One pile, one percentage.</p></li>
+      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. In a baseline month at $88.09, $300 buys three shares for $264.27 and the remaining $35.73 rejoins the reserve.</p></li>
+      <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$1,500 a month, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
+      <li><h3>Two prices, one truth</h3><p>The market price sets the tier and marks the whole position. The price I'm actually filled at sets how many shares that money bought. I log both.</p></li>
+      <li><h3>One buy a month</h3><p>Same week every month. The tier is read on the day I actually place the order, not the first of the month.</p></li>
+      <li><h3>Never sell to rebalance</h3><p>There is no sell rule at all during accumulation. The tiers only ever control what goes in.</p></li>
+      <li><h3>Splits break the tiers</h3><p>TQQQ split two-for-one in January 2022. If it splits again I halve the high-water mark and every logged price, or every tier reading after that is wrong.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Considered and rejected</p>
+    <h2>What I didn't do.</h2>
+  </div>
+  <div class="wrap">
+    <ul class="ruled">
+      <li>
+        <div class="what">QLD (2×)</div>
+        <p>Safer, and the sensible answer for most people. I chose the tier system as my risk control instead of a lower multiple. If I'm wrong about anything on this page, it's probably this.</p>
+      </li>
+      <li>
+        <div class="what">Timing signals</div>
+        <p>No moving averages, no volatility filters, no macro calls. Drawdown from the high is the only input, and anyone can check it against my published figures.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="risk">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Please read this part twice</p>
+    <h2>How this goes wrong.</h2>
+    <p class="lede">A soft website does not make a leveraged strategy safe. I'm publishing the failure modes with the same detail as the rules, because a strategy page that only lists the upside isn't a strategy page. It's a sales pitch.</p>
+  </div>
+  <div class="wrap">
+    <ul class="risk-list">
+      <li><h3>At −60% I have nothing left</h3><p>The deepest tier spends the entire reserve. If the fall continues to −70% or −80%, and in 2022 TQQQ fell about 82%, my only ammunition is the next US$1,500. The rules have no gear below the bottom gear.</p></li>
+      <li><h3>Daily reset, not 3× the period</h3><p>TQQQ targets three times the index's <em>daily</em> move. Over months and years in choppy markets, compounding drags the result well below 3× the index return, sometimes below zero while the index is flat.</p></li>
+      <li><h3>Currency and concentration</h3><p>An Australian buying a US-domiciled fund is also taking an unhedged AUD/USD bet, in an index where a handful of companies carry most of the weight.</p></li>
+      <li><h3>I have never done this in a crash</h3><p>The rules are easy on a spreadsheet. Emptying the entire reserve into a market that has more than halved, in the same month my job might be at risk, is a different thing entirely. That part is untested.</p></li>
+    </ul>
+    <p class="pull">If you take one thing from this page, take the <span>risk section</span> — not the tier table.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio, including the parts that don't work.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Consider your own circumstances and seek licensed advice before acting on anything you read here. Figures are in US dollars, because TQQQ is US-listed and I contribute a fixed US$1,500 each month; the AUD cost of that moves with the exchange rate. Figures ignore brokerage, FX conversion costs, tax and dividends.</p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+</body>
+</html>

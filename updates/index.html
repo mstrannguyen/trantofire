@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Updates — Tran to Fire</title>
+<link rel="icon" href="../favicon.png">
+<meta property="og:image" content="../og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
+    --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin:0 auto}
+  .center{text-align:center}
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0}
+  h1{font-size:clamp(42px,6.6vw,80px);font-weight:300}
+  h2{font-size:clamp(28px,4vw,42px);font-weight:300;margin-bottom:20px}
+  h3{font-size:27px;margin-bottom:8px}
+  p{margin:0 0 22px}
+  a{color:var(--brass)}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
+
+  .nav{border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover,.nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  .hero{padding:86px 0 60px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-160px;left:-180px;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle at 60% 40%,var(--blush) 0%,rgba(237,217,210,0) 70%);opacity:.8;pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:16ch;margin:0 auto}
+  .hero .lede{max-width:56ch;margin:28px auto 0}
+
+  .band{padding:20px 0 96px}
+  .posts{list-style:none;padding:0;margin:0;max-width:840px;margin:0 auto}
+  .posts li{border-top:1px solid var(--hair)}
+  .posts a{display:grid;grid-template-columns:150px 1fr;gap:34px;padding:36px 0;text-decoration:none;color:var(--plum);align-items:baseline}
+  .posts a:hover h3{box-shadow:inset 0 -8px 0 rgba(176,137,79,.4)}
+  .posts .when{font-family:var(--display);font-size:26px;font-weight:300;color:var(--brass);line-height:1.1}
+  .posts h3{display:inline;font-size:26px}
+  .posts p{margin:10px 0 0;font-size:16px;line-height:1.6;color:#5A4850}
+  .posts .figs{margin-top:12px;font-size:13.5px;color:var(--muted);letter-spacing:.02em}
+
+  .empty{max-width:640px;margin:20px auto 0;text-align:center;padding:48px 40px;border:1px solid var(--hair);border-radius:18px;background:#fff}
+  .empty p{margin:0;color:#5A4850;font-size:16.5px}
+  .empty p + p{margin-top:16px}
+
+  .foot{padding:60px 0 78px;border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:24px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:54px 0 40px}
+    .nav-links{gap:18px;font-size:10.5px}
+    .posts a{grid-template-columns:1fr;gap:8px;padding:28px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="../index.html"><img class="mk" src="../mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../strategy/index.html">The Strategy</a>
+      <a href="../progress/index.html">Progress</a>
+      <a href="../updates/index.html" aria-current="page">Updates</a>
+      <a href="../about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">Updates</p>
+    <h1>What I actually did, <em>and how it felt</em>.</h1>
+    <p class="lede">The Progress page carries the numbers. This is where I write about them — short in the quiet months, longer in the ugly ones. First week of every month, starting September 2026.</p>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+    <!-- Delete the empty block below once the first post is live -->
+    <div class="empty">
+      <p>Nothing here yet. The first update lands in early September 2026, covering the August buy.</p>
+      <p>In the meantime, <a href="../strategy/index.html">the rules are already published</a> — written before there was any result to explain away.</p>
+    </div>
+
+    <!--
+      ADDING A POST
+      1. Copy the folder /updates/2026-08/ and rename it, e.g. /updates/2026-09/
+      2. Edit the copy's index.html
+      3. Uncomment the <ul class="posts"> block below and add a row per post, newest first
+      4. Delete the .empty block above once there is at least one post
+    -->
+    <!--
+    <ul class="posts">
+      <li>
+        <a href="../updates/2026-08/index.html">
+          <span class="when">Aug 2026</span>
+          <span>
+            <h3>The first buy</h3>
+            <p>One-line summary of the month goes here.</p>
+            <span class="figs">TQQQ $00.00 · 0.0% from high · Baseline · 0 shares</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+    -->
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence and I am not a registered tax agent. Nothing here is personal advice, general advice, a recommendation, or an offer to deal in a financial product.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Figures in US dollars.</p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+</body>
+</html>
