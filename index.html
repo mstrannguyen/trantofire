@@ -104,6 +104,12 @@
   .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px;letter-spacing:.02em}
 
 
+
+  .sig-grid-2{margin-top:22px}
+  .sg-return{font-weight:600}
+  .sg-return.pos{color:#5E7350}
+  .sg-return.neg{color:#A85A48}
+
   /* live signal band */
   .signal-band{padding:70px 0 10px}
   .sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -291,6 +297,7 @@
   .annual td{text-align:right;padding:13px 16px 13px 0;border-bottom:1px solid var(--hair)}
   .annual .q{color:#5E7350}
   .annual .t{color:#8A6A2E;font-weight:600}
+  .annual .qbal{color:#5E7350}
   .annual .neg{color:#A85A48}
   .annual tr.crash td{background:rgba(168,90,72,.06)}
   .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
@@ -365,6 +372,23 @@
       </div>
 
     </div>
+    <div class="sig-grid sig-grid-2" id="sg-summary" hidden>
+      <div class="sig-card">
+        <dt>Cash reserve</dt>
+        <dd id="sg-reserve">—</dd>
+        <p class="sub">Waiting to be deployed on the next dip.</p>
+      </div>
+      <div class="sig-card">
+        <dt>Invested in TQQQ</dt>
+        <dd id="sg-invested">—</dd>
+        <p class="sub" id="sg-invested-sub">Total spent on shares so far.</p>
+      </div>
+      <div class="sig-card">
+        <dt>Portfolio value</dt>
+        <dd id="sg-portfolio">—</dd>
+        <p class="sub">Shares plus reserve. <span id="sg-return" class="sg-return">—</span></p>
+      </div>
+    </div>
     <p class="sig-foot">Worked out from the rules, not typed in by hand. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
   </div>
 </section>
@@ -385,7 +409,7 @@
     <span class="orn"></span>
     <p class="eyebrow">Why now</p>
     <h2>Australia has changed the rules on long-term gains.</h2>
-    <p class="lede">The Treasury Laws Amendment (Tax Reform No. 1) Act 2026 passed on 25 June 2026 and received Royal Assent the following day. For individuals, trusts and partnerships, the 50% CGT discount is replaced with cost base indexation to CPI plus a minimum 30% tax rate on real gains, and it applies to shares and units in trusts, not only property.</p>
+    <p class="lede">The Treasury Laws Amendment (Tax Reform No. 1) Under reforms announced in the 2026–27 Federal Budget and now before Parliament, the 50% CGT discount is set to be replaced from 1 July 2027 with cost base indexation to CPI plus a minimum 30% tax rate on real gains — for individuals, trusts and partnerships, and applying to shares and units in trusts, not only property. The measure is not yet law, and details may change before it passes.</p>
   </div>
   <div class="wrap">
     <div class="split">
@@ -434,13 +458,13 @@
   <div class="wrap narrow">
     <div class="table-scroll">
       <table class="funds">
-        <caption>Annual expense ratio and benchmark. TQQQ is the one I use. Figures current to mid-2026; check the fund pages before relying on them.</caption>
+        <caption>Annual expense ratio and benchmark. TQQQ is the one I use. Net expense ratios, which include a fee waiver in place through September 2026; the underlying gross fees are higher. Current to mid-2026 — check the fund pages before relying on them.</caption>
         <thead><tr><th>Fund</th><th>Tracks</th><th>Daily target</th><th>Yearly fee</th></tr></thead>
         <tbody>
-          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100</td><td>3×</td><td>0.88%</td></tr>
+          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100</td><td>3×</td><td>0.86%</td></tr>
           <tr><td class="band-name">QLD</td><td>Nasdaq-100</td><td>2×</td><td>0.95%</td></tr>
-          <tr><td class="band-name">UPRO</td><td>S&amp;P 500</td><td>3×</td><td>0.89%</td></tr>
-          <tr><td class="band-name">SSO</td><td>S&amp;P 500</td><td>2×</td><td>0.89%</td></tr>
+          <tr><td class="band-name">UPRO</td><td>S&amp;P 500</td><td>3×</td><td>0.91%</td></tr>
+          <tr><td class="band-name">SSO</td><td>S&amp;P 500</td><td>2×</td><td>0.90%</td></tr>
         </tbody>
       </table>
     </div>
@@ -533,60 +557,33 @@
   <div class="wrap narrow">
     <div class="table-scroll">
       <table class="annual">
-        <caption>Annual total return, dividends reinvested. Source: Yahoo Finance. QQQ column derived from Nasdaq-100 total return; "3× QQQ" is QQQ tripled, shown for scale, not a real fund.</caption>
-        <thead><tr><th>Year</th><th>QQQ</th><th>TQQQ</th><th>$10k in TQQQ becomes</th></tr></thead>
+        <caption>Annual total return, dividends reinvested. The last column follows a single $10,000 invested once at the start of 2011 and never touched again — no monthly buying, just compounding. Source: Yahoo Finance. QQQ column derived from Nasdaq-100 total return; "3× QQQ" is QQQ tripled, shown for scale, not a real fund.</caption>
+        <thead><tr><th>Year</th><th>QQQ</th><th>TQQQ</th><th>$10k in QQQ</th><th>$10k in TQQQ</th></tr></thead>
         <tbody>
-          <tr><td>2011</td><td class="q">−8%</td><td class="t neg">−8%</td><td>$9,195</td></tr>
-          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td>$33,570</td></tr>
-          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td>$150,147</td></tr>
-          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td>$591,370</td></tr>
-          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td>$1,082,089</td></tr>
-          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td>$226,373</td></tr>
-          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td>$675,180</td></tr>
-          <tr><td>2025</td><td class="q">+26%</td><td class="t">+34%</td><td>$1,435,525</td></tr>
+          <tr><td>2011</td><td class="q">+3%</td><td class="t neg">−8%</td><td class="qbal">$10,340</td><td>$9,195</td></tr>
+          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td class="qbal">$16,681</td><td>$33,570</td></tr>
+          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td class="qbal">$30,944</td><td>$150,147</td></tr>
+          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td class="qbal">$63,851</td><td>$591,370</td></tr>
+          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td class="qbal">$81,347</td><td>$1,082,089</td></tr>
+          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td class="qbal">$54,828</td><td>$226,373</td></tr>
+          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td class="qbal">$84,928</td><td>$675,180</td></tr>
+          <tr><td>2025</td><td class="q">+26%</td><td class="t">+34%</td><td class="qbal">$133,977</td><td>$1,435,525</td></tr>
         </tbody>
         <tfoot>
-          <tr><td>2011–25</td><td class="q">+1,229%</td><td class="t">+14,255%</td><td>$1.44M</td></tr>
+          <tr><td>2011–25</td><td class="q">+1,229%</td><td class="t">+14,255%</td><td class="qbal">$134k</td><td>$1.44M</td></tr>
         </tfoot>
       </table>
     </div>
 
-    <p style="margin-top:34px">QQQ, the plain tracker, turned $10,000 into about $133,000. Tripling that return would have reached roughly $379,000. TQQQ actually reached about $1.44 million. That is not three times QQQ. It is close to twelve times it, and about four times what tripling the index implies. The daily reset, compounding day after day through one of the strongest runs the Nasdaq has ever had, is the whole reason.</p>
+    <p style="margin-top:34px">QQQ, the plain tracker, turned $10,000 into about $133,000. Tripling that return would have reached roughly $379,000. TQQQ actually reached about $1.44 million. That is not three times QQQ. It is close to twelve times it, and about four times what tripling the index implies. The daily reset, compounding day after day through one of the strongest runs the Nasdaq has ever had, is the whole reason. (This is a lump sum left untouched, to show the fund's own behaviour. My actual plan buys a fixed amount every month instead, which behaves quite differently — that is what the <a href="progress/index.html">Progress page</a> tracks.)</p>
     <p>It cuts both ways, and hard. Look at 2022: the index fell 33% and TQQQ fell 79%, wiping out four fifths of a balance in a single year. The same compounding that built the tall line hollows the fund out in any market that chops sideways or falls. That is the <a href="strategy/index.html">risk this whole plan is built around</a>, not a footnote to it.</p>
-    <p class="cmp-note">Growth of $10,000 with dividends reinvested, February 2010 to July 2026, the same window as the table below. A log scale is used because the three end values span from $133k to $1.44M. Source: Yahoo Finance annual total returns, compounded. '3× QQQ' triples QQQ's growth and is shown for scale, not a real fund. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
+    <p class="cmp-note">A single $10,000 invested once in February 2010 and left alone, dividends reinvested, to July 2026 — no further contributions. A log scale is used because the three end values span from $133k to $1.44M. Source: Yahoo Finance annual total returns, compounded. '3× QQQ' triples QQQ's growth and is shown for scale, not a real fund. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
   </div>
 </section>
 
-<section class="risk">
-  <div class="wrap narrow center">
-    <span class="orn"></span>
-    <p class="eyebrow">Please read this part twice</p>
-    <h2>How this goes wrong.</h2>
-    <p class="lede">A nice-looking website doesn't make a leveraged strategy safe. I've given the ways this fails the same space as the ways it works. A page that only lists the upside is a sales pitch, not a plan.</p>
-  </div>
-  <div class="wrap">
-    <ul class="risk-list">
-      <li>
-        <h3>−60% is not the floor</h3>
-        <p>Backtests of a simulated 3× Nasdaq-100 through the 2000–2002 crash show it falling around 99%. My deepest rule fires at −60%. After that I have nothing left.</p>
-      </li>
-      <li>
-        <h3>Daily reset, not 3× the period</h3>
-        <p>These funds track three times the index's daily move, not its yearly one. In choppy markets the compounding works against you. Over a long enough sideways stretch the fund can lose money while the index goes nowhere.</p>
-      </li>
-      <li>
-        <h3>The cash is a drag</h3>
-        <p>If markets just grind upward for a decade, my reserve sits earning cash rates while most of my contributions miss the run. Buying the same fund every month with no rules at all would have beaten me. The numbers here will show it.</p>
-      </li>
-      <li>
-        <h3>I have never done this in a crash</h3>
-        <p>Rules are easy on a spreadsheet. Sending $12,000 into a market that has halved, in the same month my job might be at risk, is a different thing entirely. I don't know yet whether I can do it.</p>
-      </li>
-    </ul>
-  </div>
-</section>
 
-<section class="band">
+
+<section class="band band-blush">
   <div class="wrap narrow center">
     <span class="orn"></span>
     <p class="eyebrow">Where to start</p>

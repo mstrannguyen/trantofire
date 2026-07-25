@@ -24,4 +24,22 @@
 
   var act = document.getElementById("sg-act");
   if (act) act.className = "sig-card act t" + last.tier.n;
+
+  // second row: reserve, invested, portfolio value + return
+  var summary = document.getElementById("sg-summary");
+  if (summary) {
+    summary.hidden = false;
+    setText("sg-reserve", usd(last.reserve));
+    setText("sg-invested", usd(last.spent === null ? 0 : (last.portfolio - last.reserve)));
+    // invested = current market value of shares held = portfolio - reserve
+    var etfValue = last.portfolio - last.reserve;
+    setText("sg-invested", usd(etfValue));
+    setText("sg-invested-sub", last.shares + " share" + (last.shares === 1 ? "" : "s") + " at " + usd(last.avgCost, 2) + " average");
+    setText("sg-portfolio", usd(last.portfolio));
+    var ret = document.getElementById("sg-return");
+    if (ret) {
+      ret.textContent = (last.ret >= 0 ? "+" : "\u2212") + pct(Math.abs(last.ret));
+      ret.className = "sg-return " + (last.ret >= 0 ? "pos" : "neg");
+    }
+  }
 })();
