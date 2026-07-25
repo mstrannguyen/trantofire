@@ -158,10 +158,16 @@
   .methods tr:last-child td{border-bottom:0}
   .methods .band-name{font-family:var(--display);font-size:20px;line-height:1.2}
   .methods .sub{font-family:var(--body);font-size:12.5px;color:var(--muted)}
-  .methods .total{font-family:var(--display);font-size:22px;color:var(--plum)}
+  .methods .total{font-weight:600;color:var(--plum)}
   .methods .ok{color:#5E7350}
   .methods .bad{color:#A85A48;font-weight:600}
   .bad-inline{color:#A85A48;font-weight:600}
+  .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 36px}
+  .clarify-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
+  .clarify p:last-child{margin-bottom:0}
+  .clarify strong{color:var(--plum)}
+  @media (max-width:560px){ .clarify{padding:26px 22px} }
 </style>
 </head>
 <body>
@@ -349,7 +355,8 @@
     <span class="orn"></span>
     <p class="eyebrow">Why not just buy every month</p>
     <h2>Because of when you start.</h2>
-    <p class="lede">Buying the same amount every month is already a good system. It removes the need to guess the bottom, and over a long enough run it does most of the work. Holding a cash reserve on top of that only pulls ahead in one situation, but it is the situation I am most likely walking into.</p>
+    <p class="lede">The single most important word on this page is <em>every</em>. This only works as a monthly habit held for decades, not as a lump sum dropped in once. A one-off purchase of a 3× fund is a bet on your entry timing. Buying a fixed amount every month, through the good years and the terrible ones, is what turns that bet into a strategy.</p>
+    <p class="lede">Collins makes the point with the worst possible start. Put $1,000 into TQQQ as a single purchase in January 2000, at the top of the dot-com bubble, and twenty years later you are roughly back where you began — because the crash that followed took a simulated 3× Nasdaq down around 99%, and a lump sum has no way to recover from that. Contribute steadily through the same period and the picture changes completely: every crash becomes cheaper shares, and the later recovery lifts all of them. Same fund, same two decades. The difference is entirely whether you kept buying.</p>
     <p class="lede">Collins tested both against TQQQ, changing only the month you begin. The result depends entirely on where the market was when you started.</p>
   </div>
 
@@ -369,6 +376,11 @@
     <p>I am beginning in August 2026 with TQQQ about a quarter below its record high, which is neither a clean low nor a fresh peak. Holding the reserve is what I am paying to not have to guess which one it turns out to be.</p>
 
     <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
+    <div class="clarify" style="margin-top:34px">
+      <p class="clarify-h">The discipline this actually requires</p>
+      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and you have quietly converted the strategy back into a lump-sum bet — the one Collins shows going nowhere for twenty years.</p>
+      <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here, and I genuinely do not yet know if I can do it.</p>
+    </div>
 
     <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000: Proven Strategies for Triple Leveraged ETF Success</em>. His 80/20 method uses a fixed split rather than my four tiers, but the idea is the same: buy least near the top, most near the bottom. My tiers just make the "most near the bottom" part steeper.</p>
   </div>
@@ -432,18 +444,23 @@
 <section class="band">
   <div class="wrap narrow center">
     <span class="orn"></span>
-    <p class="eyebrow">Considered and rejected</p>
-    <h2>What I didn't do.</h2>
+    <p class="eyebrow">Other ways to do this</p>
+    <h2>What I didn't choose, at least not yet.</h2>
+    <p class="lede">None of these is a bad idea. Several are more sensible than what I picked. They are just not what I am running right now, and I want to be honest about why rather than pretend mine is the only reasonable choice.</p>
   </div>
   <div class="wrap">
     <ul class="ruled">
       <li>
-        <div class="what">QLD (2×)</div>
-        <p>Safer, and the sensible answer for most people. I chose the tier system as my risk control instead of a lower multiple. If I'm wrong about anything on this page, it's probably this.</p>
+        <div class="what">A lower multiple: QLD or UPRO</div>
+        <p>QLD is the 2× version of the same Nasdaq-100. UPRO is 3× the S&amp;P 500, which is broader and less top-heavy than the Nasdaq. Either is materially gentler than 3× tech, and honestly the more sensible pick for most people. I chose the tier rules as my risk control instead of a smaller multiple. If I turn out to be wrong about anything on this page, this is the most likely place, and I would not argue hard against someone who ran QLD instead.</p>
       </li>
       <li>
         <div class="what">The SMA method</div>
-        <p>Collins' second system uses a 14-period moving average to move in and out of the fund, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also requires me to act on a signal every month and to be right about re-entry. I would rather have rules that never ask me to decide anything.</p>
+        <p>Collins' second system uses a 14-period moving average to move in and out of the fund, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also asks me to read a signal every month and to be right about when to get back in. For now I would rather have rules that never ask me to make a call. That is a preference, not a verdict on the method, which on Collins' numbers works well.</p>
+      </li>
+      <li>
+        <div class="what">The 9-Sig strategy</div>
+        <p>A separate system, from Jason Kelly rather than Collins. It pairs TQQQ with a bond or cash reserve, starts around 60/40, and every quarter rebalances the TQQQ position back to a 9% growth target, selling the surplus in good quarters and buying the shortfall in bad ones. It shares my instinct exactly: react to price with fixed rules, never forecast. On long backtests it trades a little return for a much shallower drawdown than plain buy-and-hold, which is appealing. I have not adopted it because it rebalances on a fixed schedule regardless of how far the market has fallen, where my tiers key entirely off the drawdown itself, and because its own community is blunt that it means real sleepless months in a crash. It is on my list to keep studying.</p>
       </li>
       <li>
         <div class="what">Timing signals</div>
