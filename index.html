@@ -297,6 +297,21 @@
   .annual tfoot .q,.annual tfoot .t{font-weight:400}
   .cmp-note{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:18px;margin-top:8px}
 
+
+  /* fund family */
+  .funds{width:100%;border-collapse:collapse;font-size:16.5px;margin-top:8px}
+  .funds caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .funds th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
+  .funds th:first-child,.funds td:first-child{text-align:left}
+  .funds td{text-align:right;padding:16px;border-bottom:1px solid var(--hair)}
+  .funds tr:last-child td{border-bottom:0}
+  .funds .band-name{font-family:var(--display);font-size:22px}
+  .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:36px 38px;margin-top:8px}
+  .clarify-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
+  .clarify p:last-child{margin-bottom:0}
+  .clarify strong{color:var(--plum)}
+  @media (max-width:560px){ .clarify{padding:28px 24px} }
 </style>
 </head>
 <body>
@@ -461,6 +476,40 @@
       </div>
     </div>
     <p class="fine center ladder-note">Each figure is a share of all the cash on hand: this month's US$1,000 plus everything already waiting in reserve. Whole shares only, and the remainder rolls into next month. Drawdown is measured from TQQQ's record high of $88.09, set 3 June 2026.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The family of funds</p>
+    <h2>What these things actually are.</h2>
+    <p class="lede">Leveraged ETFs come in a small family. They all aim for a multiple of one index's daily move, and they are cheap to hold by the standards of anything geared. Here are the four people mention most, with what they track and what they cost each year.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="funds">
+        <caption>Annual expense ratio and benchmark. TQQQ is the one I use. Figures current to mid-2026; check the fund pages before relying on them.</caption>
+        <thead><tr><th>Fund</th><th>Tracks</th><th>Daily target</th><th>Yearly fee</th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100</td><td>3×</td><td>0.88%</td></tr>
+          <tr><td class="band-name">QLD</td><td>Nasdaq-100</td><td>2×</td><td>0.95%</td></tr>
+          <tr><td class="band-name">UPRO</td><td>S&amp;P 500</td><td>3×</td><td>0.89%</td></tr>
+          <tr><td class="band-name">SSO</td><td>S&amp;P 500</td><td>2×</td><td>0.89%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:32px">The pattern is simple. Two issuers of the same idea: pick an index, pick a multiple. Nasdaq-100 or S&amp;P 500, doubled or tripled. I chose TQQQ, the most aggressive of the four, and the tier rules are my attempt to make that aggression survivable rather than reckless. QLD, the 2× version of the same index, is the obvious gentler alternative, and I say on <a href="strategy/index.html">the strategy page</a> that it is probably the more sensible choice for most people.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="clarify">
+      <p class="clarify-h">One thing worth clearing up</p>
+      <p><strong>Holding TQQQ is not the same as borrowing money to invest.</strong> When you buy on margin, you owe a debt, you pay interest on it, and if the market falls far enough your broker can force a sale to recover the loan. That is a margin call, and it is how leveraged individuals get wiped out at the worst possible moment.</p>
+      <p>A leveraged ETF works differently. The leverage lives inside the fund, built with swaps and futures, and the fund manages it. You buy a share like any other share. The most you can ever lose is what you put in. There is no loan in your name, no interest bill arriving each month, and <strong>no margin call can come for you.</strong> If TQQQ falls 90%, your holding falls 90% and that is the end of it. Painful, but bounded.</p>
+      <p>That is the one genuine mercy of these funds, and it is why a strategy like mine is even thinkable. I can hold through an 80% drawdown without anyone forcing me out. A margin trader attempting the same thing would very likely be sold out near the bottom, which is the exact opposite of what the rules here tell me to do.</p>
+    </div>
   </div>
 </section>
 

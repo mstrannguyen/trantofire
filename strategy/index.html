@@ -150,6 +150,18 @@
     .band,.risk{padding:70px 0}
     .nav-links{gap:18px;font-size:10.5px}
   }
+  .methods{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+  .methods caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .methods th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 14px 14px 0;border-bottom:1px solid var(--brass)}
+  .methods th:first-child,.methods td:first-child{text-align:left}
+  .methods td{text-align:right;padding:18px 14px;border-bottom:1px solid var(--hair);vertical-align:top}
+  .methods tr:last-child td{border-bottom:0}
+  .methods .band-name{font-family:var(--display);font-size:20px;line-height:1.2}
+  .methods .sub{font-family:var(--body);font-size:12.5px;color:var(--muted)}
+  .methods .total{font-family:var(--display);font-size:22px;color:var(--plum)}
+  .methods .ok{color:#5E7350}
+  .methods .bad{color:#A85A48;font-weight:600}
+  .bad-inline{color:#A85A48;font-weight:600}
 </style>
 </head>
 <body>
@@ -337,24 +349,65 @@
     <span class="orn"></span>
     <p class="eyebrow">Why not just buy every month</p>
     <h2>Because of when you start.</h2>
-    <p class="lede">Dollar-cost averaging on its own is a good system. It removes the need to guess the bottom, and over twenty years it does most of the work. Holding a cash reserve on top of it only earns its keep in one situation, but it is an important one.</p>
-    <p class="lede">B.D. Collins ran both against TQQQ over the same twenty-year window, changing only the start date. Buying in at a market low, the two finish within a few hundred dollars of each other. Buying in at a market high, the cash-reserve version finishes about sixteen percent ahead.</p>
+    <p class="lede">Buying the same amount every month is already a good system. It removes the need to guess the bottom, and over a long enough run it does most of the work. Holding a cash reserve on top of that only pulls ahead in one situation, but it is the situation I am most likely walking into.</p>
+    <p class="lede">Collins tested both against TQQQ, changing only the month you begin. The result depends entirely on where the market was when you started.</p>
   </div>
 
   <div class="wrap narrow">
     <div class="table-scroll">
       <table class="money">
-        <caption>From Collins, ending 2022. Same rules, same contributions, different starting month.</caption>
-        <thead><tr><th>You started</th><th>Plain monthly buying</th><th>Holding cash for the falls</th></tr></thead>
+        <caption>From Collins. Same fund, same monthly habit. "Hold cash for the falls" is his 80/20 method: invest a fifth, save the rest for downturns. Figures rounded.</caption>
+        <thead><tr><th>When you started</th><th>Plain monthly buying</th><th>Holding cash for the falls</th></tr></thead>
         <tbody>
-          <tr><td class="band-name">At a low<br><span style="font-family:var(--body);font-size:13px;color:var(--muted)">January 2003</span></td><td>$1.91m</td><td>$1.91m</td></tr>
-          <tr><td class="band-name">At a high<br><span style="font-family:var(--body);font-size:13px;color:var(--muted)">October 2007</span></td><td>$335k</td><td class="total">$389k</td></tr>
+          <tr><td class="band-name">At a low<br><span class="sub">Jan 2003</span></td><td>$1.91m</td><td>$1.91m</td></tr>
+          <tr><td class="band-name">At a high<br><span class="sub">Oct 2007</span></td><td>$335k</td><td class="total">$389k</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:34px">Nobody knows which of those two they are starting from. I am beginning in August 2026 with TQQQ about twenty-five percent below its record, which is neither. Holding cash is what I am paying to not have to guess.</p>
-    <p>There is a second reason, and it is the one that actually keeps me in the game. A plain monthly buyer has to endure a crash. Someone holding a reserve gets to <em>use</em> one. Collins puts it well: with a twenty-year horizon you start hoping for pullbacks, because that is when the shares get cheap. That is a very different feeling to watching your balance fall with nothing to do about it, and I suspect it is the difference between sticking with this and quitting in year four.</p>
-    <p class="src-note" style="font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:34px">Figures from B.D. Collins, <em>$1,000 to $1,000,000: Proven Strategies for Triple Leveraged ETF Success</em>. His method uses a fixed 80/20 split rather than my four tiers, but the principle is the same: buy least at the top, most at the bottom.</p>
+
+    <p style="margin-top:34px">Start at the bottom of 2003 and the two finish neck and neck. Nothing is gained by holding cash, because the market only went up from there. Start at the top of 2007, right before the crash, and holding cash finishes about sixteen percent ahead. Same fund, same contributions, same twenty years. The only difference was the starting point, and nobody gets to know theirs in advance.</p>
+    <p>I am beginning in August 2026 with TQQQ about a quarter below its record high, which is neither a clean low nor a fresh peak. Holding the reserve is what I am paying to not have to guess which one it turns out to be.</p>
+
+    <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
+
+    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000: Proven Strategies for Triple Leveraged ETF Success</em>. His 80/20 method uses a fixed split rather than my four tiers, but the idea is the same: buy least near the top, most near the bottom. My tiers just make the "most near the bottom" part steeper.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Three ways to run it</p>
+    <h2>And why I picked the patient one.</h2>
+    <p class="lede">Collins ran three approaches over the same nineteen years, all on TQQQ. They are worth seeing side by side, because the "best" one on paper is not the one I chose, and the gap is the whole argument.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="methods">
+        <caption>From Collins, nineteen years to 2022. CAGR is the yearly growth rate. Max drawdown is the worst peak-to-trough fall along the way. Buy &amp; Hold S&amp;P is the plain benchmark.</caption>
+        <thead><tr><th>Method</th><th>Yearly growth</th><th>Ending balance</th><th>Worst fall</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="band-name">Timing signal<br><span class="sub">14-week average, in and out</span></td>
+            <td>44.9%</td><td>$1.14m</td><td class="ok">47%</td>
+          </tr>
+          <tr>
+            <td class="band-name">Hold cash for the falls<br><span class="sub">the 80/20 method, closest to mine</span></td>
+            <td>39.5%</td><td class="total">$1.91m</td><td class="bad">86%</td>
+          </tr>
+          <tr>
+            <td class="band-name">Buy &amp; hold the S&amp;P<br><span class="sub">the ordinary benchmark</span></td>
+            <td>9.7%</td><td>$6.4k</td><td>51%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">Two things jump out. The timing signal had the highest yearly growth and by far the gentlest ride, a 47 percent worst fall against the S&amp;P's 51. On those numbers it is the sensible winner. But it ends with a fraction of the cash-reserve method, because it kept stepping out of the market and missing the biggest up-months, and it only works if I watch a weekly signal and act on it correctly every time for two decades.</p>
+    <p>The cash-reserve method ends with the most money and asks the least of me. It also has an <span class="bad-inline">86 percent</span> worst fall baked in. That number is not a footnote. It is the price of the ending balance, and it is roughly what I would have to sit through without flinching for any of this to work.</p>
+    <p>I chose the patient method with my eyes open. Not because it is safest, it plainly is not, but because it is the one I can actually follow without having to be right about timing. My tiers are a steeper version of that middle row: buy least at the top, and a great deal more at the bottom.</p>
+    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His timing method starts from a smaller contribution base, which is part of why its ending balance is lower despite the higher growth rate. I am reporting his numbers, not endorsing the timing approach.</p>
   </div>
 </section>
 
