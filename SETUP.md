@@ -97,11 +97,26 @@ with a "not equal" symbol and publishes both numbers. That is deliberate.
 
 ## Writing a monthly update post
 
-32. In GitHub, open the `updates` folder.
-33. Open `2026-08`, click `index.html`, click the pencil, and edit the text.
-34. For a NEW month, easiest is to edit `data.js` first, then ask for a fresh
-    post folder to be prepared.
-35. In `updates/index.html`, uncomment the posts list and add a row.
+32. In GitHub, open the `js` folder and click `journal.js`.
+33. Click the pencil icon and add an entry inside the square brackets:
+
+        {
+          month: "2026-08",
+          title: "The first buy",
+          body: [
+            "First paragraph. This one shows on the card as the teaser.",
+            "Second paragraph, hidden until someone clicks read more.",
+            "Add as many as you like."
+          ]
+        },
+
+34. Commit. The card appears with that month's figures in the headline,
+    pulled from data.js, so the words and the numbers can never disagree.
+
+Optional fields: `mood:` for a short line under the title.
+
+The first paragraph is always the teaser. Everything after it is behind
+"read more", along with the figures strip and that entry's comments.
 
 ---
 
@@ -112,10 +127,16 @@ with a "not equal" symbol and publishes both numbers. That is deliberate.
 - [ ] Turn on Force HTTPS in Netlify once the padlock appears
 - [ ] Turn on two-factor auth: Netlify, VentraIP, GitHub
 - [ ] Turn on the domain transfer lock at VentraIP for both domains
-- [ ] Sign up at cusdis.com and paste the App ID into updates/2026-08/index.html
+- [ ] Sign up at cusdis.com, add trantofire.au, and paste the App ID into
+      `updates/index.html` — find `data-cusdis-app-id="YOUR_CUSDIS_APP_ID"`.
+      Each month gets its own comment thread automatically, keyed to the month,
+      and threads only load when a reader opens that entry.
 - [ ] Uncomment the HSTS line in `_headers` once HTTPS is confirmed working
 
 ---
+
+Full instructions for writing an entry, including how to edit from a phone
+and how to undo a mistake, are in JOURNAL.md.
 
 ## Changing the settings
 
@@ -123,7 +144,14 @@ with a "not equal" symbol and publishes both numbers. That is deliberate.
 
     CONTRIBUTION      how much you put in each month, in US dollars
     CASH_RATE         interest earned on the idle cash reserve (0.04 = 4% a year)
-    HIGH_WATER_MARK   only a fallback; the site tracks new highs by itself
+    HIGH_WATER_MARK   fallback only
+
+The all-time high is pulled live from Yahoo Finance every time someone loads
+the page, so you never update it by hand. HIGH_WATER_MARK is only what shows
+if Yahoo cannot be reached.
+
+Both domains point at the same site, and trantofire.com redirects to
+trantofire.au so there is only ever one live version.
 
 Interest is credited to the reserve monthly and counts as return, not as
 money in, so it lifts the portfolio value without inflating your contributions.

@@ -47,7 +47,20 @@
   if (window.TTF_LIVE) {
     window.TTF_LIVE.get().then(function (live) {
       if (!live) return;                       // stay on the logged price
-      var r = E.revalue(history, live.price);
+
+      // Yahoo's all-time high replaces the hardcoded reference. The high-water
+      // mark only ever ratchets up, so take whichever is larger.
+      var hist = history;
+      if (live.ath && live.ath > cfg.HIGH_WATER_MARK) {
+        var liveCfg = {
+          HIGH_WATER_MARK: live.ath,
+          CONTRIBUTION:    cfg.CONTRIBUTION,
+          CASH_RATE:       cfg.CASH_RATE
+        };
+        hist = E.run(window.TTF_DATA || [], liveCfg);
+      }
+
+      var r = E.revalue(hist, live.price);
       if (!r) return;
 
       setText("sg-ath", usd(r.high, 2));
@@ -68,6 +81,16 @@
           ret.textContent = (r.ret >= 0 ? "+" : "\u2212") + pct(Math.abs(r.ret));
           ret.className = "sg-return " + (r.ret >= 0 ? "pos" : "neg");
         }
+      }
+
+      var athNote = document.getElementById("sg-ath-sub");
+      if (athNote && live.ath) {
+        var d = live.athDate ? new Date(live.athDate) : null;
+        athNote.textContent = "TQQQ record high" +
+          (d && !isNaN(d.getTime())
+            ? ", " + d.toLocaleDateString("en-AU", { month: "long", year: "numeric" })
+            : "") +
+          ", from " + live.source + ". Every tier is measured from this one number.";
       }
 
       var stamp = document.getElementById("sg-live");

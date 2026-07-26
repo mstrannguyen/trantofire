@@ -160,9 +160,15 @@
       "</tr>";
   }
   var iEl = document.getElementById("p-interest");
-  if (iEl && last.interestTotal > 0) {
-    iEl.textContent = "Of the total, " + usd(last.interestTotal, 2) +
-      " is interest earned on the cash reserve at 4% a year while it waited.";
+  if (iEl) {
+    var bits = [];
+    if (last.brokerageTotal > 0)
+      bits.push(usd(last.brokerageTotal, 2) + " paid in brokerage");
+    if (last.mgmtTotal > 0)
+      bits.push("about " + usd(last.mgmtTotal, 2) + " borne in fund fees, already inside the price");
+    if (last.interestTotal > 0)
+      bits.push(usd(last.interestTotal, 2) + " earned as interest on the reserve");
+    if (bits.length) iEl.innerHTML = "So far: " + bits.join(" \u00b7 ") + ".";
   }
 
   $("rows").innerHTML = html;
@@ -172,7 +178,18 @@
   if (window.TTF_LIVE) {
     window.TTF_LIVE.get().then(function (live) {
       if (!live) return;
-      var r = E.revalue(history, live.price);
+
+      // Yahoo's all-time high replaces the hardcoded reference where it is higher
+      var hist = history;
+      if (live.ath && live.ath > cfg.HIGH_WATER_MARK) {
+        hist = E.run(window.TTF_DATA || [], {
+          HIGH_WATER_MARK: live.ath,
+          CONTRIBUTION:    cfg.CONTRIBUTION,
+          CASH_RATE:       cfg.CASH_RATE
+        });
+      }
+
+      var r = E.revalue(hist, live.price);
       if (!r) return;
 
       // only the "what is it worth now" figures move; the log stays as bought

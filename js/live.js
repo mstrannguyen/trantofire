@@ -30,7 +30,19 @@
         if (!data || typeof data.price !== "number" || !isFinite(data.price) || data.price <= 0) {
           throw new Error(data && data.error ? data.error : "no price");
         }
-        cached = { price: data.price, asOf: data.asOf, source: data.source || "Yahoo Finance" };
+        cached = {
+          price:   data.price,
+          // a flagged ATH is dropped rather than used: better to fall back to the
+          // known-good figure in config than to mis-tier every month from a bad one
+          ath:     (!data.suspect && typeof data.ath === "number" && isFinite(data.ath) && data.ath > 0) ? data.ath : null,
+          athWarnings: data.warnings || [],
+          athDate: data.athDate || null,
+          asOf:    data.asOf,
+          source:  data.source || "Yahoo Finance"
+        };
+        if (cached.athWarnings && cached.athWarnings.length && window.console) {
+          console.warn("[Tran to Fire] all-time-high checks:", cached.athWarnings.join("; "));
+        }
         return cached;
       })
       .catch(function (err) {

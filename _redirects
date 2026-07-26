@@ -1,4 +1,9 @@
-# Serve the published Google Sheet from our own domain.
-# The 200 status makes this a proxy, not a redirect — the browser only ever
-# talks to trantofire.au, so there is no cross-origin request to be blocked.
-/data.csv  https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9UOOsy-h1HzJUhzD4TmEkTUasrbvo62Am7bqyAdzBGZievv7yWUBL-ztiZR3Z4Ml2HDFziEX3-O8b/pub?gid=1401167114&single=true&output=csv  200
+# One canonical home. trantofire.com and its www send visitors to the .au,
+# so there is only ever one live version of the site and one address in
+# search results. 301 = permanent.
+
+http://trantofire.com/*   https://trantofire.au/:splat  301!
+https://trantofire.com/*  https://trantofire.au/:splat  301!
+http://www.trantofire.com/*   https://trantofire.au/:splat  301!
+https://www.trantofire.com/*  https://trantofire.au/:splat  301!
+https://www.trantofire.au/*   https://trantofire.au/:splat  301!

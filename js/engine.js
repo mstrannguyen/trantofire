@@ -39,6 +39,8 @@
     var invested = 0;    // total spent on shares
     var moneyIn  = 0;    // total contributed
     var interest = 0;    // cumulative interest earned on the reserve
+    var feesPaid = 0;    // cumulative brokerage actually paid
+    var mgmtDrag = 0;    // ESTIMATE of the fund's expense ratio, not deducted
     var out      = [];
 
     // Interest on the idle reserve. An Australian saver or offset account
@@ -79,13 +81,19 @@
       var available = reserve + contribution;
       var target    = available * tier.pct;
 
-      // What the rules called for...
-      var ruleBought = Math.floor(target / fill);     // whole shares only
-      // ...and what actually happened at the broker, if it differed.
+      // The rules decide the share count on the tier amount alone. Brokerage is
+      // then taken out of the cash afterwards, so the fee reduces the reserve
+      // rather than the size of the buy.
+      var brokerage = isFinite(r.fee) ? Number(r.fee)
+                    : (isFinite(cfg.BROKERAGE) ? Number(cfg.BROKERAGE) : 0);
+
+      var ruleBought = Math.floor(target / fill);
       var bought     = isFinite(r.shares) ? Number(r.shares) : ruleBought;
-      var fee        = isFinite(r.fee) ? Number(r.fee) : 0;
-      var spent      = bought * fill + fee;
       var deviated   = bought !== ruleBought;
+
+      var fee   = bought > 0 ? brokerage : 0;         // no trade, no brokerage
+      var spent = bought * fill + fee;
+      feesPaid += fee;
 
       reserve  = available - spent;
       shares  += bought;
@@ -94,6 +102,12 @@
 
       var etfValue  = shares * price;
       var portfolio = etfValue + reserve;
+
+      // Estimate of the expense ratio borne this month. NOT subtracted from
+      // portfolio: the market price is already net of it. This exists so the
+      // cost is visible rather than silently buried in the price.
+      var monthMgmt = etfValue * ((isFinite(cfg.EXPENSE_RATIO) ? Number(cfg.EXPENSE_RATIO) : 0) / 12);
+      mgmtDrag += monthMgmt;
       var pl        = portfolio - moneyIn;
 
       out.push({
@@ -116,6 +130,10 @@
         reserve:    reserve,
         interest:       monthInterest,   // earned this month
         interestTotal:  interest,        // earned to date
+        brokerage:      fee,             // paid this month
+        brokerageTotal: feesPaid,        // paid to date
+        mgmtMonth:      monthMgmt,       // estimated fund fee this month
+        mgmtTotal:      mgmtDrag,        // estimated fund fee to date
         shares:     shares,
         avgCost:    shares ? invested / shares : null,
         etfValue:   etfValue,
@@ -169,6 +187,8 @@
     var reserve  = last.reserve;          // already includes interest accrued to date
     var moneyIn  = last.moneyIn;
     var interest = last.interestTotal || 0;
+    var feesPaid = last.brokerageTotal || 0;
+    var mgmtDrag = last.mgmtTotal || 0;
     var invested = shares ? last.avgCost * shares : 0;   // total spent on shares
 
     var etfValue  = shares * price;
@@ -192,8 +212,11 @@
       portfolio:  portfolio,
       pl:         pl,
       ret:        moneyIn ? pl / moneyIn : 0,
-      interestTotal: interest,
-      plExInterest:  pl - interest,       // gain excluding the cash interest
+      interestTotal:  interest,
+      plExInterest:   pl - interest,      // gain excluding the cash interest
+      brokerageTotal: feesPaid,
+      mgmtTotal:      mgmtDrag,
+      costsTotal:     feesPaid + mgmtDrag,
       avgCost:    last.avgCost,
       high:       high,
       drawdown:   drawdown,
