@@ -1,9 +1,12 @@
-# One canonical home. trantofire.com and its www send visitors to the .au,
-# so there is only ever one live version of the site and one address in
-# search results. 301 = permanent.
+# One canonical home: https://trantofire.au
+# The .com and both www forms redirect there, so there is only ever one live
+# version of the site and one address in search results. 301 = permanent.
 
-http://trantofire.com/*   https://trantofire.au/:splat  301!
-https://trantofire.com/*  https://trantofire.au/:splat  301!
+http://trantofire.au/*        https://trantofire.au/:splat  301!
+https://www.trantofire.au/*   https://trantofire.au/:splat  301!
+http://www.trantofire.au/*    https://trantofire.au/:splat  301!
+
+http://trantofire.com/*       https://trantofire.au/:splat  301!
+https://trantofire.com/*      https://trantofire.au/:splat  301!
 http://www.trantofire.com/*   https://trantofire.au/:splat  301!
 https://www.trantofire.com/*  https://trantofire.au/:splat  301!
-https://www.trantofire.au/*   https://trantofire.au/:splat  301!
