@@ -1,3 +1,17 @@
+# ---------------------------------------------------------------------------
+# Live TQQQ price, proxied through this domain.
+#
+# Status 200 makes this a PROXY, not a redirect: Netlify fetches the Yahoo URL
+# on its own servers and serves the response as if it came from trantofire.au.
+# The browser only ever talks to this domain, so there is no CORS problem and
+# the site's Content-Security-Policy stays at connect-src 'self'.
+#
+# This needs no build step and no serverless function, which means it works on
+# a plain drag-and-drop deploy.
+# ---------------------------------------------------------------------------
+
+/api/price  https://query1.finance.yahoo.com/v8/finance/chart/TQQQ?interval=1mo&range=max  200
+
 # One canonical home: https://trantofire.au
 # The .com and both www forms redirect there, so there is only ever one live
 # version of the site and one address in search results. 301 = permanent.
