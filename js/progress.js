@@ -159,6 +159,40 @@
       '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
       "</tr>";
   }
+  var iEl = document.getElementById("p-interest");
+  if (iEl && last.interestTotal > 0) {
+    iEl.textContent = "Of the total, " + usd(last.interestTotal, 2) +
+      " is interest earned on the cash reserve at 4% a year while it waited.";
+  }
+
   $("rows").innerHTML = html;
   show("data");
+
+  // ---- upgrade the valuation to a live market price if available ----
+  if (window.TTF_LIVE) {
+    window.TTF_LIVE.get().then(function (live) {
+      if (!live) return;
+      var r = E.revalue(history, live.price);
+      if (!r) return;
+
+      // only the "what is it worth now" figures move; the log stays as bought
+      $("s-value").firstChild.nodeValue = usd(r.portfolio);
+      var plEl = $("s-pl");
+      plEl.firstChild.nodeValue = (r.pl < 0 ? "\u2212" : "") + usd(Math.abs(r.pl));
+      plEl.className = r.pl >= 0 ? "pos" : "neg";
+      $("s-pl-sub").textContent = pct(r.ret) + " on money in";
+      $("s-dd").firstChild.nodeValue = ddPct(r.drawdown);
+      $("s-dd-sub").textContent = "high-water mark " + usd(r.high, 2);
+      $("s-alloc").firstChild.nodeValue =
+        Math.round(r.pctEtf * 100) + "% / " + Math.round(r.pctCash * 100) + "%";
+
+      var stamp = document.getElementById("p-live");
+      if (stamp) {
+        stamp.textContent = "Valued at the live TQQQ price of " + usd(r.price, 2) +
+          " from " + live.source +
+          (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") +
+          ". The table below shows the prices actually paid.";
+      }
+    });
+  }
 })();

@@ -38,7 +38,15 @@
     var shares   = 0;
     var invested = 0;    // total spent on shares
     var moneyIn  = 0;    // total contributed
+    var interest = 0;    // cumulative interest earned on the reserve
     var out      = [];
+
+    // Interest on the idle reserve. An Australian saver or offset account
+    // accrues daily and pays monthly, so a twelfth of the annual rate each
+    // month is the honest approximation. Interest is a RETURN, not a
+    // contribution, so it lifts the portfolio without lifting money-in.
+    var monthlyRate = (isFinite(cfg.CASH_RATE) ? Number(cfg.CASH_RATE) : 0) / 12;
+    var firstMonth  = true;
 
     rows.slice().sort(function (a, b) {
       return String(a.month) < String(b.month) ? -1 : 1;
@@ -48,6 +56,16 @@
 
       var contribution = isFinite(r.contribution) ? Number(r.contribution) : cfg.CONTRIBUTION;
       var fill         = isFinite(r.fill) ? Number(r.fill) : price;
+
+      // the reserve earns interest for the month before the new money lands.
+      // Nothing accrues in the very first month: there was no reserve yet.
+      var monthInterest = 0;
+      if (!firstMonth && monthlyRate > 0 && reserve > 0) {
+        monthInterest = reserve * monthlyRate;
+        reserve  += monthInterest;
+        interest += monthInterest;
+      }
+      firstMonth = false;
 
       // The high-water mark only ever ratchets upward. It normally rises from
       // the prices logged here, but the site only ever sees one price a month
@@ -96,6 +114,8 @@
         fee:        fee,
         spent:      spent,
         reserve:    reserve,
+        interest:       monthInterest,   // earned this month
+        interestTotal:  interest,        // earned to date
         shares:     shares,
         avgCost:    shares ? invested / shares : null,
         etfValue:   etfValue,
@@ -133,6 +153,56 @@
     };
   }
 
+
+  /* Re-price the holdings at a live market price without altering the
+     historical record. The monthly rows keep the prices actually paid; this
+     only answers "what is the position worth right now?".
+
+     Returns null if there is no history or no usable price. */
+  function revalue(history, livePrice) {
+    if (!history || !history.length) return null;
+    var price = Number(livePrice);
+    if (!isFinite(price) || price <= 0) return null;
+
+    var last     = history[history.length - 1];
+    var shares   = last.shares;
+    var reserve  = last.reserve;          // already includes interest accrued to date
+    var moneyIn  = last.moneyIn;
+    var interest = last.interestTotal || 0;
+    var invested = shares ? last.avgCost * shares : 0;   // total spent on shares
+
+    var etfValue  = shares * price;
+    var portfolio = etfValue + reserve;
+    var pl        = portfolio - moneyIn;
+
+    // high-water mark ratchets on live price too
+    var high = price > last.high ? price : last.high;
+    var drawdown = (price - high) / high;
+    var tier = tierFor(drawdown);
+
+    return {
+      price:      price,
+      shares:     shares,
+      reserve:    reserve,
+      moneyIn:    moneyIn,
+      invested:   invested,
+      etfValue:   etfValue,
+      etfPl:      etfValue - invested,          // gain on the shares alone
+      etfRet:     invested ? (etfValue - invested) / invested : 0,
+      portfolio:  portfolio,
+      pl:         pl,
+      ret:        moneyIn ? pl / moneyIn : 0,
+      interestTotal: interest,
+      plExInterest:  pl - interest,       // gain excluding the cash interest
+      avgCost:    last.avgCost,
+      high:       high,
+      drawdown:   drawdown,
+      tier:       tier,
+      pctEtf:     portfolio ? etfValue / portfolio : 0,
+      pctCash:    portfolio ? reserve / portfolio : 0
+    };
+  }
+
   /* ---- shared formatting ---- */
   function usd(v, dp) {
     if (v === null || v === undefined || !isFinite(v)) return "\u2014";
@@ -162,7 +232,7 @@
   }
 
   window.TTF_ENGINE = {
-    run: run, next: next, tierFor: tierFor, monthLabel: monthLabel,
+    run: run, next: next, revalue: revalue, tierFor: tierFor, monthLabel: monthLabel,
     usd: usd, pct: pct, ddPct: ddPct
   };
 })();

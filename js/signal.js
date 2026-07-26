@@ -42,4 +42,39 @@
       ret.className = "sg-return " + (last.ret >= 0 ? "pos" : "neg");
     }
   }
+
+  // ---- upgrade to a live market price if one is available ----
+  if (window.TTF_LIVE) {
+    window.TTF_LIVE.get().then(function (live) {
+      if (!live) return;                       // stay on the logged price
+      var r = E.revalue(history, live.price);
+      if (!r) return;
+
+      setText("sg-ath", usd(r.high, 2));
+      setText("sg-price", usd(r.price, 2));
+      setText("sg-price-sub", "Live \u00b7 " +
+        (Math.abs(r.drawdown) < 0.0005 ? "at the high" : ddPct(r.drawdown) + " below the high"));
+
+      setText("sg-deploy", pct(r.tier.pct, 0));
+      setText("sg-deploy-sub", r.tier.label + " \u00b7 what the rules would call for today");
+      if (act) act.className = "sig-card act t" + r.tier.n;
+
+      if (summary) {
+        setText("sg-invested", usd(r.etfValue));
+        setText("sg-invested-sub", r.shares + " share" + (r.shares === 1 ? "" : "s") +
+          " at " + usd(r.avgCost, 2) + " average \u00b7 cost " + usd(r.invested));
+        setText("sg-portfolio", usd(r.portfolio));
+        if (ret) {
+          ret.textContent = (r.ret >= 0 ? "+" : "\u2212") + pct(Math.abs(r.ret));
+          ret.className = "sg-return " + (r.ret >= 0 ? "pos" : "neg");
+        }
+      }
+
+      var stamp = document.getElementById("sg-live");
+      if (stamp) {
+        stamp.textContent = "Live TQQQ price from " + live.source +
+          (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") + ".";
+      }
+    });
+  }
 })();

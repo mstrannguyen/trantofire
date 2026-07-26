@@ -117,6 +117,17 @@ with a "not equal" symbol and publishes both numbers. That is deliberate.
 
 ---
 
+## Changing the settings
+
+`js/config.js` holds three things you may want to change one day:
+
+    CONTRIBUTION      how much you put in each month, in US dollars
+    CASH_RATE         interest earned on the idle cash reserve (0.04 = 4% a year)
+    HIGH_WATER_MARK   only a fallback; the site tracks new highs by itself
+
+Interest is credited to the reserve monthly and counts as return, not as
+money in, so it lifts the portfolio value without inflating your contributions.
+
 ## The Google Sheet
 
 The site no longer reads it. Turn off publishing (File -> Share -> Publish to

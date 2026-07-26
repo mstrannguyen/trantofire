@@ -1,0 +1,6 @@
+# Tells Netlify where the serverless functions live.
+# Without this, a drag-and-drop deploy will not pick them up.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
