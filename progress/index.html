@@ -23,6 +23,9 @@
   html{-webkit-text-size-adjust:100%}
   body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .wrap-wide{max-width:min(1560px, 96vw);margin:0 auto;padding:0 24px}
+  @media (max-width:900px){ .wrap-wide{padding:0 16px} }
+
   .narrow{max-width:720px;margin-left:auto;margin-right:auto}
   .center{text-align:center}
 
@@ -110,11 +113,15 @@
 
   /* table */
   .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:30px;border:1px solid var(--hair);border-radius:18px;background:#fff}
-  table.log{width:100%;border-collapse:collapse;font-size:14.5px;min-width:900px}
+  table.log{width:100%;border-collapse:collapse;font-size:13.5px;min-width:0;table-layout:auto}
   table.log th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:20px 14px;border-bottom:1px solid var(--brass);white-space:nowrap;background:#fff;position:sticky;top:0}
-  table.log th:first-child,table.log td:first-child{text-align:left;padding-left:24px}
-  table.log th:last-child,table.log td:last-child{padding-right:24px}
-  table.log td{text-align:right;padding:16px 14px;border-bottom:1px solid var(--hair);white-space:nowrap}
+  table.log th:first-child,table.log td:first-child{text-align:left;padding-left:18px}
+  table.log th:last-child,table.log td:last-child{padding-right:18px}
+
+  table.log tr.today td{background:rgba(176,137,79,.09);border-bottom:2px solid var(--brass);font-weight:500}
+  table.log tr.today .mth{font-family:var(--display);font-size:17px}
+  .sub-note{font-family:var(--body);font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.04em}
+  table.log td{text-align:right;padding:14px 9px;border-bottom:1px solid var(--hair);white-space:nowrap}
   table.log tr:last-child td{border-bottom:0}
   table.log tbody tr:hover{background:var(--blush-soft)}
   .mth{font-family:var(--display);font-size:18px}
@@ -248,19 +255,20 @@
     </section>
 
     <section class="band" style="padding-top:20px">
-      <div class="wrap">
+      <div class="wrap-wide">
         <div class="center">
           <span class="orn"></span>
           <p class="eyebrow">The full log</p>
           <h2>Every month since August 2026.</h2>
+          <p class="note" style="max-width:60ch;margin:0 auto 30px">Each row is the position as it stood on that month's purchase price. The figures at the top of this page are today's live valuation, so the last row and the summary above will differ whenever the market has moved since the buy.</p>
         </div>
         <div class="tbl-wrap">
           <table class="log">
             <thead>
               <tr>
-                <th>Month</th><th>Price</th><th>Drawdown</th><th>Tier</th>
-                <th>Deploy</th><th>Cash available</th><th>Spent</th><th>Shares bought</th>
-                <th>Total shares</th><th>Avg cost</th><th>Cash reserve</th>
+                <th>Month</th><th>Price</th><th>From high</th><th>Tier</th>
+                <th>Deploy</th><th>Available</th><th>Spent</th><th>Bought</th>
+                <th>Shares</th><th>Avg cost</th><th>Reserve</th>
                 <th>Portfolio</th><th>Money in</th><th>Return</th>
               </tr>
             </thead>

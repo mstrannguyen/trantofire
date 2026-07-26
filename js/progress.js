@@ -186,6 +186,28 @@
       $("s-alloc").firstChild.nodeValue =
         Math.round(r.pctEtf * 100) + "% / " + Math.round(r.pctCash * 100) + "%";
 
+      // prepend a live "Today" row so the table reconciles with the summary above
+      var rowsEl = $("rows");
+      if (rowsEl && !document.getElementById("today-row")) {
+        var tr = document.createElement("tr");
+        tr.id = "today-row";
+        tr.className = "today";
+        tr.innerHTML =
+          '<td class="mth">Today<br><span class="sub-note">live price</span></td>' +
+          "<td>" + usd(r.price, 2) + "</td>" +
+          "<td>" + ddPct(r.drawdown) + "</td>" +
+          '<td><span class="sig s' + r.tier.n + '">' + r.tier.label + "</span></td>" +
+          "<td>" + pct(r.tier.pct, 0) + "</td>" +
+          "<td>\u2014</td><td>\u2014</td><td>\u2014</td>" +
+          "<td>" + r.shares + "</td>" +
+          "<td>" + usd(r.avgCost, 2) + "</td>" +
+          "<td>" + usd(r.reserve) + "</td>" +
+          "<td>" + usd(r.portfolio) + "</td>" +
+          "<td>" + usd(r.moneyIn) + "</td>" +
+          '<td class="' + (r.ret >= 0 ? "pos" : "neg") + '">' + pct(r.ret) + "</td>";
+        rowsEl.insertBefore(tr, rowsEl.firstChild);
+      }
+
       var stamp = document.getElementById("p-live");
       if (stamp) {
         stamp.textContent = "Valued at the live TQQQ price of " + usd(r.price, 2) +
