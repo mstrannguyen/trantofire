@@ -124,6 +124,8 @@
   .ruled li{display:grid;grid-template-columns:190px 1fr;gap:34px;padding:32px 0;border-top:1px solid var(--hair)}
   .ruled .what{font-family:var(--display);font-size:27px;color:var(--brass);line-height:1.2}
   .ruled p{margin:0;font-size:16.5px;line-height:1.7;color:#5A4850}
+  .ruled li > p{grid-column:2}
+  .ruled li > p ~ p{margin-top:15px}
 
   .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
   .risk h2{color:#fff}
@@ -150,6 +152,7 @@
     .rung .lab{margin-top:0}
     .grid2,.risk-list{grid-template-columns:1fr;gap:0}
     .ruled li{grid-template-columns:1fr;gap:10px}
+    .ruled li > p{grid-column:1}
   }
   @media (max-width:640px){
     .wrap{padding:0 22px}
