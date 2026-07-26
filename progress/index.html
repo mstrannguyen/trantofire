@@ -142,6 +142,14 @@
   .sheet-embed iframe{width:100%;height:640px;border:0;display:block}
   @media (max-width:640px){ .sheet-embed iframe{height:460px} }
   .dev{display:inline-block;margin-left:7px;color:#A85A48;font-weight:600;cursor:help}
+
+  .prior{max-width:64ch;margin:0 auto 34px;background:#fff;border:1px solid var(--hair);
+    border-left:3px solid var(--brass);border-radius:0 16px 16px 0;padding:26px 30px;text-align:left}
+  .prior-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 14px}
+  .prior p{margin:0 0 14px;font-size:15.5px;line-height:1.7;color:#5A4850}
+  .prior p:last-child{margin-bottom:0}
+  .prior strong{color:var(--plum)}
+  @media (max-width:560px){ .prior{padding:22px 20px} }
   .note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:32px}
 
   .foot{padding:60px 0 78px;border-top:1px solid var(--hair)}
@@ -267,6 +275,13 @@
           <span class="orn"></span>
           <p class="eyebrow">The full log</p>
           <h2>Every month since August 2026.</h2>
+          <div class="prior" id="prior">
+            <p class="prior-h">What this page does not include</p>
+            <p>I already owned <strong>7 shares of TQQQ</strong> before starting this, bought at an average cost of <strong>$70.40</strong>. Those shares are deliberately left out of everything on this page.</p>
+            <p>The experiment starts from zero. Folding in a position I bought under no particular rules would blur the thing I am trying to measure, and it would let a good entry price flatter the result. Every share counted here was bought by the tier rules, on a date that is published, at a price anyone can check.</p>
+            <p>So the portfolio value above is smaller than what I actually hold in TQQQ. That is the point.</p>
+          </div>
+
           <p class="note" style="max-width:60ch;margin:0 auto 30px">Each row is the position as it stood on that month's purchase price. The figures at the top of this page are today's live valuation, so the last row and the summary above will differ whenever the market has moved since the buy.</p>
         </div>
         <div class="tbl-wrap">
@@ -282,7 +297,7 @@
             <tbody id="rows"></tbody>
           </table>
         </div>
-        <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage on every buy, which is taken from the cash after the rules have set the share count. They ignore FX conversion costs, tax and dividends, so the real return is still a little worse than what you see here. TQQQ's 0.86% management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
+        <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage my broking app charges on every buy, which is taken from the cash after the rules have set the share count and is separate from anything the fund charges. They ignore FX conversion costs, tax and dividends, so the real return is still a little worse than what you see here. TQQQ's 0.86% management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
       </div>
     </section>
   </div>
@@ -291,7 +306,7 @@
 <footer class="foot">
   <div class="wrap">
     <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
-    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence and I am not a registered tax agent. Nothing here is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio.</p>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence and I am not a registered tax agent. Nothing here is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio. TQQQ shares I owned before this began are excluded from every figure published here.</p>
     <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Figures are in US dollars, because TQQQ is US-listed and I contribute a fixed US$800 each month; the AUD cost of that moves with the exchange rate.</p>
     <p>© 2026 Tran to Fire</p>
   </div>
