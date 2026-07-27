@@ -349,6 +349,13 @@
   .feenote p{margin:0 0 15px;font-size:16px;line-height:1.7}
   .feenote p:last-child{margin-bottom:0}
   @media (max-width:560px){ .feenote{padding:22px 20px} }
+
+  /* comments (FastComments, see js/comments.js) */
+  .comments{padding:64px 0 80px;border-top:1px solid var(--hair);background:var(--ivory)}
+  .comments h2{font-size:clamp(24px,3.4vw,34px);font-weight:300;margin:0 0 16px}
+  .comments .lede{max-width:50ch;margin:0 auto 38px}
+  .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
+  .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
 </style>
 </head>
 <body>
@@ -668,6 +675,20 @@
   </div>
 </section>
 
+<section class="comments">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Comments</p>
+    <h2>Tell me where this is wrong.</h2>
+    <p class="lede">Corrections are the point of publishing this. If a number looks off or the logic has a hole in it, say so here.</p>
+  </div>
+  <div class="wrap">
+    <div class="fc-slot" data-comments="home"
+         data-comments-title="Home (Tran to Fire)"
+         data-comments-url="https://trantofire.au/"></div>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="wrap">
     <div class="foot-mark"><img class="mk" src="mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
@@ -686,5 +707,6 @@
 <script src="js/signal.js?v=11" defer></script>
 
 <script src="js/compare.js?v=6" defer></script>
+<script src="js/comments.js?v=1" defer></script>
 </body>
 </html>

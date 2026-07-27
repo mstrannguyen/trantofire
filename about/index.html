@@ -158,6 +158,13 @@
     .ledger-row .val{grid-column:2;text-align:left;margin-top:6px}
     .ledger-head span:last-child{display:none}
   }
+
+  /* comments (FastComments, see js/comments.js) */
+  .comments{padding:64px 0 80px;border-top:1px solid var(--hair);background:var(--ivory)}
+  .comments h2{font-size:clamp(24px,3.4vw,34px);font-weight:300;margin:0 0 16px}
+  .comments .lede{max-width:50ch;margin:0 auto 38px}
+  .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
+  .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
 </style>
 </head>
 <body>
@@ -372,6 +379,20 @@
   </div>
 </section>
 
+<section class="comments">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Comments</p>
+    <h2>Say hello.</h2>
+    <p class="lede">Running something similar, or think this is a terrible idea? Both are worth hearing.</p>
+  </div>
+  <div class="wrap">
+    <div class="fc-slot" data-comments="my-story"
+         data-comments-title="My Story (Tran to Fire)"
+         data-comments-url="https://trantofire.au/about/"></div>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="wrap">
     <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
@@ -381,5 +402,6 @@
   </div>
 </footer>
 
+<script src="../js/comments.js?v=1" defer></script>
 </body>
 </html>

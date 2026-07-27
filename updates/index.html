@@ -91,11 +91,41 @@
   .entry-dev{background:var(--ivory);border-left:3px solid #A85A48;border-radius:0 10px 10px 0;
     padding:14px 18px;font-size:15.5px;color:#7A3E32;margin:0 0 22px}
 
+  /* markets and macro: written each month in js/journal.js */
+  .entry-macro{margin:30px 0 0;padding:26px 0 0;border-top:1px solid var(--hair)}
+  .entry-macro > h3{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .entry-macro p:last-child{margin-bottom:0}
+  .card-full .entry-cap{font-size:13.5px;font-weight:600;color:var(--plum);line-height:1.5;margin:0 0 12px}
+  .card-full .entry-note{font-size:13.5px;line-height:1.65;color:var(--muted);margin:12px 0 0}
+
+  .entry-table{margin:24px 0}
+  .entry-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .entry-table table{width:100%;border-collapse:collapse;font-size:15.5px}
+  .entry-table th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);padding:0 12px 10px 0;border-bottom:1px solid var(--brass);white-space:nowrap}
+  .entry-table td{text-align:right;padding:12px 12px 12px 0;border-bottom:1px solid var(--hair);white-space:nowrap}
+  .entry-table th:first-child,.entry-table td:first-child{text-align:left;padding-right:18px}
+  .entry-table td.k{font-family:var(--display);font-size:19px;line-height:1.25}
+  .entry-table tr:last-child td{border-bottom:0}
+
+  .entry-chart{margin:24px 0}
+  .bars{display:grid;gap:10px}
+  .bar-row{display:grid;grid-template-columns:74px 1fr 76px;align-items:center;gap:12px}
+  .bar-label{font-size:12.5px;letter-spacing:.04em;color:var(--muted)}
+  .bar-track{position:relative;height:18px;background:var(--blush-soft);border-radius:4px}
+  .bars.has-zero .bar-track::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;
+    width:1px;background:rgba(58,43,49,.28)}
+  .bar{position:absolute;top:0;bottom:0;background:var(--brass);border-radius:3px;min-width:2px}
+  .bar.neg{background:#A85A48}
+  .bar-val{font-size:14px;text-align:right}
+
   .card-comments{margin-top:34px;padding-top:26px;border-top:1px solid var(--hair)}
   .card-comments h3{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.2em;
     text-transform:uppercase;color:var(--muted);margin:0 0 18px}
-  .cusdis-slot{min-height:40px}
+  .fc-slot{min-height:40px}
   .note{font-size:14px;color:var(--muted);margin:0}
+  .card-full .fc-note{font-size:14px;color:var(--muted);margin:0}
 
 
   .empty{max-width:640px;margin:20px auto 0;text-align:center;padding:48px 40px;border:1px solid var(--hair);border-radius:18px;background:#fff}
@@ -112,6 +142,9 @@
     .entry-figs div:nth-child(4){border-left:0}
     .entry-figs div:nth-child(n+4){border-top:1px solid rgba(58,43,49,.08)} }
   @media (max-width:560px){ .wrap{padding:0 22px} .hero{padding:52px 0 0}
+    .card{padding:28px 22px}
+    .bar-row{grid-template-columns:52px 1fr 66px;gap:9px}
+    .entry-table table{font-size:14.5px}
     .entry-figs{grid-template-columns:repeat(2,1fr)}
     .entry-figs div:nth-child(odd){border-left:0}
     .entry-figs div:nth-child(n+3){border-top:1px solid rgba(58,43,49,.08)}
@@ -148,7 +181,7 @@
       <p>In the meantime, <a href="../strategy/index.html">the rules are already published</a>, written before there was any result to explain away.</p>
     </div>
 
-    <div id="entries" data-cusdis-app-id="YOUR_CUSDIS_APP_ID"></div>
+    <div id="entries"></div>
 
   </div>
 </section>
@@ -165,7 +198,8 @@
 <script src="../js/config.js?v=11" defer></script>
 <script src="../js/data.js?v=11" defer></script>
 <script src="../js/engine.js?v=11" defer></script>
-<script src="../js/journal.js?v=11" defer></script>
-<script src="../js/journal-render.js?v=11" defer></script>
+<script src="../js/comments.js?v=1" defer></script>
+<script src="../js/journal.js?v=12" defer></script>
+<script src="../js/journal-render.js?v=13" defer></script>
 </body>
 </html>

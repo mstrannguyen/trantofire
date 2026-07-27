@@ -14,8 +14,6 @@
   var empty = document.getElementById("empty");
   if (!host) return;
 
-  var CUSDIS_APP_ID = host.getAttribute("data-cusdis-app-id") || "";
-
   var entries = (window.TTF_JOURNAL || []).slice().sort(function (a, b) {
     return String(a.month) < String(b.month) ? 1 : -1;      // newest first
   });
@@ -35,6 +33,80 @@
     var d = new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, 1);
     if (isNaN(d.getTime())) return String(ym);
     return d.toLocaleDateString("en-AU", { month: "short", year: "numeric" }).toUpperCase();
+  }
+
+  /* --- the parts you can put in a journal entry ------------------------- */
+
+  function toParas(v) {
+    if (!v) return [];
+    return Object.prototype.toString.call(v) === "[object Array]" ? v : [v];
+  }
+  function paras(v) {
+    return toParas(v).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+  }
+  function cap(t)  { return t ? '<p class="entry-cap">' + esc(t) + "</p>" : ""; }
+  function note(t) { return t ? '<p class="entry-note">' + esc(t) + "</p>" : ""; }
+
+  function barValue(v, c) {
+    var d    = (c && typeof c.decimals === "number") ? c.decimals : 2;
+    var sign = v < 0 ? "\u2212" : ((c && c.plus && v > 0) ? "+" : "");
+    return sign + ((c && c.prefix) || "") +
+           Math.abs(v).toFixed(d) + ((c && c.suffix) || "");
+  }
+
+  function tableHTML(t) {
+    if (!t || !t.rows || !t.rows.length) return "";
+    var head = (t.head || []).map(function (h) { return "<th>" + esc(h) + "</th>"; }).join("");
+    var body = t.rows.map(function (r) {
+      return "<tr>" + toParas(r).map(function (cell, i) {
+        return "<td" + (i === 0 ? ' class="k"' : "") + ">" + esc(cell) + "</td>";
+      }).join("") + "</tr>";
+    }).join("");
+    return '<div class="entry-table">' + cap(t.caption) +
+      '<div class="entry-table-scroll"><table>' +
+      (head ? "<thead><tr>" + head + "</tr></thead>" : "") +
+      "<tbody>" + body + "</tbody></table></div>" + note(t.note) + "</div>";
+  }
+
+  function chartHTML(c) {
+    if (!c) return "";
+    var bars = (c.bars || []).filter(function (b) {
+      return b && isFinite(Number(b.value));
+    }).map(function (b) {
+      return { label: b.label, value: Number(b.value) };
+    });
+    if (!bars.length) return "";
+
+    var max = 0, hasNeg = false;
+    bars.forEach(function (b) {
+      if (Math.abs(b.value) > max) max = Math.abs(b.value);
+      if (b.value < 0) hasNeg = true;
+    });
+    if (!max) max = 1;
+    var zero = hasNeg ? 50 : 0, span = hasNeg ? 50 : 100;
+
+    var rows = bars.map(function (b) {
+      var w    = Math.abs(b.value) / max * span;
+      var left = b.value >= 0 ? zero : zero - w;
+      return '<div class="bar-row">' +
+        '<span class="bar-label">' + esc(b.label) + "</span>" +
+        '<span class="bar-track"><span class="bar' + (b.value < 0 ? " neg" : "") +
+          '" style="left:' + left.toFixed(2) + "%;width:" + w.toFixed(2) + '%"></span></span>' +
+        '<span class="bar-val">' + esc(barValue(b.value, c)) + "</span>" +
+      "</div>";
+    }).join("");
+
+    return '<div class="entry-chart">' + cap(c.title) +
+      '<div class="bars' + (hasNeg ? " has-zero" : "") + '">' + rows + "</div>" +
+      note(c.note) + "</div>";
+  }
+
+  function macroHTML(mx) {
+    if (!mx) return "";
+    var inner = paras(mx.body) + tableHTML(mx.table) + chartHTML(mx.chart) + note(mx.note);
+    if (!inner) return "";
+    return '<section class="entry-macro">' +
+      "<h3>" + esc(mx.heading || "Markets and macro") + "</h3>" + inner + "</section>";
   }
 
   function headline(m) {
@@ -61,7 +133,7 @@
 
   host.innerHTML = entries.map(function (e) {
     var m      = byMonth[e.month];
-    var body   = e.body || [];
+    var body   = toParas(e.body);
     var teaser = body.length ? body[0] : "";
     var rest   = body.slice(1);
     var id     = "e-" + String(e.month);
@@ -82,10 +154,11 @@
         '<div class="card-full" id="' + esc(id) + '-full" hidden>' +
           (m ? figures(m) : "") + dev +
           rest.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+          macroHTML(e.macro) +
           '<div class="card-comments" data-month="' + esc(e.month) +
             '" data-title="' + esc(e.title || shortMonth(e.month)) + '">' +
             "<h3>Comments</h3>" +
-            '<div class="cusdis-slot"></div>' +
+            '<div class="fc-slot"></div>' +
           "</div>" +
         "</div>" +
         '<button class="card-more" type="button" aria-expanded="false" aria-controls="' + esc(id) + '-full">' +
@@ -116,39 +189,24 @@
     }
   });
 
-  var cusdisScriptLoaded = false;
+  /* Each entry gets its own thread, filed under journal-YYYY-MM. The widget
+     is only fetched when the entry is opened. See js/comments.js. */
   function mountComments(card) {
     var wrap = card.querySelector(".card-comments");
-    var slot = card.querySelector(".cusdis-slot");
-    if (!wrap || !slot || slot.getAttribute("data-mounted")) return;
+    var slot = card.querySelector(".fc-slot");
+    if (!wrap || !slot) return;
 
-    if (!CUSDIS_APP_ID || CUSDIS_APP_ID.indexOf("YOUR_") === 0) {
-      slot.innerHTML = '<p class="note">Comments are not switched on yet. ' +
-        "Add a Cusdis App ID to the journal page to enable them.</p>";
-      slot.setAttribute("data-mounted", "1");
+    if (!window.TTFComments) {
+      slot.innerHTML = '<p class="fc-note">Comments could not load.</p>';
       return;
     }
 
     var month = wrap.getAttribute("data-month");
-    var thread = document.createElement("div");
-    thread.id = "cusdis_thread_" + month;
-    thread.setAttribute("data-host", "https://cusdis.com");
-    thread.setAttribute("data-app-id", CUSDIS_APP_ID);
-    thread.setAttribute("data-page-id", month);
-    thread.setAttribute("data-page-url", "https://trantofire.au/updates/#e-" + month);
-    thread.setAttribute("data-page-title", wrap.getAttribute("data-title"));
-    slot.appendChild(thread);
-    slot.setAttribute("data-mounted", "1");
-
-    if (!cusdisScriptLoaded) {
-      var sc = document.createElement("script");
-      sc.async = true; sc.defer = true;
-      sc.src = "https://cusdis.com/js/cusdis.es.js";
-      document.body.appendChild(sc);
-      cusdisScriptLoaded = true;
-    } else if (window.CUSDIS && window.CUSDIS.renderTo) {
-      window.CUSDIS.renderTo(thread);
-    }
+    window.TTFComments.mount(slot, {
+      urlId:     "journal-" + month,
+      url:       "https://trantofire.au/updates/#e-" + month,
+      pageTitle: wrap.getAttribute("data-title")
+    });
   }
 
   if (location.hash && location.hash.indexOf("#e-") === 0) {

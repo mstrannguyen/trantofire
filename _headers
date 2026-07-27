@@ -14,13 +14,24 @@
 # into browsers and is very difficult to reverse.
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# The Content-Security-Policy below allows FastComments and nothing else new.
+# If a thread ever fails to load, open the browser console: a CSP block names
+# the exact origin it refused, and that origin gets added to the matching
+# directive here.
+#
+# One known interaction: Cross-Origin-Opener-Policy: same-origin will break
+# social login pop-ups if you ever switch those on in FastComments. Anonymous
+# and email commenting are unaffected.
+# ---------------------------------------------------------------------------
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cusdis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://cusdis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.fastcomments.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.fastcomments.com; font-src 'self' https://fonts.gstatic.com https://cdn.fastcomments.com; img-src 'self' data: https://cdn.fastcomments.com https://fastcomments.com; connect-src 'self' https://fastcomments.com https://cdn.fastcomments.com wss://fastcomments.com; frame-src https://fastcomments.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
 
 /js/*
   Cache-Control: no-cache

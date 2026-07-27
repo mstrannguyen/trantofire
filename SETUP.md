@@ -127,10 +127,14 @@ The first paragraph is always the teaser. Everything after it is behind
 - [ ] Turn on Force HTTPS in Netlify once the padlock appears
 - [ ] Turn on two-factor auth: Netlify, VentraIP, GitHub
 - [ ] Turn on the domain transfer lock at VentraIP for both domains
-- [ ] Sign up at cusdis.com, add trantofire.au, and paste the App ID into
-      `updates/index.html` — find `data-cusdis-app-id="YOUR_CUSDIS_APP_ID"`.
-      Each month gets its own comment thread automatically, keyed to the month,
-      and threads only load when a reader opens that entry.
+- [ ] Sign up at fastcomments.com (Flex plan, $0.99 a month minimum, first
+      site free, 30 day trial with no card). Add trantofire.au as a site in
+      the account settings, or the widget loads and then refuses with a domain
+      authorisation error. Copy the Tenant ID from
+      fastcomments.com/auth/my-account/api-secret and paste it into
+      `js/comments.js` — find `YOUR_FASTCOMMENTS_TENANT_ID`. That one line
+      switches on every thread: Home, Strategy, Progress, My Story, and one
+      per journal entry. Threads only load when a reader scrolls to them.
 - [ ] Uncomment the HSTS line in `_headers` once HTTPS is confirmed working
 
 ---

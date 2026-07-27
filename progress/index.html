@@ -165,6 +165,13 @@
     .stats{grid-template-columns:1fr}
     .chart{padding:26px 20px 20px}
   }
+
+  /* comments (FastComments, see js/comments.js) */
+  .comments{padding:64px 0 80px;border-top:1px solid var(--hair);background:var(--ivory)}
+  .comments h2{font-size:clamp(24px,3.4vw,34px);font-weight:300;margin:0 0 16px}
+  .comments .lede{max-width:50ch;margin:0 auto 38px}
+  .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
+  .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
 </style>
 </head>
 <body>
@@ -303,6 +310,20 @@
   </div>
 </main>
 
+<section class="comments">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Comments</p>
+    <h2>Questions about the numbers.</h2>
+    <p class="lede">Every figure on this page is computed from the log rather than typed in. If something looks wrong, ask and I will check it.</p>
+  </div>
+  <div class="wrap">
+    <div class="fc-slot" data-comments="progress"
+         data-comments-title="Progress (Tran to Fire)"
+         data-comments-url="https://trantofire.au/progress/"></div>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="wrap">
     <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
@@ -318,5 +339,6 @@
 <script src="../js/live.js?v=11" defer></script>
 <script src="../js/progress.js?v=11" defer></script>
 
+<script src="../js/comments.js?v=1" defer></script>
 </body>
 </html>
