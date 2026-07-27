@@ -96,15 +96,36 @@ engine chart), Strategy, Progress, Journal, My Story.
 
 ## Still outstanding
 
+Ordered. Everything above the line has to happen before launch.
+
+- [ ] **Deploy the current build.** Adds `privacy/`, so drag the whole folder,
+      not individual files.
 - [ ] **Decide which day of the month the buy happens.** The last place the
-      rules leave room for judgment. One sentence fixes it.
-- [ ] Real email address on My Story (currently a placeholder)
-- [ ] FastComments Tenant ID into `js/comments.js` to switch comments on
-- [ ] Two-factor auth on Netlify, VentraIP, GitHub
-- [ ] Domain transfer lock at VentraIP for both domains
-- [ ] Uncomment HSTS in `_headers` once HTTPS is confirmed working
+      rules leave room for judgment. One sentence on the Strategy page fixes
+      it, and it also settles what date goes in `js/data.js`.
+- [ ] **Create tran@trantofire.au** at VentraIP, plus a `privacy@` alias into
+      the same inbox. Set SPF and DKIM at the same time or replies land in
+      spam. The address is already published on My Story and `/privacy/`.
+- [x] FastComments Tenant ID is in `js/comments.js` (ndvTLjF3MQ5). Threads go
+      live on the next deploy. Add trantofire.au as a site in the FastComments
+      account before the trial ends or requests start getting refused.
+- [ ] **Force HTTPS** in Netlify once the padlock appears, then uncomment the
+      HSTS line in `_headers` and redeploy.
+- [ ] **Two-factor auth** on Netlify, VentraIP and GitHub.
+- [ ] **Domain transfer lock** at VentraIP for both domains.
+- [ ] **Log the first buy** in `js/data.js`, and write the first journal entry
+      in `js/journal.js`.
+
+Not blocking launch:
+
+- [ ] Self-host the two Google Fonts to remove the last passive third-party
+      request. The privacy page currently admits this is undone.
+- [ ] Email signup section on the home page is commented out. Needs a provider
+      before it goes back.
 - [ ] Excel tracker was uploaded to be updated to match the site
-      ($800, Yahoo live price, $3 brokerage) — never completed
+      ($800, Yahoo live price, $3 brokerage) — never completed.
+- [ ] Trademark the name and the fire-horse logo with IP Australia if you go
+      ahead: word mark first, TM Headstart, roughly $330 a class.
 
 ---
 

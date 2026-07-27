@@ -78,6 +78,29 @@
     el.appendChild(p);
   }
 
+  /* A short line above every thread saying where a reader's email actually
+     goes. Rendered here rather than in the pages so there is one copy of it
+     and the journal entries get it too. */
+  function privacyLine(el) {
+    if (!el.parentNode || el.parentNode.querySelector(".fc-privacy")) return;
+
+    var p = document.createElement("p");
+    p.className = "fc-note fc-privacy";
+    p.style.marginBottom = "18px";
+    p.appendChild(document.createTextNode(
+      "Comments run on FastComments rather than on this site. If you leave an " +
+      "email it is used to tell you about replies and to sign you back in. " +
+      "FastComments stores it, not me, and it is never shown publicly or sold. "));
+
+    var a = document.createElement("a");
+    a.href = "/privacy/";
+    a.appendChild(document.createTextNode("What this site knows about you"));
+    p.appendChild(a);
+    p.appendChild(document.createTextNode("."));
+
+    el.parentNode.insertBefore(p, el);
+  }
+
   /* Put a thread into an element.
      opts: urlId (required), url, pageTitle */
   function mount(el, opts) {
@@ -97,6 +120,7 @@
         say(el, "Comments could not load. Refreshing the page usually fixes it.");
         return;
       }
+      privacyLine(el);
       window.FastCommentsUI(el, {
         tenantId:  TENANT_ID,
         urlId:     opts.urlId,

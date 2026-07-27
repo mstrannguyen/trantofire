@@ -122,7 +122,8 @@ The first paragraph is always the teaser. Everything after it is behind
 
 ## Still to do before promoting the site
 
-- [ ] Replace `[hello@trantofire.au]` on the My Story page with a real address
+- [x] Contact address on My Story and the privacy page is tran@trantofire.au.
+      Set that mailbox up at VentraIP, plus a privacy@ alias into the same inbox
 - [ ] Set up email forwarding for that address at VentraIP
 - [ ] Turn on Force HTTPS in Netlify once the padlock appears
 - [ ] Turn on two-factor auth: Netlify, VentraIP, GitHub
