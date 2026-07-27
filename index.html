@@ -338,6 +338,7 @@
   .funds td{text-align:right;padding:15px 12px;border-bottom:1px solid var(--hair);white-space:nowrap}
   .funds th{padding:0 12px 14px}
   .fsub{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:3px}
+  .hsub{display:block;font-size:9.5px;font-weight:400;letter-spacing:.08em;text-transform:none;color:var(--muted);opacity:.85;margin-top:5px}
   .funds th{white-space:nowrap}
   .funds td.pos{color:#4E7A4A}
   .funds td.neg{color:#A85A48}
@@ -508,8 +509,8 @@
   <div class="wrap">
     <div class="table-scroll">
       <table class="funds">
-        <caption>Fee is the net annual expense ratio, which includes a waiver in place through September 2026, so the underlying gross fee is higher. Fund size is rounded and current to late July 2026, from stockanalysis.com. The last three columns are worked out here from Yahoo's monthly history rather than typed in, count distributions as reinvested, and are annualised except for the one year figure.</caption>
-        <thead><tr><th>Fund</th><th>Tracks</th><th>Fee</th><th>Started</th><th>Size</th><th>1 year</th><th>5 years</th><th>Since start</th></tr></thead>
+        <caption>Fee is the net annual expense ratio, which includes a waiver in place through September 2026, so the underlying gross fee is higher. Fund size is rounded and current to late July 2026, from stockanalysis.com. The three return columns are worked out here from Yahoo's monthly history rather than typed in, and they count distributions as reinvested. One year is the total return across that year. Five years and since start are annualised, so each is the yearly rate that compounds out to the total for the period, not the total itself. Because the periods land on month ends rather than exact anniversaries, these sit a little away from the figures ProShares publishes.</caption>
+        <thead><tr><th>Fund</th><th>Tracks</th><th>Fee</th><th>Started</th><th>Size</th><th>1 year<span class="hsub">total</span></th><th>5 years<span class="hsub">a year</span></th><th>Since start<span class="hsub">a year</span></th></tr></thead>
         <tbody>
           <tr><td class="band-name">TQQQ</td><td>Nasdaq-100<span class="fsub">3× daily</span></td><td>0.86%</td><td>Feb 2010</td><td>$33b</td><td id="f-TQQQ-1y">—</td><td id="f-TQQQ-5y">—</td><td id="f-TQQQ-all">—</td></tr>
           <tr><td class="band-name">QLD</td><td>Nasdaq-100<span class="fsub">2× daily</span></td><td>0.95%</td><td>Jun 2006</td><td>$13b</td><td id="f-QLD-1y">—</td><td id="f-QLD-5y">—</td><td id="f-QLD-all">—</td></tr>
@@ -669,6 +670,10 @@
   </div>
 </section>
 
+<!-- Email signup, parked for now. To bring it back, delete this comment
+     line and the closing marker below it. The .signup and .form styles are
+     still in the stylesheet, so it will render as it did before.
+
 <section class="signup">
   <div class="wrap center">
     <span class="orn"></span>
@@ -683,6 +688,8 @@
     <small>Unsubscribe any time. Connect this to your email provider before launch.</small>
   </div>
 </section>
+
+-->
 
 <section class="comments">
   <div class="wrap narrow center">
