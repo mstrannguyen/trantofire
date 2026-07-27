@@ -208,7 +208,7 @@
   <div class="wrap hero-in center">
     <p class="eyebrow">The Strategy</p>
     <h1>My rules, written down <em>before I needed them</em>.</h1>
-    <p class="lede">US$800 a month into a 3× leveraged Nasdaq-100 fund. Near an all-time high I invest only a fifth of the cash I'm holding and bank the rest. The further the fund falls below its high, the bigger the share I spend. At −60% I spend all of it. I'm publishing the whole rule set so that if I break it in a bad month, you'll know.</p>
+    <p class="lede">US$800 a month into a 3× leveraged Nasdaq-100 fund. Sitting close to its record high I invest only a fifth of the cash I'm holding and bank the rest. The further it falls below that high, the bigger the share I spend, and at −60% I spend all of it. It is about a third down as I start, so the first buys are already past the baseline. Every rule is written out below.</p>
   </div>
 </header>
 
@@ -298,6 +298,116 @@
   <p class="figcap">The concept is Henrique Centieiro's counter-cyclical leverage framework, published on TradingView. The drawing is mine; any clumsiness in it is mine too.</p>
 </section>
 
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Optimal leverage</p>
+    <h2>The point where more leverage stops paying.</h2>
+    <p class="lede">Leverage does not just scale a return up. Tony Cooper's 2010 paper works out the long-run compound return of a leveraged fund and finds it traces a hill. Returns climb as leverage rises, reach a peak, then fall away. Go far enough past the peak and the long-run return turns negative while the index underneath it is still going up.</p>
+    <p class="lede">The peak sits at roughly the index's return divided by the square of its volatility. Volatility is squared in that sum and the return is not, so volatility carries far more weight. Everything below follows from that.</p>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 960 460" role="img" aria-labelledby="opt-title opt-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="opt-title">Long-run return against daily leverage</title>
+      <desc id="opt-desc">Two curves showing compound return rising with leverage, peaking, then falling. The S&amp;P 500 curve peaks near three times leverage. The Nasdaq-100 curve peaks near two times and is already falling by three times, where TQQQ sits.</desc>
+
+      <!-- grid -->
+      <line x1="287.4" y1="64" x2="287.4" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="478.9" y1="64" x2="478.9" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="670.3" y1="64" x2="670.3" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="861.7" y1="64" x2="861.7" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="96" y1="64" x2="96" y2="372" stroke="#3A2B31" stroke-opacity=".18"/>
+
+      <!-- break-even -->
+      <line x1="96" y1="285.4" x2="900" y2="285.4" stroke="#3A2B31" stroke-opacity=".22" stroke-dasharray="4 5"/>
+      <text x="150" y="277" font-family="Karla,sans-serif" font-size="13" fill="#8A7A7E">Break even</text>
+
+      <!-- S&P 500 -->
+      <polyline fill="none" stroke="#8D9C86" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+        points="96.0,285.4 115.1,272.1 134.3,259.4 153.4,247.0 172.6,235.2 191.7,223.7 210.9,212.8 230.0,202.2 249.1,192.2 268.3,182.5 287.4,173.4 306.6,164.7 325.7,156.4 344.9,148.6 364.0,141.2 383.1,134.3 402.3,127.8 421.4,121.8 440.6,116.3 459.7,111.2 478.9,106.5 498.0,102.3 517.1,98.5 536.3,95.2 555.4,92.4 574.6,90.0 593.7,88.0 612.9,86.5 632.0,85.5 651.1,84.9 670.3,84.7 689.4,85.1 708.6,85.8 727.7,87.0 746.9,88.7 766.0,90.8 785.1,93.4 804.3,96.4 823.4,99.8 842.6,103.7 861.7,108.1 880.9,112.9 900.0,118.2"/>
+
+      <!-- Nasdaq-100 -->
+      <polyline fill="none" stroke="#3A2B31" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
+        points="96.0,285.4 115.1,271.0 134.3,257.3 153.4,244.5 172.6,232.4 191.7,221.2 210.9,210.7 230.0,201.0 249.1,192.1 268.3,184.0 287.4,176.6 306.6,170.1 325.7,164.3 344.9,159.3 364.0,155.1 383.1,151.7 402.3,149.1 421.4,147.2 440.6,146.2 459.7,145.9 478.9,146.4 498.0,147.7 517.1,149.8 536.3,152.7 555.4,156.3 574.6,160.8 593.7,166.0 612.9,172.0 632.0,178.8 651.1,186.4 670.3,194.7 689.4,203.9 708.6,213.8 727.7,224.6 746.9,236.1 766.0,248.4 785.1,261.4 804.3,275.3 823.4,290.0 842.6,305.4 861.7,321.6 880.9,338.6 900.0,356.4"/>
+
+      <!-- peaks -->
+      <circle cx="456.8" cy="145.9" r="5" fill="#3A2B31"/>
+      <text x="456.8" y="178" text-anchor="middle" font-family="Karla,sans-serif" font-size="14" font-weight="600" fill="#3A2B31">Peak near 2×</text>
+      <circle cx="666.9" cy="84.7" r="5" fill="#8D9C86"/>
+      <text x="640" y="72" text-anchor="end" font-family="Karla,sans-serif" font-size="14" font-weight="600" fill="#7C8B78">Peak near 3×</text>
+
+      <!-- where TQQQ sits -->
+      <line x1="670.3" y1="182" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".85"/>
+      <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
+      <text x="692" y="126" font-family="Karla,sans-serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
+      <text x="692" y="147" font-family="Karla,sans-serif" font-size="13.5" fill="#9A7C52">where this experiment sits</text>
+
+      <!-- axes -->
+      <text x="287.4" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">1×</text>
+      <text x="478.9" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">2×</text>
+      <text x="670.3" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">3×</text>
+      <text x="861.7" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">4×</text>
+      <text x="498" y="426" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">DAILY LEVERAGE</text>
+      <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
+
+      <!-- legend -->
+      <line x1="96" y1="42" x2="126" y2="42" stroke="#8D9C86" stroke-width="2.6"/>
+      <text x="136" y="47" font-family="Karla,sans-serif" font-size="14" fill="#5A4850">S&amp;P 500, 1950 to 2009</text>
+      <line x1="330" y1="42" x2="360" y2="42" stroke="#3A2B31" stroke-width="2.6"/>
+      <text x="370" y="47" font-family="Karla,sans-serif" font-size="14" fill="#5A4850">Nasdaq-100, 1971 to 2009</text>
+    </svg>
+  </div>
+  <p class="figcap">The shape of Cooper's result, drawn from his return and volatility figures for the two indexes. The vertical scale is left unlabelled because the height of the hill depends on which decades you measure, so the position of the peak is the only part worth reading off it.</p>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="methods">
+        <caption>Cooper's own figures. Return is the compound annual return of the index. Volatility is its annualised daily standard deviation. Peak leverage is where his return-versus-leverage curves top out.</caption>
+        <thead><tr><th>Index</th><th>Annual return</th><th>Volatility</th><th>Peak leverage</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="band-name">S&amp;P 500<br><span class="sub">1950 to 2009</span></td>
+            <td>7.0%</td><td>15.3%</td><td class="total">about 3×</td>
+          </tr>
+          <tr>
+            <td class="band-name">Nasdaq-100<br><span class="sub">1971 to 2009</span></td>
+            <td>7.7%</td><td>20.2%</td><td class="total">about 2×</td>
+          </tr>
+          <tr>
+            <td class="band-name">US market<br><span class="sub">1885 to 2009</span></td>
+            <td>3.9%</td><td>16.7%</td><td class="total">about 2×</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">The Nasdaq-100 returned <em>more</em> than the S&amp;P 500 across these windows and it still has the lower ceiling, because it was about a third more volatile and volatility is the term that gets squared. The livelier index is the one that tolerates less leverage. Across the ten markets Cooper tested, the optimum usually landed near 2, reached 3 in a few cases, and never reached 4.</p>
+  </div>
+
+  <div class="wrap">
+    <ul class="grid2">
+      <li>
+        <h3>Below the peak</h3>
+        <p>Each extra turn of leverage adds return along with the volatility, so you are being paid for the risk you take on. Being early on the curve also buys you room to be wrong. If the real peak turns out to sit lower than the estimate, you give up part of the gain rather than all of it.</p>
+      </li>
+      <li>
+        <h3>Above the peak</h3>
+        <p>Each extra turn still adds the full volatility and now subtracts return, so you carry more risk to earn less. The error runs the other way too. A stretch of lower returns or higher volatility pulls the peak to the left, and a position that was slightly past it becomes badly past it, with nothing to announce that it happened.</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="clarify" style="margin-top:44px">
+      <p class="clarify-h">Why I still chose 3×</p>
+      <p>These peaks are computed across whole market histories, deep bear markets included. Inside a sustained bull run the return term rises and the peak moves right along with it, and that is where a 3× fund earns its keep. It compounds harder than a lower multiple for as long as the trend holds, and I intend to hold through it.</p>
+      <p>I am also not sitting on a flat 3× position. Cash waits until the market falls, so my exposure runs under three times for as long as the reserve holds anything, and I pay below the average price along the way.</p>
+    </div>
+    <p class="src-note" style="margin-top:30px">Figures and formula from Tony Cooper, <a href="https://ssrn.com/abstract=1664823">Alpha Generation and Risk Smoothing using Managed Volatility</a>, Double-Digit Numerics, 2010. The curves above are my drawing of his result, not a reproduction of his charts.</p>
+  </div>
+</section>
+
 <section class="band band-blush">
   <div class="wrap narrow center">
     <span class="orn"></span>
@@ -350,21 +460,26 @@
   <div class="wrap narrow center">
     <span class="orn"></span>
     <p class="eyebrow">Worked example</p>
-    <h2>The same pile, four ways.</h2>
+    <h2>Four months of a thousand dollars.</h2>
+    <p class="lede">Starting from nothing, with US$1,000 going in on the same day every month. The rules take their slice, whatever is left waits for next month, and the market does what it does. This is where the reserve comes from.</p>
   </div>
   <div class="wrap narrow">
     <div class="table-scroll">
       <table class="money">
-        <caption>All figures in US dollars. Say the reserve has built to $10,000 and this month's $800 lands on top, so $10,800 is available.</caption>
-        <thead><tr><th>Tier</th><th>Deploy</th><th>Spend</th><th>Carried forward</th></tr></thead>
+        <caption>All figures in US dollars, rounded to the nearest dollar. Cash available is last month's carry plus the new $1,000.</caption>
+        <thead><tr><th>Month</th><th>TQQQ vs its high</th><th>Tier</th><th>Cash available</th><th>Deployed</th><th>Carried forward</th></tr></thead>
         <tbody>
-          <tr><td class="band-name">Baseline</td><td>20%</td><td class="total">$2,160</td><td>$8,640</td></tr>
-          <tr><td class="band-name">Dip</td><td>33%</td><td class="total">$3,564</td><td>$7,236</td></tr>
-          <tr><td class="band-name">Deep dip</td><td>67%</td><td class="total">$7,236</td><td>$3,564</td></tr>
-          <tr><td class="band-name">Crash</td><td>100%</td><td class="total">$10,800</td><td>$0</td></tr>
+          <tr><td class="band-name">Month 1</td><td>−4%</td><td>Baseline <span class="sub">20%</span></td><td>$1,000</td><td class="total">$200</td><td>$800</td></tr>
+          <tr><td class="band-name">Month 2</td><td>−9%</td><td>Baseline <span class="sub">20%</span></td><td>$1,800</td><td class="total">$360</td><td>$1,440</td></tr>
+          <tr><td class="band-name">Month 3</td><td>−14%</td><td>Baseline <span class="sub">20%</span></td><td>$2,440</td><td class="total">$488</td><td>$1,952</td></tr>
+          <tr><td class="band-name">Month 4</td><td>−43%</td><td>Deep dip <span class="sub">67%</span></td><td>$2,952</td><td class="total">$1,978</td><td>$974</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p style="margin-top:34px">The first three months look like nothing is happening. Each one buys a small parcel and leaves four fifths of the cash alone, so by month four there is $1,952 sitting idle.</p>
+    <p>Then the market falls, and month four puts <strong>$1,978</strong> to work in a single buy, nearly ten times what month one managed, at prices 43% below the high. That money only exists because the three months before it refused to spend.</p>
+    <p>Two things this table leaves out, both of which the real log on the Progress page includes: the reserve earns 4% a year while it waits, and every buy costs $3 in brokerage and gets rounded down to whole shares.</p>
   </div>
 </section>
 
@@ -375,7 +490,7 @@
     <p class="eyebrow">Why not just buy every month</p>
     <h2>Because of when you start.</h2>
     <p class="lede">The single most important word on this page is <em>every</em>. This only works as a monthly habit held for decades, not as a lump sum dropped in once. A one-off purchase of a 3× fund is a bet on your entry timing. Buying a fixed amount every month, through the good years and the terrible ones, is what turns that bet into a strategy.</p>
-    <p class="lede">Collins makes the point with the worst possible start. Put $1,000 into TQQQ as a single purchase in January 2000, at the top of the dot-com bubble, and twenty years later you are roughly back where you began — because the crash that followed took a simulated 3× Nasdaq down around 99%, and a lump sum has no way to recover from that. Contribute steadily through the same period and the picture changes completely: every crash becomes cheaper shares, and the later recovery lifts all of them. Same fund, same two decades. The difference is entirely whether you kept buying.</p>
+    <p class="lede">Collins makes the point with the worst possible start. Put $1,000 into TQQQ as a single purchase in January 2000, at the top of the dot-com bubble, and twenty years later you are roughly back where you began, because the crash that followed took a simulated 3× Nasdaq down around 99%, and a lump sum has no way to recover from that. Contribute steadily through the same period and the picture changes completely: every crash becomes cheaper shares, and the later recovery lifts all of them. Same fund, same two decades. The difference is entirely whether you kept buying.</p>
     <p class="lede">Collins tested both against TQQQ, changing only the month you begin. The result depends entirely on where the market was when you started.</p>
   </div>
 
@@ -397,8 +512,8 @@
     <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
     <div class="clarify" style="margin-top:34px">
       <p class="clarify-h">The discipline this actually requires</p>
-      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and you have quietly converted the strategy back into a lump-sum bet — the one Collins shows going nowhere for twenty years.</p>
-      <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here, and I genuinely do not yet know if I can do it.</p>
+      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and you have quietly converted the strategy back into a lump-sum bet, the one Collins shows going nowhere for twenty years.</p>
+      <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here, and I don't know yet whether I can do it.</p>
     </div>
 
     <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method starts at 20% near a high and deploys more as the market falls. My numbered tiers come from Henrique Centieiro; they put exact percentages on that same idea.</p>
@@ -462,132 +577,19 @@
   </div>
 </section>
 
-<section class="band">
-  <div class="wrap narrow center">
-    <span class="orn"></span>
-    <p class="eyebrow">Optimal leverage</p>
-    <h2>The point where more leverage stops paying.</h2>
-    <p class="lede">Leverage does not simply scale a return up. Tony Cooper's 2010 paper works out the long-run compound return of a leveraged fund and finds it traces a hill. Returns climb as leverage rises, reach a peak, then fall away. Go far enough past the peak and the long-run return turns negative while the index underneath it is still going up.</p>
-    <p class="lede">The peak sits at roughly the index's return divided by the square of its volatility. The return term counts once. The volatility term counts twice, because it is squared. That one detail decides everything below.</p>
-  </div>
 
-  <div class="figure">
-    <svg viewBox="0 0 960 460" role="img" aria-labelledby="opt-title opt-desc" xmlns="http://www.w3.org/2000/svg">
-      <title id="opt-title">Long-run return against daily leverage</title>
-      <desc id="opt-desc">Two curves showing compound return rising with leverage, peaking, then falling. The S&amp;P 500 curve peaks near three times leverage. The Nasdaq-100 curve peaks near two times and is already falling by three times, where TQQQ sits.</desc>
-
-      <!-- grid -->
-      <line x1="287.4" y1="64" x2="287.4" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
-      <line x1="478.9" y1="64" x2="478.9" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
-      <line x1="670.3" y1="64" x2="670.3" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
-      <line x1="861.7" y1="64" x2="861.7" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
-      <line x1="96" y1="64" x2="96" y2="372" stroke="#3A2B31" stroke-opacity=".18"/>
-
-      <!-- break-even -->
-      <line x1="96" y1="285.4" x2="900" y2="285.4" stroke="#3A2B31" stroke-opacity=".22" stroke-dasharray="4 5"/>
-      <text x="900" y="278" text-anchor="end" font-family="Karla,sans-serif" font-size="13" fill="#8A7A7E">Break even</text>
-
-      <!-- S&P 500 -->
-      <polyline fill="none" stroke="#8D9C86" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
-        points="96.0,285.4 115.1,272.1 134.3,259.4 153.4,247.0 172.6,235.2 191.7,223.7 210.9,212.8 230.0,202.2 249.1,192.2 268.3,182.5 287.4,173.4 306.6,164.7 325.7,156.4 344.9,148.6 364.0,141.2 383.1,134.3 402.3,127.8 421.4,121.8 440.6,116.3 459.7,111.2 478.9,106.5 498.0,102.3 517.1,98.5 536.3,95.2 555.4,92.4 574.6,90.0 593.7,88.0 612.9,86.5 632.0,85.5 651.1,84.9 670.3,84.7 689.4,85.1 708.6,85.8 727.7,87.0 746.9,88.7 766.0,90.8 785.1,93.4 804.3,96.4 823.4,99.8 842.6,103.7 861.7,108.1 880.9,112.9 900.0,118.2"/>
-
-      <!-- Nasdaq-100 -->
-      <polyline fill="none" stroke="#3A2B31" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"
-        points="96.0,285.4 115.1,271.0 134.3,257.3 153.4,244.5 172.6,232.4 191.7,221.2 210.9,210.7 230.0,201.0 249.1,192.1 268.3,184.0 287.4,176.6 306.6,170.1 325.7,164.3 344.9,159.3 364.0,155.1 383.1,151.7 402.3,149.1 421.4,147.2 440.6,146.2 459.7,145.9 478.9,146.4 498.0,147.7 517.1,149.8 536.3,152.7 555.4,156.3 574.6,160.8 593.7,166.0 612.9,172.0 632.0,178.8 651.1,186.4 670.3,194.7 689.4,203.9 708.6,213.8 727.7,224.6 746.9,236.1 766.0,248.4 785.1,261.4 804.3,275.3 823.4,290.0 842.6,305.4 861.7,321.6 880.9,338.6 900.0,356.4"/>
-
-      <!-- peaks -->
-      <circle cx="456.8" cy="145.9" r="5" fill="#3A2B31"/>
-      <text x="456.8" y="130" text-anchor="middle" font-family="Karla,sans-serif" font-size="14" font-weight="600" fill="#3A2B31">Peak near 2×</text>
-      <circle cx="666.9" cy="84.7" r="5" fill="#8D9C86"/>
-      <text x="640" y="72" text-anchor="end" font-family="Karla,sans-serif" font-size="14" font-weight="600" fill="#7C8B78">Peak near 3×</text>
-
-      <!-- where TQQQ sits -->
-      <line x1="670.3" y1="150" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".85"/>
-      <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
-      <text x="688" y="186" font-family="Karla,sans-serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
-      <text x="688" y="208" font-family="Karla,sans-serif" font-size="13.5" fill="#9A7C52">past the peak, on the way down</text>
-
-      <!-- axes -->
-      <text x="287.4" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">1×</text>
-      <text x="478.9" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">2×</text>
-      <text x="670.3" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">3×</text>
-      <text x="861.7" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">4×</text>
-      <text x="498" y="426" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">DAILY LEVERAGE</text>
-      <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
-
-      <!-- legend -->
-      <line x1="96" y1="42" x2="126" y2="42" stroke="#8D9C86" stroke-width="2.6"/>
-      <text x="136" y="47" font-family="Karla,sans-serif" font-size="14" fill="#5A4850">S&amp;P 500, 1950 to 2009</text>
-      <line x1="330" y1="42" x2="360" y2="42" stroke="#3A2B31" stroke-width="2.6"/>
-      <text x="370" y="47" font-family="Karla,sans-serif" font-size="14" fill="#5A4850">Nasdaq-100, 1971 to 2009</text>
-    </svg>
-  </div>
-  <p class="figcap">The shape of Cooper's result, drawn from his return and volatility figures for the two indexes. The vertical scale is deliberately unlabelled, because the height of the hill depends on which decades you measure. The position of the peak is the part that matters.</p>
-
-  <div class="wrap narrow">
-    <div class="table-scroll">
-      <table class="methods">
-        <caption>Cooper's own figures. Return is the compound annual return of the index. Volatility is its annualised daily standard deviation. Peak leverage is where his return-versus-leverage curves top out.</caption>
-        <thead><tr><th>Index</th><th>Annual return</th><th>Volatility</th><th>Peak leverage</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="band-name">S&amp;P 500<br><span class="sub">1950 to 2009</span></td>
-            <td>7.0%</td><td>15.3%</td><td class="total">about 3×</td>
-          </tr>
-          <tr>
-            <td class="band-name">Nasdaq-100<br><span class="sub">1971 to 2009</span></td>
-            <td>7.7%</td><td>20.2%</td><td class="bad">about 2×</td>
-          </tr>
-          <tr>
-            <td class="band-name">US market<br><span class="sub">1885 to 2009</span></td>
-            <td>3.9%</td><td>16.7%</td><td class="total">about 2×</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="margin-top:34px">The Nasdaq-100 returned <em>more</em> than the S&amp;P 500 across these windows and it still has the lower ceiling, because it was about a third more volatile and volatility is the term that gets squared. The livelier index tolerates less leverage, not more. Across the ten markets Cooper tested, the optimum usually landed near 2, reached 3 in a few cases, and never reached 4.</p>
-  </div>
-
-  <div class="wrap">
-    <ul class="grid2">
-      <li>
-        <h3>Below the peak</h3>
-        <p>Each extra turn of leverage adds return along with the volatility, so you are being paid for the risk you take on. Being early on the curve also buys you room to be wrong. If the real peak turns out to sit lower than the estimate, you give up part of the gain rather than all of it.</p>
-      </li>
-      <li>
-        <h3>Above the peak</h3>
-        <p>Each extra turn still adds the full volatility and now subtracts return, so you carry more risk to earn less. The error runs the other way too. A stretch of lower returns or higher volatility pulls the peak to the left, and a position that was slightly past it becomes badly past it, with nothing to announce that it happened.</p>
-      </li>
-    </ul>
-  </div>
-
-  <div class="wrap narrow">
-    <div class="clarify" style="margin-top:44px">
-      <p class="clarify-h">What that means for what I'm running</p>
-      <p>TQQQ is 3× the Nasdaq-100, which on Cooper's numbers is past the peak for that index. I already knew a 3× fund was aggressive. What I did not know before reading him is that the Nasdaq's ceiling is <strong>lower</strong> than the S&amp;P's, so 3× on the Nasdaq is a longer reach than 3× on the S&amp;P would be.</p>
-      <p>The cash reserve helps less than I have been claiming elsewhere on this site. It reduces how much of my money is exposed. It does not change the rate at which the exposed part decays. A dollar sitting inside TQQQ compounds at the 3× point on that hill for as long as it stays there, whether or not there is cash beside it.</p>
-      <p>The reserve also fades. Deploying a fifth of the pile every month, the cash settles at roughly $3,200 and stops growing, while the position keeps building on top of it. My exposure works out near 1.5× after six months, 2.1× after a year, 2.8× after five years and 2.9× after ten. The damping is real for about the first year, then it is mostly gone.</p>
-      <p>Fees press down on the whole curve. Cooper notes that a 0.95% annual fee applied to the 1885 to 2009 data pulled a 2× fund's return back to that of a plain unleveraged one. TQQQ charges 0.86% before the cost of the borrowing inside it.</p>
-      <p>The fair counterweight: an optimum computed from one historical window is an estimate, and it leans hardest on the return figure, which is the least knowable of the two inputs. Cooper's own preferred strategy is built out of 3× funds, used as a tool rather than as a resting place. And my tiers push most of the money in at depressed prices, so what my dollars earn is not the index average. None of that repeals the arithmetic. It makes the arithmetic an argument for a lower multiple rather than a proof.</p>
-      <p>I have not changed the fund. This is the strongest case against my own choice that I have come across, and it belongs on the page beside the rules rather than in a drawer. The 2× alternative is the first item in the next section.</p>
-    </div>
-    <p class="src-note" style="margin-top:30px">Figures and formula from Tony Cooper, <a href="https://ssrn.com/abstract=1664823">Alpha Generation and Risk Smoothing using Managed Volatility</a>, Double-Digit Numerics, 2010. The curves above are my drawing of his result, not a reproduction of his charts.</p>
-  </div>
-</section>
-
-<section class="band band-blush">
+<section class="band" id="other">
   <div class="wrap narrow center">
     <span class="orn"></span>
     <p class="eyebrow">Other ways to do this</p>
     <h2>What I didn't choose, at least not yet.</h2>
-    <p class="lede">None of these is a bad idea. Several are more sensible than what I picked. They are just not what I am running right now, and I want to be honest about why rather than pretend mine is the only reasonable choice.</p>
+    <p class="lede">None of these is a bad idea. They are just not what I am running, and the reasons are below.</p>
   </div>
   <div class="wrap">
     <ul class="ruled">
       <li>
         <div class="what">A lower multiple: QLD or UPRO</div>
-        <p>QLD is the 2× version of the same Nasdaq-100. UPRO is 3× the S&amp;P 500, broader and less top-heavy than the Nasdaq. I went with the 3× because a higher multiple compounds harder through a bull run, and because the cash reserve already does the job a lower multiple would. Holding most of the pile in cash near the highs means my actual exposure is well under 3× most of the time. The leverage only arrives as the market falls, which is when I want it.</p><p>UPRO against TQQQ is a question of risk appetite rather than one being right. UPRO is the more diversified of the two, and that is a real advantage. But since both funds launched, TQQQ has consistently outperformed it, and that is what decided me.</p>
+        <p>QLD is the 2× version of the same Nasdaq-100. UPRO is 3× the S&amp;P 500, broader and less top-heavy than the Nasdaq. I went with the 3× because a higher multiple compounds harder through a bull run, and because the cash reserve already does the job a lower multiple would. Holding most of the pile in cash near the highs means my actual exposure is well under 3× most of the time. The leverage only arrives as the market falls, which is when I want it.</p><p>UPRO against TQQQ comes down to risk appetite and which index you want to own. UPRO is the more diversified of the two, and that is a real advantage. But since both funds launched, TQQQ has consistently outperformed it, and that is what decided me.</p>
       </li>
       <li>
         <div class="what">The SMA method</div>
@@ -619,7 +621,7 @@
       <li><h3>Currency and concentration</h3><p>An Australian buying a US-domiciled fund is also taking an unhedged AUD/USD bet, in an index where a handful of companies carry most of the weight.</p></li>
       <li><h3>I have never done this in a crash</h3><p>The rules are easy on a spreadsheet. Emptying the entire reserve into a market that has more than halved, in the same month my job might be at risk, is a different thing entirely. That part is untested.</p></li>
     </ul>
-    <p class="pull">If you take one thing from this page, take the <span>risk section</span> — not the tier table.</p>
+    <p class="pull">Read the <span>risk section</span> twice. The tier table can wait.</p>
   </div>
 </section>
 
