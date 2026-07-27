@@ -37,7 +37,7 @@
 (function () {
   "use strict";
 
-  var TENANT_ID = "YOUR_FASTCOMMENTS_TENANT_ID";
+  var TENANT_ID = "ndvTLjF3MQ5";
 
   var SDK  = "https://cdn.fastcomments.com/js/embed-v2.min.js";
   var SITE = "https://trantofire.au";
