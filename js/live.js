@@ -139,5 +139,80 @@
     } catch (e) { return d.toLocaleString("en-AU"); }
   }
 
-  window.TTF_LIVE = { get: get, asOfLabel: asOfLabel };
+  /* ---------------------------------------------------------------------
+     Monthly closing history for a fund, used by the benchmark comparison.
+
+     Same proxy trick as above, one route per symbol.
+
+     The plain close is preferred over the adjusted close. Yahoo's close is
+     already corrected for splits, which is what a comparison spanning years
+     needs, but it is NOT corrected for distributions. That is deliberate: it
+     is the price you would actually have paid that month, and it can be
+     checked against any price history. It also means distributions are
+     ignored for all three funds, the same way the rest of this site ignores
+     them. QQQ pays out the most of the three, so QQQ is the one that
+     understates by the most.
+     --------------------------------------------------------------------- */
+
+  var ROUTES = { TQQQ: PROXY, QQQ: "/api/price-qqq", QLD: "/api/price-qld" };
+  var seriesCache = {};
+
+  function monthKey(unixSeconds) {
+    var d = new Date(unixSeconds * 1000);
+    return d.getUTCFullYear() + "-" + ("0" + (d.getUTCMonth() + 1)).slice(-2);
+  }
+
+  function parseSeries(data) {
+    var result = data && data.chart && data.chart.result && data.chart.result[0];
+    if (!result) throw new Error("unexpected shape");
+
+    var stamps = result.timestamp || [];
+    var adj    = result.indicators && result.indicators.adjclose && result.indicators.adjclose[0];
+    var adjArr = (adj && adj.adjclose) || [];
+    var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
+    var rawArr = (quote && quote.close) || [];
+
+    var months = {}, last = null, count = 0;
+    for (var i = 0; i < stamps.length; i++) {
+      var v = rawArr[i];
+      if (typeof v !== "number" || !isFinite(v) || v <= 0) v = adjArr[i];
+      if (typeof v !== "number" || !isFinite(v) || v <= 0) continue;
+      months[monthKey(stamps[i])] = v;
+      last = v;
+      count++;
+    }
+    if (!count) throw new Error("no usable history");
+
+    var meta = result.meta || {};
+    return {
+      months: months,
+      last:   last,
+      asOf:   meta.regularMarketTime
+                ? new Date(meta.regularMarketTime * 1000).toISOString()
+                : new Date().toISOString()
+    };
+  }
+
+  /* Resolves to null on any failure. The caller must cope with that: the
+     benchmark is an extra, never a dependency. */
+  function series(symbol) {
+    var route = ROUTES[symbol];
+    if (!route) return Promise.resolve(null);
+    if (seriesCache[symbol]) return seriesCache[symbol];
+
+    seriesCache[symbol] = withTimeout(route)
+      .then(parseSeries)
+      .then(function (r) { r.symbol = symbol; return r; })
+      .catch(function (e) {
+        if (window.console) {
+          console.info("[Tran to Fire] history unavailable for " + symbol + ":", e.message);
+        }
+        seriesCache[symbol] = null;
+        return null;
+      });
+
+    return seriesCache[symbol];
+  }
+
+  window.TTF_LIVE = { get: get, series: series, asOfLabel: asOfLabel };
 })();

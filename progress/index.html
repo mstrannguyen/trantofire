@@ -172,6 +172,25 @@
   .comments .lede{max-width:50ch;margin:0 auto 38px}
   .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
   .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
+
+  /* benchmark: same money, three funds (js/benchmark.js) */
+  .bench-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 40px}
+  .bcard{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:24px 22px}
+  .bcard.lead{border-color:var(--brass);box-shadow:0 1px 0 var(--brass) inset}
+  .bsym{font-family:var(--display);font-size:22px;margin:0 0 2px}
+  .bsym span{font-family:var(--body);font-size:12px;letter-spacing:.1em;color:var(--brass);vertical-align:middle}
+  .bnote{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+  .bval{font-family:var(--display);font-size:clamp(26px,3.6vw,34px);margin:0 0 16px;line-height:1.1}
+  .bstats{margin:0;display:grid;gap:9px}
+  .bstats div{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .bstats dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .bstats dd{margin:0;font-size:15px}
+  .bret{color:#4E7A4A}
+  .bret.down{color:#A85A48}
+  table.log td.best{color:var(--brass);font-weight:500}
+  .bpx{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
+  .bval.down{color:#A85A48}
+  @media (max-width:720px){ .bench-cards{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
@@ -307,6 +326,38 @@
         <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage my broking app charges on every buy, which is taken from the cash after the rules have set the share count and is separate from anything the fund charges. They ignore FX conversion costs, tax and dividends, so the real return is still a little worse than what you see here. TQQQ's 0.86% management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
       </div>
     </section>
+
+    <section class="band hidden" id="bench" style="padding-top:20px">
+      <div class="wrap narrow center">
+        <span class="orn"></span>
+        <p class="eyebrow">The same money, three funds</p>
+        <h2>What if it had gone into QQQ or QLD instead.</h2>
+        <p class="lede">The rules decide how much cash leaves the account each month. This spends that same amount on the two funds below the one I use, at the price each was trading at that month, and prices the result at today's market. Identical money in, three different amounts of leverage. QQQ tracks the Nasdaq-100 with no leverage, QLD doubles the daily move, TQQQ triples it.</p>
+      </div>
+
+      <div class="wrap">
+        <div id="bench-cards" class="bench-cards"></div>
+
+        <div class="table-scroll">
+          <table class="log">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Deployed</th>
+                <th>QQQ 1&#215;</th>
+                <th>QLD 2&#215;</th>
+                <th>TQQQ 3&#215;</th>
+              </tr>
+            </thead>
+            <tbody id="bench-rows"></tbody>
+          </table>
+        </div>
+
+        <p class="note" id="bench-state" style="margin-top:18px"></p>
+
+        <p class="note">Each cell is the return to date on everything bought up to that month, with the price that fund was trading at that month underneath it. Money in is identical across the three columns, so the only thing being measured is the leverage. Four things worth knowing before reading too much into it. The benchmark buys fractional shares, which it has to, because at QQQ's price a month's deployment often would not buy one whole share, and the real portfolio buys whole shares only and strands the rest as cash, so this flatters the benchmarks slightly. Prices are month-end closes for all three funds including TQQQ, while the real portfolio pays whatever the market was at on the buy day, which is why the TQQQ column here will not match the headline figure above. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so QQQ is understated by the most because it pays out the most. And the tier ladder is driven by TQQQ's drawdown: a portfolio genuinely built on QQQ would have had its own high-water mark and deployed on different months, so this holds the schedule fixed to isolate the fund choice rather than to claim it is what I would have done.</p>
+      </div>
+    </section>
   </div>
 </main>
 
@@ -336,8 +387,9 @@
 <script src="../js/config.js?v=11" defer></script>
 <script src="../js/data.js?v=11" defer></script>
 <script src="../js/engine.js?v=11" defer></script>
-<script src="../js/live.js?v=11" defer></script>
+<script src="../js/live.js?v=12" defer></script>
 <script src="../js/progress.js?v=11" defer></script>
+<script src="../js/benchmark.js?v=1" defer></script>
 
 <script src="../js/comments.js?v=1" defer></script>
 </body>

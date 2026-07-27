@@ -12,6 +12,15 @@
 
 /api/price  https://query1.finance.yahoo.com/v8/finance/chart/TQQQ?interval=1mo&range=max  200
 
+# The same route for the two funds the Progress page benchmarks against:
+# QQQ is the unleveraged Nasdaq-100, QLD is the 2x version of the same index.
+# Both are read-only monthly history, used to answer "what if the same money
+# had gone here instead". Explicit per-symbol rules rather than a wildcard, so
+# this domain cannot be used as a general purpose proxy for anything else.
+
+/api/price-qqq  https://query1.finance.yahoo.com/v8/finance/chart/QQQ?interval=1mo&range=max  200
+/api/price-qld  https://query1.finance.yahoo.com/v8/finance/chart/QLD?interval=1mo&range=max  200
+
 # One canonical home: https://trantofire.au
 # The .com and both www forms redirect there, so there is only ever one live
 # version of the site and one address in search results. 301 = permanent.
