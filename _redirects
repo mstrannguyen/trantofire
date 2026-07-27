@@ -20,6 +20,8 @@
 
 /api/price-qqq  https://query1.finance.yahoo.com/v8/finance/chart/QQQ?interval=1mo&range=max  200
 /api/price-qld  https://query1.finance.yahoo.com/v8/finance/chart/QLD?interval=1mo&range=max  200
+/api/price-upro https://query1.finance.yahoo.com/v8/finance/chart/UPRO?interval=1mo&range=max 200
+/api/price-sso  https://query1.finance.yahoo.com/v8/finance/chart/SSO?interval=1mo&range=max  200
 
 # One canonical home: https://trantofire.au
 # The .com and both www forms redirect there, so there is only ever one live

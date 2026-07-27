@@ -332,9 +332,16 @@
   /* fund family */
   .funds{width:100%;border-collapse:collapse;font-size:16.5px;margin-top:8px}
   .funds caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
-  .funds th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
+  .funds th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
   .funds th:first-child,.funds td:first-child{text-align:left}
-  .funds td{text-align:right;padding:16px;border-bottom:1px solid var(--hair)}
+  .funds{font-size:15px}
+  .funds td{text-align:right;padding:15px 12px;border-bottom:1px solid var(--hair);white-space:nowrap}
+  .funds th{padding:0 12px 14px}
+  .fsub{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:3px}
+  .funds th{white-space:nowrap}
+  .funds td.pos{color:#4E7A4A}
+  .funds td.neg{color:#A85A48}
+  @media (max-width:900px){ .funds th,.funds td{padding:12px 9px} .funds{font-size:14px} .funds .band-name{font-size:18px} }
   .funds tr:last-child td{border-bottom:0}
   .funds .band-name{font-family:var(--display);font-size:22px}
   .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:36px 38px;margin-top:8px}
@@ -495,22 +502,24 @@
     <span class="orn"></span>
     <p class="eyebrow">The family of funds</p>
     <h2>What these things actually are.</h2>
-    <p class="lede">Leveraged ETFs come in a small family. They all aim for a multiple of one index's daily move, and they are cheap to hold by the standards of anything geared. Here are the four people mention most, with what they track and what they cost each year.</p>
+    <p class="lede">Leveraged ETFs come in a small family. They all aim for a multiple of one index's daily move, and they are cheap to hold by the standards of anything geared. Here are the four people mention most, with what they track, what they cost, how big they are and how they have actually done.</p>
   </div>
 
-  <div class="wrap narrow">
+  <div class="wrap">
     <div class="table-scroll">
       <table class="funds">
-        <caption>Annual expense ratio and benchmark. TQQQ is the one I use. Net expense ratios, which include a fee waiver in place through September 2026; the underlying gross fees are higher. Current to mid-2026 — check the fund pages before relying on them.</caption>
-        <thead><tr><th>Fund</th><th>Tracks</th><th>Daily target</th><th>Yearly fee</th></tr></thead>
+        <caption>Fee is the net annual expense ratio, which includes a waiver in place through September 2026, so the underlying gross fee is higher. Fund size is rounded and current to late July 2026, from stockanalysis.com. The last three columns are worked out here from Yahoo's monthly history rather than typed in, count distributions as reinvested, and are annualised except for the one year figure.</caption>
+        <thead><tr><th>Fund</th><th>Tracks</th><th>Fee</th><th>Started</th><th>Size</th><th>1 year</th><th>5 years</th><th>Since start</th></tr></thead>
         <tbody>
-          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100</td><td>3×</td><td>0.86%</td></tr>
-          <tr><td class="band-name">QLD</td><td>Nasdaq-100</td><td>2×</td><td>0.95%</td></tr>
-          <tr><td class="band-name">UPRO</td><td>S&amp;P 500</td><td>3×</td><td>0.91%</td></tr>
-          <tr><td class="band-name">SSO</td><td>S&amp;P 500</td><td>2×</td><td>0.90%</td></tr>
+          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100<span class="fsub">3× daily</span></td><td>0.86%</td><td>Feb 2010</td><td>$33b</td><td id="f-TQQQ-1y">—</td><td id="f-TQQQ-5y">—</td><td id="f-TQQQ-all">—</td></tr>
+          <tr><td class="band-name">QLD</td><td>Nasdaq-100<span class="fsub">2× daily</span></td><td>0.95%</td><td>Jun 2006</td><td>$13b</td><td id="f-QLD-1y">—</td><td id="f-QLD-5y">—</td><td id="f-QLD-all">—</td></tr>
+          <tr><td class="band-name">UPRO</td><td>S&amp;P 500<span class="fsub">3× daily</span></td><td>0.91%</td><td>Jun 2009</td><td>$4b</td><td id="f-UPRO-1y">—</td><td id="f-UPRO-5y">—</td><td id="f-UPRO-all">—</td></tr>
+          <tr><td class="band-name">SSO</td><td>S&amp;P 500<span class="fsub">2× daily</span></td><td>0.90%</td><td>Jun 2006</td><td>$8b</td><td id="f-SSO-1y">—</td><td id="f-SSO-5y">—</td><td id="f-SSO-all">—</td></tr>
         </tbody>
       </table>
     </div>
+    <p class="note" id="f-asof" style="margin-top:16px"></p>
+    <p style="margin-top:28px">All four come from the same place. ProShares, based in Bethesda, Maryland, has run leveraged and inverse funds since 2006 and now lists 168 ETFs holding about $121 billion, which makes it the thirteenth largest ETF provider in the United States. TQQQ is its biggest single fund and the largest leveraged ETF in the world. None of these funds hold the shares in the index directly. They hold swap contracts written by a dozen investment banks, which is how a fund the size of TQQQ can promise three times a daily move without owning three times the stock.</p>
     <div class="feenote" id="fees">
       <p class="feenote-h">Where that fee actually goes</p>
       <p>Nobody sends you a bill for it. An ETF takes its management fee out of its own assets, a little every day, which lowers the fund's net asset value. The market price follows that value. So the 0.86% is not charged to you on top of the price, it is charged <em>inside</em> it.</p>
@@ -627,7 +636,7 @@
 
     <p style="margin-top:34px">QQQ, the plain tracker, turned $10,000 into about $133,000. Tripling that return would have reached roughly $379,000. TQQQ actually reached about $1.44 million. That is not three times QQQ. It is close to twelve times it, and about four times what tripling the index implies. The daily reset, compounding day after day through one of the strongest runs the Nasdaq has ever had, is the whole reason. (This is a lump sum left untouched, to show the fund's own behaviour. My actual plan buys a fixed amount every month instead, which behaves quite differently. That is what the <a href="progress/index.html">Progress page</a> tracks.)</p>
     <p>It cuts both ways, and hard. Look at 2022: the index fell 33% and TQQQ fell 79%, wiping out four fifths of a balance in a single year. The same compounding that built the tall line hollows the fund out in any market that chops sideways or falls. That is the <a href="strategy/index.html">risk this whole plan is built around</a>, not a footnote to it.</p>
-    <p class="cmp-note">A single $10,000 invested once in February 2010 and left alone, dividends reinvested, to July 2026 — no further contributions. A log scale is used because the three end values span from $133k to $1.44M. Source: Yahoo Finance annual total returns, compounded. '3× QQQ' triples QQQ's growth and is shown for scale, not a real fund. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
+    <p class="cmp-note">A single $10,000 invested once in February 2010 and left alone, dividends reinvested, to July 2026, with no further contributions. A log scale is used because the three end values span from $133k to $1.44M. Source: Yahoo Finance annual total returns, compounded. '3× QQQ' triples QQQ's growth and is shown for scale, not a real fund. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
   </div>
 </section>
 
@@ -703,7 +712,8 @@
 <script src="js/config.js?v=11" defer></script>
 <script src="js/data.js?v=11" defer></script>
 <script src="js/engine.js?v=11" defer></script>
-<script src="js/live.js?v=13" defer></script>
+<script src="js/live.js?v=14" defer></script>
+<script src="js/funds.js?v=2" defer></script>
 <script src="js/signal.js?v=11" defer></script>
 
 <script src="js/compare.js?v=6" defer></script>

@@ -154,7 +154,8 @@
      understates by the most.
      --------------------------------------------------------------------- */
 
-  var ROUTES = { TQQQ: PROXY, QQQ: "/api/price-qqq", QLD: "/api/price-qld" };
+  var ROUTES = { TQQQ: PROXY, QQQ: "/api/price-qqq", QLD: "/api/price-qld",
+                 UPRO: "/api/price-upro", SSO: "/api/price-sso" };
   var seriesCache = {};
 
   function monthKey(unixSeconds) {
@@ -172,7 +173,7 @@
     var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
     var rawArr = (quote && quote.close) || [];
 
-    var months = {}, last = null, count = 0, newest = "";
+    var months = {}, total = {}, last = null, totalLast = null, count = 0, newest = "", oldest = "";
     for (var i = 0; i < stamps.length; i++) {
       var v = rawArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) v = adjArr[i];
@@ -180,16 +181,26 @@
       var key = monthKey(stamps[i]);
       months[key] = v;
       if (key > newest) newest = key;
+      if (!oldest || key < oldest) oldest = key;
       last = v;
+
+      // adjusted close as well: dividends reinvested, for total-return figures
+      var t = adjArr[i];
+      if (typeof t !== "number" || !isFinite(t) || t <= 0) t = v;
+      total[key] = t;
+      totalLast = t;
       count++;
     }
     if (!count) throw new Error("no usable history");
 
     var meta = result.meta || {};
     return {
-      months: months,
-      newest: newest,
-      last:   last,
+      months:    months,
+      total:     total,
+      newest:    newest,
+      oldest:    oldest,
+      last:      last,
+      totalLast: totalLast,
       asOf:   meta.regularMarketTime
                 ? new Date(meta.regularMarketTime * 1000).toISOString()
                 : new Date().toISOString()

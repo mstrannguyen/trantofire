@@ -513,14 +513,15 @@
     <div class="clarify" style="margin-top:34px">
       <p class="clarify-h">The discipline this actually requires</p>
       <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and you have quietly converted the strategy back into a lump-sum bet, the one Collins shows going nowhere for twenty years.</p>
+      <p>A 2026 paper out of the University of Waterloo gets to the same place from another direction. Forsyth, van Staden and Li test leveraged funds against a century of market data, rebuilt back to 1926 because the funds themselves only date from 2006 and their real record covers an unusually kind stretch of history. They find these funds reward a strategy that decides how much to hold and keeps changing it, and punish one that buys and then sits. Their other warning is about which index sits underneath: a leveraged fund on a broad market behaves nothing like one on a narrow, volatile sector, and most of the horror stories come from the second kind.</p>
       <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here, and I don't know yet whether I can do it.</p>
     </div>
 
-    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method starts at 20% near a high and deploys more as the market falls. My numbered tiers come from Henrique Centieiro; they put exact percentages on that same idea.</p>
+    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method starts at 20% near a high and deploys more as the market falls. My numbered tiers come from Henrique Centieiro; they put exact percentages on that same idea. The Waterloo paper is Forsyth, van Staden and Li, <a href="https://cs.uwaterloo.ca/~paforsyt/letf_explanation.pdf">Making Leveraged Exchange-Traded Funds Work for your Portfolio</a>, March 2026.</p>
   </div>
 </section>
 
-<section class="band">
+<section class="band band-blush">
   <div class="wrap narrow center">
     <span class="orn"></span>
     <p class="eyebrow">Three ways to run it</p>
@@ -557,25 +558,6 @@
   </div>
 </section>
 
-<section class="band band-blush">
-  <div class="wrap narrow center">
-    <span class="orn"></span>
-    <p class="eyebrow">The mechanics</p>
-    <h2>The unglamorous rules.</h2>
-  </div>
-  <div class="wrap">
-    <ul class="grid2">
-      <li><h3>All available cash, not just the contribution</h3><p>The percentage applies to the prior cumulative reserve plus the new US$800. There is no separate reserve overlay and no second calculation. One pile, one percentage.</p></li>
-      <li><h3>The price I pay is the price that decides the tier</h3><p>There is only one price in play each month: whatever TQQQ costs when I place the order. That single number sets the drawdown, the tier, the deployment percentage and the share count, and it is the number published in the log. If I ever get filled at something different from the price I based the decision on, both figures go on the record.</p></li>
-      <li><h3>Every buy costs $3</h3><p>That is what my broking app charges to place the trade, not anything the fund charges. The tier decides the share count on its own, and brokerage comes out of the cash afterwards, so the fee never shrinks the buy, it just leaves a little less in the reserve. Over twenty years that is $720 of brokerage, which the site tracks and reports rather than hiding.</p></li>
-      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. In a baseline month at $88.09, 20% of an $800 contribution is $160, which buys one share for $88.09. Brokerage of $3 comes out of the cash as well, so $68.91 rejoins the reserve.</p></li>
-      <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$800 a month, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
-      <li><h3>Two prices, one truth</h3><p>The market price sets the tier and marks the whole position. The price I'm actually filled at sets how many shares that money bought. I log both.</p></li>
-      <li><h3>One buy a month</h3><p>Same week every month. The tier is read on the day I actually place the order, not the first of the month.</p></li>
-      <li><h3>Never sell to rebalance</h3><p>There is no sell rule at all during accumulation. The tiers only ever control what goes in.</p></li>
-    </ul>
-  </div>
-</section>
 
 
 <section class="band" id="other">
@@ -622,6 +604,24 @@
       <li><h3>I have never done this in a crash</h3><p>The rules are easy on a spreadsheet. Emptying the entire reserve into a market that has more than halved, in the same month my job might be at risk, is a different thing entirely. That part is untested.</p></li>
     </ul>
     <p class="pull">Read the <span>risk section</span> twice. The tier table can wait.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The mechanics</p>
+    <h2>The unglamorous rules.</h2>
+  </div>
+  <div class="wrap">
+    <ul class="grid2">
+      <li><h3>The price I pay is the price that decides the tier</h3><p>There is only one price in play each month: whatever TQQQ costs when I place the order. That single number sets the drawdown, the tier, the deployment percentage and the share count, and it is the number published in the log. If I ever get filled at something different from the price I based the decision on, both figures go on the record.</p></li>
+      <li><h3>Every buy costs $3</h3><p>That is what my broking app charges to place the trade, not anything the fund charges. The tier decides the share count on its own, and brokerage comes out of the cash afterwards, so the fee never shrinks the buy, it just leaves a little less in the reserve. Over twenty years that is $720 of brokerage, which the site tracks and reports rather than hiding.</p></li>
+      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. In a baseline month at $88.09, 20% of an $800 contribution is $160, which buys one share for $88.09. Brokerage of $3 comes out of the cash as well, so $68.91 rejoins the reserve.</p></li>
+      <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$800 a month, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
+      <li><h3>One buy a month</h3><p>Same week every month. The tier is read on the day I actually place the order, not the first of the month.</p></li>
+      <li><h3>Never sell to rebalance</h3><p>There is no sell rule at all during accumulation. The tiers only ever control what goes in.</p></li>
+    </ul>
   </div>
 </section>
 
