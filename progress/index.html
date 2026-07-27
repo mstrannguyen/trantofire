@@ -143,7 +143,7 @@
   @media (max-width:640px){ .sheet-embed iframe{height:460px} }
   .dev{display:inline-block;margin-left:7px;color:#A85A48;font-weight:600;cursor:help}
 
-  .prior{max-width:64ch;margin:0 auto 34px;background:#fff;border:1px solid var(--hair);
+  .prior{margin:0 auto 76px;max-width:760px;max-width:64ch;margin:0 auto 34px;background:#fff;border:1px solid var(--hair);
     border-left:3px solid var(--brass);border-radius:0 16px 16px 0;padding:26px 30px;text-align:left}
   .prior-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 14px}
   .prior p{margin:0 0 14px;font-size:15.5px;line-height:1.7;color:#5A4850}
@@ -317,12 +317,6 @@
           </table>
         </div>
 
-        <div class="prior" id="prior">
-            <p class="prior-h">What this page does not include</p>
-            <p>I already owned <strong>7 shares of TQQQ</strong> before starting this, bought at an average cost of <strong>$70.40</strong>. Those shares are deliberately left out of everything on this page.</p>
-            <p>The experiment starts from zero. Folding in a position I bought under no particular rules would blur the thing I am trying to measure, and it would let a good entry price flatter the result. Every share counted here was bought by the tier rules, on a date that is published, at a price anyone can check.</p>
-            <p>So the portfolio value above is smaller than what I actually hold in TQQQ. That is the point.</p>
-          </div>
         <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage my broking app charges on every buy, which is taken from the cash after the rules have set the share count and is separate from anything the fund charges. They ignore FX conversion costs, tax and dividends, so the real return is still a little worse than what you see here. TQQQ's 0.86% management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
       </div>
     </section>
@@ -358,6 +352,13 @@
         <p class="note">Each cell is the return to date on everything bought up to that month, with the price that fund was trading at that month underneath it. Money in is identical across the three columns, so the only thing being measured is the leverage. Four things worth knowing before reading too much into it. The benchmark buys fractional shares, which it has to, because at QQQ's price a month's deployment often would not buy one whole share, and the real portfolio buys whole shares only and strands the rest as cash, so this flatters the benchmarks slightly. Prices are month-end closes for all three funds including TQQQ, while the real portfolio pays whatever the market was at on the buy day, which is why the TQQQ column here will not match the headline figure above. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so QQQ is understated by the most because it pays out the most. And the tier ladder is driven by TQQQ's drawdown: a portfolio genuinely built on QQQ would have had its own high-water mark and deployed on different months, so this holds the schedule fixed to isolate the fund choice rather than to claim it is what I would have done.</p>
       </div>
     </section>
+
+    <div class="prior" id="prior">
+            <p class="prior-h">What this page does not include</p>
+            <p>I already owned <strong>7 shares of TQQQ</strong> before starting this, bought at an average cost of <strong>$70.40</strong>. Those shares are deliberately left out of everything on this page.</p>
+            <p>The experiment starts from zero. Folding in a position I bought under no particular rules would blur the thing I am trying to measure, and it would let a good entry price flatter the result. Every share counted here was bought by the tier rules, on a date that is published, at a price anyone can check.</p>
+            <p>So the portfolio value above is smaller than what I actually hold in TQQQ. That is the point.</p>
+          </div>
   </div>
 </main>
 
@@ -387,9 +388,9 @@
 <script src="../js/config.js?v=11" defer></script>
 <script src="../js/data.js?v=11" defer></script>
 <script src="../js/engine.js?v=11" defer></script>
-<script src="../js/live.js?v=12" defer></script>
+<script src="../js/live.js?v=13" defer></script>
 <script src="../js/progress.js?v=11" defer></script>
-<script src="../js/benchmark.js?v=1" defer></script>
+<script src="../js/benchmark.js?v=2" defer></script>
 
 <script src="../js/comments.js?v=1" defer></script>
 </body>

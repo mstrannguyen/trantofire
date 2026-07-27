@@ -172,12 +172,14 @@
     var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
     var rawArr = (quote && quote.close) || [];
 
-    var months = {}, last = null, count = 0;
+    var months = {}, last = null, count = 0, newest = "";
     for (var i = 0; i < stamps.length; i++) {
       var v = rawArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) v = adjArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) continue;
-      months[monthKey(stamps[i])] = v;
+      var key = monthKey(stamps[i]);
+      months[key] = v;
+      if (key > newest) newest = key;
       last = v;
       count++;
     }
@@ -186,6 +188,7 @@
     var meta = result.meta || {};
     return {
       months: months,
+      newest: newest,
       last:   last,
       asOf:   meta.regularMarketTime
                 ? new Date(meta.regularMarketTime * 1000).toISOString()

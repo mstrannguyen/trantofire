@@ -60,10 +60,11 @@
 
   /* Walk the log once, spending the same cash in every fund. */
   function build(history, series) {
-    var state = {}, missing = {};
+    var state = {}, missing = {}, usedLive = {};
     FUNDS.forEach(function (f) {
       state[f.sym]   = { shares: 0, cost: 0, lastPrice: null };
       missing[f.sym] = 0;
+      usedLive[f.sym] = false;
     });
 
     var rows = history.map(function (h) {
@@ -72,6 +73,15 @@
       FUNDS.forEach(function (f) {
         var s  = state[f.sym];
         var px = series[f.sym] ? series[f.sym].months[h.month] : null;
+
+        // Yahoo publishes a monthly bar once the month has started. A buy
+        // logged before that bar exists has no close to price against, so the
+        // live price stands in for it and the page says so.
+        if ((typeof px !== "number" || !(px > 0)) && series[f.sym] &&
+            h.month >= series[f.sym].newest && series[f.sym].last > 0) {
+          px = series[f.sym].last;
+          usedLive[f.sym] = true;
+        }
 
         if (typeof px !== "number" || !(px > 0)) {
           missing[f.sym]++;
@@ -110,7 +120,8 @@
         value:   value,
         pl:      value === null ? null : value - s.cost,
         ret:     (value === null || !s.cost) ? null : (value - s.cost) / s.cost,
-        missing: missing[f.sym]
+        missing:  missing[f.sym],
+        usedLive: usedLive[f.sym]
       };
     });
 
@@ -172,8 +183,16 @@
     var sec = $("bench");
     if (!sec || !E || !window.TTF_LIVE || !window.TTF_LIVE.series) return hide();
 
-    var history = E.run(window.TTF_DATA || [], window.TTF_CONFIG || {});
+    var cfg = window.TTF;
+    if (!cfg || !isFinite(cfg.CONTRIBUTION) || !isFinite(cfg.HIGH_WATER_MARK)) return hide();
+
+    var history = E.run(window.TTF_DATA || [], cfg);
     if (!history.length) return hide();
+
+    // A month that produced no usable outlay means the engine could not run.
+    // Better to show nothing than a grid of dashes that looks like a result.
+    var usable = history.some(function (h) { return isFinite(h.spent) && h.spent > 0; });
+    if (!usable) return hide();
 
     Promise.all(FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }))
       .then(function (results) {
@@ -190,10 +209,12 @@
         $("bench-rows").innerHTML  = renderRows(out.rows);
 
         var stamp = window.TTF_LIVE.asOfLabel(series.TQQQ.asOf);
-        var gaps  = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
+        var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
+        var live = out.totals.some(function (t) { return t.usedLive; });
         $("bench-state").innerHTML =
-          "Monthly and live prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") +
-          (gaps ? ". Some months had no published close and are carried forward." : ".");
+          "Monthly and live prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + "." +
+          (live ? " The newest month has no published monthly close yet, so the live price stands in for it." : "") +
+          (gaps ? " Some months had no published close and are carried forward." : "");
 
         sec.classList.remove("hidden");
       })
