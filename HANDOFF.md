@@ -37,8 +37,6 @@ experiment with a defined carve-out slice, not the whole portfolio.
   accrues it inside its own price, so subtracting it would double-count
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
-- Owned **7 shares at $70.40 average before starting**; deliberately EXCLUDED
-  from every published figure so the experiment starts from zero
 
 Rules come from Henrique Centieiro's TradingView Strategy 3. B.D. Collins'
 book "$1,000 to $1,000,000" is the other main source.
