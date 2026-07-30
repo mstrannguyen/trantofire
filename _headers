@@ -25,7 +25,21 @@
 # and email commenting are unaffected.
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# TO TAKE THE SITE OFF THE PUBLIC INTERNET
+#
+# Delete the # from the Basic-Auth line below, pick your own user and
+# password, and redeploy. Every page then asks for a login, so you can still
+# open the site at trantofire.au while nobody else can. Search engines get a
+# 401 and will not index it.
+#
+# Put the # back and redeploy to open it up again. Works on the free plan.
+# The password sits in plain text in this file, so treat it as a curtain
+# rather than a lock.
+# ---------------------------------------------------------------------------
+
 /*
+#  Basic-Auth: tran:changethispassword
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

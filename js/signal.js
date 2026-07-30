@@ -15,7 +15,14 @@
   var history = E.run(window.TTF_DATA || [], cfg);
   var last    = history.length ? history[history.length - 1] : null;
   var act     = document.getElementById("sg-act");
-  var summary = document.getElementById("sg-summary");
+  var summary   = document.getElementById("sg-summary");
+  var summaryH  = document.getElementById("sg-summary-h");
+
+  /* the heading only makes sense when the row underneath it is showing */
+  function showSummary() {
+    if (summary)  summary.hidden  = false;
+    if (summaryH) summaryH.hidden = false;
+  }
   var ret     = document.getElementById("sg-return");
 
   /* ---------- layer 1: whatever is already logged ---------- */
@@ -32,7 +39,7 @@
     if (act) act.className = "sig-card act t" + last.tier.n;
 
     if (summary) {
-      summary.hidden = false;
+      showSummary();
       setText("sg-reserve", usd(last.reserve));
       setText("sg-invested", usd(last.portfolio - last.reserve));
       setText("sg-invested-sub", last.shares + " share" + (last.shares === 1 ? "" : "s") +
@@ -93,7 +100,7 @@
     if (hist.length) {
       var r = E.revalue(hist, live.price);
       if (r && summary) {
-        summary.hidden = false;
+        showSummary();
         setText("sg-reserve", usd(r.reserve));
         setText("sg-invested", usd(r.etfValue));
         setText("sg-invested-sub", r.shares + " share" + (r.shares === 1 ? "" : "s") +
