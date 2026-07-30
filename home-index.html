@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tran to Fire — Financial Independence Retire Early</title>
+<link rel="canonical" href="https://trantofire.au/">
+<link rel="icon" href="favicon.png">
+<meta name="description" content="A Sydney investor publishing twenty years of a leveraged Nasdaq-100 experiment, month by month. Fixed rules, real numbers, nothing for sale.">
+<meta property="og:title" content="Tran to Fire — Financial Independence Retire Early">
+<meta property="og:description" content="A Sydney investor publishing twenty years of a leveraged Nasdaq-100 experiment, month by month. Fixed rules, real numbers, nothing for sale.">
+<meta property="og:site_name" content="Tran to Fire">
+<meta name="twitter:title" content="Tran to Fire — Financial Independence Retire Early">
+<meta name="twitter:description" content="A Sydney investor publishing twenty years of a leveraged Nasdaq-100 experiment, month by month. Fixed rules, real numbers, nothing for sale.">
+<meta property="og:image" content="https://trantofire.au/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;
+    --blush:#EDD9D2;
+    --blush-soft:#F6EAE6;
+    --plum:#3A2B31;
+    --plum-deep:#2A1E23;
+    --brass:#B0894F;
+    --sage:#8D9C86;
+    --clay:#C08872;
+    --muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"Karla",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ivory);color:var(--plum);
+    font-family:var(--body);font-size:17px;font-weight:400;line-height:1.75;
+    font-variant-numeric:tabular-nums;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(44px,7vw,86px);font-weight:300}
+  h2{font-size:clamp(32px,4.6vw,52px);font-weight:300;margin-bottom:22px}
+  h3{font-size:26px;margin-bottom:10px}
+  p{margin:0 0 22px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+
+  .eyebrow{
+    font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--brass);margin:0 0 22px;
+  }
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  .fine{font-size:15px;line-height:1.7;color:var(--muted)}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+
+  /* ornament */
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{
+    content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;
+    margin-left:-3.5px;background:var(--brass);transform:rotate(45deg);
+  }
+
+  /* ---------- nav ---------- */
+  .nav{background:var(--ivory);border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover{opacity:1;border-bottom:1px solid var(--brass)}
+  .nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:40px 0 24px;position:relative;overflow:hidden}
+
+  /* home nav: the masthead below carries the name, so the wordmark here is redundant */
+  .nav .mark{font-size:0}
+  .nav .mark .mk{margin-right:0}
+  /* masthead */
+  .masthead{text-align:center;padding:18px 24px 44px;position:relative}
+  .masthead-mark{width:min(300px,64vw);height:auto;display:block;margin:0 auto 6px}
+  .masthead-name{font-family:var(--display);font-size:clamp(52px,11vw,104px);font-weight:300;
+    line-height:.98;letter-spacing:.01em;margin:0;color:var(--plum)}
+  .masthead-tag{font-family:var(--body);font-size:clamp(11px,2.2vw,14px);font-weight:600;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--brass);margin:18px 0 0}
+  .masthead::after{content:"";display:block;width:78px;height:1px;background:var(--brass);opacity:.55;margin:32px auto 0}
+  .hero-h{font-family:var(--display);font-size:clamp(30px,4.6vw,50px);font-weight:300;line-height:1.16;max-width:17ch;margin:0 auto}
+  @media (max-width:560px){
+    .masthead{padding:8px 20px 34px}
+    .masthead-tag{letter-spacing:.24em}
+  }
+
+  .hero::before{
+    content:"";position:absolute;top:-140px;right:-160px;width:520px;height:520px;
+    border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--blush) 0%,rgba(237,217,210,0) 70%);
+    opacity:.85;pointer-events:none;
+  }
+  .hero-in{position:relative}
+  .hero .lede{max-width:60ch;margin:30px auto 0}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:40px 0 0}
+  .btn{
+    font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    text-decoration:none;padding:17px 34px;border-radius:100px;display:inline-block;transition:.25s ease;
+  }
+  .btn-solid{background:var(--plum);color:var(--ivory)}
+  .btn-solid:hover{background:var(--brass)}
+  .btn-line{border:1px solid var(--hair);color:var(--plum)}
+  .btn-line:hover{border-color:var(--brass);color:var(--brass)}
+
+  /* ---------- figures strip ---------- */
+  .strip{background:var(--blush-soft);margin-top:80px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+  .strip-grid div{padding:38px 20px;border-left:1px solid rgba(58,43,49,.09)}
+  .strip-grid div:first-child{border-left:0}
+  .strip-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .strip-grid dd{margin:0;font-family:var(--display);font-size:30px;font-weight:400;line-height:1.15}
+  .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px;letter-spacing:.02em}
+
+
+
+  .sig-grid-2{margin-top:22px}
+  .sg-return{font-weight:600}
+  .sg-return.pos{color:#5E7350}
+  .sg-return.neg{color:#A85A48}
+
+  /* live signal band */
+  .signal-band{padding:70px 0 10px}
+  .sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .sig-card{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px;text-align:center}
+  .sig-card dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .sig-card dd{margin:0;font-family:var(--display);font-size:clamp(38px,4.6vw,52px);font-weight:300;line-height:1;letter-spacing:-.02em}
+  .sig-card .sub{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+  .sig-card.act{background:var(--plum);border-color:var(--plum);color:#EFE5E7}
+  .sig-card.act dt{color:var(--brass)}
+  .sig-card.act dd{color:#fff}
+  .sig-card.act .sub{color:#C7B5BA}
+  .sig-card.act.t1{background:var(--blush);border-color:rgba(58,43,49,.12)}
+  .sig-card.act.t1 dt{color:#8A6A2E}
+  .sig-card.act.t1 dd{color:var(--plum)}
+  .sig-card.act.t1 .sub{color:#6B5A5F}
+  .sig-card.act.t2{background:var(--clay);border-color:rgba(58,43,49,.12)}
+  .sig-card.act.t2 dt{color:#7A5A22}
+  .sig-card.act.t2 dd{color:var(--plum)}
+  .sig-card.act.t2 .sub{color:#5F4E53}
+  .live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5E7A55;margin-right:7px;vertical-align:middle}
+  .sig-foot{text-align:center;font-size:13.5px;color:var(--muted);margin:26px 0 0}
+  .sig-foot a{color:var(--brass)}
+  @media (max-width:860px){
+    .signal-band{padding:52px 0 0}
+    .sig-grid{grid-template-columns:1fr;gap:16px}
+    .sig-card{padding:28px 24px}
+  }
+
+  /* ---------- sections ---------- */
+  .band{padding:104px 0}
+  .band-blush{background:var(--blush-soft)}
+
+  /* the 1 July 2027 split — soft card pair */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px}
+  .card{border-radius:18px;padding:44px 40px}
+  .card .when{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin:0 0 18px}
+  .card h3{font-size:29px;margin-bottom:14px}
+  .card p{margin:0;font-size:16px;line-height:1.7}
+  .card-old{background:#fff;border:1px solid var(--hair)}
+  .card-old .when{color:var(--muted)}
+  .card-old p{color:#54424A}
+  .card-new{background:var(--plum);color:#F0E7E4}
+  .card-new .when{color:var(--brass)}
+  .card-new h3{color:#fff}
+  .card-new p{color:#CFC0C4}
+  .split-pin{
+    text-align:center;font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--brass);margin:30px 0 0;
+  }
+
+  /* consequences */
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:56px}
+  .grid2 li{list-style:none;padding:32px 0;border-top:1px solid var(--hair)}
+  .grid2 h3{font-size:23px;margin-bottom:8px}
+  .grid2 p{margin:0;font-size:16px;line-height:1.7;color:#5A4850}
+
+  /* benchmarks */
+  .bench{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
+  .bench th{
+    text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass);
+  }
+  .bench td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+  .bench tr:last-child td{border-bottom:0}
+  .bench .tick{font-family:var(--display);font-size:25px;white-space:nowrap}
+  .bench .why{color:#5A4850;line-height:1.65}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  /* risk — kept heavy on purpose */
+  .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
+  .risk h2{color:#fff}
+  .risk .eyebrow{color:var(--brass)}
+  .risk .lede{color:#C3B2B7}
+  .risk .orn{background:var(--brass)}
+  .risk-list{list-style:none;padding:0;margin:52px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+  .risk-list li{padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .risk-list h3{color:#fff;font-size:23px;margin-bottom:8px}
+  .risk-list p{margin:0;font-size:16px;line-height:1.7;color:#B3A2A8}
+
+  /* doors */
+  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+  .door{
+    background:#fff;border:1px solid var(--hair);border-radius:18px;padding:40px 34px;
+    text-decoration:none;color:var(--plum);display:block;transition:.28s ease;
+  }
+  .door:hover{border-color:var(--brass);transform:translateY(-4px)}
+  .door .k{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:16px}
+  .door h3{font-size:27px;margin-bottom:12px}
+  .door p{margin:0;font-size:15.5px;line-height:1.65;color:#5A4850}
+
+  /* signup */
+  .signup{background:var(--blush);padding:96px 0}
+  .signup h2{max-width:20ch;margin-left:auto;margin-right:auto}
+  .signup .lede{max-width:52ch;margin:0 auto;color:#5A4850}
+  .form{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:38px auto 0;max-width:540px}
+  .form input{
+    flex:1 1 260px;font-family:var(--body);font-size:15px;padding:17px 22px;
+    border:1px solid rgba(58,43,49,.2);background:rgba(255,255,255,.72);color:var(--plum);border-radius:100px;
+  }
+  .form input::placeholder{color:#A2908F}
+  .form button{
+    font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    padding:17px 34px;border:0;border-radius:100px;background:var(--plum);color:var(--ivory);cursor:pointer;transition:.25s;
+  }
+  .form button:hover{background:var(--brass)}
+  .signup small{display:block;font-size:12.5px;color:#7A6469;margin-top:20px;letter-spacing:.02em}
+
+  /* footer */
+  .foot{padding:64px 0 80px;background:var(--ivory);border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+  .foot-links{margin-top:26px}
+  .foot-links a{color:var(--brass);text-decoration:none;border-bottom:1px solid rgba(176,137,79,.4);padding-bottom:2px}
+
+  @media (max-width:900px){
+    .strip-grid{grid-template-columns:repeat(2,1fr)}
+    .strip-grid div:nth-child(3){border-left:0}
+    .strip-grid div:nth-child(3),.strip-grid div:nth-child(4){border-top:1px solid rgba(58,43,49,.09)}
+    .split{grid-template-columns:1fr;gap:18px}
+    .grid2,.risk-list{grid-template-columns:1fr;gap:0}
+    .doors{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:22px 0 12px}
+    .band,.risk,.signup{padding:70px 0}
+    .card{padding:34px 28px}
+    .nav-links{gap:18px;font-size:10.5px}
+    .strip-grid div{padding:28px 14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;scroll-behavior:auto}
+    .door:hover{transform:none}
+  }
+
+  /* ---------- how it works: pairing + drawdown ladder ---------- */
+  .ladder{margin:54px 0 0;border-top:1px solid var(--hair)}
+  .rung{display:grid;grid-template-columns:158px 1fr auto;align-items:baseline;gap:30px;padding:27px 2px;border-bottom:1px solid var(--hair)}
+  .rung-mark{font-family:var(--display);font-size:clamp(23px,3.1vw,31px);font-weight:300;color:var(--plum);line-height:1.05;white-space:nowrap}
+  .rung-cond{font-size:15.5px;line-height:1.55;color:#5A4850}
+  .rung-deploy{font-family:var(--display);font-size:clamp(30px,4vw,42px);font-weight:300;color:var(--brass);white-space:nowrap;line-height:1;text-align:right}
+  .rung-deploy small{display:block;font-family:var(--body);font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .ladder-note{margin:24px 0 0}
+
+  /* ---------- the engine: growth-of-$10k comparison ---------- */
+  .growth{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:42px 42px 34px;margin-top:52px}
+  .growth-h{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--plum);margin:0 0 5px}
+  .growth-sub{font-size:13.5px;color:var(--muted);margin:0 0 32px}
+  .gr-row{display:grid;grid-template-columns:184px 1fr;gap:16px;align-items:center;margin:0 0 24px}
+  .gr-row:last-of-type{margin-bottom:4px}
+  .gr-name{font-size:15px;font-weight:600;color:var(--plum);line-height:1.25}
+  .gr-name span{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:4px}
+  .gr-track{position:relative;display:flex;align-items:center;min-height:38px}
+  .gr-bar{height:38px;border-radius:4px;min-width:3px;display:flex;align-items:center}
+  .gr-qqq{width:6.5%;background:var(--sage)}
+  .gr-exp{width:19.4%;background:transparent;border:1.5px dashed var(--clay)}
+  .gr-tqqq{width:100%;background:linear-gradient(90deg,var(--brass) 0%,var(--plum) 92%)}
+  .gr-val{font-size:13.5px;font-weight:600;color:var(--plum);white-space:nowrap;padding-left:12px}
+  .gr-val span{font-weight:400;color:var(--muted)}
+  .gr-in{color:#fff;padding-left:15px}
+  .gr-in span{color:rgba(255,255,255,.74)}
+  .gr-annot{display:flex;flex-wrap:wrap;gap:10px 22px;margin:26px 0 0;padding-top:20px;border-top:1px solid var(--hair)}
+  .gr-chip{font-size:13.5px;color:#5A4850;line-height:1.5}
+  .gr-chip b{color:var(--brass);font-weight:700}
+  .engine-close{margin-top:36px}
+  .engine-src{margin:20px 0 0}
+
+  @media (max-width:860px){
+    .rung{grid-template-columns:104px 1fr;row-gap:5px;column-gap:22px}
+    .rung-mark{grid-row:1 / span 2;align-self:center}
+    .rung-cond{grid-column:2}
+    .rung-deploy{grid-column:2;text-align:left}
+    .rung-deploy small{margin-top:4px}
+    .gr-row{grid-template-columns:1fr;gap:10px}
+    .growth{padding:32px 24px 28px}
+  }
+
+  /* engine: TQQQ vs QQQ */
+  .cmp-chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:30px 26px 20px}
+  .cmp-chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .cmp-legend{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:22px;font-size:13.5px;color:#5A4850}
+  .cmp-legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
+  .annual{width:100%;border-collapse:collapse;font-size:15.5px;margin-top:38px}
+  .annual caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .annual th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
+  .annual th:first-child,.annual td:first-child{text-align:left}
+  .annual td{text-align:right;padding:13px 16px 13px 0;border-bottom:1px solid var(--hair)}
+  .annual .q{color:#5E7350}
+  .annual .t{color:#8A6A2E;font-weight:600}
+  .annual .qbal{color:#5E7350}
+  .annual .neg{color:#A85A48}
+  .annual tr.crash td{background:rgba(168,90,72,.06)}
+  .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
+  .annual tfoot .q,.annual tfoot .t{font-weight:400}
+  .cmp-note{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:18px;margin-top:8px}
+
+
+  /* fund family */
+  .funds{width:100%;border-collapse:collapse;font-size:16.5px;margin-top:8px}
+  .funds caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .funds th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
+  .funds th:first-child,.funds td:first-child{text-align:left}
+  .funds{font-size:15px}
+  .funds td{text-align:right;padding:15px 12px;border-bottom:1px solid var(--hair);white-space:nowrap}
+  .funds th{padding:0 12px 14px}
+  .fsub{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:3px}
+  .hsub{display:block;font-size:9.5px;font-weight:400;letter-spacing:.08em;text-transform:none;color:var(--muted);opacity:.85;margin-top:5px}
+  .funds th{white-space:nowrap}
+  .funds td.pos{color:#4E7A4A}
+  .funds td.neg{color:#A85A48}
+  @media (max-width:900px){ .funds th,.funds td{padding:12px 9px} .funds{font-size:14px} .funds .band-name{font-size:18px} }
+  .funds tr:last-child td{border-bottom:0}
+  .funds .band-name{font-family:var(--display);font-size:22px}
+  .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:36px 38px;margin-top:8px}
+  .clarify-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
+  .clarify p:last-child{margin-bottom:0}
+  .clarify strong{color:var(--plum)}
+  @media (max-width:560px){ .clarify{padding:28px 24px} }
+
+  .feenote{background:var(--blush-soft);border-left:3px solid var(--brass);border-radius:0 14px 14px 0;padding:28px 32px;margin-top:34px}
+  .feenote-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 16px}
+  .feenote p{margin:0 0 15px;font-size:16px;line-height:1.7}
+  .feenote p:last-child{margin-bottom:0}
+  @media (max-width:560px){ .feenote{padding:22px 20px} }
+
+  /* comments (FastComments, see js/comments.js) */
+  .comments{padding:64px 0 80px;border-top:1px solid var(--hair);background:var(--ivory)}
+  .comments h2{font-size:clamp(24px,3.4vw,34px);font-weight:300;margin:0 0 16px}
+  .comments .lede{max-width:50ch;margin:0 auto 38px}
+  .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
+  .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="index.html"><img class="mk" src="mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="strategy/index.html">The Strategy</a>
+      <a href="progress/index.html">Progress</a>
+      <a href="updates/index.html">Journal</a>
+      <a href="about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="masthead">
+    <img class="masthead-mark" src="mark.png" alt="" width="360" height="268">
+    <h1 class="masthead-name">Tran to Fire</h1>
+    <p class="masthead-tag">Financial Independence Retire Early</p>
+  </div>
+
+  <div class="wrap hero-in center">
+    <p class="eyebrow">Sydney · A monthly journal</p>
+    <h2 class="hero-h">Twenty years of investing, <em>written down as it happens</em>.</h2>
+    <p class="lede">I'm Tran. Every month I put US$800 into a leveraged Nasdaq-100 fund, following rules I wrote down before I started. Then I publish what happened. I'm not counting down to a retirement date and I have nothing to sell you. This is one experiment with part of my portfolio, not all of my money. Every number from it goes up here until I know whether it was a good idea.</p>
+    <div class="cta-row">
+      <a class="btn btn-solid" href="strategy/index.html">Read the strategy</a>
+      <a class="btn btn-line" href="progress/index.html">See the numbers</a>
+    </div>
+  </div>
+</header>
+
+<section class="signal-band">
+  <div class="wrap">
+    <p class="eyebrow center" style="margin-bottom:26px">The signal right now</p>
+    <div class="sig-grid">
+
+      <div class="sig-card">
+        <dt>High-water mark</dt>
+        <dd id="sg-ath">$88.09</dd>
+        <p class="sub" id="sg-ath-sub">TQQQ record high, 3 June 2026. Every tier is measured from this one number.</p>
+      </div>
+
+      <div class="sig-card">
+        <dt>TQQQ now</dt>
+        <dd id="sg-price">—</dd>
+        <p class="sub" id="sg-price-sub">First reading lands with the August buy.</p>
+      </div>
+
+      <div class="sig-card act" id="sg-act">
+        <dt>What the rules say</dt>
+        <dd id="sg-deploy">—</dd>
+        <p class="sub" id="sg-deploy-sub">Deploy this share of all available cash.</p>
+      </div>
+
+    </div>
+    <p class="eyebrow center" id="sg-summary-h" hidden style="margin:52px 0 26px">Portfolio overview</p>
+    <div class="sig-grid sig-grid-2" id="sg-summary" hidden>
+      <div class="sig-card">
+        <dt>Cash reserve</dt>
+        <dd id="sg-reserve">—</dd>
+        <p class="sub">Waiting to be deployed on the next dip, earning 4% a year in the meantime.</p>
+      </div>
+      <div class="sig-card">
+        <dt>Invested in TQQQ</dt>
+        <dd id="sg-invested">—</dd>
+        <p class="sub" id="sg-invested-sub">Total spent on shares so far.</p>
+      </div>
+      <div class="sig-card">
+        <dt>Portfolio value</dt>
+        <dd id="sg-portfolio">—</dd>
+        <p class="sub">Shares plus reserve. <span id="sg-return" class="sg-return">—</span></p>
+      </div>
+    </div>
+    <p class="sig-foot"><span id="sg-live"></span> Worked out from the rules, not typed in by hand. Portfolio value is the TQQQ position plus the cash reserve, with the reserve earning 4% a year while it waits. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap">
+    <dl class="strip-grid">
+      <div><dt>Holding</dt><dd>TQQQ<small>3× Nasdaq-100</small></dd></div>
+      <div><dt>Each month</dt><dd>US$800<small>Converted from AUD</small></dd></div>
+      <div><dt>First buy</dt><dd>Aug 2026<small>Running now</small></dd></div>
+      <div><dt>Horizon</dt><dd>20 years<small>Aug 2026 – 2046</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Why now</p>
+    <h2>Australia has changed the rules on long-term gains.</h2>
+    <p class="lede">The Treasury Laws Amendment (Tax Reform No. 1) Under reforms announced in the 2026–27 Federal Budget and now before Parliament, the 50% CGT discount is set to be replaced from 1 July 2027 with cost base indexation to CPI plus a minimum 30% tax rate on real gains, for individuals, trusts and partnerships, and applying to shares and units in trusts, not only property. The measure is not yet law, and details may change before it passes.</p>
+  </div>
+  <div class="wrap">
+    <div class="split">
+      <div class="card card-old">
+        <p class="when">Gains accruing to 30 June 2027</p>
+        <h3>The 50% discount</h3>
+        <p>Hold longer than twelve months, halve the nominal gain, pay your marginal rate on what remains. The rule Australians have planned around since 1999.</p>
+      </div>
+      <div class="card card-new">
+        <p class="when">Gains accruing from 1 July 2027</p>
+        <h3>Indexation &amp; a 30% floor</h3>
+        <p>Index the cost base to inflation, then pay your marginal rate on the real gain, with a minimum of 30%. Inflation is shielded. Everything above it is not.</p>
+      </div>
+    </div>
+    <p class="split-pin">◆ &nbsp;The change is prospective, so most portfolios will straddle the line</p>
+
+    <ul class="grid2 narrow" style="max-width:none">
+      <li>
+        <h3>Indexation punishes high real returns</h3>
+        <p>Only the inflation portion of a gain is shielded. The better your real return, the smaller the share of it that's protected, so the assets most exposed to this reform are precisely the high-growth ones.</p>
+      </li>
+      <li>
+        <h3>A 30% floor, whatever you earn</h3>
+        <p>Low-income years no longer produce low-tax realisations. Selling down slowly at a low marginal rate in early retirement is a much weaker lever than it was.</p>
+      </li>
+      <li>
+        <h3>Never selling is worth more</h3>
+        <p>With no discount waiting at the end, the timing of realisation is one of the few levers left, which happens to suit an accumulation strategy with no sell rule.</p>
+      </li>
+      <li>
+        <h3>Super looks better, and that's the problem</h3>
+        <p>Concessional rates inside super are relatively more attractive now. But super is locked until preservation age, which is the opposite of retiring early. That tension just got sharper.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The family of funds</p>
+    <h2>What these things actually are.</h2>
+    <p class="lede">Leveraged ETFs come in a small family. They all aim for a multiple of one index's daily move, and they are cheap to hold by the standards of anything geared. Here are the four people mention most, with what they track, what they cost, how big they are and how they have actually done.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="table-scroll">
+      <table class="funds">
+        <caption>Fee is the net annual expense ratio, which includes a waiver in place through September 2026, so the underlying gross fee is higher. Fund size is rounded and current to late July 2026, from stockanalysis.com. The three return columns are worked out here from Yahoo's monthly history rather than typed in, and they count distributions as reinvested. One year is the total return across that year. Five years and since start are annualised, so each is the yearly rate that compounds out to the total for the period, not the total itself. Because the periods land on month ends rather than exact anniversaries, these sit a little away from the figures ProShares publishes.</caption>
+        <thead><tr><th>Fund</th><th>Tracks</th><th>Fee</th><th>Started</th><th>Size</th><th>1 year<span class="hsub">total</span></th><th>5 years<span class="hsub">a year</span></th><th>Since start<span class="hsub">a year</span></th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">TQQQ</td><td>Nasdaq-100<span class="fsub">3× daily</span></td><td>0.86%</td><td>Feb 2010</td><td>$33b</td><td id="f-TQQQ-1y">—</td><td id="f-TQQQ-5y">—</td><td id="f-TQQQ-all">—</td></tr>
+          <tr><td class="band-name">QLD</td><td>Nasdaq-100<span class="fsub">2× daily</span></td><td>0.95%</td><td>Jun 2006</td><td>$13b</td><td id="f-QLD-1y">—</td><td id="f-QLD-5y">—</td><td id="f-QLD-all">—</td></tr>
+          <tr><td class="band-name">UPRO</td><td>S&amp;P 500<span class="fsub">3× daily</span></td><td>0.91%</td><td>Jun 2009</td><td>$4b</td><td id="f-UPRO-1y">—</td><td id="f-UPRO-5y">—</td><td id="f-UPRO-all">—</td></tr>
+          <tr><td class="band-name">SSO</td><td>S&amp;P 500<span class="fsub">2× daily</span></td><td>0.90%</td><td>Jun 2006</td><td>$8b</td><td id="f-SSO-1y">—</td><td id="f-SSO-5y">—</td><td id="f-SSO-all">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" id="f-asof" style="margin-top:16px"></p>
+    <p style="margin-top:28px">All four come from the same place. ProShares, based in Bethesda, Maryland, has run leveraged and inverse funds since 2006 and now lists 168 ETFs holding about $121 billion, which makes it the thirteenth largest ETF provider in the United States. TQQQ is its biggest single fund and the largest leveraged ETF in the world. None of these funds hold the shares in the index directly. They hold swap contracts written by a dozen investment banks, which is how a fund the size of TQQQ can promise three times a daily move without owning three times the stock.</p>
+    <div class="feenote" id="fees">
+      <p class="feenote-h">Where that fee actually goes</p>
+      <p>Nobody sends you a bill for it. An ETF takes its management fee out of its own assets, a little every day, which lowers the fund's net asset value. The market price follows that value. So the 0.86% is not charged to you on top of the price, it is charged <em>inside</em> it.</p>
+      <p>Put plainly: when TQQQ shows $66.00, that $66.00 is already after the fee. If the fund had charged nothing, the price would have been slightly higher.</p>
+      <p>That is why this site never subtracts the management fee from the portfolio value. Doing so would count it twice, and the number on the Progress page would stop matching a broker statement. Instead the site estimates what the fee has cost and reports it as a separate line, so the drag is visible rather than buried. Brokerage is the opposite case, and a different thing entirely. The $3 is what my broking app charges to place the trade. It has nothing to do with ProShares or the fund. It leaves my own cash account on every buy, so it is deducted for real.</p>
+    </div>
+
+    <p style="margin-top:32px">The pattern is simple. Two issuers of the same idea: pick an index, pick a multiple. Nasdaq-100 or S&amp;P 500, doubled or tripled. I chose TQQQ, the most aggressive of the four, and the tier rules are my attempt to make that aggression survivable rather than reckless. QLD, the 2× version of the same index, is the obvious gentler alternative, and I say on <a href="strategy/index.html">the strategy page</a> that it is probably the more sensible choice for most people.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="clarify">
+      <p class="clarify-h">One thing worth clearing up</p>
+      <p><strong>Holding TQQQ is not the same as borrowing money to invest.</strong> When you buy on margin, you owe a debt, you pay interest on it, and if the market falls far enough your broker can force a sale to recover the loan. That is a margin call, and it is how leveraged individuals get wiped out at the worst possible moment.</p>
+      <p>A leveraged ETF works differently. The leverage lives inside the fund, built with swaps and futures, and the fund manages it. You buy a share like any other share. The most you can ever lose is what you put in. There is no loan in your name, no interest bill arriving each month, and <strong>no margin call can come for you.</strong> If TQQQ falls 90%, your holding falls 90% and that is the end of it. Painful, but bounded.</p>
+      <p>That is the one genuine mercy of these funds, and it is why a strategy like mine is even thinkable. I can hold through an 80% drawdown without anyone forcing me out. A margin trader attempting the same thing would very likely be sold out near the bottom, which is the exact opposite of what the rules here tell me to do.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">How it works</p>
+    <h2>Dollar-cost averaging, with a plan for the dips.</h2>
+    <p class="lede">Two ideas doing one job. The first is deliberately dull. The second is what turns a falling market from something to dread into a schedule of larger purchases.</p>
+  </div>
+  <div class="wrap">
+    <div class="split">
+      <div class="card card-old">
+        <p class="when">Every month, no exceptions</p>
+        <h3>Dollar-cost averaging</h3>
+        <p>A fixed US$800 goes in every month, whatever the price is doing. It takes the decision I'm worst at, picking the right moment, off the table completely. Part of it buys shares now. The rest waits as cash.</p>
+      </div>
+      <div class="card card-new">
+        <p class="when">Only as the market falls</p>
+        <h3>Buying the dips</h3>
+        <p>How much of that cash I deploy is set by one number: how far TQQQ sits below its high. Near the top I spend a little and let the reserve grow. The deeper the fall, the more I commit.</p>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-mark">Near the high</div>
+        <div class="rung-cond">Within 20% of the record. The market is calm, or still climbing.</div>
+        <div class="rung-deploy">20%<small>of all cash on hand</small></div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−20%</div>
+        <div class="rung-cond">The first real pullback.</div>
+        <div class="rung-deploy">33%</div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−40%</div>
+        <div class="rung-cond">A proper correction, the kind that makes headlines.</div>
+        <div class="rung-deploy">67%</div>
+      </div>
+      <div class="rung">
+        <div class="rung-mark">−60% or worse</div>
+        <div class="rung-cond">A full crash, with everyone else selling.</div>
+        <div class="rung-deploy">100%</div>
+      </div>
+    </div>
+    <p class="fine center ladder-note">Each figure is a share of all the cash on hand: this month's US$800 plus everything already waiting in reserve. Whole shares only, and the remainder rolls into next month. Brokerage of $3 a buy, charged by my broking app rather than the fund, comes out of the cash separately. Drawdown is measured from TQQQ's record high of $88.09, set 3 June 2026. The price on the other side of that sum is whatever I pay on the day I buy.</p>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">What I'm trying</p>
+    <h2>A question I couldn't answer, so I'm answering it slowly.</h2>
+    <p class="lede">The standard Australian answer is a low-cost index fund held forever. It's a good answer and I'm not arguing with it. But I wanted to know what happens if you hold most of your money in cash while the market is near its high, then convert it into a 3× Nasdaq-100 fund as the market falls. 20% of the pile near the high. A third at −20%. Two thirds at −40%. All of it at −60%. Nobody in Australia seems to have written that down over a full cycle, so I'm doing it.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The engine</p>
+    <h2>Three times the day, not three times the decade.</h2>
+    <p class="lede">TQQQ aims for triple the Nasdaq-100's move on a single day, then resets and does it again tomorrow. Because those daily results compound on one another, a long climb carries the fund far past a plain 3× the index. Here is what $10,000 became in each, from TQQQ's first day to now. All three lines start from the same point on the left.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="cmp-chart" id="cmp-chart"></div>
+    <div class="cmp-legend">
+      <span><i style="background:var(--sage)"></i>QQQ · the plain index</span>
+      <span><i style="background:#7BA0C4"></i>3× QQQ · what "triple" sounds like</span>
+      <span><i style="background:var(--brass)"></i>TQQQ · what it actually did</span>
+    </div>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="annual">
+        <caption>Annual total return, dividends reinvested. The last column follows a single $10,000 invested once at the start of 2011 and never touched again, with no monthly buying and nothing added. Source: Yahoo Finance. QQQ column derived from Nasdaq-100 total return; "3× QQQ" is QQQ tripled, shown for scale, not a real fund.</caption>
+        <thead><tr><th>Year</th><th>QQQ</th><th>TQQQ</th><th>$10k in QQQ</th><th>$10k in TQQQ</th></tr></thead>
+        <tbody>
+          <tr><td>2011</td><td class="q">+3%</td><td class="t neg">−8%</td><td class="qbal">$10,340</td><td>$9,195</td></tr>
+          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td class="qbal">$16,681</td><td>$33,570</td></tr>
+          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td class="qbal">$30,944</td><td>$150,147</td></tr>
+          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td class="qbal">$63,851</td><td>$591,370</td></tr>
+          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td class="qbal">$81,347</td><td>$1,082,089</td></tr>
+          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td class="qbal">$54,828</td><td>$226,373</td></tr>
+          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td class="qbal">$84,928</td><td>$675,180</td></tr>
+          <tr><td>2025</td><td class="q">+26%</td><td class="t">+34%</td><td class="qbal">$133,977</td><td>$1,435,525</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>2011–25</td><td class="q">+1,229%</td><td class="t">+14,255%</td><td class="qbal">$134k</td><td>$1.44M</td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">QQQ, the plain tracker, turned $10,000 into about $133,000. Tripling that return would have reached roughly $379,000. TQQQ actually reached about $1.44 million. That is not three times QQQ. It is close to twelve times it, and about four times what tripling the index implies. The daily reset, compounding day after day through one of the strongest runs the Nasdaq has ever had, is the whole reason. (This is a lump sum left untouched, to show the fund's own behaviour. My actual plan buys a fixed amount every month instead, which behaves quite differently. That is what the <a href="progress/index.html">Progress page</a> tracks.)</p>
+    <p>It cuts both ways, and hard. Look at 2022: the index fell 33% and TQQQ fell 79%, wiping out four fifths of a balance in a single year. The same compounding that built the tall line hollows the fund out in any market that chops sideways or falls. That is the <a href="strategy/index.html">risk this whole plan is built around</a>, not a footnote to it.</p>
+    <p class="cmp-note">A single $10,000 invested once in February 2010 and left alone, dividends reinvested, to July 2026, with no further contributions. A log scale is used because the three end values span from $133k to $1.44M. Source: Yahoo Finance annual total returns, compounded. '3× QQQ' triples QQQ's growth and is shown for scale, not a real fund. TQQQ launched in February 2010, so this is close to its entire history. A log scale is used because the three lines span three orders of magnitude. Selected years shown in the table; the compounded total covers all of them. Source: Yahoo Finance. Figures ignore brokerage, currency conversion and tax.</p>
+  </div>
+</section>
+
+
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Where to start</p>
+    <h2>Three pages, and nothing to buy.</h2>
+  </div>
+  <div class="wrap">
+    <div class="doors">
+      <a class="door" href="strategy/index.html">
+        <div class="k">The rules</div>
+        <h3>The Strategy</h3>
+        <p>The full tier ladder, a worked example at US$800, what I ruled out, and every way this can fail.</p>
+      </a>
+      <a class="door" href="progress/index.html">
+        <div class="k">The receipts</div>
+        <h3>Progress</h3>
+        <p>Every month since August 2026: price, drawdown from the high, shares bought, cash reserve and running return.</p>
+      </a>
+      <a class="door" href="updates/index.html">
+        <div class="k">The commentary</div>
+        <h3>Journal</h3>
+        <p>What I actually did and how it felt. Short in the quiet months, longer in the ugly ones.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Email signup, parked for now. To bring it back, delete this comment
+     line and the closing marker below it. The .signup and .form styles are
+     still in the stylesheet, so it will render as it did before.
+
+<section class="signup">
+  <div class="wrap center">
+    <span class="orn"></span>
+    <p class="eyebrow">Once a month, nothing else</p>
+    <h2>One email with the numbers in it.</h2>
+    <p class="lede">Sent the first week of every month: the update, the table, and any change to the rules. No course, no coaching, no affiliate links. I'm not selling anything.</p>
+    <div class="form">
+      <label for="email" style="position:absolute;left:-9999px">Email address</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+      <button type="button">Join</button>
+    </div>
+    <small>Unsubscribe any time. Connect this to your email provider before launch.</small>
+  </div>
+</section>
+
+-->
+
+<section class="comments">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Comments</p>
+    <h2>What do you make of it?</h2>
+    <p class="lede">If you hold leveraged ETFs I'd like to know how it has gone for you. If you run something else, tell me about that instead. Corrections welcome too.</p>
+  </div>
+  <div class="wrap">
+    <div class="fc-slot" data-comments="home"
+         data-comments-title="Home (Tran to Fire)"
+         data-comments-url="https://trantofire.au/"></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio.</p>
+    <p>The information here is general in nature and does not take into account your objectives, financial situation or needs. Before acting on anything you read, consider whether it is appropriate for you, read the relevant Product Disclosure Statement, and seek advice from a licensed financial adviser and a registered tax agent, particularly regarding the 2027 capital gains transitional rules.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Figures on this site are in US dollars, because TQQQ is US-listed and I contribute a fixed US$800 each month. They include $3 brokerage on every buy. TQQQ’s 0.86% management fee is charged inside the fund and is therefore already in its price, so it is reported separately rather than subtracted twice. The AUD cost of that varies with the exchange rate, and that movement is part of my return whether I like it or not. Tax settings described here reflect Australian law as at 24 July 2026.</p>
+    <p class="foot-links"><a href="privacy/index.html">Privacy</a></p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+
+<script src="js/config.js?v=11" defer></script>
+<script src="js/data.js?v=11" defer></script>
+<script src="js/engine.js?v=11" defer></script>
+<script src="js/live.js?v=14" defer></script>
+<script src="js/funds.js?v=2" defer></script>
+<script src="js/signal.js?v=12" defer></script>
+
+<script src="js/compare.js?v=6" defer></script>
+<script src="js/comments.js?v=4" defer></script>
+</body>
+</html>
