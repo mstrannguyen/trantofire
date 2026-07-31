@@ -18,6 +18,9 @@
    ---------------------------------------------------------------------------
    WHEN REALITY DIFFERS FROM THE RULES, say so. That is the point of the site.
 
+       date:    "2026-08-03", the day the order went in. Optional, and worth
+                adding: it lets the benchmark price QQQ and QLD on the same
+                day. Without it the day is inferred from the price.
        fill:    the price you were actually filled at, if not the price above
        shares:  how many you ACTUALLY bought, if it wasn't what the rules said.
                 The site flags that month and shows both numbers.

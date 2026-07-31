@@ -228,5 +228,64 @@
     return seriesCache[symbol];
   }
 
-  window.TTF_LIVE = { get: get, series: series, asOfLabel: asOfLabel };
+  /* ---------------------------------------------------------------------
+     Daily closes, for pricing a buy on the day it happened.
+
+     A monthly bar only exists once the month has ended, so a fresh buy has
+     nothing to price against. Daily closes are there the next morning.
+     --------------------------------------------------------------------- */
+
+  var DAILY = { TQQQ: "/api/daily-tqqq", QQQ: "/api/daily-qqq", QLD: "/api/daily-qld" };
+  var dailyCache = {};
+
+  function dayKey(unixSeconds) {
+    var d = new Date(unixSeconds * 1000);
+    return d.getUTCFullYear() + "-" +
+           ("0" + (d.getUTCMonth() + 1)).slice(-2) + "-" +
+           ("0" + d.getUTCDate()).slice(-2);
+  }
+
+  function parseDaily(data) {
+    var result = data && data.chart && data.chart.result && data.chart.result[0];
+    if (!result) throw new Error("unexpected shape");
+
+    var stamps = result.timestamp || [];
+    var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
+    var closes = (quote && quote.close) || [];
+
+    var days = {}, dates = [], n = 0;
+    for (var i = 0; i < stamps.length; i++) {
+      var v = closes[i];
+      if (typeof v !== "number" || !isFinite(v) || v <= 0) continue;
+      var k = dayKey(stamps[i]);
+      days[k] = v;
+      dates.push(k);
+      n++;
+    }
+    if (!n) throw new Error("no usable daily history");
+    dates.sort();
+    return { days: days, dates: dates };
+  }
+
+  /* Resolves to null on any failure. Callers fall back to monthly closes. */
+  function daily(symbol) {
+    var route = DAILY[symbol];
+    if (!route) return Promise.resolve(null);
+    if (dailyCache[symbol]) return dailyCache[symbol];
+
+    dailyCache[symbol] = withTimeout(route)
+      .then(parseDaily)
+      .then(function (r) { r.symbol = symbol; return r; })
+      .catch(function (e) {
+        if (window.console) {
+          console.info("[Tran to Fire] daily history unavailable for " + symbol + ":", e.message);
+        }
+        dailyCache[symbol] = null;
+        return null;
+      });
+
+    return dailyCache[symbol];
+  }
+
+  window.TTF_LIVE = { get: get, series: series, daily: daily, asOfLabel: asOfLabel };
 })();

@@ -23,6 +23,16 @@
 /api/price-upro https://query1.finance.yahoo.com/v8/finance/chart/UPRO?interval=1mo&range=max 200
 /api/price-sso  https://query1.finance.yahoo.com/v8/finance/chart/SSO?interval=1mo&range=max  200
 
+# Daily closes for the three funds the benchmark compares. Monthly bars only
+# appear once a month has ended, which left the comparison waiting; daily data
+# lets every buy be priced on the day it actually happened. Five years is
+# plenty of headroom and keeps the payload small. Widen the range when the log
+# outgrows it.
+
+/api/daily-tqqq https://query1.finance.yahoo.com/v8/finance/chart/TQQQ?interval=1d&range=5y 200
+/api/daily-qqq  https://query1.finance.yahoo.com/v8/finance/chart/QQQ?interval=1d&range=5y  200
+/api/daily-qld  https://query1.finance.yahoo.com/v8/finance/chart/QLD?interval=1d&range=5y  200
+
 # One canonical home: https://trantofire.au
 # The .com and both www forms redirect there, so there is only ever one live
 # version of the site and one address in search results. 301 = permanent.

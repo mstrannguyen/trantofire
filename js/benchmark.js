@@ -52,14 +52,45 @@
   ];
 
   function $(id) { return document.getElementById(id); }
+  function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
   function hide() {
     var sec = $("bench");
     if (sec && sec.parentNode) sec.parentNode.removeChild(sec);
   }
 
+  /* The close on a given day, or the nearest trading day before it. */
+  function closeOn(d, dateKey) {
+    if (!d || !dateKey) return null;
+    if (d.days[dateKey] > 0) return d.days[dateKey];
+    for (var i = d.dates.length - 1; i >= 0; i--) {
+      if (d.dates[i] <= dateKey) return d.days[d.dates[i]];
+    }
+    return null;
+  }
+
+  /* Which day was this month's buy made on?
+
+     If the log records a date, that is the answer. If it does not, the price
+     in the log is still a fact, so the closest TQQQ close inside that month
+     is used as the anchor. It is an inference and it is stated on the page,
+     but it beats pricing a September buy at an August close. */
+  function buyDate(month, row, tqqqDaily) {
+    if (row && typeof row.date === "string" && row.date.length === 10) return row.date;
+    if (!tqqqDaily || !(row && row.price > 0)) return null;
+
+    var best = null, bestGap = Infinity;
+    for (var i = 0; i < tqqqDaily.dates.length; i++) {
+      var k = tqqqDaily.dates[i];
+      if (k.slice(0, 7) !== month) continue;
+      var gap = Math.abs(tqqqDaily.days[k] - row.price);
+      if (gap < bestGap) { bestGap = gap; best = k; }
+    }
+    return best;
+  }
+
   /* Walk the log once, spending the same cash in every fund. */
-  function build(history, series) {
+  function build(history, series, dailies, rawByMonth) {
     var state = {}, missing = {}, usedLive = {};
     FUNDS.forEach(function (f) {
       state[f.sym]   = { shares: 0, cost: 0, lastPrice: null };
@@ -68,11 +99,18 @@
     });
 
     var rows = history.map(function (h) {
-      var row = { month: h.month, label: h.label, spent: h.spent, px: {}, ret: {} };
+      var row = { month: h.month, label: h.label, spent: h.spent, on: null, px: {}, ret: {} };
+
+      var when = buyDate(h.month, rawByMonth[h.month], dailies.TQQQ);
+      row.on = when;
 
       FUNDS.forEach(function (f) {
         var s  = state[f.sym];
-        var px = series[f.sym] ? series[f.sym].months[h.month] : null;
+
+        // the close on the day of the buy, else the month's close if the
+        // daily window does not reach back that far
+        var px = closeOn(dailies[f.sym], when);
+        if (!(px > 0)) px = series[f.sym] ? series[f.sym].months[h.month] : null;
 
         // No live-price stand-in here. Pricing a month at today's price makes
         // every fund show the same return, because the only difference from
@@ -159,7 +197,8 @@
       });
 
       return "<tr>" +
-        '<td class="mth">' + r.label + "</td>" +
+        '<td class="mth">' + r.label +
+          (r.on ? '<span class="bpx">' + esc(r.on) + "</span>" : "") + "</td>" +
         "<td>" + (r.spent ? E.usd(r.spent, 2) : "\u2014") + "</td>" +
         FUNDS.map(function (f) {
           var ret = r.ret[f.sym];
@@ -190,31 +229,59 @@
     var usable = history.some(function (h) { return isFinite(h.spent) && h.spent > 0; });
     if (!usable) return hide();
 
-    Promise.all(FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }))
+    var rawByMonth = {};
+    (window.TTF_DATA || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
+
+    Promise.all(
+      FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }).concat(
+      FUNDS.map(function (f) {
+        return window.TTF_LIVE.daily ? window.TTF_LIVE.daily(f.sym) : null;
+      }))
+    )
       .then(function (results) {
-        var series = {}, ok = 0;
-        results.forEach(function (r, i) {
-          series[FUNDS[i].sym] = r;
-          if (r) ok++;
+        var series = {}, dailies = {}, ok = 0;
+        FUNDS.forEach(function (f, i) {
+          series[f.sym]  = results[i];
+          dailies[f.sym] = results[i + FUNDS.length] || null;
+          if (results[i]) ok++;
         });
         if (ok < FUNDS.length) return hide();   // a partial comparison is a misleading one
 
-        var out = build(history, series);
+        var out   = build(history, series, dailies, rawByMonth);
+        var stamp = window.TTF_LIVE.asOfLabel(series.TQQQ.asOf);
+        var table = sec.querySelector(".table-scroll");
 
-        // Nothing priced yet means nothing comparable yet.
+        /* A month needs a published monthly close before it can be compared.
+           Pricing an unclosed month at today\'s price makes all three funds
+           show the same return, because the only difference from cost is the
+           brokerage. So the section stays on the page and says what it is
+           waiting for, rather than vanishing or inventing a number. */
         var priced = out.totals.some(function (t) { return t.shares > 0; });
-        if (!priced) return hide();
+        if (!priced) {
+          $("bench-cards").innerHTML = "";
+          $("bench-rows").innerHTML  = "";
+          if (table) table.style.display = "none";
+          $("bench-state").innerHTML =
+            "Waiting on a published monthly close for " + history[history.length - 1].label +
+            ". Until a month has closed, all three funds would price at today\'s price and " +
+            "show the same return, which compares nothing. This fills in on its own once " +
+            "Yahoo publishes the close.";
+          sec.classList.remove("hidden");
+          return;
+        }
 
+        if (table) table.style.display = "";
         $("bench-cards").innerHTML = renderCards(out.totals);
         $("bench-rows").innerHTML  = renderRows(out.rows);
 
-        var stamp = window.TTF_LIVE.asOfLabel(series.TQQQ.asOf);
-        var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
-        var live = out.totals.some(function (t) { return t.usedLive; });
+        var gaps  = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
+        var dated = out.rows.filter(function (r) { return r.on; }).length;
         $("bench-state").innerHTML =
-          "Monthly and live prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + "." +
-          (live ? " The newest month has no published monthly close yet, so the live price stands in for it." : "") +
-          (gaps ? " Some months had no published close and are carried forward." : "");
+          "Prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + ". " +
+          (dated
+            ? "Each month is priced on the day the buy was made, using every fund's close that day."
+            : "Months are priced at their closing price.") +
+          (gaps ? " Months with no price available are left out until they have one." : "");
 
         sec.classList.remove("hidden");
       })
