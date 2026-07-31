@@ -17,18 +17,18 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
     --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
     --hair:rgba(58,43,49,.14);
     --display:"Cormorant Garamond",Georgia,serif;
-    --body:"Karla",system-ui,-apple-system,sans-serif;
+    --body:"EB Garamond",Georgia,serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:19px;line-height:1.75;font-variant-numeric:lining-nums tabular-nums}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
   .wrap-wide{max-width:min(1560px, 96vw);margin:0 auto;padding:0 24px}
   @media (max-width:900px){ .wrap-wide{padding:0 16px} }
@@ -44,7 +44,7 @@
   em{font-family:var(--display);font-style:italic;font-size:1.08em}
   strong{font-weight:600}
   a{color:var(--brass)}
-  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
   .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
   :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
   .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
@@ -84,13 +84,13 @@
   /* headline stats */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
   .stat{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:28px 26px}
-  .stat dt{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .stat dt{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
   .stat dd{margin:0;font-family:var(--display);font-size:clamp(26px,3vw,34px);font-weight:300;line-height:1.1}
   .stat dd small{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:9px;letter-spacing:.01em;line-height:1.5}
   .pos{color:#5E7A55}
   .neg{color:#A85A48}
 
-  .tierpill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border-radius:100px;background:var(--brass);color:#fff}
+  .tierpill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border-radius:100px;background:var(--brass);color:#fff}
   .tierpill.t0{background:#fff;color:var(--plum);border:1px solid rgba(176,137,79,.55)}
   .tierpill.t1{background:var(--blush);color:var(--plum)}
   .tierpill.t2{background:var(--clay);color:var(--plum)}
@@ -104,7 +104,7 @@
   .receipt-line{font-size:clamp(17px,1.9vw,20px);line-height:1.6;color:#DCCFD3;margin:0 0 30px;max-width:52ch}
   .receipt-line b{color:#fff;font-weight:600}
   .receipt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:0;padding-top:28px;border-top:1px solid rgba(255,255,255,.18)}
-  .receipt-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#A08D93;margin-bottom:10px}
+  .receipt-grid dt{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#A08D93;margin-bottom:10px}
   .receipt-grid dd{margin:0;font-family:var(--display);font-size:clamp(24px,2.6vw,30px);font-weight:300;line-height:1.1;color:#fff}
   @media (max-width:760px){
     .receipt{padding:30px 26px}

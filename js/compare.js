@@ -52,19 +52,19 @@
     [10000, 100000, 1000000].forEach(function (v) {
       var gy = yf(v);
       s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".10" }));
-      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end", "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E" });
+      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
       t.textContent = money(v);
       s.appendChild(t);
     });
     [2010, 2014, 2018, 2022, 2026].forEach(function (yr) {
-      var t = el("text", { x: xf(yr), y: H - 16, "text-anchor": yr === 2010 ? "start" : (yr === 2026 ? "end" : "middle"), "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E" });
+      var t = el("text", { x: xf(yr), y: H - 16, "text-anchor": yr === 2010 ? "start" : (yr === 2026 ? "end" : "middle"), "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
       t.textContent = yr;
       s.appendChild(t);
     });
 
     // shared starting dot, so it's clear all three begin at $10k
     s.appendChild(el("circle", { cx: xf(2010), cy: yf(START), r: "4", fill: "#3A2B31" }));
-    var st = el("text", { x: xf(2010) + 8, y: yf(START) - 8, "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E" });
+    var st = el("text", { x: xf(2010) + 8, y: yf(START) - 8, "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
     st.textContent = "$10k in 2010";
     s.appendChild(st);
 
@@ -74,7 +74,7 @@
 
     function label(pts, txt, color, dy) {
       var last = pts[pts.length - 1];
-      var t = el("text", { x: xf(last[0]) - 6, y: yf(last[1]) + (dy || -8), "text-anchor": "end", "font-family": "Karla,sans-serif", "font-size": "12.5", "font-weight": "600", fill: color });
+      var t = el("text", { x: xf(last[0]) - 6, y: yf(last[1]) + (dy || -8), "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "12.5", "font-weight": "600", fill: color });
       t.textContent = txt;
       s.appendChild(t);
     }

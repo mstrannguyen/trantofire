@@ -17,18 +17,18 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
     --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
     --hair:rgba(58,43,49,.14);
     --display:"Cormorant Garamond",Georgia,serif;
-    --body:"Karla",system-ui,-apple-system,sans-serif;
+    --body:"EB Garamond",Georgia,serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.75;font-variant-numeric:tabular-nums}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:19px;line-height:1.75;font-variant-numeric:lining-nums tabular-nums}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
   .narrow{max-width:720px;margin-left:auto;margin-right:auto}
   .center{text-align:center}
@@ -40,7 +40,7 @@
   p{margin:0 0 22px}
   em{font-family:var(--display);font-style:italic;font-size:1.08em}
   strong{font-weight:600}
-  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
   .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
   :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
 
@@ -69,7 +69,7 @@
   .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
   .strip-grid div{padding:38px 20px;border-left:1px solid rgba(58,43,49,.09)}
   .strip-grid div:first-child{border-left:0}
-  .strip-grid dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .strip-grid dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
   .strip-grid dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.15}
   .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px}
 
@@ -85,7 +85,7 @@
   .src-note a{color:var(--brass)}
 
   .hwm{display:inline-block;border:1px solid rgba(176,137,79,.4);border-radius:100px;padding:14px 30px;margin:8px 0 0;background:#fff}
-  .hwm dt{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .hwm dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
   .hwm dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.1}
   .hwm dd small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);margin-top:4px}
 
@@ -93,7 +93,7 @@
   .rung{display:grid;grid-template-columns:190px 1fr;align-items:center;gap:34px;border-radius:18px;padding:38px 42px;border:1px solid var(--hair)}
   .rung .depth{text-align:center}
   .rung .num{font-family:var(--display);font-size:clamp(38px,5vw,54px);font-weight:300;line-height:1;display:block}
-  .rung .lab{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-top:12px;display:block}
+  .rung .lab{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-top:12px;display:block}
   .rung h3{font-size:27px;margin-bottom:12px}
   .deploy{font-size:16px;line-height:1.7;margin:0 0 12px;font-weight:500}
   .deploy .amt{font-family:var(--display);font-size:26px;color:var(--brass);font-weight:500}
@@ -110,7 +110,7 @@
 
   .money{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
   .money caption{text-align:center;font-size:15.5px;color:var(--muted);margin-bottom:26px;line-height:1.6}
-  .money th{text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass)}
+  .money th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass)}
   .money td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair)}
   .money tr:last-child td{border-bottom:0}
   .money .band-name{font-family:var(--display);font-size:23px;white-space:nowrap}
@@ -166,7 +166,7 @@
   }
   .methods{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
   .methods caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
-  .methods th{text-align:right;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 14px 14px 0;border-bottom:1px solid var(--brass)}
+  .methods th{text-align:right;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 14px 14px 0;border-bottom:1px solid var(--brass)}
   .methods th:first-child,.methods td:first-child{text-align:left}
   .methods td{text-align:right;padding:18px 14px;border-bottom:1px solid var(--hair);vertical-align:top}
   .methods tr:last-child td{border-bottom:0}
@@ -177,7 +177,7 @@
   .methods .bad{color:#A85A48;font-weight:600}
   .bad-inline{color:#A85A48;font-weight:600}
   .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 36px}
-  .clarify-h{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .clarify-h{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
   .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
   .clarify p:last-child{margin-bottom:0}
   .clarify strong{color:var(--plum)}
@@ -254,7 +254,7 @@
 
       <!-- baseline -->
       <line x1="40" y1="392" x2="920" y2="392" stroke="#3A2B31" stroke-opacity=".18"/>
-      <text x="40" y="418" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">TIME</text>
+      <text x="40" y="418" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">TIME</text>
 
       <!-- area under curve -->
       <path d="M40,300 C110,268 150,214 210,206 C270,198 288,290 340,318 C392,346 424,268 480,236
@@ -269,32 +269,32 @@
       <!-- high-water marks -->
       <line x1="210" y1="206" x2="470" y2="206" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
       <line x1="480" y1="236" x2="600" y2="236" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
-      <text x="216" y="196" font-family="Karla,sans-serif" font-size="11.5" font-weight="600" fill="#B0894F" letter-spacing="2">HIGH-WATER MARK</text>
+      <text x="216" y="196" font-family="EB Garamond,Georgia,serif" font-size="11.5" font-weight="600" fill="#B0894F" letter-spacing="2">HIGH-WATER MARK</text>
 
       <!-- deploy arrows at troughs — labels sit in a clear band above the curve -->
       <line x1="340" y1="162" x2="340" y2="304" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
       <circle cx="340" cy="318" r="6.5" fill="#B0894F"/>
-      <text x="340" y="150" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" font-weight="600" fill="#B0894F">Cash → shares</text>
+      <text x="340" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Cash → shares</text>
 
       <line x1="606" y1="162" x2="606" y2="334" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
       <circle cx="606" cy="348" r="8" fill="#B0894F"/>
-      <text x="606" y="150" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" font-weight="600" fill="#B0894F">Deeper fall, bigger buy</text>
+      <text x="606" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Deeper fall, bigger buy</text>
 
       <!-- accumulate arrows on the climbs -->
       <line x1="128" y1="300" x2="128" y2="252" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="128" y="326" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <text x="128" y="326" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
 
       <line x1="440" y1="330" x2="440" y2="282" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="440" y="356" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <text x="440" y="356" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
 
       <line x1="812" y1="250" x2="812" y2="202" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="812" y="276" text-anchor="middle" font-family="Karla,sans-serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <text x="812" y="276" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
 
       <!-- legend -->
       <circle cx="46" cy="46" r="5.5" fill="#B0894F"/>
-      <text x="60" y="51" font-family="Karla,sans-serif" font-size="13.5" fill="#5A4850">Leverage up — spend the reserve</text>
+      <text x="60" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage up — spend the reserve</text>
       <circle cx="360" cy="46" r="5.5" fill="#8D9C86"/>
-      <text x="374" y="51" font-family="Karla,sans-serif" font-size="13.5" fill="#5A4850">Leverage down — rebuild the reserve</text>
+      <text x="374" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage down — rebuild the reserve</text>
     </svg>
   </div>
   <p class="figcap">The concept is Henrique Centieiro's counter-cyclical leverage framework, published on TradingView. The drawing is mine; any clumsiness in it is mine too.</p>
@@ -323,7 +323,7 @@
 
       <!-- break-even -->
       <line x1="96" y1="285.4" x2="900" y2="285.4" stroke="#3A2B31" stroke-opacity=".22" stroke-dasharray="4 5"/>
-      <text x="150" y="277" font-family="Karla,sans-serif" font-size="13" fill="#8A7A7E">Break even</text>
+      <text x="150" y="277" font-family="EB Garamond,Georgia,serif" font-size="13" fill="#8A7A7E">Break even</text>
 
       <!-- S&P 500 -->
       <polyline fill="none" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7" stroke-linecap="round" stroke-linejoin="round"
@@ -335,30 +335,30 @@
 
       <!-- peaks -->
       <circle cx="456.8" cy="145.9" r="6" fill="#211A1D"/>
-      <text x="456.8" y="180" text-anchor="middle" font-family="Karla,sans-serif" font-size="14.5" font-weight="700" fill="#211A1D">Nasdaq-100 peaks near 2×</text>
+      <text x="456.8" y="180" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#211A1D">Nasdaq-100 peaks near 2×</text>
       <circle cx="666.9" cy="84.7" r="6" fill="#5F7D53"/>
-      <text x="646" y="72" text-anchor="end" font-family="Karla,sans-serif" font-size="14.5" font-weight="700" fill="#4E6A44">S&amp;P 500 peaks near 3×</text>
+      <text x="646" y="72" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#4E6A44">S&amp;P 500 peaks near 3×</text>
 
       <!-- where TQQQ sits -->
       <line x1="670.3" y1="70" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".8"/>
       <line x1="456.8" y1="190" x2="456.8" y2="372" stroke="#211A1D" stroke-width="1.3" stroke-dasharray="3 5" opacity=".45"/>
       <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
-      <text x="692" y="141" font-family="Karla,sans-serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
-      <text x="692" y="162" font-family="Karla,sans-serif" font-size="13.5" fill="#9A7C52">where this experiment sits</text>
+      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
+      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#9A7C52">where this experiment sits</text>
 
       <!-- axes -->
-      <text x="287.4" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">1×</text>
-      <text x="478.9" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">2×</text>
-      <text x="670.3" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">3×</text>
-      <text x="861.7" y="398" text-anchor="middle" font-family="Karla,sans-serif" font-size="13.5" fill="#8A7A7E">4×</text>
-      <text x="498" y="426" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">DAILY LEVERAGE</text>
-      <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="Karla,sans-serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
+      <text x="287.4" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">1×</text>
+      <text x="478.9" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">2×</text>
+      <text x="670.3" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">3×</text>
+      <text x="861.7" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">4×</text>
+      <text x="498" y="426" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">DAILY LEVERAGE</text>
+      <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
 
       <!-- legend -->
       <line x1="96" y1="42" x2="138" y2="42" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7"/>
-      <text x="148" y="47" font-family="Karla,sans-serif" font-size="14.5" font-weight="600" fill="#4E6A44">S&amp;P 500, 1950 to 2009</text>
+      <text x="148" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#4E6A44">S&amp;P 500, 1950 to 2009</text>
       <line x1="352" y1="42" x2="394" y2="42" stroke="#211A1D" stroke-width="3.2"/>
-      <text x="404" y="47" font-family="Karla,sans-serif" font-size="14.5" font-weight="600" fill="#211A1D">Nasdaq-100, 1971 to 2009</text>
+      <text x="404" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#211A1D">Nasdaq-100, 1971 to 2009</text>
     </svg>
   </div>
   <p class="figcap">The shape of Cooper's result, drawn from his return and volatility figures for the two indexes. The vertical scale is left unlabelled because the height of the hill depends on which decades you measure, so the position of the peak is the only part worth reading off it.</p>

@@ -93,7 +93,70 @@
 
 window.TTF_JOURNAL = [
 
-  // Your first entry goes here, after the August buy.
+  {
+    month: "2026-08",
+    title: "The first buy",
+    mood:  "Starting a long way under the high",
+
+    body: [
+      "First entry. The site went up before the money did, which was on purpose. The rules are published, the engine is published, and every figure above this paragraph is worked out from the log rather than typed in by me. There is no version of this where I quietly move the goalposts later and nobody notices.",
+
+      "TQQQ was well below its June record when the order went in, so the dip tier fired and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. The $556 left over goes into the reserve and waits, earning interest while it does nothing, ready for a month that is worse than this one.",
+
+      "What strikes me is how small it looks. One month against a twenty year horizon is a rounding error, and the pull is to make it bigger so it feels like something happened. The rules exist to stop exactly that. The interesting entries will be the ones where the market is falling and the tier tells me to spend more, and I have not been tested on that yet."
+    ],
+
+    macro: {
+      heading: "Markets and macro",
+
+      body: [
+        "The Fed held at 3.50 to 3.75% on 29 July, a fifth meeting in a row without a move. Citadel Securities had gone public days earlier arguing for a surprise hike, a call Bloomberg said was adding to the angst in the bond market, and the odds of a rise had climbed to roughly a third by the morning of the meeting. It did not happen. Three voters dissented and all three wanted a hike, the most one-sided dissent since 2016. Kevin Warsh has stopped issuing forward guidance, so nobody walked out of that room knowing much more than they walked in with. The Dow gave up more than 800 points that afternoon.",
+
+        "The bigger story was semiconductors. CXMT, a Chinese memory maker, listed in Shanghai on 27 July and raised a domestic record of $8.6 billion. The next day The Information reported that a Chinese state-backed firm had begun mass-producing deep ultraviolet lithography equipment, which is the link in the chain the export controls were meant to hold. Chip stocks shed more than a trillion dollars of value in two sessions and fell into a bear market, over 20% below their June record.",
+
+        "Underneath it sat forced selling, and it caught the professionals before it caught anyone else. Situational Awareness, Leopold Aschenbrenner\'s AI infrastructure fund, was up around 439% after fees through June and running leverage as high as four times. When its holdings fell, the margin calls came from Goldman Sachs, JPMorgan and Bank of America, and on Wednesday it sold its entire public equity book to Citadel. Bloomberg puts what is left of the fund at about $10 billion, down by more than half. Six days earlier its investor letter had called the selloff one of the most attractive buying opportunities since early 2025 and invited fresh money in by 1 August. The money did not arrive in time.",
+
+        "The retail version of the same thing has been running in Korea for weeks. Investors there spent the first half of the year building margin positions, a lot of it through single-stock leveraged ETFs, and on the Financial Supervisory Service numbers more than a million accounts reached margin-call thresholds, with somewhere between three and four hundred thousand closed out by their brokers. The regulator has stopped approving new leveraged ETF listings. Forced selling is not an opinion about value. A good share of what moved this fortnight was people being sold out rather than people deciding to sell.",
+
+        "Then the earnings landed and argued the other way. Microsoft did $90.0 billion of revenue against $87.6 billion expected, grew Azure 43%, and held its capital spending guidance instead of raising it. Amazon followed a day later with AWS up 37%, its fastest since 2021, and lifted 2026 capex to $220 billion anyway. Samsung reported semiconductor operating profit more than 250 times what it earned a year ago, then told analysts the memory shortage will be worse in 2027 than in 2026 and will run into 2028.",
+
+        "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I have no idea which one, and that is precisely why I follow a rule instead of a view.",
+
+        "One last thing, because it is the distinction this whole site rests on. Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could demand it back and did. He was sold out near the bottom, on their timetable rather than his. I hold a leveraged fund bought outright with cash. Nobody can make that call on me. It is the only structural advantage I have, and it is the reason a twenty year horizon is a sentence I can write at all. The tier that fired this month fired because of everything above. The ladder does not ask me to have a position on lithography."
+      ],
+
+      table: {
+        caption: "The two sessions that did the damage, 27 and 28 July.",
+        head: [ "", "One-day fall" ],
+        rows: [
+          [ "SK Hynix",       "-14.7%" ],
+          [ "Sandisk",        "-14%"   ],
+          [ "Samsung Elec.",  "-13%"   ],
+          [ "AMD",            "-8%"    ],
+          [ "Micron",         "-8%"    ],
+          [ "Western Digital","-7%"    ],
+          [ "Intel",          "-6%"    ]
+        ],
+        note: "Nvidia closed the second session roughly flat, which is its own kind of signal."
+      },
+
+      chart: {
+        title: "What the cloud actually reported, against what was expected",
+        bars: [
+          { label: "Azure",     value: 43 },
+          { label: "expected",  value: 40 },
+          { label: "AWS",       value: 37 },
+          { label: "expected",  value: 31 }
+        ],
+        suffix: "%",
+        decimals: 0,
+        note: "Year on year growth. Alphabet's Google Cloud grew 82% the week before and the stock fell 7% on the capex guide that came with it."
+      },
+
+      note: "Sources: the FOMC statement and press conference, company earnings releases, Korea's Financial Supervisory Service, and contemporaneous reporting from CNBC, Reuters and The Information."
+    }
+  },
+
 
 ];
 

@@ -29,7 +29,7 @@
         var t = el("text", {
           x: x(i), y: H - 16,
           "text-anchor": i === 0 ? "start" : (i === n - 1 ? "end" : "middle"),
-          "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E"
+          "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E"
         });
         t.textContent = months[i];
         s.appendChild(t);
@@ -45,7 +45,7 @@
     for (var g = 0; g <= 4; g++) {
       var gv = max * g / 4, gy = y(gv);
       s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": g === 0 ? ".22" : ".08" }));
-      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end", "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E" });
+      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
       t.textContent = gv >= 1000 ? "$" + Math.round(gv / 1000) + "k" : "$" + Math.round(gv);
       s.appendChild(t);
     }
@@ -77,7 +77,7 @@
     [0, -0.20, -0.40, -0.60].forEach(function (v) {
       var gy = y(v);
       s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": v === 0 ? ".25" : ".14", "stroke-dasharray": v === 0 ? "" : "4 4" }));
-      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end", "font-family": "Karla,sans-serif", "font-size": "11.5", fill: "#8A7A7E" });
+      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
       t.textContent = (v * 100) + "%";
       s.appendChild(t);
     });
