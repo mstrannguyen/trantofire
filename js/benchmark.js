@@ -141,7 +141,10 @@
 
     var totals = FUNDS.map(function (f) {
       var s     = state[f.sym];
-      var price = (series[f.sym] && series[f.sym].last) || s.lastPrice;
+      var d     = dailies[f.sym];
+      var price = (series[f.sym] && series[f.sym].last) ||
+                  (d && d.dates.length ? d.days[d.dates[d.dates.length - 1]] : null) ||
+                  s.lastPrice;
       var value = price ? s.shares * price : null;
       return {
         sym:     f.sym,
@@ -245,10 +248,17 @@
           dailies[f.sym] = results[i + FUNDS.length] || null;
           if (results[i]) ok++;
         });
-        if (ok < FUNDS.length) return hide();   // a partial comparison is a misleading one
+        // A fund needs a price source, but either one will do: daily closes do
+        // the pricing and monthly is only the fallback for older months. Only
+        // give up when a fund has neither.
+        var usable = FUNDS.filter(function (f) {
+          return series[f.sym] || dailies[f.sym];
+        }).length;
+        if (usable < FUNDS.length) return hide();
 
         var out   = build(history, series, dailies, rawByMonth);
-        var stamp = window.TTF_LIVE.asOfLabel(series.TQQQ.asOf);
+        var stamp = (series.TQQQ && series.TQQQ.asOf)
+          ? window.TTF_LIVE.asOfLabel(series.TQQQ.asOf) : "";
         var table = sec.querySelector(".table-scroll");
 
         /* A month needs a published monthly close before it can be compared.
@@ -285,7 +295,10 @@
 
         sec.classList.remove("hidden");
       })
-      .catch(hide);
+      .catch(function (e) {
+        if (window.console) console.warn("[Tran to Fire] benchmark failed:", e);
+        hide();
+      });
   }
 
   /* exposed for testing and for poking at in the browser console */
