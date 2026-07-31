@@ -54,9 +54,21 @@
   function $(id) { return document.getElementById(id); }
   function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
-  function hide() {
+  /* This section used to delete itself whenever anything went wrong, which
+     meant a broken fetch and a working-but-empty month looked identical: a
+     hole in the page. It now stays put and says what it is waiting for. */
+  function fail(reason) {
     var sec = $("bench");
-    if (sec && sec.parentNode) sec.parentNode.removeChild(sec);
+    if (!sec) return;
+    var cards = $("bench-cards"), rows = $("bench-rows");
+    var table = sec.querySelector(".table-scroll");
+    if (cards) cards.innerHTML = "";
+    if (rows)  rows.innerHTML  = "";
+    if (table) table.style.display = "none";
+    var state = $("bench-state");
+    if (state) state.textContent = reason;
+    sec.classList.remove("hidden");
+    if (window.console) console.warn("[Tran to Fire] benchmark: " + reason);
   }
 
   /* The close on a given day, or the nearest trading day before it. */
@@ -219,18 +231,27 @@
   function start() {
     var E = window.TTF_ENGINE;
     var sec = $("bench");
-    if (!sec || !E || !window.TTF_LIVE || !window.TTF_LIVE.series) return hide();
+    if (!sec) return;
+    if (!E || !window.TTF_LIVE || !window.TTF_LIVE.series) {
+      return fail("Comparison unavailable: a script did not load. Check that js/engine.js and js/live.js are deployed.");
+    }
 
     var cfg = window.TTF;
-    if (!cfg || !isFinite(cfg.CONTRIBUTION) || !isFinite(cfg.HIGH_WATER_MARK)) return hide();
+    if (!cfg || !isFinite(cfg.CONTRIBUTION) || !isFinite(cfg.HIGH_WATER_MARK)) {
+      return fail("Comparison unavailable: js/config.js did not load.");
+    }
 
     var history = E.run(window.TTF_DATA || [], cfg);
-    if (!history.length) return hide();
+    if (!history.length) {
+      return fail("Nothing logged yet. The comparison starts with the first buy.");
+    }
 
     // A month that produced no usable outlay means the engine could not run.
     // Better to show nothing than a grid of dashes that looks like a result.
     var usable = history.some(function (h) { return isFinite(h.spent) && h.spent > 0; });
-    if (!usable) return hide();
+    if (!usable) {
+      return fail("Nothing deployed yet, so there is nothing to compare.");
+    }
 
     var rawByMonth = {};
     (window.TTF_DATA || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
@@ -254,7 +275,12 @@
         var usable = FUNDS.filter(function (f) {
           return series[f.sym] || dailies[f.sym];
         }).length;
-        if (usable < FUNDS.length) return hide();
+        if (usable < FUNDS.length) {
+          var dead = FUNDS.filter(function (f) { return !series[f.sym] && !dailies[f.sym]; })
+                          .map(function (f) { return f.sym; }).join(", ");
+          return fail("Prices unavailable for " + dead + ". Yahoo did not answer, or the " +
+                      "/api routes in _redirects are not deployed.");
+        }
 
         var out   = build(history, series, dailies, rawByMonth);
         var stamp = (series.TQQQ && series.TQQQ.asOf)
@@ -268,16 +294,8 @@
            waiting for, rather than vanishing or inventing a number. */
         var priced = out.totals.some(function (t) { return t.shares > 0; });
         if (!priced) {
-          $("bench-cards").innerHTML = "";
-          $("bench-rows").innerHTML  = "";
-          if (table) table.style.display = "none";
-          $("bench-state").innerHTML =
-            "Waiting on a published monthly close for " + history[history.length - 1].label +
-            ". Until a month has closed, all three funds would price at today\'s price and " +
-            "show the same return, which compares nothing. This fills in on its own once " +
-            "Yahoo publishes the close.";
-          sec.classList.remove("hidden");
-          return;
+          return fail("No price found yet for " + history[history.length - 1].label +
+                      ". The comparison fills in as soon as one is published.");
         }
 
         if (table) table.style.display = "";
@@ -296,8 +314,7 @@
         sec.classList.remove("hidden");
       })
       .catch(function (e) {
-        if (window.console) console.warn("[Tran to Fire] benchmark failed:", e);
-        hide();
+        fail("Comparison could not be built: " + (e && e.message ? e.message : e));
       });
   }
 
