@@ -11,7 +11,7 @@
        3. put in the price you paid
        4. commit
 
-   That is the whole job. The site works out the drawdown, which tier fired,
+   That is the whole job. The site works out the drawdown, which tier applies,
    how much to deploy, how many whole shares that buys, the reserve, the
    portfolio value and the return. You never type any of those.
 

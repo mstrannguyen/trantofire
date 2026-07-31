@@ -99,11 +99,9 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "First entry. The site went up before the money did, which was on purpose. The rules are published, the engine is published, and every figure above this paragraph is worked out from the log rather than typed in by me. There is no version of this where I quietly move the goalposts later and nobody notices.",
+      "First entry. The site went up before the money did, which was on purpose. The rules and the engine behind them are both public, and every figure above this paragraph comes out of the log rather than off my keyboard. There is no version of this where I quietly move the goalposts later and nobody notices.",
 
-      "TQQQ was well below its June record when the order went in, so the dip tier fired and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. The $556 left over goes into the reserve and waits, earning interest while it does nothing, ready for a month that is worse than this one.",
-
-      "What strikes me is how small it looks. One month against a twenty year horizon is a rounding error, and the pull is to make it bigger so it feels like something happened. The rules exist to stop exactly that. The interesting entries will be the ones where the market is falling and the tier tells me to spend more, and I have not been tested on that yet."
+      "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. The $556 left over goes into the reserve and waits, earning interest while it does nothing, ready for a month that is worse than this one."
     ],
 
     macro: {
@@ -114,15 +112,15 @@ window.TTF_JOURNAL = [
 
         "The bigger story was semiconductors. CXMT, a Chinese memory maker, listed in Shanghai on 27 July and raised a domestic record of $8.6 billion. The next day The Information reported that a Chinese state-backed firm had begun mass-producing deep ultraviolet lithography equipment, which is the link in the chain the export controls were meant to hold. Chip stocks shed more than a trillion dollars of value in two sessions and fell into a bear market, over 20% below their June record.",
 
-        "Underneath it sat forced selling, and it caught the professionals before it caught anyone else. Situational Awareness, Leopold Aschenbrenner\'s AI infrastructure fund, was up around 439% after fees through June and running leverage as high as four times. When its holdings fell, the margin calls came from Goldman Sachs, JPMorgan and Bank of America, and on Wednesday it sold its entire public equity book to Citadel. Bloomberg puts what is left of the fund at about $10 billion, down by more than half. Six days earlier its investor letter had called the selloff one of the most attractive buying opportunities since early 2025 and invited fresh money in by 1 August. The money did not arrive in time.",
+        "Underneath it sat forced selling, and the professionals got caught too. Situational Awareness, Leopold Aschenbrenner\'s AI infrastructure fund, was up around 439% after fees through June and running leverage as high as four times. When its holdings fell, the margin calls came from Goldman Sachs, JPMorgan and Bank of America, and on Wednesday it sold its entire public equity book to Citadel. Bloomberg puts what is left of the fund at about $10 billion, down by more than half. Six days earlier its investor letter had called the selloff one of the most attractive buying opportunities since early 2025 and invited fresh money in by 1 August. The money did not arrive in time.",
 
         "The retail version of the same thing has been running in Korea for weeks. Investors there spent the first half of the year building margin positions, a lot of it through single-stock leveraged ETFs, and on the Financial Supervisory Service numbers more than a million accounts reached margin-call thresholds, with somewhere between three and four hundred thousand closed out by their brokers. The regulator has stopped approving new leveraged ETF listings. Forced selling is not an opinion about value. A good share of what moved this fortnight was people being sold out rather than people deciding to sell.",
 
         "Then the earnings landed and argued the other way. Microsoft did $90.0 billion of revenue against $87.6 billion expected, grew Azure 43%, and held its capital spending guidance instead of raising it. Amazon followed a day later with AWS up 37%, its fastest since 2021, and lifted 2026 capex to $220 billion anyway. Samsung reported semiconductor operating profit more than 250 times what it earned a year ago, then told analysts the memory shortage will be worse in 2027 than in 2026 and will run into 2028.",
 
-        "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I have no idea which one, and that is precisely why I follow a rule instead of a view.",
+        "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I do not know which, and I do not need to.",
 
-        "One last thing, because it is the distinction this whole site rests on. Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could demand it back and did. He was sold out near the bottom, on their timetable rather than his. I hold a leveraged fund bought outright with cash. Nobody can make that call on me. It is the only structural advantage I have, and it is the reason a twenty year horizon is a sentence I can write at all. The tier that fired this month fired because of everything above. The ladder does not ask me to have a position on lithography."
+        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him, and it is worth more than any of the analysis above. The drawdown put me in the dip tier this month. The ladder never asked my opinion on lithography."
       ],
 
       table: {
