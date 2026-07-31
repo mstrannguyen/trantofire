@@ -87,8 +87,8 @@
   .stat dt{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
   .stat dd{margin:0;font-family:var(--display);font-size:clamp(26px,3vw,34px);font-weight:300;line-height:1.1}
   .stat dd small{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:9px;letter-spacing:.01em;line-height:1.5}
-  .pos{color:#5E7A55}
-  .neg{color:#A85A48}
+  .pos{color:#2F6B33}
+  .neg{color:#A33220}
 
   .tierpill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border-radius:100px;background:var(--brass);color:#fff}
   .tierpill.t0{background:#fff;color:var(--plum);border:1px solid rgba(176,137,79,.55)}
@@ -172,20 +172,21 @@
   /* benchmark: same money, three funds (js/benchmark.js) */
   .bench-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 40px}
   .bcard{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:24px 22px}
-  .bcard.lead{border-color:var(--brass);box-shadow:0 1px 0 var(--brass) inset}
+  .bcard.lead{border-color:var(--brass);border-width:1.5px;background:var(--blush-soft);box-shadow:none}
   .bsym{font-family:var(--display);font-size:22px;margin:0 0 2px}
   .bsym span{font-family:var(--body);font-size:12px;letter-spacing:.1em;color:var(--brass);vertical-align:middle}
   .bnote{font-size:12.5px;color:var(--muted);margin:0 0 16px}
   .bval{font-family:var(--display);font-size:clamp(26px,3.6vw,34px);margin:0 0 16px;line-height:1.1}
   .bstats{margin:0;display:grid;gap:9px}
   .bstats div{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-  .bstats dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .bstats dt{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#7E6C71}
   .bstats dd{margin:0;font-size:15px}
-  .bret{color:#4E7A4A}
-  .bret.down{color:#A85A48}
-  table.log td.best{color:var(--brass);font-weight:500}
+  .bret{color:#2F6B33;font-weight:600}
+  .bret.down{color:#A33220}
+  table.log td.best{color:#8A6428;font-weight:600}
   .bpx{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
-  .bval.down{color:#A85A48}
+  .bval.up{color:#2F6B33}
+  .bval.down{color:#A33220}
   @media (max-width:720px){ .bench-cards{grid-template-columns:1fr} }
 </style>
 </head>
@@ -378,10 +379,10 @@
 
 <script src="../js/config.js?v=11" defer></script>
 <script src="../js/data.js?v=11" defer></script>
-<script src="../js/engine.js?v=11" defer></script>
+<script src="../js/engine.js?v=12" defer></script>
 <script src="../js/live.js?v=14" defer></script>
 <script src="../js/progress.js?v=11" defer></script>
-<script src="../js/benchmark.js?v=3" defer></script>
+<script src="../js/benchmark.js?v=4" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>
 </body>

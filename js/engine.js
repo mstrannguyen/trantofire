@@ -227,16 +227,21 @@
   }
 
   /* ---- shared formatting ---- */
+  /* U+2212 rather than a hyphen: it is the real minus sign, drawn straight and
+     to the same width as the figures. The sign goes before the $, because
+     "$-3" is not how anyone writes minus three dollars. */
   function usd(v, dp) {
     if (v === null || v === undefined || !isFinite(v)) return "\u2014";
     dp = dp === undefined ? 0 : dp;
-    return "$" + Number(v).toLocaleString("en-US",
+    var neg = v < 0;
+    return (neg ? "\u2212" : "") + "$" + Math.abs(Number(v)).toLocaleString("en-US",
       { minimumFractionDigits: dp, maximumFractionDigits: dp });
   }
   function pct(v, dp) {
     if (v === null || v === undefined || !isFinite(v)) return "\u2014";
     dp = dp === undefined ? 1 : dp;
-    return (v * 100).toFixed(dp) + "%";
+    var n = v * 100;
+    return (n < 0 ? "\u2212" : "") + Math.abs(n).toFixed(dp) + "%";
   }
   /* Round normally — EXCEPT where rounding up would announce a tier boundary
      the rules have not actually crossed. 19.997% must not display as "20.0%"

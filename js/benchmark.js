@@ -74,14 +74,10 @@
         var s  = state[f.sym];
         var px = series[f.sym] ? series[f.sym].months[h.month] : null;
 
-        // Yahoo publishes a monthly bar once the month has started. A buy
-        // logged before that bar exists has no close to price against, so the
-        // live price stands in for it and the page says so.
-        if ((typeof px !== "number" || !(px > 0)) && series[f.sym] &&
-            h.month >= series[f.sym].newest && series[f.sym].last > 0) {
-          px = series[f.sym].last;
-          usedLive[f.sym] = true;
-        }
+        // No live-price stand-in here. Pricing a month at today's price makes
+        // every fund show the same return, because the only difference from
+        // cost is the brokerage. A month without a published close is simply
+        // not comparable yet, so it waits.
 
         if (typeof px !== "number" || !(px > 0)) {
           missing[f.sym]++;
@@ -137,7 +133,7 @@
 
     return totals.map(function (t) {
       var lead = (t.ret !== null && t.ret === best) ? " lead" : "";
-      var down = (t.ret !== null && t.ret < 0) ? " down" : "";
+      var down = t.ret === null ? "" : (t.ret < 0 ? " down" : " up");
       return '<div class="bcard' + lead + '">' +
         '<p class="bsym">' + t.sym + ' <span>' + t.mult + '</span></p>' +
         '<p class="bnote">' + t.note + '</p>' +
@@ -204,6 +200,10 @@
         if (ok < FUNDS.length) return hide();   // a partial comparison is a misleading one
 
         var out = build(history, series);
+
+        // Nothing priced yet means nothing comparable yet.
+        var priced = out.totals.some(function (t) { return t.shares > 0; });
+        if (!priced) return hide();
 
         $("bench-cards").innerHTML = renderCards(out.totals);
         $("bench-rows").innerHTML  = renderRows(out.rows);
