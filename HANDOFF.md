@@ -92,6 +92,13 @@ engine chart), Strategy, Progress, Journal, My Story.
 
 ---
 
+## The monthly routine
+
+From now on the monthly update happens in chat rather than by hand-editing
+GitHub. The protocol, including the one rule that stops entries being lost,
+is in `MONTHLY.md`. Short version: download the zip from GitHub, upload it to
+the chat, get the two files back, commit.
+
 ## Still outstanding
 
 Ordered. Everything above the line has to happen before launch.
