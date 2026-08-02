@@ -270,12 +270,25 @@
     <section class="band band-blush" style="padding-top:0;background:transparent">
       <div class="wrap">
         <div class="chart">
-          <h3>Portfolio value against money in</h3>
-          <p class="sub">The gap between the two lines is the entire point of the exercise.</p>
+          <h3>The price, the high-water mark, and every buy</h3>
+          <p class="sub">The blue step is the record high, which only ever ratchets upward. The dashed lines are the tier boundaries, and they rise with it. Every triangle is a purchase: the deeper the tier, the bigger the marker and the bigger the share of cash going in.</p>
+          <div id="chart0"></div>
+          <div class="legend">
+            <span><i style="background:#5A7BA8"></i>High-water mark</span>
+            <span><i style="background:#3A2B31"></i>TQQQ price</span>
+            <span><i style="background:#2E7D32"></i>Baseline &middot; deploy 20%</span>
+            <span><i style="background:#EFC61E"></i>Dip &middot; 33%</span>
+            <span><i style="background:#E05A0C"></i>Deep dip &middot; 67%</span>
+            <span><i style="background:#8E1414"></i>Crash &middot; 100%</span>
+          </div>
+        </div>
+
+        <div class="chart" style="margin-top:28px">
+          <h3>What TQQQ has done with the money in it</h3>
+          <p class="sub">The shares only. The cash reserve is left out of both sides, because it is not TQQQ and counting it would measure the deployment schedule rather than the fund. Above the line is profit on the money actually invested.</p>
           <div id="chart1"></div>
           <div class="legend">
-            <span><i style="background:var(--brass)"></i>Portfolio value</span>
-            <span><i style="background:var(--sage)"></i>Total contributed</span>
+            <span><i style="background:var(--brass)"></i>Value of the shares, less what they cost</span>
           </div>
         </div>
 
@@ -381,7 +394,7 @@
 <script src="../js/data.js?v=11" defer></script>
 <script src="../js/engine.js?v=12" defer></script>
 <script src="../js/live.js?v=14" defer></script>
-<script src="../js/progress.js?v=12" defer></script>
+<script src="../js/progress.js?v=17" defer></script>
 <script src="../js/benchmark.js?v=8" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>
