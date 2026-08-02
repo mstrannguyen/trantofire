@@ -89,16 +89,23 @@
      but it beats pricing a September buy at an August close. */
   function buyDate(month, row, tqqqDaily) {
     if (row && typeof row.date === "string" && row.date.length === 10) return row.date;
-    if (!tqqqDaily || !(row && row.price > 0)) return null;
 
-    var best = null, bestGap = Infinity;
-    for (var i = 0; i < tqqqDaily.dates.length; i++) {
-      var k = tqqqDaily.dates[i];
-      if (k.slice(0, 7) !== month) continue;
-      var gap = Math.abs(tqqqDaily.days[k] - row.price);
-      if (gap < bestGap) { bestGap = gap; best = k; }
+    if (tqqqDaily && row && row.price > 0) {
+      var best = null, bestGap = Infinity;
+      for (var i = 0; i < tqqqDaily.dates.length; i++) {
+        var k = tqqqDaily.dates[i];
+        if (k.slice(0, 7) !== month) continue;
+        var gap = Math.abs(tqqqDaily.days[k] - row.price);
+        if (gap < bestGap) { bestGap = gap; best = k; }
+      }
+      if (best) return best;
     }
-    return best;
+
+    /* No trading day inside that month yet. This happens at the start of a
+       month, and on any buy logged before the market has opened in it. The
+       last day of the month is returned so that closeOn walks back to the
+       most recent close available, which is a far better answer than none. */
+    return month + "-28";
   }
 
   /* Walk the log once, spending the same cash in every fund. */
@@ -302,14 +309,15 @@
         $("bench-cards").innerHTML = renderCards(out.totals);
         $("bench-rows").innerHTML  = renderRows(out.rows);
 
-        var gaps  = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
-        var dated = out.rows.filter(function (r) { return r.on; }).length;
+        var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
+        var back = out.rows.some(function (r) {
+          return r.on && String(r.on).slice(-2) === "28" && r.month + "-28" === r.on;
+        });
         $("bench-state").innerHTML =
           "Prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + ". " +
-          (dated
-            ? "Each month is priced on the day the buy was made, using every fund's close that day."
-            : "Months are priced at their closing price.") +
-          (gaps ? " Months with no price available are left out until they have one." : "");
+          "Each month is priced on the day of the buy, using every fund's close that day." +
+          (back ? " Where the market has not traded yet in a logged month, the most recent close before it is used instead." : "") +
+          (gaps ? " Months with no price at all are left out until they have one." : "");
 
         sec.classList.remove("hidden");
       })
