@@ -38,7 +38,7 @@
 
   function drawValueChart(host, months, values, contribs) {
     var W = 880, H = 340, L = 68, R = 18, T = 18, B = 44, n = months.length;
-    var max = Math.max.apply(null, values.concat(contribs).concat([1])) * 1.08;
+    var max = Math.max.apply(null, values.concat(contribs).concat([1])) * (n < 2 ? 1.22 : 1.08);
     var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
     var y = function (v) { return T + (H - T - B) * (1 - v / max); };
     var s = svgRoot(W, H);
@@ -56,8 +56,38 @@
       s.appendChild(el("path", { d: pathFrom(cp), fill: "none", stroke: "#8D9C86", "stroke-width": "2", "stroke-dasharray": "5 4", "stroke-linecap": "round" }));
       s.appendChild(el("path", { d: pathFrom(vp), fill: "none", stroke: "#B0894F", "stroke-width": "2.6", "stroke-linecap": "round", "stroke-linejoin": "round" }));
     } else {
-      s.appendChild(el("circle", { cx: x(0), cy: y(values[0]), r: "6", fill: "#B0894F" }));
-      s.appendChild(el("circle", { cx: x(0), cy: y(contribs[0]), r: "5", fill: "#8D9C86" }));
+      /* One month cannot make a line, and the two values sit within a few
+         dollars of each other, so plain dots land on top of one another and
+         read as a single point. Label them, and push the labels apart when
+         the values are too close to separate on their own. */
+      var cx = x(0);
+      var vy = y(values[0]), cy2 = y(contribs[0]);
+      if (Math.abs(vy - cy2) < 26) {
+        var mid = (vy + cy2) / 2;
+        vy  = values[0] >= contribs[0] ? mid - 13 : mid + 13;
+        cy2 = values[0] >= contribs[0] ? mid + 13 : mid - 13;
+      }
+
+      s.appendChild(el("line", { x1: L, y1: y(values[0]),   x2: cx, y2: y(values[0]),
+        stroke: "#B0894F", "stroke-width": "1.6", "stroke-opacity": ".45", "stroke-dasharray": "4 4" }));
+      s.appendChild(el("line", { x1: L, y1: y(contribs[0]), x2: cx, y2: y(contribs[0]),
+        stroke: "#8D9C86", "stroke-width": "1.6", "stroke-opacity": ".45", "stroke-dasharray": "4 4" }));
+
+      s.appendChild(el("circle", { cx: cx, cy: y(values[0]),   r: "7", fill: "#B0894F" }));
+      s.appendChild(el("circle", { cx: cx, cy: y(contribs[0]), r: "6", fill: "#8D9C86" }));
+
+      [[vy, values[0],   "#8A6428", "Portfolio value"],
+       [cy2, contribs[0], "#5F7057", "Total contributed"]].forEach(function (d) {
+        var t = el("text", { x: cx + 18, y: d[0] + 4, "font-family": "EB Garamond,Georgia,serif",
+          "font-size": "14.5", "font-weight": "600", fill: d[2] });
+        t.textContent = usd(d[1]) + "  " + d[3];
+        s.appendChild(t);
+      });
+
+      var note = el("text", { x: cx, y: H - 30, "text-anchor": "middle",
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "12.5", fill: "#8A7A7E" });
+      note.textContent = "One month logged. The two lines start next month.";
+      s.appendChild(note);
     }
     xLabels(s, months, x, H, n);
     host.innerHTML = ""; host.appendChild(s);
@@ -191,6 +221,12 @@
 
       var r = E.revalue(hist, live.price);
       if (!r) return;
+
+      // the chart's last point should agree with the cards above it
+      var chartValues = hist.map(function (d) { return d.portfolio; });
+      chartValues[chartValues.length - 1] = r.portfolio;
+      drawValueChart($("chart1"), hist.map(function (d) { return d.label; }),
+        chartValues, hist.map(function (d) { return d.moneyIn; }));
 
       // only the "what is it worth now" figures move; the log stays as bought
       $("s-value").firstChild.nodeValue = usd(r.portfolio);

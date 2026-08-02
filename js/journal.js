@@ -99,8 +99,6 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "First entry. The site went up before the money did, which was on purpose. The rules and the engine behind them are both public, and every figure above this paragraph comes out of the log rather than off my keyboard. There is no version of this where I quietly move the goalposts later and nobody notices.",
-
       "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. The $556 left over goes into the reserve and waits, earning interest while it does nothing, ready for a month that is worse than this one."
     ],
 
@@ -120,7 +118,7 @@ window.TTF_JOURNAL = [
 
         "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I do not know which, and I do not need to.",
 
-        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him, and it is worth more than any of the analysis above. The drawdown put me in the dip tier this month. The ladder never asked my opinion on lithography."
+        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. The drawdown put me in the dip tier this month. The ladder never asked my opinion on lithography."
       ],
 
       table: {
