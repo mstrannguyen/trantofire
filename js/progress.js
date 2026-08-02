@@ -186,7 +186,8 @@
 
     var hi = Math.max.apply(null, pl.concat([0]));
     var lo = Math.min.apply(null, pl.concat([0]));
-    var pad = (hi - lo) * 0.16 || 1; hi += pad; lo -= pad;
+    var pad = (hi - lo) * 0.16 || 1;
+    hi += pad * (n < 3 ? 2.2 : 1); lo -= pad;   // headroom for the callouts
 
     var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
     var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
@@ -226,8 +227,10 @@
       var i = m.i, cx = x(i), cy = y(pl[i]);
       var col = pl[i] >= 0 ? "#2E7D32" : "#8E1414";
       s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col, stroke: "#FFFFFF", "stroke-width": "1.5" }));
-      var ty = m.below ? cy + 26 : cy - 16;
-      var anchor = i === 0 ? "start" : (i === n - 1 ? "end" : "middle");
+      /* Two lines of label, clear of the marker in both directions. The old
+         spacing put the second line at cy exactly, which is where the dot is. */
+      var ty = m.below ? cy + 26 : cy - 34;
+      var anchor = n === 1 ? "middle" : (i === 0 ? "start" : (i === n - 1 ? "end" : "middle"));
       var t1 = el("text", { x: cx, y: ty, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
         "font-size": "15", "font-weight": "700", fill: col });
       t1.textContent = usd(pl[i]);
