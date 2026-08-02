@@ -1,7 +1,10 @@
 # Tran to Fire — project handoff
 
-Paste this into a new chat to pick up where we left off. The current site is
-in `trantofire.zip`; upload it alongside this file.
+Paste this into a new chat to pick up where we left off, and upload
+`trantofire-updated.zip` with it. That zip is the whole site.
+
+If the job is just this month's numbers, read `MONTHLY.md` instead. It is
+shorter and it is the only file you need for a routine update.
 
 ---
 
@@ -27,7 +30,8 @@ experiment with a defined carve-out slice, not the whole portfolio.
   - Dip (−20%) → **33%**
   - Deep dip (−40%) → **67%**
   - Crash (−60%) → **100%**
-- Whole shares only. One buy a month. Never sells during accumulation.
+- Whole shares only. One buy a month. No sell rule is published; selling is
+  not ruled out and the site no longer claims it never happens.
 - 20-year horizon, Aug 2026 to Jul 2046
 - **$3 brokerage** per trade, charged by the broking app. The tier sets the
   share count first; the fee comes out of the cash afterwards.
@@ -37,6 +41,9 @@ experiment with a defined carve-out slice, not the whole portfolio.
   accrues it inside its own price, so subtracting it would double-count
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
+- **Lifecycle investing.** Leverage comes down over time: 3× now, then 2×
+  (QLD or SSO), then unleveraged. No trigger set yet. Grounded in Ayres and
+  Nalebuff, who cap at 2:1 — the site says plainly that 3× goes past them.
 
 Rules come from Henrique Centieiro's TradingView Strategy 3. B.D. Collins'
 book "$1,000 to $1,000,000" is the other main source.
@@ -66,14 +73,26 @@ data.js automatically.
   CASH_RATE 0.04, BROKERAGE 3, EXPENSE_RATIO 0.0086
 - `js/engine.js` — the strategy as code. Everything derives from it.
 - `js/data.js` — monthly prices (the only regular edit)
-- `js/live.js` — fetches live TQQQ price + all-time high
+- `js/live.js` — live prices, monthly history, daily history. Exposes
+  `get()`, `series(sym)` (monthly) and `daily(sym)` (daily closes).
 - `js/signal.js` — home page cards
-- `js/progress.js` — Progress page
+- `js/progress.js` — Progress page: three charts (price + buys, profit,
+  drawdown)
+- `js/benchmark.js` — the same money into QQQ and QLD, priced on the buy day
 - `js/journal.js` / `js/journal-render.js` — the Journal
-- `js/compare.js` — growth-of-$10k chart
+- `js/compare.js` — growth-of-$10k chart, computed live for QQQ, QLD, TQQQ
+  plus a synthetic 3× QQQ line
+- `js/funds.js` — fills the return columns in the home page fund table
+- `js/comments.js` — FastComments loader. Tenant ID lives here.
 - `netlify/functions/price.js` + `netlify.toml` — fallback price route
-- `_redirects` — contains the `/api/price` PROXY rule (the working route)
+- `_redirects` — the `/api/price*` PROXY rules. Eight of them now: monthly
+  for TQQQ, QQQ, QLD, UPRO, SSO; daily for TQQQ, QQQ, QLD.
 - `_headers` — CSP etc. HSTS deliberately commented out.
+
+**Nothing on the site is a typed-in figure that could go stale.** Fund
+returns, the growth chart and the benchmark all recalculate from Yahoo on
+each load. Third-party sources disagreed with each other by several points a
+year, which is why.
 
 **Live price:** Yahoo Finance via a Netlify **proxy rule** in `_redirects`
 (`/api/price ... 200`). Serverless functions were tried first and did NOT
@@ -87,8 +106,11 @@ checks reject anything below the 52-week high or that looks unadjusted.
 
 ### Pages
 
-Home (masthead + signal cards + fund family + how it works + intention +
-engine chart), Strategy, Progress, Journal, My Story.
+Home, Strategy, Progress, Journal, My Story, Privacy.
+
+Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
+Worked example, Why not just buy every month, Lifecycle investing, Other ways
+to do this, Risk, The mechanics, Comments.
 
 ---
 
@@ -103,8 +125,10 @@ the chat, get the two files back, commit.
 
 Ordered. Everything above the line has to happen before launch.
 
-- [ ] **Deploy the current build.** Adds `privacy/`, so drag the whole folder,
-      not individual files.
+- [ ] **Deploy the current build.** Drag the whole folder. Picking out single
+      files has already broken things twice: a new script was missing and the
+      benchmark showed dashes, and `_redirects` was missing and the daily
+      routes 404'd.
 - [ ] **Decide which day of the month the buy happens.** The last place the
       rules leave room for judgment. One sentence on the Strategy page fixes
       it, and it also settles what date goes in `js/data.js`.
@@ -134,12 +158,68 @@ Not blocking launch:
 
 ---
 
+## Recent decisions worth not relitigating
+
+Things settled in the last session, so a new chat does not undo them.
+
+- The **cash reserve is excluded** from the Progress profit chart. It is not
+  TQQQ, and counting it measures the deployment schedule rather than the fund.
+- The **benchmark spends the same dollars**, not the same share count, and
+  prices every fund on the day of the buy using daily closes.
+- The **fund family table** and the **growth chart** compute themselves.
+- The Collins **three-methods table was removed** entirely.
+- The **email signup** and the old **"read me sceptically"** section are gone.
+  The signup markup is commented out in `index.html`, not deleted.
+- **No sell rule is published.** The site used to say the strategy never
+  sells. It does not say that any more.
+- Marker colour and size on the price chart both encode the tier. Colours
+  were separated by measuring RGB distance, not by eye.
+
+---
+
 ## Working preferences
 
-- Prose should sound human, not AI. Em-dashes were cut from 77 to 4 across
-  the site. Avoid balanced epigrams, "isn't X it's Y", adjective triads,
-  and restating a pull-quote in the paragraph beneath it.
-- Wants pushback when something is wrong, not compliance. Several good
-  outcomes came from disagreeing (dual-axis chart, double-counting the
-  management fee).
-- Verify figures against sources rather than asserting them.
+Read this part before writing anything.
+
+**Prose must not sound like AI.** This has been the single most frequent
+correction, dozens of times. Cut on sight:
+
+- Performative honesty. "I'm publishing this so that if I break it you'll
+  know", "there is no version of this where I quietly move the goalposts",
+  "I'd rather say so than leave it out". Doing the thing is the proof;
+  announcing it undoes it.
+- Balanced epigrams and "isn't X, it's Y". "Not a bet, a strategy." "The
+  reliable cost isn't drag, it's fees."
+- Sentences that admire themselves. "The single most important word on this
+  page is every." "It is worth more than any of the analysis above."
+- Signposting. "The bigger point is", "two things worth knowing before",
+  "read the first point again".
+- Filler adverbs: genuinely, simply, truly, precisely.
+- Em-dashes in prose. Currently zero across all six pages. Keep it there.
+
+**Say the plain thing and stop.** "TQQQ has consistently outperformed it
+historically" beats adding "and that is what decided me". The reader draws
+the conclusion.
+
+**Push back when something is wrong.** Every good outcome this project has
+came from disagreement, not compliance:
+
+- The Collins table double-counted capital across rows and used the wrong
+  benchmark. Caught by reading the source, not the summary.
+- The "Australia has changed the rules" section was framed as a reason to
+  hold leverage when its own first point argues the opposite. Now backdrop.
+- "Risk you carry: none" for paying down a mortgage was wrong; a mortgage is
+  borrowed money against one house.
+- A dual-axis chart would have misled, because money in grows.
+
+**Verify figures.** Read the actual source. Third-party summaries of these
+funds contradict each other. Where a number can be computed, compute it.
+
+**Check the arithmetic reconciles as displayed**, not just exactly. The
+worked example needed 1,583 rather than 1,582 so a reader multiplying the
+rounded figures on screen lands where the table does.
+
+**Test the code, do not assume it.** Bugs found only by running it: a chart
+function deleted by an over-wide replacement, benchmark labels drawn exactly
+on top of their marker, a section that removed itself silently because a
+null threw inside a promise.

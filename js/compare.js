@@ -1,94 +1,168 @@
-/* Home-page "engine" chart: growth of $10,000 in QQQ vs 3x QQQ vs TQQQ,
-   all-time. One shared axis, all three lines starting from the same point,
-   so TQQQ ends unmistakably highest without any axis trickery.
-   Pure SVG, no library, log scale, defensive against a missing host. */
+/* Home-page chart: growth of $10,000 in five funds, all-time, log scale.
+
+   Everything is computed from Yahoo's monthly history through the same proxy
+   routes the rest of the site uses, rather than typed in from a comparison
+   site. Third-party figures for these funds disagree with each other by
+   several points a year depending on the day they were captured, so the only
+   honest version is one that recalculates itself.
+
+   Adjusted closes are used, so distributions count as reinvested.
+
+   All five start at $10,000 in the first month every one of them has data
+   for, which is TQQQ's inception in February 2010. QLD and SSO both date from
+   2006 and UPRO from 2009; their earlier history is outside the window.
+
+   If the fetch fails the chart removes itself rather than showing stale
+   hardcoded numbers.
+   =========================================================================== */
 (function () {
   "use strict";
 
-  function draw() {
+  var FUNDS = [
+    { sym: "TQQQ", name: "TQQQ", mult: "3\u00d7 Nasdaq-100", colour: "#B0894F", w: "3",   dash: "" },
+    { sym: "QLD",  name: "QLD",  mult: "2\u00d7 Nasdaq-100", colour: "#C4703C", w: "2.2", dash: "" },
+    { sym: "QQQ",  name: "QQQ",  mult: "the index itself",   colour: "#2E7D32", w: "2.2", dash: "2 4" }
+  ];
+
+  /* QQQ's growth multiplied by three, arithmetically. Not a fund and not
+     buyable: it is what "triple the Nasdaq" sounds like it should produce, so
+     the gap between this line and TQQQ is the daily reset doing its work. */
+  var SYNTH = { name: "3\u00d7 QQQ", mult: "not a real fund", colour: "#8A7A7E", w: "1.8", dash: "7 5" };
+  var START = 10000, ANCHOR = "2010-02";
+
+  function el(tag, a) {
+    var e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in a) e.setAttribute(k, a[k]);
+    return e;
+  }
+  function money(v) {
+    if (v >= 1000000) {
+      var m = v / 1000000;
+      return "$" + (m >= 10 || m === Math.round(m) ? Math.round(m) : m.toFixed(2)) + "M";
+    }
+    if (v >= 1000) return "$" + Math.round(v / 1000) + "k";
+    return "$" + Math.round(v);
+  }
+
+  function draw(paths) {
     var host = document.getElementById("cmp-chart");
     if (!host) return;
 
-    // Growth of $10,000, all-time, dividends reinvested. Anchored to the
-    // compounded Yahoo Finance annual totals: QQQ +1,229% -> ~$133k,
-    // TQQQ +14,255% -> ~$1.44M. "3x QQQ" is QQQ's growth tripled, for scale.
-    var START = 10000;
-    var qqq = [[2010,10000],[2011,10270],[2012,12131],[2013,16574],[2014,19753],
-               [2015,21620],[2016,23155],[2017,30718],[2018,30675],[2019,42626],
-               [2020,63342],[2021,80710],[2022,54415],[2023,84261],[2024,105815],
-               [2025,132903],[2026,140000]];
-    var tqqq = [[2010,10000],[2011,9195],[2012,14003],[2013,33570],[2014,52734],
-                [2015,61821],[2016,68856],[2017,150147],[2018,120403],[2019,281538],
-                [2020,591370],[2021,1082089],[2022,226373],[2023,675180],[2024,1068337],
-                [2025,1435525],[2026,1500000]];
-    var trip = qqq.map(function (p) { return [p[0], START * (1 + 3 * (p[1] / START - 1))]; });
+    var W = 900, H = 460, L = 66, R = 128, T = 22, B = 46;
+    var years = [], lo = START, hi = START;
+    paths.forEach(function (p) {
+      p.pts.forEach(function (q) {
+        if (q[1] < lo) lo = q[1];
+        if (q[1] > hi) hi = q[1];
+      });
+      if (p.pts.length) {
+        years.push(p.pts[0][0]);
+        years.push(p.pts[p.pts.length - 1][0]);
+      }
+    });
+    var x0 = Math.min.apply(null, years), x1 = Math.max.apply(null, years);
+    lo = Math.pow(10, Math.floor(Math.log10(lo * 0.85)));
+    hi = Math.pow(10, Math.ceil(Math.log10(hi * 1.15)));
 
-    var W = 900, H = 430, L = 66, R = 20, T = 20, B = 46;
-    var x0 = 2010, x1 = 2026;
-    var loMin = 8000, loMax = 2000000;
+    var xf = function (t) { return L + (W - L - R) * (t - x0) / (x1 - x0 || 1); };
+    var lg = Math.log10;
+    var yf = function (v) { return T + (H - T - B) * (1 - (lg(v) - lg(lo)) / (lg(hi) - lg(lo))); };
 
-    var xf = function (yr) { return L + (W - L - R) * (yr - x0) / (x1 - x0); };
-    var lg = function (v) { return Math.log10(v); };
-    var yf = function (v) { return T + (H - T - B) * (1 - (lg(v) - lg(loMin)) / (lg(loMax) - lg(loMin))); };
-
-    function el(tag, a) {
-      var e = document.createElementNS("http://www.w3.org/2000/svg", tag);
-      for (var k in a) e.setAttribute(k, a[k]);
-      return e;
-    }
-    function line(pts, stroke, w, dash) {
-      var d = pts.map(function (p, i) { return (i ? "L" : "M") + xf(p[0]).toFixed(1) + "," + yf(p[1]).toFixed(1); }).join(" ");
-      return el("path", { d: d, fill: "none", stroke: stroke, "stroke-width": w, "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": dash || "" });
-    }
-    function money(v) {
-      if (v >= 1000000) return "$" + (v / 1000000).toFixed(v % 1000000 ? 1 : 0) + "M";
-      if (v >= 1000) return "$" + Math.round(v / 1000) + "k";
-      return "$" + v;
-    }
-
-    var s = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "Growth of $10,000 in QQQ, 3x QQQ and TQQQ since 2010, log scale" });
+    var s = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
+      "aria-label": "Growth of $10,000 in TQQQ, UPRO, QLD, SSO and QQQ since February 2010, log scale" });
     s.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-    [10000, 100000, 1000000].forEach(function (v) {
-      var gy = yf(v);
+    for (var g = lo; g <= hi; g *= 10) {
+      var gy = yf(g);
       s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".10" }));
-      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = money(v);
-      s.appendChild(t);
-    });
-    [2010, 2014, 2018, 2022, 2026].forEach(function (yr) {
-      var t = el("text", { x: xf(yr), y: H - 16, "text-anchor": yr === 2010 ? "start" : (yr === 2026 ? "end" : "middle"), "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = yr;
-      s.appendChild(t);
-    });
-
-    // shared starting dot, so it's clear all three begin at $10k
-    s.appendChild(el("circle", { cx: xf(2010), cy: yf(START), r: "4", fill: "#3A2B31" }));
-    var st = el("text", { x: xf(2010) + 8, y: yf(START) - 8, "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-    st.textContent = "$10k in 2010";
-    s.appendChild(st);
-
-    s.appendChild(line(qqq, "#8D9C86", "2.4"));
-    s.appendChild(line(trip, "#7BA0C4", "2", "6 5"));
-    s.appendChild(line(tqqq, "#B0894F", "3"));
-
-    function label(pts, txt, color, dy) {
-      var last = pts[pts.length - 1];
-      var t = el("text", { x: xf(last[0]) - 6, y: yf(last[1]) + (dy || -8), "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "12.5", "font-weight": "600", fill: color });
-      t.textContent = txt;
+      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end",
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
+      t.textContent = money(g);
       s.appendChild(t);
     }
-    label(tqqq, "TQQQ  $1.44M", "#8A6A2E", -10);
-    label(trip, "3\u00d7 QQQ  $379k", "#5B7C9E", -10);
-    label(qqq, "QQQ  $133k", "#5E7350", 20);
+    var span = Math.ceil(x1) - Math.floor(x0);
+    var stepY = span > 12 ? 4 : (span > 6 ? 2 : 1);
+    for (var yr = Math.ceil(x0); yr <= x1; yr += stepY) {
+      var xt = el("text", { x: xf(yr), y: H - 16, "text-anchor": "middle",
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
+      xt.textContent = yr;
+      s.appendChild(xt);
+    }
+
+    s.appendChild(el("circle", { cx: xf(x0), cy: yf(START), r: "4", fill: "#3A2B31" }));
+    var st = el("text", { x: xf(x0) + 8, y: yf(START) + 18, "font-family": "EB Garamond,Georgia,serif",
+      "font-size": "11.5", fill: "#8A7A7E" });
+    st.textContent = "$10k, February 2010";
+    s.appendChild(st);
+
+    paths.forEach(function (p) {
+      var d = p.pts.map(function (q, i) {
+        return (i ? "L" : "M") + xf(q[0]).toFixed(1) + "," + yf(q[1]).toFixed(1);
+      }).join(" ");
+      s.appendChild(el("path", { d: d, fill: "none", stroke: p.colour, "stroke-width": p.w,
+        "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": p.dash }));
+    });
+
+    // end labels, nudged apart so none of them collide
+    var ends = paths.map(function (p) {
+      return { y: yf(p.pts[p.pts.length - 1][1]), p: p, v: p.pts[p.pts.length - 1][1] };
+    }).sort(function (a, b) { return a.y - b.y; });
+    for (var i = 1; i < ends.length; i++) {
+      if (ends[i].y - ends[i - 1].y < 30) ends[i].y = ends[i - 1].y + 30;
+    }
+    ends.forEach(function (e) {
+      var t1 = el("text", { x: W - R + 10, y: e.y, "font-family": "EB Garamond,Georgia,serif",
+        "font-size": "13", "font-weight": "700", fill: e.p.colour });
+      t1.textContent = e.p.name + "  " + money(e.v);
+      s.appendChild(t1);
+      var t2 = el("text", { x: W - R + 10, y: e.y + 14, "font-family": "EB Garamond,Georgia,serif",
+        "font-size": "11", fill: "#8A7A7E" });
+      t2.textContent = e.p.mult;
+      s.appendChild(t2);
+    });
 
     host.innerHTML = "";
     host.appendChild(s);
   }
 
+  function monthToDecimal(key) {
+    return parseInt(key.slice(0, 4), 10) + (parseInt(key.slice(5, 7), 10) - 1) / 12;
+  }
+
+  function start() {
+    var host = document.getElementById("cmp-chart");
+    if (!host || !window.TTF_LIVE || !window.TTF_LIVE.series) return;
+
+    Promise.all(FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }))
+      .then(function (results) {
+        var paths = [];
+        results.forEach(function (r, i) {
+          if (!r || !r.total || !(r.total[ANCHOR] > 0)) return;
+          var base = r.total[ANCHOR];
+          var keys = Object.keys(r.total).filter(function (k) { return k >= ANCHOR; }).sort();
+          var pts = keys.map(function (k) { return [monthToDecimal(k), START * r.total[k] / base]; });
+          if (pts.length > 12) {
+            paths.push({ sym: FUNDS[i].sym, name: FUNDS[i].name, mult: FUNDS[i].mult,
+              colour: FUNDS[i].colour, w: FUNDS[i].w, dash: FUNDS[i].dash, pts: pts });
+          }
+        });
+        var qqq = paths.filter(function (p) { return p.sym === "QQQ"; })[0];
+        if (qqq) {
+          paths.push({
+            sym: "SYNTH", name: SYNTH.name, mult: SYNTH.mult, colour: SYNTH.colour,
+            w: SYNTH.w, dash: SYNTH.dash,
+            pts: qqq.pts.map(function (q) { return [q[0], START * (1 + 3 * (q[1] / START - 1))]; })
+          });
+        }
+        if (paths.length < 2) { host.innerHTML = ""; return; }
+        draw(paths);
+      })
+      .catch(function () { host.innerHTML = ""; });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", draw);
+    document.addEventListener("DOMContentLoaded", start);
   } else {
-    draw();
+    start();
   }
 })();
