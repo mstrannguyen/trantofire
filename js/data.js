@@ -348,15 +348,14 @@ window.TTF_DATA = [
    Edit it exactly the way you edit the TQQQ log above: find the month, delete
    the two slashes, type the price you paid.
 
-   The August 2026 line is UNCOMMENTED AND WRONG until you put the real price
-   in. A price of 0 is ignored by the engine, so the sleeve shows as not yet
-   started rather than showing a made-up buy.
+   August 2026 is logged. Every later month is commented out, the same as the
+   TQQQ log above.
    --------------------------------------------------------------------------- */
 
 window.TTF_DATA_SSO = [
 
   // ───────── 2026 ─────────
-  { month: "2026-08", price: 0.00 },   // <-- SET THE PRICE YOU PAID
+  { month: "2026-08", price: 67.62 },
   // { month: "2026-09", price: 0.00 },
   // { month: "2026-10", price: 0.00 },
   // { month: "2026-11", price: 0.00 },
