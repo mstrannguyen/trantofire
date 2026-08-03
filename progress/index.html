@@ -46,6 +46,8 @@
   a{color:var(--brass)}
   .eyebrow{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
   .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  .center .lede{text-align:left}
+  .hero .lede,.comments .lede{text-align:center}
   :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
   .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
   .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
@@ -143,7 +145,6 @@
   @media (max-width:640px){ .sheet-embed iframe{height:460px} }
   .dev{display:inline-block;margin-left:7px;color:#A85A48;font-weight:600;cursor:help}
 
-    border-left:3px solid var(--brass);border-radius:0 16px 16px 0;padding:26px 30px;text-align:left}
   .note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:32px}
 
   .foot{padding:60px 0 78px;border-top:1px solid var(--hair)}
