@@ -45,8 +45,6 @@
      right after the first one lands and right again after the second. */
   function totals() {
     var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, any = false;
-    var cashBits = [], posBits = [];
-
     sleeves.forEach(function (sl) {
       var v = state[sl.sym];
       if (!v) return;
@@ -55,8 +53,8 @@
       position  += v.etfValue;
       portfolio += v.portfolio;
       moneyIn   += v.moneyIn;
-      cashBits.push(sl.sym + " " + usd(v.reserve));
-      posBits.push(sl.sym + " " + v.shares + " at " + usd(v.avgCost, 2));
+      setText("sg-hold-" + sl.sym, v.shares + " share" + (v.shares === 1 ? "" : "s") +
+        " at " + usd(v.avgCost, 2) + " \u00b7 " + usd(v.reserve) + " in reserve");
     });
     if (!any) return;
 
@@ -64,10 +62,8 @@
     if (summaryH) summaryH.hidden = false;
 
     setText("sg-reserve", usd(reserve));
-    setText("sg-reserve-sub-split", cashBits.join(" \u00b7 "));
-    setText("sg-invested", usd(position));
-    setText("sg-invested-sub", posBits.join(" \u00b7 "));
     setText("sg-portfolio", usd(portfolio));
+    setText("sg-portfolio-sub", usd(position) + " in funds plus the reserves.");
 
     if (ret) {
       var r = moneyIn ? (portfolio - moneyIn) / moneyIn : 0;

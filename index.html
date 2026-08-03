@@ -132,7 +132,6 @@
 
 
   .sig-grid-2{margin-top:22px}
-  .sig-grid-2up{grid-template-columns:repeat(2,1fr)}
   .sg-return{font-weight:600}
   .sg-return.pos{color:#5E7350}
   .sg-return.neg{color:#A85A48}
@@ -140,14 +139,11 @@
   /* live signal band */
   .signal-band{padding:70px 0 10px}
   .sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .sig-grid-2up{grid-template-columns:repeat(2,1fr)}
   .sig-card{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px;text-align:center}
   .sig-card dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
   .sig-card dd{margin:0;font-family:var(--display);font-size:clamp(38px,4.6vw,52px);font-weight:300;line-height:1;letter-spacing:-.02em}
   .sig-card .sub{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
-  .sig-card.act{background:var(--plum);border-color:var(--plum);color:#EFE5E7}
-  .sig-card.act dt{color:var(--brass)}
-  .sig-card.act dd{color:#fff}
-  .sig-card.act .sub{color:#C7B5BA}
   .sig-card.act.t1{background:var(--blush);border-color:rgba(58,43,49,.12)}
   .sig-card.act.t1 dt{color:#8A6A2E}
   .sig-card.act.t1 dd{color:var(--plum)}
@@ -156,6 +152,12 @@
   .sig-card.act.t2 dt{color:#7A5A22}
   .sig-card.act.t2 dd{color:var(--plum)}
   .sig-card.act.t2 .sub{color:#5F4E53}
+  .sig-card.act.t3{background:var(--plum);border-color:var(--plum);color:#EFE5E7}
+  .sig-card.act.t3 dt{color:var(--brass)}
+  .sig-card.act.t3 dd{color:#fff}
+  .sig-card.act.t3 .sub{color:#C7B5BA}
+  .sig-card .hold{margin-top:14px;padding-top:14px;border-top:1px solid rgba(58,43,49,.10);font-size:13.5px}
+  .sig-card.act.t3 .hold{border-top-color:rgba(255,255,255,.16)}
   .live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5E7A55;margin-right:7px;vertical-align:middle}
   .sig-foot{text-align:center;font-size:13.5px;color:var(--muted);margin:26px 0 0}
   .sig-foot a{color:var(--brass)}
@@ -412,31 +414,28 @@
         <dt>TQQQ · 3× Nasdaq-100</dt>
         <dd id="sg-deploy-TQQQ">—</dd>
         <p class="sub" id="sg-deploy-sub-TQQQ">Deploy this share of all available cash.</p>
+        <p class="sub hold" id="sg-hold-TQQQ">Nothing held yet.</p>
       </div>
 
       <div class="sig-card act" id="sg-act-SSO">
         <dt>SSO · 2× S&amp;P 500</dt>
         <dd id="sg-deploy-SSO">—</dd>
         <p class="sub" id="sg-deploy-sub-SSO">Deploy this share of all available cash.</p>
+        <p class="sub hold" id="sg-hold-SSO">Nothing held yet.</p>
       </div>
 
     </div>
     <p class="eyebrow center" id="sg-summary-h" hidden style="margin:52px 0 26px">Portfolio overview</p>
-    <div class="sig-grid sig-grid-2" id="sg-summary" hidden>
+    <div class="sig-grid sig-grid-2 sig-grid-2up" id="sg-summary" hidden>
       <div class="sig-card">
         <dt>Cash reserve</dt>
         <dd id="sg-reserve">—</dd>
-        <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile. <span id="sg-reserve-sub-split"></span></p>
-      </div>
-      <div class="sig-card">
-        <dt>Fund positions</dt>
-        <dd id="sg-invested">—</dd>
-        <p class="sub" id="sg-invested-sub">What the shares are worth right now.</p>
+        <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile.</p>
       </div>
       <div class="sig-card">
         <dt>Portfolio value</dt>
         <dd id="sg-portfolio">—</dd>
-        <p class="sub">Both funds plus both reserves. <span id="sg-return" class="sg-return">—</span></p>
+        <p class="sub"><span id="sg-portfolio-sub">Both funds plus both reserves.</span> <span id="sg-return" class="sg-return">—</span> on money in.</p>
       </div>
     </div>
     <p class="sig-foot"><span id="sg-live"></span> Portfolio value is both fund positions plus both cash reserves, with the reserves earning 4% a year while they wait. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
@@ -736,7 +735,7 @@
 <script src="js/engine.js?v=12" defer></script>
 <script src="js/live.js?v=15" defer></script>
 <script src="js/funds.js?v=2" defer></script>
-<script src="js/signal.js?v=10" defer></script>
+<script src="js/signal.js?v=11" defer></script>
 
 <script src="js/compare.js?v=13" defer></script>
 <script src="js/comments.js?v=4" defer></script>
