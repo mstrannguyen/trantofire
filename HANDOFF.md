@@ -42,8 +42,14 @@ experiment with a defined carve-out slice, not the whole portfolio.
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
 - **Lifecycle investing.** Leverage comes down over time: 3× now, then 2×
-  (QLD or SSO), then unleveraged. No trigger set yet. Grounded in Ayres and
+  (QLD), then unleveraged. No trigger set yet. Grounded in Ayres and
   Nalebuff, who cap at 2:1 — the site says plainly that 3× goes past them.
+- **A second parcel in SSO.** The same counter-cyclical rules run on SSO
+  (2× S&P 500) in a separate holding, meant to be kept long term so the geared
+  side is not all one index, and with drawdowns Tran is more comfortable
+  sitting through. Deliberately NOT tracked on the site: every published
+  figure is the TQQQ slice. SSO is the parallel holding, QLD is the step-down
+  target. They are not interchangeable on the page any more.
 
 Rules come from Henrique Centieiro's TradingView Strategy 3. B.D. Collins'
 book "$1,000 to $1,000,000" is the other main source.
