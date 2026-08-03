@@ -323,7 +323,19 @@
             if (q[1] < lo) lo = q[1];
           });
         });
-        var scale = niceLog(lo, hi);
+        /* The floor sits just under the $10,000 everything starts from, the
+           same as the Nasdaq chart, so the starting dot sits on the bottom
+           gridline and nothing is drawn below the money that went in. It only
+           drops lower if a fund actually fell below that, which would
+           otherwise be clipped off the chart. */
+        var floor = Math.min(START * 0.8, lo);
+        var scale = niceLog(floor, hi);
+        scale.lo = floor;
+        // niceLog rounds its own floor down, so anything it produced below the
+        // one being used here would be drawn under the plot, on top of the year
+        // labels. When nothing fell below the stake, $10k is the bottom line.
+        var bottom = lo >= START ? START : floor;
+        scale.grid = scale.grid.filter(function (v) { return v >= bottom; });
 
         // Ticks land on whole years inside the window. Spacing them evenly
         // across the range instead put a 2027 label on a chart that stops in

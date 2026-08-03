@@ -132,6 +132,7 @@
 
 
   .sig-grid-2{margin-top:22px}
+  .sig-grid-2up{grid-template-columns:repeat(2,1fr)}
   .sg-return{font-weight:600}
   .sg-return.pos{color:#5E7350}
   .sg-return.neg{color:#A85A48}
@@ -405,24 +406,18 @@
 <section class="signal-band">
   <div class="wrap">
     <p class="eyebrow center" style="margin-bottom:26px">The signal right now</p>
-    <div class="sig-grid">
+    <div class="sig-grid sig-grid-2up">
 
-      <div class="sig-card">
-        <dt>High-water mark</dt>
-        <dd id="sg-ath">$88.09</dd>
-        <p class="sub" id="sg-ath-sub">TQQQ record high, 3 June 2026. Every tier is measured from this one number.</p>
+      <div class="sig-card act" id="sg-act-TQQQ">
+        <dt>TQQQ · 3× Nasdaq-100</dt>
+        <dd id="sg-deploy-TQQQ">—</dd>
+        <p class="sub" id="sg-deploy-sub-TQQQ">Deploy this share of all available cash.</p>
       </div>
 
-      <div class="sig-card">
-        <dt>TQQQ now</dt>
-        <dd id="sg-price">—</dd>
-        <p class="sub" id="sg-price-sub">First reading lands with the August buy.</p>
-      </div>
-
-      <div class="sig-card act" id="sg-act">
-        <dt>What the rules say</dt>
-        <dd id="sg-deploy">—</dd>
-        <p class="sub" id="sg-deploy-sub">Deploy this share of all available cash.</p>
+      <div class="sig-card act" id="sg-act-SSO">
+        <dt>SSO · 2× S&amp;P 500</dt>
+        <dd id="sg-deploy-SSO">—</dd>
+        <p class="sub" id="sg-deploy-sub-SSO">Deploy this share of all available cash.</p>
       </div>
 
     </div>
@@ -431,20 +426,20 @@
       <div class="sig-card">
         <dt>Cash reserve</dt>
         <dd id="sg-reserve">—</dd>
-        <p class="sub">Waiting to be deployed on the next dip, earning 4% a year in the meantime.</p>
+        <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile. <span id="sg-reserve-sub-split"></span></p>
       </div>
       <div class="sig-card">
-        <dt>TQQQ position</dt>
+        <dt>Fund positions</dt>
         <dd id="sg-invested">—</dd>
         <p class="sub" id="sg-invested-sub">What the shares are worth right now.</p>
       </div>
       <div class="sig-card">
         <dt>Portfolio value</dt>
         <dd id="sg-portfolio">—</dd>
-        <p class="sub">Shares plus reserve. <span id="sg-return" class="sg-return">—</span></p>
+        <p class="sub">Both funds plus both reserves. <span id="sg-return" class="sg-return">—</span></p>
       </div>
     </div>
-    <p class="sig-foot"><span id="sg-live"></span> Portfolio value is the TQQQ position plus the cash reserve, with the reserve earning 4% a year while it waits. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
+    <p class="sig-foot"><span id="sg-live"></span> Portfolio value is both fund positions plus both cash reserves, with the reserves earning 4% a year while they wait. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
   </div>
 </section>
 
@@ -741,9 +736,9 @@
 <script src="js/engine.js?v=12" defer></script>
 <script src="js/live.js?v=15" defer></script>
 <script src="js/funds.js?v=2" defer></script>
-<script src="js/signal.js?v=12" defer></script>
+<script src="js/signal.js?v=10" defer></script>
 
-<script src="js/compare.js?v=12" defer></script>
+<script src="js/compare.js?v=13" defer></script>
 <script src="js/comments.js?v=4" defer></script>
 </body>
 </html>

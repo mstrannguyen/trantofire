@@ -40,12 +40,15 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA_SSO",      // window.TTF_DATA_SSO
       CONTRIBUTION: 800,
-      // TO SET ONCE: SSO's record high. Left empty on purpose rather than
-      // guessed. The site derives it from Yahoo's full split-adjusted monthly
-      // history on every load and prints it to the console, so read it there
-      // and paste it in. Until then the mark ratchets from logged prices
-      // alone, which reads the tier too shallow if Yahoo is unreachable.
-      HIGH_WATER_MARK: null,
+      // Fallback only. The site derives the record high from Yahoo's full
+      // split-adjusted monthly history on every load and measures the tiers
+      // against that, the same as TQQQ.
+      //
+      // Note for anyone checking this against a data site: SSO ran a 2:1
+      // forward split on 20 November 2025, and several sites still publish an
+      // unadjusted all-time high in the $160s that predates it. Everything
+      // here is post-split.
+      HIGH_WATER_MARK: 70.13,            // SSO record high, June 2026
       EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
       bench:        ["VOO", "UPRO"]
     }

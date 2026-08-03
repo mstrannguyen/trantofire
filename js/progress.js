@@ -505,8 +505,38 @@
       var c = $(id); if (c) c.innerHTML = "";
     });
 
-    // one row per sleeve rather than the month-by-month log, which only makes
-    // sense against a single price
+    sleeveRows(runs);
+
+    var stamp = document.getElementById("p-live");
+    if (stamp) stamp.textContent = "Both sleeves at their last logged prices. " +
+      "Open a fund's tab for its live value and its month-by-month log.";
+    hide("loading"); show("data");
+
+    /* The tier column is measured against each fund's record high, and that
+       comes from Yahoo. Pinned share counts mean the money above is already
+       right without it, but the tier is not, so the rows are redrawn once the
+       highs arrive. */
+    if (!window.TTF_LIVE || !window.TTF_LIVE.quoteFor) return;
+    var token = ++renderToken;
+    Promise.all(runs.map(function (r) {
+      return window.TTF_LIVE.quoteFor(r.sl.sym).then(function (live) {
+        if (live && live.ath && live.ath > (r.sl.HIGH_WATER_MARK || 0)) {
+          var lifted = {};
+          for (var k in r.sl) lifted[k] = r.sl[k];
+          lifted.HIGH_WATER_MARK = live.ath;
+          r.hist = E.run(r.sl.rows || [], lifted);
+        }
+        return r;
+      }).catch(function () { return r; });
+    })).then(function () {
+      if (token !== renderToken) return;      // a later tab click wins
+      sleeveRows(runs);
+    });
+  }
+
+  /* One row per sleeve rather than the month-by-month log, which only makes
+     sense against a single price. */
+  function sleeveRows(runs) {
     $("rows").innerHTML = runs.map(function (r) {
       var d = r.hist[r.hist.length - 1];
       return "<tr>" +
@@ -526,11 +556,6 @@
         '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
         "</tr>";
     }).join("");
-
-    var stamp = document.getElementById("p-live");
-    if (stamp) stamp.textContent = "Both sleeves at their last logged prices. " +
-      "Open a fund's tab for its live value and its month-by-month log.";
-    hide("loading"); show("data");
   }
 
   /* ---------- tabs ---------- */
