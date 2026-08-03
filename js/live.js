@@ -155,7 +155,8 @@
      --------------------------------------------------------------------- */
 
   var ROUTES = { TQQQ: PROXY, QQQ: "/api/price-qqq", QLD: "/api/price-qld",
-                 UPRO: "/api/price-upro", SSO: "/api/price-sso" };
+                 UPRO: "/api/price-upro", SSO: "/api/price-sso",
+                 VOO: "/api/price-voo" };
   var seriesCache = {};
 
   function monthKey(unixSeconds) {
@@ -235,7 +236,8 @@
      nothing to price against. Daily closes are there the next morning.
      --------------------------------------------------------------------- */
 
-  var DAILY = { TQQQ: "/api/daily-tqqq", QQQ: "/api/daily-qqq", QLD: "/api/daily-qld" };
+  var DAILY = { TQQQ: "/api/daily-tqqq", QQQ: "/api/daily-qqq", QLD: "/api/daily-qld",
+                SSO: "/api/daily-sso", VOO: "/api/daily-voo", UPRO: "/api/daily-upro" };
   var dailyCache = {};
 
   function dayKey(unixSeconds) {
@@ -287,5 +289,45 @@
     return dailyCache[symbol];
   }
 
-  window.TTF_LIVE = { get: get, series: series, daily: daily, asOfLabel: asOfLabel };
+  /* Live price and record high for any sleeve.
+
+     TQQQ keeps get(), which has the serverless function behind it as a second
+     route. Everything else derives both figures from the monthly history that
+     series() already fetches. The high comes from the full split-adjusted
+     history rather than from any published "all-time high" field, because two
+     sites publish provably wrong figures for these funds by using unadjusted
+     data. Deriving it from the whole series cannot be lower than the 52-week
+     high, so the sanity check the TQQQ route needs is satisfied by
+     construction.
+
+     The derived high is printed once so it can be pasted into config.js as
+     the offline fallback. */
+  var quoteCache = {};
+
+  function quoteFor(symbol) {
+    if (symbol === "TQQQ") return get();
+    if (quoteCache[symbol] !== undefined) return Promise.resolve(quoteCache[symbol]);
+
+    return series(symbol).then(function (s) {
+      if (!s || !s.months || !s.newest) return (quoteCache[symbol] = null);
+      var ath = 0, athKey = "";
+      for (var k in s.months) {
+        if (s.months[k] > ath) { ath = s.months[k]; athKey = k; }
+      }
+      var price = s.months[s.newest];
+      if (!(price > 0)) return (quoteCache[symbol] = null);
+
+      if (window.console && ath > 0) {
+        console.info("[Tran to Fire] " + symbol + " record high from Yahoo's full history: " +
+          ath.toFixed(2) + " (" + athKey + "). Paste into HIGH_WATER_MARK in js/config.js.");
+      }
+      return (quoteCache[symbol] = {
+        price: price, ath: ath > 0 ? ath : null, athDate: athKey,
+        asOf: s.asOf, source: "Yahoo Finance", suspect: false
+      });
+    }).catch(function () { return (quoteCache[symbol] = null); });
+  }
+
+  window.TTF_LIVE = { get: get, quoteFor: quoteFor, series: series,
+                      daily: daily, asOfLabel: asOfLabel };
 })();

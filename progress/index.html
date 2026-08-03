@@ -145,6 +145,13 @@
   @media (max-width:640px){ .sheet-embed iframe{height:460px} }
   .dev{display:inline-block;margin-left:7px;color:#A85A48;font-weight:600;cursor:help}
 
+  .sleeve-tabs{display:flex;gap:10px;justify-content:center;margin:0 0 34px;flex-wrap:wrap}
+  .sleeve-tabs button{font-family:var(--display);font-size:17px;line-height:1.15;color:#7A6A70;
+    background:#fff;border:1px solid var(--hair);border-radius:14px;padding:12px 20px;cursor:pointer;
+    text-align:center;transition:border-color .15s,color .15s}
+  .sleeve-tabs button span{display:block;font-family:inherit;font-size:12px;color:var(--muted);margin-top:3px}
+  .sleeve-tabs button:hover{border-color:var(--brass);color:#4A3840}
+  .sleeve-tabs button.on{border-color:var(--brass);color:#4A3840;box-shadow:inset 0 -2px 0 var(--brass)}
   .note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:32px}
 
   .foot{padding:60px 0 78px;border-top:1px solid var(--hair)}
@@ -210,7 +217,7 @@
   <div class="wrap hero-in center">
     <p class="eyebrow">Progress</p>
     <h1>Every month, <em>whatever it says</em>.</h1>
-    <p class="lede">Each month I log one number: the price I paid. Everything else follows from the rules. Figures in US dollars.</p>
+    <p class="lede">Each month I log one number per fund: the price I paid. Everything else follows from the rules. Each sleeve runs its own reserve and its own high-water mark, so they never touch. Figures in US dollars.</p>
   </div>
 </header>
 
@@ -231,6 +238,14 @@
   </div>
 
   <!-- DATA -->
+  <div class="wrap narrow">
+    <div id="sleeve-tabs" class="sleeve-tabs" role="tablist" aria-label="Which fund">
+      <button type="button" data-sym="TQQQ" role="tab" aria-selected="true">TQQQ<span>3× Nasdaq-100</span></button>
+      <button type="button" data-sym="SSO" role="tab" aria-selected="false">SSO<span>2× S&amp;P 500</span></button>
+      <button type="button" data-sym="BOTH" role="tab" aria-selected="false">Both<span>combined</span></button>
+    </div>
+  </div>
+
   <div id="data" class="hidden">
     <section class="band">
       <div class="wrap narrow" style="margin-bottom:44px">
@@ -391,11 +406,11 @@
   </div>
 </footer>
 
-<script src="../js/config.js?v=11" defer></script>
-<script src="../js/data.js?v=11" defer></script>
+<script src="../js/config.js?v=12" defer></script>
+<script src="../js/data.js?v=12" defer></script>
 <script src="../js/engine.js?v=12" defer></script>
-<script src="../js/live.js?v=14" defer></script>
-<script src="../js/progress.js?v=19" defer></script>
+<script src="../js/live.js?v=15" defer></script>
+<script src="../js/progress.js?v=20" defer></script>
 <script src="../js/benchmark.js?v=9" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>

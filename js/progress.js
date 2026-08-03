@@ -273,158 +273,297 @@
     host.innerHTML = ""; host.appendChild(s);
   }
 
-  /* ---------- render ---------- */
-  var history = E.run(window.TTF_DATA || [], cfg);
-  hide("loading");
+  /* ---------- render one sleeve ----------
 
-  if (!history.length) { show("empty"); return; }
+     The page holds one set of ids and re-renders them when the tab changes,
+     rather than carrying two of everything. renderToken exists because the
+     live price arrives from the network: without it a slow reply for the tab
+     you just left would land on the tab you just opened. */
+  var renderToken = 0;
 
-  var last = history[history.length - 1];
+  function renderSleeve(sleeve) {
+    document.getElementById("data").setAttribute("data-sym", sleeve.sym);
+    /* ---------- render ---------- */
+    var history = E.run(sleeve.rows || [], sleeve);
+    hide("loading");
 
-  // the latest buy, in plain language
-  $("r-month").textContent   = last.label;
-  $("r-price").textContent   = usd(last.fill, 2);
-  $("r-spend").textContent   = usd(last.spent);
-  $("r-shares").textContent  = last.bought;
-  $("r-reserve").textContent = usd(last.reserve);
-  var deviationNote = last.deviated
-    ? " <b>The rules said " + last.ruleBought + " share" + (last.ruleBought === 1 ? "" : "s") +
-      "; I bought " + last.bought + ".</b>" + (last.note ? " " + last.note + "." : "")
-    : "";
-  $("r-line").innerHTML = last.bought > 0
-    ? "Bought <b>" + last.bought + " share" + (last.bought === 1 ? "" : "s") + "</b> at " + usd(last.fill, 2) +
-      ", spending <b>" + usd(last.spent) + "</b> \u2014 " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
-      " available, because TQQQ was " + ddPct(last.drawdown) + " below its high. " +
-      usd(last.reserve) + " carried into next month." + deviationNote
-    : "No shares bought this month. " + usd(last.available) + " was available and the rules deployed " +
-      pct(last.deployPct, 0) + ", which wasn't enough for a whole share at " + usd(last.fill, 2) + ". It all carried forward." + deviationNote;
+    if (!history.length) { show("empty"); hide("data"); return; }
 
-  $("asof").textContent = last.label;
-  var pill = $("tier");
-  pill.textContent = last.tier.label + " \u00b7 deploy " + pct(last.deployPct, 0);
-  pill.className = "tierpill t" + last.tier.n;
+    var last = history[history.length - 1];
 
-  $("s-value").firstChild.nodeValue = usd(last.portfolio);
-  $("s-in").firstChild.nodeValue    = usd(last.moneyIn);
-  var plEl = $("s-pl");
-  plEl.firstChild.nodeValue = (last.pl < 0 ? "\u2212" : "") + usd(Math.abs(last.pl));
-  plEl.className = last.pl >= 0 ? "pos" : "neg";
-  $("s-pl-sub").textContent = pct(last.ret) + " on money in";
-  $("s-dd").firstChild.nodeValue    = ddPct(last.drawdown);
-  $("s-dd-sub").textContent         = "high-water mark " + usd(last.high, 2);
-  $("s-sh").firstChild.nodeValue    = last.shares.toLocaleString("en-US");
-  $("s-avg").firstChild.nodeValue   = usd(last.avgCost, 2);
-  $("s-cash").firstChild.nodeValue  = usd(last.reserve);
-  $("s-alloc").firstChild.nodeValue = Math.round(last.pctEtf * 100) + "% / " + Math.round(last.pctCash * 100) + "%";
+    // the latest buy, in plain language
+    $("r-month").textContent   = last.label;
+    $("r-price").textContent   = usd(last.fill, 2);
+    $("r-spend").textContent   = usd(last.spent);
+    $("r-shares").textContent  = last.bought;
+    $("r-reserve").textContent = usd(last.reserve);
+    var deviationNote = last.deviated
+      ? " <b>The rules said " + last.ruleBought + " share" + (last.ruleBought === 1 ? "" : "s") +
+        "; I bought " + last.bought + ".</b>" + (last.note ? " " + last.note + "." : "")
+      : "";
+    $("r-line").innerHTML = last.bought > 0
+      ? "Bought <b>" + last.bought + " share" + (last.bought === 1 ? "" : "s") + "</b> at " + usd(last.fill, 2) +
+        ", spending <b>" + usd(last.spent) + "</b> \u2014 " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
+        " available, because " + sleeve.sym + " was " + ddPct(last.drawdown) + " below its high. " +
+        usd(last.reserve) + " carried into next month." + deviationNote
+      : "No shares bought this month. " + usd(last.available) + " was available and the rules deployed " +
+        pct(last.deployPct, 0) + ", which wasn't enough for a whole share at " + usd(last.fill, 2) + ". It all carried forward." + deviationNote;
 
-  var months = history.map(function (d) { return d.label; });
-  drawPriceChart($("chart0"), history);
-  drawValueChart($("chart1"), history);
-  drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
+    $("asof").textContent = last.label;
+    var pill = $("tier");
+    pill.textContent = last.tier.label + " \u00b7 deploy " + pct(last.deployPct, 0);
+    pill.className = "tierpill t" + last.tier.n;
 
-  var html = "";
-  for (var k = history.length - 1; k >= 0; k--) {
-    var d = history[k];
-    html += "<tr>" +
-      '<td class="mth">' + d.label + (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
-      "<td>" + usd(d.price, 2) + "</td>" +
-      "<td>" + ddPct(d.drawdown) + "</td>" +
-      '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +
-      "<td>" + pct(d.deployPct, 0) + "</td>" +
-      "<td>" + usd(d.available) + "</td>" +
-      "<td>" + usd(d.spent) + "</td>" +
-      "<td>" + d.bought + (d.deviated ? '<span class="dev" title="The rules said ' + d.ruleBought + '">\u2260</span>' : "") + "</td>" +
-      "<td>" + d.shares + "</td>" +
-      "<td>" + usd(d.avgCost, 2) + "</td>" +
-      "<td>" + usd(d.reserve) + "</td>" +
-      "<td>" + usd(d.portfolio) + "</td>" +
-      "<td>" + usd(d.moneyIn) + "</td>" +
-      '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
-      "</tr>";
+    $("s-value").firstChild.nodeValue = usd(last.portfolio);
+    $("s-in").firstChild.nodeValue    = usd(last.moneyIn);
+    var plEl = $("s-pl");
+    plEl.firstChild.nodeValue = (last.pl < 0 ? "\u2212" : "") + usd(Math.abs(last.pl));
+    plEl.className = last.pl >= 0 ? "pos" : "neg";
+    $("s-pl-sub").textContent = pct(last.ret) + " on money in";
+    $("s-dd").firstChild.nodeValue    = ddPct(last.drawdown);
+    $("s-dd-sub").textContent         = "high-water mark " + usd(last.high, 2);
+    $("s-sh").firstChild.nodeValue    = last.shares.toLocaleString("en-US");
+    $("s-avg").firstChild.nodeValue   = usd(last.avgCost, 2);
+    $("s-cash").firstChild.nodeValue  = usd(last.reserve);
+    $("s-alloc").firstChild.nodeValue = Math.round(last.pctEtf * 100) + "% / " + Math.round(last.pctCash * 100) + "%";
+
+    var months = history.map(function (d) { return d.label; });
+    drawPriceChart($("chart0"), history);
+    drawValueChart($("chart1"), history);
+    drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
+
+    var html = "";
+    for (var k = history.length - 1; k >= 0; k--) {
+      var d = history[k];
+      html += "<tr>" +
+        '<td class="mth">' + d.label + (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
+        "<td>" + usd(d.price, 2) + "</td>" +
+        "<td>" + ddPct(d.drawdown) + "</td>" +
+        '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +
+        "<td>" + pct(d.deployPct, 0) + "</td>" +
+        "<td>" + usd(d.available) + "</td>" +
+        "<td>" + usd(d.spent) + "</td>" +
+        "<td>" + d.bought + (d.deviated ? '<span class="dev" title="The rules said ' + d.ruleBought + '">\u2260</span>' : "") + "</td>" +
+        "<td>" + d.shares + "</td>" +
+        "<td>" + usd(d.avgCost, 2) + "</td>" +
+        "<td>" + usd(d.reserve) + "</td>" +
+        "<td>" + usd(d.portfolio) + "</td>" +
+        "<td>" + usd(d.moneyIn) + "</td>" +
+        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
+        "</tr>";
+    }
+    var iEl = document.getElementById("p-interest");
+    if (iEl) {
+      var bits = [];
+      if (last.brokerageTotal > 0)
+        bits.push(usd(last.brokerageTotal, 2) + " paid in brokerage");
+      if (last.mgmtTotal > 0)
+        bits.push("about " + usd(last.mgmtTotal, 2) + " borne in fund fees, already inside the price");
+      if (last.interestTotal > 0)
+        bits.push(usd(last.interestTotal, 2) + " earned as interest on the reserve");
+      if (bits.length) iEl.innerHTML = "So far: " + bits.join(" \u00b7 ") + ".";
+    }
+
+    $("rows").innerHTML = html;
+    show("data");
+
+    // ---- upgrade the valuation to a live market price if available ----
+    if (window.TTF_LIVE) {
+      var token = ++renderToken;
+      window.TTF_LIVE.quoteFor(sleeve.sym).then(function (live) {
+        if (!live || token !== renderToken) return;   // a later tab click wins
+
+        // Yahoo's all-time high replaces the hardcoded reference where it is higher
+        var hist = history;
+        if (live.ath && live.ath > (sleeve.HIGH_WATER_MARK || 0)) {
+          var lifted = {};
+          for (var ck in sleeve) lifted[ck] = sleeve[ck];
+          lifted.HIGH_WATER_MARK = live.ath;
+          hist = E.run(sleeve.rows || [], lifted);
+        }
+
+        var r = E.revalue(hist, live.price);
+        if (!r) return;
+
+        // the chart's last point should agree with the cards above it
+        // the last point moves to the live price, so the chart agrees with the cards
+        var live = hist.slice();
+        var lastRow = {};
+        for (var k in live[live.length - 1]) lastRow[k] = live[live.length - 1][k];
+        lastRow.etfValue = r.etfValue;
+        live[live.length - 1] = lastRow;
+        drawValueChart($("chart1"), live);
+        drawPriceChart($("chart0"), live);
+
+        // only the "what is it worth now" figures move; the log stays as bought
+        $("s-value").firstChild.nodeValue = usd(r.portfolio);
+        var plEl = $("s-pl");
+        plEl.firstChild.nodeValue = (r.pl < 0 ? "\u2212" : "") + usd(Math.abs(r.pl));
+        plEl.className = r.pl >= 0 ? "pos" : "neg";
+        $("s-pl-sub").textContent = pct(r.ret) + " on money in";
+        $("s-dd").firstChild.nodeValue = ddPct(r.drawdown);
+        $("s-dd-sub").textContent = "high-water mark " + usd(r.high, 2);
+        $("s-alloc").firstChild.nodeValue =
+          Math.round(r.pctEtf * 100) + "% / " + Math.round(r.pctCash * 100) + "%";
+
+        // prepend a live "Today" row so the table reconciles with the summary above
+        var rowsEl = $("rows");
+        if (rowsEl && !document.getElementById("today-row")) {
+          var tr = document.createElement("tr");
+          tr.id = "today-row";
+          tr.className = "today";
+          tr.innerHTML =
+            '<td class="mth">Today<br><span class="sub-note">live price</span></td>' +
+            "<td>" + usd(r.price, 2) + "</td>" +
+            "<td>" + ddPct(r.drawdown) + "</td>" +
+            '<td><span class="sig s' + r.tier.n + '">' + r.tier.label + "</span></td>" +
+            "<td>" + pct(r.tier.pct, 0) + "</td>" +
+            "<td>\u2014</td><td>\u2014</td><td>\u2014</td>" +
+            "<td>" + r.shares + "</td>" +
+            "<td>" + usd(r.avgCost, 2) + "</td>" +
+            "<td>" + usd(r.reserve) + "</td>" +
+            "<td>" + usd(r.portfolio) + "</td>" +
+            "<td>" + usd(r.moneyIn) + "</td>" +
+            '<td class="' + (r.ret >= 0 ? "pos" : "neg") + '">' + pct(r.ret) + "</td>";
+          rowsEl.insertBefore(tr, rowsEl.firstChild);
+        }
+
+        var stamp = document.getElementById("p-live");
+        if (stamp) {
+          stamp.textContent = "Valued at the live " + sleeve.sym + " price of " + usd(r.price, 2) +
+            " from " + live.source +
+            (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") +
+            ". The table below shows the prices actually paid.";
+        }
+      });
+    }
   }
-  var iEl = document.getElementById("p-interest");
-  if (iEl) {
-    var bits = [];
-    if (last.brokerageTotal > 0)
-      bits.push(usd(last.brokerageTotal, 2) + " paid in brokerage");
-    if (last.mgmtTotal > 0)
-      bits.push("about " + usd(last.mgmtTotal, 2) + " borne in fund fees, already inside the price");
-    if (last.interestTotal > 0)
-      bits.push(usd(last.interestTotal, 2) + " earned as interest on the reserve");
-    if (bits.length) iEl.innerHTML = "So far: " + bits.join(" \u00b7 ") + ".";
-  }
+  /* ---------- the combined view ----------
 
-  $("rows").innerHTML = html;
-  show("data");
+     Shares, average cost and drawdown belong to one fund, so they are not
+     summed here. Money is: two sleeves, two reserves, one total. The value
+     chart adds the profit on both, which is why it needs each sleeve's own
+     shares and average cost carried into the merged row. */
+  function renderBoth(sleeves) {
+    var runs = sleeves.map(function (sl) {
+      return { sl: sl, hist: E.run(sl.rows || [], sl) };
+    }).filter(function (r) { return r.hist.length; });
 
-  // ---- upgrade the valuation to a live market price if available ----
-  if (window.TTF_LIVE) {
-    window.TTF_LIVE.get().then(function (live) {
-      if (!live) return;
+    if (!runs.length) { show("empty"); hide("data"); return; }
+    document.getElementById("data").setAttribute("data-sym", "BOTH");
 
-      // Yahoo's all-time high replaces the hardcoded reference where it is higher
-      var hist = history;
-      if (live.ath && live.ath > cfg.HIGH_WATER_MARK) {
-        hist = E.run(window.TTF_DATA || [], {
-          HIGH_WATER_MARK: live.ath,
-          CONTRIBUTION:    cfg.CONTRIBUTION,
-          CASH_RATE:       cfg.CASH_RATE
+    var months = {};
+    runs.forEach(function (r) {
+      r.hist.forEach(function (d) {
+        var m = months[d.month] || (months[d.month] = {
+          month: d.month, label: d.label, shares: 0, avgCost: 0,
+          etfValue: 0, reserve: 0, portfolio: 0, moneyIn: 0, cost: 0
         });
-      }
+        m.etfValue  += d.etfValue;
+        m.reserve   += d.reserve;
+        m.portfolio += d.portfolio;
+        m.moneyIn   += d.moneyIn;
+        m.cost      += d.shares * d.avgCost;
+      });
+    });
+    var merged = Object.keys(months).sort().map(function (k) {
+      var m = months[k];
+      m.shares = 1; m.avgCost = m.cost;      // so shares * avgCost is the cost basis
+      return m;
+    });
 
-      var r = E.revalue(hist, live.price);
-      if (!r) return;
+    var t = merged[merged.length - 1];
+    var pl = t.portfolio - t.moneyIn;
+    var etfShare = t.portfolio > 0 ? t.etfValue / t.portfolio : 0;
 
-      // the chart's last point should agree with the cards above it
-      // the last point moves to the live price, so the chart agrees with the cards
-      var live = hist.slice();
-      var lastRow = {};
-      for (var k in live[live.length - 1]) lastRow[k] = live[live.length - 1][k];
-      lastRow.etfValue = r.etfValue;
-      live[live.length - 1] = lastRow;
-      drawValueChart($("chart1"), live);
-      drawPriceChart($("chart0"), live);
+    $("s-value").firstChild.nodeValue = usd(t.portfolio);
+    $("s-value-sub").textContent = runs.length === 1 ? "one fund logged so far" : "across " + runs.length + " funds";
+    $("s-in").firstChild.nodeValue = usd(t.moneyIn);
+    $("s-in-sub").textContent = usd(runs.reduce(function (a, r) {
+      return a + r.sl.CONTRIBUTION; }, 0)) + " a month, " + runs.map(function (r) {
+      return r.sl.sym; }).join(" and ");
+    var plEl = $("s-pl");
+    plEl.firstChild.nodeValue = (pl < 0 ? "\u2212" : "") + usd(Math.abs(pl));
+    plEl.className = pl >= 0 ? "pos" : "neg";
+    $("s-pl-sub").textContent = pct(t.moneyIn ? pl / t.moneyIn : 0) + " on money in";
+    $("s-cash").firstChild.nodeValue = usd(t.reserve);
+    $("s-cash-sub").textContent = "both reserves";
+    $("s-alloc").firstChild.nodeValue =
+      Math.round(etfShare * 100) + "% / " + Math.round((1 - etfShare) * 100) + "%";
+    $("s-alloc-sub").textContent = "funds / cash";
 
-      // only the "what is it worth now" figures move; the log stays as bought
-      $("s-value").firstChild.nodeValue = usd(r.portfolio);
-      var plEl = $("s-pl");
-      plEl.firstChild.nodeValue = (r.pl < 0 ? "\u2212" : "") + usd(Math.abs(r.pl));
-      plEl.className = r.pl >= 0 ? "pos" : "neg";
-      $("s-pl-sub").textContent = pct(r.ret) + " on money in";
-      $("s-dd").firstChild.nodeValue = ddPct(r.drawdown);
-      $("s-dd-sub").textContent = "high-water mark " + usd(r.high, 2);
-      $("s-alloc").firstChild.nodeValue =
-        Math.round(r.pctEtf * 100) + "% / " + Math.round(r.pctCash * 100) + "%";
+    ["dd", "sh", "avg"].forEach(function (k) {
+      var e = $("s-" + k);
+      if (e && e.firstChild) e.firstChild.nodeValue = "\u2014";
+      var sub = $("s-" + k + "-sub");
+      if (sub) sub.textContent = "per fund, use the tabs";
+      if (e) e.className = "";
+    });
 
-      // prepend a live "Today" row so the table reconciles with the summary above
-      var rowsEl = $("rows");
-      if (rowsEl && !document.getElementById("today-row")) {
-        var tr = document.createElement("tr");
-        tr.id = "today-row";
-        tr.className = "today";
-        tr.innerHTML =
-          '<td class="mth">Today<br><span class="sub-note">live price</span></td>' +
-          "<td>" + usd(r.price, 2) + "</td>" +
-          "<td>" + ddPct(r.drawdown) + "</td>" +
-          '<td><span class="sig s' + r.tier.n + '">' + r.tier.label + "</span></td>" +
-          "<td>" + pct(r.tier.pct, 0) + "</td>" +
-          "<td>\u2014</td><td>\u2014</td><td>\u2014</td>" +
-          "<td>" + r.shares + "</td>" +
-          "<td>" + usd(r.avgCost, 2) + "</td>" +
-          "<td>" + usd(r.reserve) + "</td>" +
-          "<td>" + usd(r.portfolio) + "</td>" +
-          "<td>" + usd(r.moneyIn) + "</td>" +
-          '<td class="' + (r.ret >= 0 ? "pos" : "neg") + '">' + pct(r.ret) + "</td>";
-        rowsEl.insertBefore(tr, rowsEl.firstChild);
-      }
+    drawValueChart($("chart1"), merged);
+    ["chart0", "chart2"].forEach(function (id) {
+      var c = $(id); if (c) c.innerHTML = "";
+    });
 
-      var stamp = document.getElementById("p-live");
-      if (stamp) {
-        stamp.textContent = "Valued at the live TQQQ price of " + usd(r.price, 2) +
-          " from " + live.source +
-          (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") +
-          ". The table below shows the prices actually paid.";
-      }
+    // one row per sleeve rather than the month-by-month log, which only makes
+    // sense against a single price
+    $("rows").innerHTML = runs.map(function (r) {
+      var d = r.hist[r.hist.length - 1];
+      return "<tr>" +
+        '<td class="mth">' + r.sl.sym + "<br><span class=\"sub-note\">" + d.label + "</span></td>" +
+        "<td>" + usd(d.fill, 2) + "</td>" +
+        "<td>" + ddPct(d.drawdown) + "</td>" +
+        '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +
+        "<td>" + pct(d.tier.pct, 0) + "</td>" +
+        "<td>" + usd(d.available) + "</td>" +
+        "<td>" + usd(d.spent) + "</td>" +
+        "<td>" + d.bought + "</td>" +
+        "<td>" + d.shares + "</td>" +
+        "<td>" + usd(d.avgCost, 2) + "</td>" +
+        "<td>" + usd(d.reserve) + "</td>" +
+        "<td>" + usd(d.portfolio) + "</td>" +
+        "<td>" + usd(d.moneyIn) + "</td>" +
+        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
+        "</tr>";
+    }).join("");
+
+    var stamp = document.getElementById("p-live");
+    if (stamp) stamp.textContent = "Both sleeves at their last logged prices. " +
+      "Open a fund's tab for its live value and its month-by-month log.";
+    hide("loading"); show("data");
+  }
+
+  /* ---------- tabs ---------- */
+  var sleeves = (cfg.SLEEVES || []).map(function (s) { return cfg.sleeve(s.sym); })
+                  .filter(function (s) { return s; });
+
+  function draw(which) {
+    hide("empty");
+    if (which === "BOTH") renderBoth(sleeves);
+    else {
+      var one = sleeves.filter(function (s) { return s.sym === which; })[0];
+      if (one) renderSleeve(one);
+    }
+    // The benchmark still prices the TQQQ schedule against QQQ and QLD, so it
+    // is meaningless under any other tab. Hidden rather than left showing the
+    // wrong fund's comparison.
+    var bench = document.getElementById("bench");
+    if (bench) bench.classList[which === "TQQQ" ? "remove" : "add"]("hidden");
+
+    var tabs = document.querySelectorAll("#sleeve-tabs button");
+    for (var i = 0; i < tabs.length; i++) {
+      var on = tabs[i].getAttribute("data-sym") === which;
+      tabs[i].className = on ? "on" : "";
+      tabs[i].setAttribute("aria-selected", on ? "true" : "false");
+    }
+  }
+
+  var host = document.getElementById("sleeve-tabs");
+  if (host) {
+    host.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest("button") : null;
+      if (b && b.getAttribute("data-sym")) draw(b.getAttribute("data-sym"));
     });
   }
+  draw(sleeves.length ? sleeves[0].sym : "TQQQ");
 })();
