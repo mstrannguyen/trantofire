@@ -41,15 +41,20 @@ experiment with a defined carve-out slice, not the whole portfolio.
   accrues it inside its own price, so subtracting it would double-count
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
-- **Lifecycle investing.** Leverage comes down over time: 3× now, then 2×
-  (QLD), then unleveraged. No trigger set yet. Grounded in Ayres and
-  Nalebuff, who cap at 2:1 — the site says plainly that 3× goes past them.
-- **A second parcel in SSO.** The same counter-cyclical rules run on SSO
-  (2× S&P 500) in a separate holding, meant to be kept long term so the geared
-  side is not all one index, and with drawdowns Tran is more comfortable
-  sitting through. Deliberately NOT tracked on the site: every published
-  figure is the TQQQ slice. SSO is the parallel holding, QLD is the step-down
-  target. They are not interchangeable on the page any more.
+- **Lifecycle investing.** Leverage comes down over time, and the mechanism is
+  an ANNUAL REBALANCE OF THE MIX between the two sleeves, NOT selling TQQQ to
+  buy a lower-multiple fund. The blended exposure falls as the split tilts
+  toward SSO at 2×. Do not reinstate any "step down to QLD" wording; that was
+  the old framing and it is wrong. Targets, first rebalance date and whether it
+  runs on the calendar or on a balance are all still being refined. Grounded in
+  Ayres and Nalebuff, who cap at 2:1 — the site says plainly that 3× goes past
+  them.
+- **A second sleeve in SSO.** The same counter-cyclical rules run on SSO
+  (2× S&P 500) with its own reserve and its own high-water mark, meant to be
+  kept long term so the geared side is not all one index, and with drawdowns
+  Tran is more comfortable sitting through. US$800 a month into each sleeve,
+  US$1,600 in total. BOTH are tracked on the site now; the earlier decision
+  not to publish SSO was reversed.
 
 Rules come from Henrique Centieiro's TradingView Strategy 3. B.D. Collins'
 book "$1,000 to $1,000,000" is the other main source.
