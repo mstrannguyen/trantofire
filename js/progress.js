@@ -664,11 +664,18 @@
       var one = sleeves.filter(function (s) { return s.sym === which; })[0];
       if (one) renderSleeve(one);
     }
-    // The benchmark still prices the TQQQ schedule against QQQ and QLD, so it
-    // is meaningless under any other tab. Hidden rather than left showing the
-    // wrong fund's comparison.
+    /* Each fund gets its own comparison, against the pair named in its sleeve:
+       TQQQ against QQQ and QLD, SSO against VOO and UPRO. There is nothing
+       sensible to compare on the combined tab, since the two schedules run on
+       different indexes, so it is hidden there. */
     var bench = document.getElementById("bench");
-    if (bench) bench.classList[which === "TQQQ" ? "remove" : "add"]("hidden");
+    if (which === "BOTH") {
+      if (window.TTF_BENCH && window.TTF_BENCH.cancel) window.TTF_BENCH.cancel();
+      if (bench) bench.classList.add("hidden");
+    } else if (window.TTF_BENCH && window.TTF_BENCH.render) {
+      var b = sleeves.filter(function (s) { return s.sym === which; })[0];
+      if (b) window.TTF_BENCH.render(b);
+    }
 
     var tabs = document.querySelectorAll("#sleeve-tabs button");
     for (var i = 0; i < tabs.length; i++) {

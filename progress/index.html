@@ -359,8 +359,8 @@
       <div class="wrap narrow center">
         <span class="orn"></span>
         <p class="eyebrow">The same money, three funds</p>
-        <h2>What if it had gone into QQQ or QLD instead.</h2>
-        <p class="lede">The rules decide how much cash leaves the account each month. This spends that same amount on the two funds below the one I use, at the price each closed at on the day of the buy, and prices the result at today's market. The money going in is the same in all three columns. Only the leverage changes. QQQ tracks the Nasdaq-100 with no leverage, QLD doubles the daily move, TQQQ triples it.</p>
+        <h2 id="bench-title">What if it had gone into QQQ or QLD instead.</h2>
+        <p class="lede" id="bench-lede">The rules decide how much cash leaves the account each month. This spends that same amount on two other funds tracking the same index, at the price each closed at on the day of the buy, and prices the result at today's market. The money going in is the same in all three columns. Only the leverage changes.</p>
       </div>
 
       <div class="wrap">
@@ -372,9 +372,9 @@
               <tr>
                 <th>Month</th>
                 <th>Deployed</th>
-                <th>QQQ 1&#215;</th>
-                <th>QLD 2&#215;</th>
-                <th>TQQQ 3&#215;</th>
+                <th id="bench-h1">QQQ 1&#215;</th>
+                <th id="bench-h2">QLD 2&#215;</th>
+                <th id="bench-h3">TQQQ 3&#215;</th>
               </tr>
             </thead>
             <tbody id="bench-rows"></tbody>
@@ -418,8 +418,10 @@
 <script src="../js/data.js?v=12" defer></script>
 <script src="../js/engine.js?v=12" defer></script>
 <script src="../js/live.js?v=15" defer></script>
-<script src="../js/progress.js?v=22" defer></script>
-<script src="../js/benchmark.js?v=9" defer></script>
+<!-- benchmark.js first: progress.js calls TTF_BENCH.render on its first paint,
+     and defer runs these in document order -->
+<script src="../js/benchmark.js?v=11" defer></script>
+<script src="../js/progress.js?v=24" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>
 </body>

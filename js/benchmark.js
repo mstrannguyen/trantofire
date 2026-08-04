@@ -45,11 +45,36 @@
 (function () {
   "use strict";
 
-  var FUNDS = [
-    { sym: "QQQ",  mult: "1\u00d7", note: "Nasdaq-100, unleveraged" },
-    { sym: "QLD",  mult: "2\u00d7", note: "twice the daily move" },
-    { sym: "TQQQ", mult: "3\u00d7", note: "what I actually buy" }
-  ];
+  /* Which funds a sleeve is compared against comes from js/config.js. This is
+     only the wording and the multiple for each ticker. The sleeve's own fund
+     joins its two comparators and the three are ordered by leverage, which for
+     the S&P side puts the fund actually held in the middle rather than at the
+     end. */
+  var META = {
+    QQQ:  { mult: 1, index: "Nasdaq-100" },
+    QLD:  { mult: 2, index: "Nasdaq-100" },
+    TQQQ: { mult: 3, index: "Nasdaq-100" },
+    VOO:  { mult: 1, index: "S&P 500" },
+    SSO:  { mult: 2, index: "S&P 500" },
+    UPRO: { mult: 3, index: "S&P 500" }
+  };
+
+  function fundsFor(sleeve) {
+    var syms = (sleeve.bench || []).concat([sleeve.sym]);
+    return syms.map(function (sym) {
+      var m = META[sym] || { mult: 0, index: "" };
+      return {
+        sym:  sym,
+        mult: m.mult + "\u00d7",
+        n:    m.mult,
+        index: m.index,
+        note: sym === sleeve.sym ? "what I actually buy"
+              : m.mult === 1 ? m.index + ", unleveraged"
+              : m.mult === 2 ? "twice the daily move"
+              : "three times the daily move"
+      };
+    }).sort(function (a, b) { return a.n - b.n; });
+  }
 
   function $(id) { return document.getElementById(id); }
   function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
@@ -84,18 +109,18 @@
   /* Which day was this month's buy made on?
 
      If the log records a date, that is the answer. If it does not, the price
-     in the log is still a fact, so the closest TQQQ close inside that month
-     is used as the anchor. It is an inference and it is stated on the page,
+     in the log is still a fact, so the closest close for the fund actually
+     held, inside that month, is used as the anchor. It is an inference and it is stated on the page,
      but it beats pricing a September buy at an August close. */
-  function buyDate(month, row, tqqqDaily) {
+  function buyDate(month, row, ownDaily) {
     if (row && typeof row.date === "string" && row.date.length === 10) return row.date;
 
-    if (tqqqDaily && row && row.price > 0) {
+    if (ownDaily && row && row.price > 0) {
       var best = null, bestGap = Infinity;
-      for (var i = 0; i < tqqqDaily.dates.length; i++) {
-        var k = tqqqDaily.dates[i];
+      for (var i = 0; i < ownDaily.dates.length; i++) {
+        var k = ownDaily.dates[i];
         if (k.slice(0, 7) !== month) continue;
-        var gap = Math.abs(tqqqDaily.days[k] - row.price);
+        var gap = Math.abs(ownDaily.days[k] - row.price);
         if (gap < bestGap) { bestGap = gap; best = k; }
       }
       if (best) return best;
@@ -109,7 +134,7 @@
   }
 
   /* Walk the log once, spending the same cash in every fund. */
-  function build(history, series, dailies, rawByMonth) {
+  function build(history, series, dailies, rawByMonth, FUNDS, ownSym) {
     var state = {}, missing = {}, usedLive = {};
     FUNDS.forEach(function (f) {
       state[f.sym]   = { shares: 0, cost: 0, lastPrice: null };
@@ -120,7 +145,7 @@
     var rows = history.map(function (h) {
       var row = { month: h.month, label: h.label, spent: h.spent, on: null, px: {}, ret: {} };
 
-      var when = buyDate(h.month, rawByMonth[h.month], dailies.TQQQ);
+      var when = buyDate(h.month, rawByMonth[h.month], dailies[ownSym]);
       row.on = when;
 
       FUNDS.forEach(function (f) {
@@ -209,7 +234,7 @@
     }).join("");
   }
 
-  function renderRows(rows) {
+  function renderRows(rows, FUNDS) {
     var E = window.TTF_ENGINE;
     return rows.map(function (r) {
       var best = null;
@@ -235,20 +260,53 @@
     }).join("");
   }
 
-  function start() {
+  /* The Progress page calls this on every tab change, so a comparison still in
+     flight for the fund you have just left must not paint over the one you have
+     just opened. */
+  var token = 0;
+
+  function headings(FUNDS, sleeve) {
+    var others = FUNDS.filter(function (f) { return f.sym !== sleeve.sym; })
+                      .map(function (f) { return f.sym; });
+    var title = $("bench-title");
+    if (title) title.textContent = "What if it had gone into " + others.join(" or ") + " instead.";
+
+    var howEach = FUNDS.map(function (f) {
+      return f.n === 1 ? f.sym + " tracks the " + f.index + " with no leverage"
+           : f.n === 2 ? f.sym + " doubles the daily move"
+           : f.sym + " triples it";
+    }).join(", ");
+
+    var lede = $("bench-lede");
+    if (lede) {
+      lede.textContent = "The rules decide how much cash leaves the account each month. " +
+        "This spends that same amount on two other funds tracking the same index, at the price " +
+        "each closed at on the day of the buy, and prices the result at today's market. The money " +
+        "going in is the same in all three columns. Only the leverage changes. " + howEach + ".";
+    }
+    FUNDS.forEach(function (f, i) {
+      var th = $("bench-h" + (i + 1));
+      if (th) th.innerHTML = f.sym + " " + f.mult;
+    });
+  }
+
+  function render(sleeve) {
+    var mine = ++token;
     var E = window.TTF_ENGINE;
     var sec = $("bench");
-    if (!sec) return;
+    if (!sec || !sleeve) return;
     if (!E || !window.TTF_LIVE || !window.TTF_LIVE.series) {
       return fail("Comparison unavailable: a script did not load. Check that js/engine.js and js/live.js are deployed.");
     }
 
-    var cfg = window.TTF;
-    if (!cfg || !isFinite(cfg.CONTRIBUTION) || !isFinite(cfg.HIGH_WATER_MARK)) {
+    if (!window.TTF || !isFinite(sleeve.CONTRIBUTION)) {
       return fail("Comparison unavailable: js/config.js did not load.");
     }
 
-    var history = E.run(window.TTF_DATA || [], cfg);
+    var FUNDS = fundsFor(sleeve);
+    headings(FUNDS, sleeve);
+
+    var history = E.run(sleeve.rows || [], sleeve);
     if (!history.length) {
       return fail("Nothing logged yet. The comparison starts with the first buy.");
     }
@@ -261,7 +319,7 @@
     }
 
     var rawByMonth = {};
-    (window.TTF_DATA || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
+    (sleeve.rows || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
 
     Promise.all(
       FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }).concat(
@@ -270,6 +328,7 @@
       }))
     )
       .then(function (results) {
+        if (mine !== token) return;                 // a later tab click wins
         var series = {}, dailies = {}, ok = 0;
         FUNDS.forEach(function (f, i) {
           series[f.sym]  = results[i];
@@ -289,9 +348,9 @@
                       "/api routes in _redirects are not deployed.");
         }
 
-        var out   = build(history, series, dailies, rawByMonth);
-        var stamp = (series.TQQQ && series.TQQQ.asOf)
-          ? window.TTF_LIVE.asOfLabel(series.TQQQ.asOf) : "";
+        var out   = build(history, series, dailies, rawByMonth, FUNDS, sleeve.sym);
+        var own   = series[sleeve.sym];
+        var stamp = (own && own.asOf) ? window.TTF_LIVE.asOfLabel(own.asOf) : "";
         var table = sec.querySelector(".table-scroll");
 
         /* A month needs a published monthly close before it can be compared.
@@ -307,7 +366,7 @@
 
         if (table) table.style.display = "";
         $("bench-cards").innerHTML = renderCards(out.totals);
-        $("bench-rows").innerHTML  = renderRows(out.rows);
+        $("bench-rows").innerHTML  = renderRows(out.rows, FUNDS);
 
         var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
         var back = out.rows.some(function (r) {
@@ -326,12 +385,12 @@
       });
   }
 
-  /* exposed for testing and for poking at in the browser console */
-  window.TTF_BENCH = { build: build, FUNDS: FUNDS };
+  /* Switching to the combined tab hides this section, but a comparison already
+     in flight would finish and show itself again. cancel() retires the token so
+     the late reply lands nowhere. */
+  function cancel() { token++; }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  /* Driven by the Progress page's tab controller, and exposed for poking at in
+     the browser console. */
+  window.TTF_BENCH = { render: render, cancel: cancel, build: build, fundsFor: fundsFor };
 })();
