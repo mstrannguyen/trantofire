@@ -177,7 +177,7 @@
     host.innerHTML = ""; host.appendChild(s);
   }
 
-  function drawValueChart(host, rows) {
+  function drawValueChart(host, rows, label) {
     var W = 880, H = 360, L = 74, R = 20, T = 34, B = 48, n = rows.length;
     if (!n) { host.innerHTML = ""; return; }
 
@@ -237,7 +237,7 @@
       s.appendChild(t1);
       var t2 = el("text", { x: cx, y: ty + 16, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
         "font-size": "12.5", fill: col });
-      t2.textContent = (cost[i] > 0 ? pct(pl[i] / cost[i]) : "\u2014") + " on money in TQQQ";
+      t2.textContent = (cost[i] > 0 ? pct(pl[i] / cost[i]) : "\u2014") + " on money in " + (label || "the funds");
       s.appendChild(t2);
     });
 
@@ -283,6 +283,12 @@
 
   function renderSleeve(sleeve) {
     document.getElementById("data").setAttribute("data-sym", sleeve.sym);
+    var grid = $("r-grid"); if (grid) grid.classList.remove("hidden");
+    var pill0 = $("tier"); if (pill0) pill0.classList.remove("hidden");
+    // cleared rather than left carrying the combined view's wording; the live
+    // block below rewrites it, and an empty line beats a wrong one if it cannot
+    var stamp0 = document.getElementById("p-live");
+    if (stamp0) stamp0.textContent = "";
     /* ---------- render ---------- */
     var history = E.run(sleeve.rows || [], sleeve);
     hide("loading");
@@ -303,7 +309,7 @@
       : "";
     $("r-line").innerHTML = last.bought > 0
       ? "Bought <b>" + last.bought + " share" + (last.bought === 1 ? "" : "s") + "</b> at " + usd(last.fill, 2) +
-        ", spending <b>" + usd(last.spent) + "</b> \u2014 " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
+        ", spending <b>" + usd(last.spent) + "</b>, " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
         " available, because " + sleeve.sym + " was " + ddPct(last.drawdown) + " below its high. " +
         usd(last.reserve) + " carried into next month." + deviationNote
       : "No shares bought this month. " + usd(last.available) + " was available and the rules deployed " +
@@ -329,7 +335,7 @@
 
     var months = history.map(function (d) { return d.label; });
     drawPriceChart($("chart0"), history);
-    drawValueChart($("chart1"), history);
+    drawValueChart($("chart1"), history, sleeve.sym);
     drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
 
     var html = "";
@@ -392,7 +398,7 @@
         for (var k in live[live.length - 1]) lastRow[k] = live[live.length - 1][k];
         lastRow.etfValue = r.etfValue;
         live[live.length - 1] = lastRow;
-        drawValueChart($("chart1"), live);
+        drawValueChart($("chart1"), live, sleeve.sym);
         drawPriceChart($("chart0"), live);
 
         // only the "what is it worth now" figures move; the log stays as bought
@@ -524,10 +530,48 @@
       if (e) e.className = "";
     });
 
-    drawValueChart($("chart1"), merged);
+    drawValueChart($("chart1"), merged, "both funds");
     ["chart0", "chart2"].forEach(function (id) {
       var c = $(id); if (c) c.innerHTML = "";
     });
+  }
+
+  /* The receipt is one fund's buy. Under Both it becomes a sentence per fund,
+     and the four-figure grid is hidden: a price paid and a share count belong
+     to a single ticker and cannot be added together. The tier pill goes too,
+     for the same reason. */
+  function receiptBoth(runs) {
+    var latest = "", label = "";
+    runs.forEach(function (r) {
+      var d = r.hist[r.hist.length - 1];
+      if (d.month > latest) { latest = d.month; label = d.label; }
+    });
+
+    var bought = [], spent = 0, reserve = 0, available = 0, notes = [];
+    runs.forEach(function (r) {
+      var d = r.hist[r.hist.length - 1];
+      spent += d.spent; reserve += d.reserve; available += d.available;
+      bought.push(d.bought > 0
+        ? "<b>" + d.bought + " " + r.sl.sym + "</b> at " + usd(d.fill, 2)
+        : "<b>no " + r.sl.sym + "</b>");
+      if (d.month !== latest) {
+        notes.push(r.sl.sym + " has not been logged since " + d.label + ".");
+      }
+      if (d.deviated) {
+        notes.push("The rules said " + d.ruleBought + " " + r.sl.sym + " share" +
+          (d.ruleBought === 1 ? "" : "s") + "; I bought " + d.bought + ".");
+      }
+    });
+
+    $("r-month").textContent = label;
+    $("r-line").innerHTML =
+      "Bought " + bought.join(" and ") + ", spending <b>" + usd(spent) + "</b> of the " +
+      usd(available) + " available across both. " + usd(reserve) + " carried into next month." +
+      (notes.length ? " <b>" + notes.join(" ") + "</b>" : "");
+
+    var grid = $("r-grid"); if (grid) grid.classList.add("hidden");
+    var pill = $("tier");   if (pill) pill.classList.add("hidden");
+    $("asof").textContent = label;
   }
 
   function stampBoth(runs, isLive) {
@@ -554,6 +598,7 @@
     document.getElementById("data").setAttribute("data-sym", "BOTH");
 
     paintBoth(runs);
+    receiptBoth(runs);
     sleeveRows(runs);
     stampBoth(runs, false);
     hide("loading"); show("data");
@@ -578,6 +623,7 @@
     })).then(function () {
       if (token !== renderToken) return;        // a later tab click wins
       paintBoth(runs);
+      receiptBoth(runs);
       sleeveRows(runs);
       stampBoth(runs, true);
     });
