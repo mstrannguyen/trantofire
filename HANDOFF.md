@@ -46,9 +46,10 @@ experiment with a defined carve-out slice, not the whole portfolio.
   buy a lower-multiple fund. The blended exposure falls as the split tilts
   toward SSO at 2×. Do not reinstate any "step down to QLD" wording; that was
   the old framing and it is wrong. Targets, first rebalance date and whether it
-  runs on the calendar or on a balance are all still being refined. Grounded in
-  Ayres and Nalebuff, who cap at 2:1 — the site says plainly that 3× goes past
-  them.
+  runs on the calendar or on a balance are still being worked out, and the site
+  deliberately does NOT list those unknowns — it just says the leverage comes
+  down by rebalancing. Grounded in Ayres and Nalebuff, who cap at 2:1 — the
+  site says plainly that 3× goes past them.
 - **A second sleeve in SSO.** The same counter-cyclical rules run on SSO
   (2× S&P 500) with its own reserve and its own high-water mark, meant to be
   kept long term so the geared side is not all one index, and with drawdowns

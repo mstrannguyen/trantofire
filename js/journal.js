@@ -101,9 +101,9 @@ window.TTF_JOURNAL = [
     body: [
       "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. SSO was barely off its own high, so it stayed on the baseline fifth and took 2. The $1,218 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one.",
 
-      "Two funds from the start, US$800 into each, same ladder, measured separately. TQQQ was 32% under its record and SSO was under 4% under its own, so on the same afternoon one sleeve bought at a heavy discount and the other bought at close to full price. Neither reserve knows the other exists, which is the whole reason for running them apart.",
+      "Two funds from the start, US$800 into each, same ladder, measured separately. TQQQ was 32% under its record and SSO was under 4% under its own, so on the same afternoon one bought at a heavy discount and the other bought at close to full price. Neither reserve knows the other exists, which is the whole reason for running them apart.",
 
-      "SSO is the quieter half and it is meant to be. A 2x fund on the S&P 500 does not fall the way a 3x fund on the Nasdaq does, and I expect to hold it long after the Nasdaq sleeve has stepped down a rung. This month it did almost nothing, which is what a baseline month looks like."
+      "SSO is the quieter half and it is meant to be. A 2x fund on the S&P 500 does not fall the way a 3x fund on the Nasdaq does, and I expect to hold it long after the mix has started tilting away from the Nasdaq side. This month it did almost nothing, which is what a baseline month looks like."
     ],
 
     macro: {

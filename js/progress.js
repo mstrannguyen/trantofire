@@ -578,12 +578,12 @@
     var stamp = document.getElementById("p-live");
     if (!stamp) return;
     if (!isLive) {
-      stamp.textContent = "Both sleeves at their last logged prices.";
+      stamp.textContent = "Both funds at their last logged prices.";
       return;
     }
     var asOf = null;
     runs.forEach(function (r) { if (!asOf && r.asOf) asOf = r.asOf; });
-    stamp.textContent = "Both sleeves at live prices" +
+    stamp.textContent = "Both funds at live prices" +
       (asOf && window.TTF_LIVE.asOfLabel
         ? ", " + window.TTF_LIVE.asOfLabel(asOf) + " Sydney time" : "") +
       ". Open a fund's tab for its month-by-month log.";

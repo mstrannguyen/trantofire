@@ -77,7 +77,6 @@
   }
 
   function $(id) { return document.getElementById(id); }
-  function esc(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
   /* This section used to delete itself whenever anything went wrong, which
      meant a broken fetch and a working-but-empty month looked identical: a
@@ -85,11 +84,8 @@
   function fail(reason) {
     var sec = $("bench");
     if (!sec) return;
-    var cards = $("bench-cards"), rows = $("bench-rows");
-    var table = sec.querySelector(".table-scroll");
+    var cards = $("bench-cards");
     if (cards) cards.innerHTML = "";
-    if (rows)  rows.innerHTML  = "";
-    if (table) table.style.display = "none";
     var state = $("bench-state");
     if (state) state.textContent = reason;
     sec.classList.remove("hidden");
@@ -135,11 +131,15 @@
 
   /* Walk the log once, spending the same cash in every fund. */
   function build(history, series, dailies, rawByMonth, FUNDS, ownSym) {
-    var state = {}, missing = {}, usedLive = {};
+    var state = {}, missing = {}, usedLive = {}, livePx = {};
     FUNDS.forEach(function (f) {
       state[f.sym]   = { shares: 0, cost: 0, lastPrice: null };
       missing[f.sym] = 0;
       usedLive[f.sym] = false;
+      // today's price, needed inside the row loop as well as for the totals
+      var d = dailies[f.sym];
+      livePx[f.sym] = (series[f.sym] && series[f.sym].last) ||
+                      (d && d.dates.length ? d.days[d.dates[d.dates.length - 1]] : null);
     });
 
     var rows = history.map(function (h) {
@@ -164,20 +164,26 @@
         if (typeof px !== "number" || !(px > 0)) {
           missing[f.sym]++;
           row.px[f.sym]  = null;
-          row.ret[f.sym] = (s.cost && s.lastPrice)
-            ? (s.shares * s.lastPrice - s.cost) / s.cost
-            : null;
+          row.ret[f.sym] = null;
           return;
         }
 
+        var units = 0;
         if (h.spent > 0) {
           var cash = h.spent - h.fee;            // brokerage first, then shares
-          if (cash > 0) s.shares += cash / px;
+          if (cash > 0) units = cash / px;
+          s.shares += units;
           s.cost += h.spent;                     // identical outlay, every fund
         }
         s.lastPrice    = px;
         row.px[f.sym]  = px;
-        row.ret[f.sym] = s.cost ? (s.shares * px - s.cost) / s.cost : null;
+
+        /* This month's buy, valued at today's price. Valuing it at the price it
+           was bought at, which is what this did before, cancels down to minus
+           the brokerage for every fund, so a 1x and a 3x fund showed the same
+           figure and neither agreed with the cards above. */
+        var now = livePx[f.sym] || px;
+        row.ret[f.sym] = h.spent > 0 ? (units * now - h.spent) / h.spent : null;
       });
 
       return row;
@@ -185,10 +191,7 @@
 
     var totals = FUNDS.map(function (f) {
       var s     = state[f.sym];
-      var d     = dailies[f.sym];
-      var price = (series[f.sym] && series[f.sym].last) ||
-                  (d && d.dates.length ? d.days[d.dates[d.dates.length - 1]] : null) ||
-                  s.lastPrice;
+      var price = livePx[f.sym] || s.lastPrice;
       var value = price ? s.shares * price : null;
       return {
         sym:     f.sym,
@@ -234,32 +237,6 @@
     }).join("");
   }
 
-  function renderRows(rows, FUNDS) {
-    var E = window.TTF_ENGINE;
-    return rows.map(function (r) {
-      var best = null;
-      FUNDS.forEach(function (f) {
-        var v = r.ret[f.sym];
-        if (typeof v === "number" && (best === null || v > best)) best = v;
-      });
-
-      return "<tr>" +
-        '<td class="mth">' + r.label +
-          (r.on ? '<span class="bpx">' + esc(r.on) + "</span>" : "") + "</td>" +
-        "<td>" + (r.spent ? E.usd(r.spent, 2) : "\u2014") + "</td>" +
-        FUNDS.map(function (f) {
-          var ret = r.ret[f.sym];
-          var px  = r.px[f.sym];
-          var cls = (typeof ret === "number" && ret === best) ? ' class="best"' : "";
-          return "<td" + cls + ">" +
-            (ret === null ? "\u2014" : E.pct(ret)) +
-            '<span class="bpx">' + (px === null ? "" : "at " + E.usd(px, 2)) + "</span>" +
-          "</td>";
-        }).join("") +
-      "</tr>";
-    }).join("");
-  }
-
   /* The Progress page calls this on every tab change, so a comparison still in
      flight for the fund you have just left must not paint over the one you have
      just opened. */
@@ -282,12 +259,8 @@
       lede.textContent = "The rules decide how much cash leaves the account each month. " +
         "This spends that same amount on two other funds tracking the same index, at the price " +
         "each closed at on the day of the buy, and prices the result at today's market. The money " +
-        "going in is the same in all three columns. Only the leverage changes. " + howEach + ".";
+        "going in is the same in all three. Only the leverage changes. " + howEach + ".";
     }
-    FUNDS.forEach(function (f, i) {
-      var th = $("bench-h" + (i + 1));
-      if (th) th.innerHTML = f.sym + " " + f.mult;
-    });
   }
 
   function render(sleeve) {
@@ -366,8 +339,7 @@
 
         if (table) table.style.display = "";
         $("bench-cards").innerHTML = renderCards(out.totals);
-        $("bench-rows").innerHTML  = renderRows(out.rows, FUNDS);
-
+    
         var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
         var back = out.rows.some(function (r) {
           return r.on && String(r.on).slice(-2) === "28" && r.month + "-28" === r.on;

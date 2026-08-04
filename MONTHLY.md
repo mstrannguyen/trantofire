@@ -47,9 +47,12 @@ fine; the two are independent and neither waits for the other.
 
 **4. Send the words for the journal**
 
-Rough notes are fine. A title, what happened, how it felt, and anything about
-the market that month. The figures are pulled from `data.js` automatically, so
-never retype a number into the journal.
+Rough notes are fine. A title, what happened, how it felt, and what was going
+on in the market and the wider economy that month. The macro section is not
+decoration: the point of it is that in twenty years the entries read as a
+record of what happened and what it did to the position, not just a column of
+prices. The figures are pulled from `data.js` automatically, so never retype
+a number into the journal.
 
 **5. Check the confirmation before you accept the zip**
 

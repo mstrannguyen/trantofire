@@ -225,7 +225,7 @@
   <div class="wrap hero-in center">
     <p class="eyebrow">Progress</p>
     <h1>Every month, <em>whatever it says</em>.</h1>
-    <p class="lede">Each month I log one number per fund: the price I paid. Everything else follows from the rules. Each sleeve runs its own reserve and its own high-water mark, so they never touch. Figures in US dollars.</p>
+    <p class="lede">Each month I log one number per fund: the price I paid. Everything else follows from the rules. Each fund runs its own reserve and its own high-water mark, so they never touch. Figures in US dollars.</p>
   </div>
 </header>
 
@@ -366,24 +366,9 @@
       <div class="wrap">
         <div id="bench-cards" class="bench-cards"></div>
 
-        <div class="table-scroll">
-          <table class="log">
-            <thead>
-              <tr>
-                <th>Month</th>
-                <th>Deployed</th>
-                <th id="bench-h1">QQQ 1&#215;</th>
-                <th id="bench-h2">QLD 2&#215;</th>
-                <th id="bench-h3">TQQQ 3&#215;</th>
-              </tr>
-            </thead>
-            <tbody id="bench-rows"></tbody>
-          </table>
-        </div>
-
         <p class="note" id="bench-state" style="margin-top:18px"></p>
 
-        <p class="note">Each cell is the return to date on everything bought up to that month, with the price that fund closed at on the day of the buy underneath it. Money in is identical across the three columns, so the only thing being measured is the leverage. Four things worth knowing before reading too much into it. All three funds are priced on the same day, the day the order went in, so this is a like-for-like comparison rather than a month-end approximation; where the log does not record a date, the day is inferred as the one whose TQQQ close sits closest to the price in the log, and whichever date was used is printed under the month. The benchmark buys fractional shares, which it has to, because at QQQ's price a month's deployment often would not buy one whole share, and the real portfolio buys whole shares only and strands the rest as cash, so this flatters the benchmarks slightly. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so QQQ is understated by the most. And the tier ladder is driven by TQQQ's drawdown: a portfolio genuinely built on QQQ would have had its own high-water mark and deployed on different months, so this holds the schedule fixed to isolate the fund choice rather than to claim it is what I would have done.</p>
+        <p class="note">Each card spends the same money as the real schedule, on the same days, and values the result at today's price. Money in is identical across the three, so the only thing being measured is the leverage. All three are priced on the day the order went in rather than at month end. The comparison buys fractional shares, which it has to, because a month's deployment often would not buy one whole share of the unleveraged fund, while the real portfolio buys whole shares and strands the rest as cash, so this flatters the comparison slightly. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so the unleveraged fund is understated by the most. And the tier ladder runs off the drawdown of the fund I actually hold, so a portfolio built on one of the others would have had its own high-water mark and bought in different months. The schedule is held fixed to isolate the fund choice.</p>
       </div>
     </section>
 
@@ -420,8 +405,8 @@
 <script src="../js/live.js?v=15" defer></script>
 <!-- benchmark.js first: progress.js calls TTF_BENCH.render on its first paint,
      and defer runs these in document order -->
-<script src="../js/benchmark.js?v=11" defer></script>
-<script src="../js/progress.js?v=24" defer></script>
+<script src="../js/benchmark.js?v=13" defer></script>
+<script src="../js/progress.js?v=25" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>
 </body>
