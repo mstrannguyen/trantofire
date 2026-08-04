@@ -105,12 +105,20 @@
   .receipt h3{color:#fff;font-size:clamp(28px,3.4vw,38px);font-weight:300;margin:0 0 20px}
   .receipt-line{font-size:clamp(17px,1.9vw,20px);line-height:1.6;color:#DCCFD3;margin:0 0 30px;max-width:52ch}
   .receipt-line b{color:#fff;font-weight:600}
-  .receipt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:0;padding-top:28px;border-top:1px solid rgba(255,255,255,.18)}
-  .receipt-grid dt{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#A08D93;margin-bottom:10px}
-  .receipt-grid dd{margin:0;font-family:var(--display);font-size:clamp(24px,2.6vw,30px);font-weight:300;line-height:1.1;color:#fff}
+  /* All four cells share one label row and one value row. Without that each
+     cell sets its own height, so "Reserve carried" wrapping to two lines drops
+     its figure below the other three. */
+  .receipt-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:10px 24px;margin:0;padding-top:28px;border-top:1px solid rgba(255,255,255,.18)}
+  .receipt-grid > div{display:grid;grid-row:span 2;grid-template-rows:subgrid}
+  .receipt-grid dt{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#A08D93;line-height:1.3;margin:0;align-self:start}
+  .receipt-grid dd{margin:0;font-family:var(--display);font-size:clamp(24px,2.6vw,30px);font-weight:300;line-height:1.1;color:#fff;align-self:start}
+  @supports not (grid-template-rows: subgrid){
+    .receipt-grid > div{display:block}
+    .receipt-grid dt{min-height:2.6em;margin-bottom:10px}
+  }
   @media (max-width:760px){
     .receipt{padding:30px 26px}
-    .receipt-grid{grid-template-columns:repeat(2,1fr);gap:22px}
+    .receipt-grid{grid-template-columns:repeat(2,1fr);gap:10px 22px}
   }
   /* charts */
   .chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px 26px;margin-top:26px}
@@ -410,7 +418,7 @@
 <script src="../js/data.js?v=12" defer></script>
 <script src="../js/engine.js?v=12" defer></script>
 <script src="../js/live.js?v=15" defer></script>
-<script src="../js/progress.js?v=20" defer></script>
+<script src="../js/progress.js?v=21" defer></script>
 <script src="../js/benchmark.js?v=9" defer></script>
 
 <script src="../js/comments.js?v=4" defer></script>

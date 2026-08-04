@@ -444,49 +444,73 @@
      summed here. Money is: two sleeves, two reserves, one total. The value
      chart adds the profit on both, which is why it needs each sleeve's own
      shares and average cost carried into the merged row. */
-  function renderBoth(sleeves) {
-    var runs = sleeves.map(function (sl) {
-      return { sl: sl, hist: E.run(sl.rows || [], sl) };
-    }).filter(function (r) { return r.hist.length; });
+  /* ---------- the combined view ----------
 
-    if (!runs.length) { show("empty"); hide("data"); return; }
-    document.getElementById("data").setAttribute("data-sym", "BOTH");
+     Shares, average cost and drawdown belong to one fund, so they are not
+     summed. Money is: two sleeves, two reserves, one total.
 
-    var months = {};
+     Two things this has to get right. The totals are revalued at each fund's
+     live price, the same as the single-fund tabs do, or Both sits at the last
+     logged prices and quietly disagrees with every other figure on the site.
+     And a month that one sleeve has not logged carries that sleeve's previous
+     position forward rather than dropping it, which would otherwise wipe a
+     whole fund out of any month it happened to skip. */
+
+  function mergeHistories(runs) {
+    var labels = {};
     runs.forEach(function (r) {
-      r.hist.forEach(function (d) {
-        var m = months[d.month] || (months[d.month] = {
-          month: d.month, label: d.label, shares: 0, avgCost: 0,
-          etfValue: 0, reserve: 0, portfolio: 0, moneyIn: 0, cost: 0
-        });
+      r.hist.forEach(function (d) { labels[d.month] = d.label; });
+    });
+    var keys = Object.keys(labels).sort();
+    var at = runs.map(function () { return -1; });
+
+    return keys.map(function (k) {
+      var m = { month: k, label: labels[k], etfValue: 0, reserve: 0,
+                portfolio: 0, moneyIn: 0, cost: 0 };
+      runs.forEach(function (r, i) {
+        while (at[i] + 1 < r.hist.length && r.hist[at[i] + 1].month <= k) at[i]++;
+        if (at[i] < 0) return;                  // this sleeve had not started yet
+        var d = r.hist[at[i]];
         m.etfValue  += d.etfValue;
         m.reserve   += d.reserve;
         m.portfolio += d.portfolio;
         m.moneyIn   += d.moneyIn;
         m.cost      += d.shares * d.avgCost;
       });
-    });
-    var merged = Object.keys(months).sort().map(function (k) {
-      var m = months[k];
-      m.shares = 1; m.avgCost = m.cost;      // so shares * avgCost is the cost basis
+      m.shares = 1; m.avgCost = m.cost;         // so shares * avgCost is the cost basis
       return m;
     });
+  }
 
-    var t = merged[merged.length - 1];
-    var pl = t.portfolio - t.moneyIn;
-    var etfShare = t.portfolio > 0 ? t.etfValue / t.portfolio : 0;
+  function paintBoth(runs) {
+    var merged = mergeHistories(runs);
+    var value = 0, moneyIn = 0, reserve = 0, etfValue = 0;
 
-    $("s-value").firstChild.nodeValue = usd(t.portfolio);
-    $("s-value-sub").textContent = runs.length === 1 ? "one fund logged so far" : "across " + runs.length + " funds";
-    $("s-in").firstChild.nodeValue = usd(t.moneyIn);
+    runs.forEach(function (r) {
+      var v = r.live || r.hist[r.hist.length - 1];
+      value    += v.portfolio;
+      moneyIn  += v.moneyIn;
+      reserve  += v.reserve;
+      etfValue += v.etfValue;
+    });
+
+    var pl = value - moneyIn;
+    var etfShare = value > 0 ? etfValue / value : 0;
+
+    $("s-value").firstChild.nodeValue = usd(value);
+    $("s-value-sub").textContent = runs.length === 1
+      ? "one fund logged so far" : "across " + runs.length + " funds";
+    $("s-in").firstChild.nodeValue = usd(moneyIn);
     $("s-in-sub").textContent = usd(runs.reduce(function (a, r) {
       return a + r.sl.CONTRIBUTION; }, 0)) + " a month, " + runs.map(function (r) {
       return r.sl.sym; }).join(" and ");
+
     var plEl = $("s-pl");
     plEl.firstChild.nodeValue = (pl < 0 ? "\u2212" : "") + usd(Math.abs(pl));
     plEl.className = pl >= 0 ? "pos" : "neg";
-    $("s-pl-sub").textContent = pct(t.moneyIn ? pl / t.moneyIn : 0) + " on money in";
-    $("s-cash").firstChild.nodeValue = usd(t.reserve);
+    $("s-pl-sub").textContent = pct(moneyIn ? pl / moneyIn : 0) + " on money in";
+
+    $("s-cash").firstChild.nodeValue = usd(reserve);
     $("s-cash-sub").textContent = "both reserves";
     $("s-alloc").firstChild.nodeValue =
       Math.round(etfShare * 100) + "% / " + Math.round((1 - etfShare) * 100) + "%";
@@ -504,33 +528,58 @@
     ["chart0", "chart2"].forEach(function (id) {
       var c = $(id); if (c) c.innerHTML = "";
     });
+  }
 
-    sleeveRows(runs);
-
+  function stampBoth(runs, isLive) {
     var stamp = document.getElementById("p-live");
-    if (stamp) stamp.textContent = "Both sleeves at their last logged prices. " +
-      "Open a fund's tab for its live value and its month-by-month log.";
+    if (!stamp) return;
+    if (!isLive) {
+      stamp.textContent = "Both sleeves at their last logged prices.";
+      return;
+    }
+    var asOf = null;
+    runs.forEach(function (r) { if (!asOf && r.asOf) asOf = r.asOf; });
+    stamp.textContent = "Both sleeves at live prices" +
+      (asOf && window.TTF_LIVE.asOfLabel
+        ? ", " + window.TTF_LIVE.asOfLabel(asOf) + " Sydney time" : "") +
+      ". Open a fund's tab for its month-by-month log.";
+  }
+
+  function renderBoth(sleeves) {
+    var runs = sleeves.map(function (sl) {
+      return { sl: sl, hist: E.run(sl.rows || [], sl), live: null, asOf: null };
+    }).filter(function (r) { return r.hist.length; });
+
+    if (!runs.length) { show("empty"); hide("data"); return; }
+    document.getElementById("data").setAttribute("data-sym", "BOTH");
+
+    paintBoth(runs);
+    sleeveRows(runs);
+    stampBoth(runs, false);
     hide("loading"); show("data");
 
-    /* The tier column is measured against each fund's record high, and that
-       comes from Yahoo. Pinned share counts mean the money above is already
-       right without it, but the tier is not, so the rows are redrawn once the
-       highs arrive. */
     if (!window.TTF_LIVE || !window.TTF_LIVE.quoteFor) return;
     var token = ++renderToken;
+
     Promise.all(runs.map(function (r) {
-      return window.TTF_LIVE.quoteFor(r.sl.sym).then(function (live) {
-        if (live && live.ath && live.ath > (r.sl.HIGH_WATER_MARK || 0)) {
+      return window.TTF_LIVE.quoteFor(r.sl.sym).then(function (q) {
+        if (!q) return r;
+        // the record high comes from Yahoo, so the tier column needs it too
+        if (q.ath && q.ath > (r.sl.HIGH_WATER_MARK || 0)) {
           var lifted = {};
           for (var k in r.sl) lifted[k] = r.sl[k];
-          lifted.HIGH_WATER_MARK = live.ath;
+          lifted.HIGH_WATER_MARK = q.ath;
           r.hist = E.run(r.sl.rows || [], lifted);
         }
+        r.live = E.revalue(r.hist, q.price);
+        r.asOf = q.asOf;
         return r;
       }).catch(function () { return r; });
     })).then(function () {
-      if (token !== renderToken) return;      // a later tab click wins
+      if (token !== renderToken) return;        // a later tab click wins
+      paintBoth(runs);
       sleeveRows(runs);
+      stampBoth(runs, true);
     });
   }
 
