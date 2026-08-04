@@ -82,7 +82,9 @@
   .card-more::after{content:"\2193";font-size:13px;letter-spacing:0}
   .card.open .card-more::after{content:"\2191"}
 
-  .entry-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:24px 0 26px;
+  .entry-figs-sym{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin:26px 0 0}
+  .entry-figs-sym:first-of-type{margin-top:0}
+  .entry-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:10px 0 26px;
     background:var(--blush-soft);border-radius:14px;overflow:hidden}
   .entry-figs div{padding:16px 12px;text-align:center;border-left:1px solid rgba(58,43,49,.08);border-top:1px solid rgba(58,43,49,.08)}
   .entry-figs div:nth-child(-n+3){border-top:0}
@@ -204,7 +206,7 @@
 <script src="../js/data.js?v=12" defer></script>
 <script src="../js/engine.js?v=11" defer></script>
 <script src="../js/comments.js?v=4" defer></script>
-<script src="../js/journal.js?v=12" defer></script>
-<script src="../js/journal-render.js?v=13" defer></script>
+<script src="../js/journal.js?v=13" defer></script>
+<script src="../js/journal-render.js?v=14" defer></script>
 </body>
 </html>

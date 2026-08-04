@@ -86,7 +86,8 @@
   .src-note{font-size:14.5px;line-height:1.7;color:var(--muted)}
   .src-note a{color:var(--brass)}
 
-  .hwm{display:inline-block;border:1px solid rgba(176,137,79,.4);border-radius:100px;padding:14px 30px;margin:8px 0 0;background:#fff}
+  .hwm-pair{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .hwm{display:inline-block;border:1px solid rgba(176,137,79,.4);border-radius:100px;padding:14px 30px;margin:0;background:#fff}
   .hwm dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
   .hwm dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.1}
   .hwm dd small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);margin-top:4px}
@@ -418,8 +419,11 @@
     <span class="orn"></span>
     <p class="eyebrow">The tier ladder</p>
     <h2>How much I deploy, by depth.</h2>
-    <p class="lede">One number decides everything: how far TQQQ has fallen from its record high. That sets the percentage. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the price I actually pay on the day I place the order</strong>, not a month-end figure or an average. So the tier is fixed by the same number that appears in my log, and anyone can check the two agree.</p>
-    <dl class="hwm"><dt>High-water mark</dt><dd>$88.09<small>TQQQ record high, 3 June 2026</small></dd></dl>
+    <p class="lede">One number decides everything: how far the fund has fallen from its record high. That sets the percentage. Each sleeve is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the price I actually pay on the day I place the order</strong>, not a month-end figure or an average. So the tier is fixed by the same number that appears in my log, and anyone can check the two agree.</p>
+    <div class="hwm-pair">
+      <dl class="hwm"><dt>TQQQ high-water mark</dt><dd>$88.09<small>record high, 3 June 2026</small></dd></dl>
+      <dl class="hwm"><dt>SSO high-water mark</dt><dd>$70.13<small>record high, June 2026</small></dd></dl>
+    </div>
   </div>
   <div class="wrap">
     <div class="gauge">
@@ -616,7 +620,7 @@
     <ul class="grid2">
       <li><h3>The price I pay is the price that decides the tier</h3><p>There is only one price in play each month: whatever TQQQ costs when I place the order. That single number sets the drawdown, the tier, the deployment percentage and the share count, and it is the number published in the log. If I ever get filled at something different from the price I based the decision on, both figures go on the record.</p></li>
       <li><h3>Every buy costs $3</h3><p>That is what my broking app charges to place the trade, not anything the fund charges. The tier decides the share count on its own, and brokerage comes out of the cash afterwards, so the fee never shrinks the buy, it just leaves a little less in the reserve. Over twenty years that is $720 of brokerage, which the site tracks and reports rather than hiding.</p></li>
-      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. In a baseline month at $88.09, 20% of an $800 contribution is $160, which buys one share for $88.09. Brokerage of $3 comes out of the cash as well, so $68.91 rejoins the reserve.</p></li>
+      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. In a baseline TQQQ month at $88.09, 20% of an $800 contribution is $160, which buys one share for $88.09. Brokerage of $3 comes out of the cash as well, so $68.91 rejoins the reserve.</p></li>
       <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$800 a month, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
     </ul>
   </div>

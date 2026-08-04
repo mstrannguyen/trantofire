@@ -21,9 +21,27 @@
   if (!entries.length) { if (empty) empty.classList.remove("hidden"); return; }
   if (empty) empty.classList.add("hidden");
 
-  var history = E.run(window.TTF_DATA || [], cfg);
-  var byMonth = {};
-  history.forEach(function (m) { byMonth[m.month] = m; });
+  /* One run per sleeve. A month that only one of them logged still shows the
+     other's standing position in the headline, carried forward, so the
+     portfolio figure on a card matches the Progress page rather than dropping
+     a fund that happened to be logged a day late. */
+  var runs = (cfg.SLEEVES || []).map(function (s) { return cfg.sleeve(s.sym); })
+    .filter(function (sl) { return sl; })
+    .map(function (sl) { return { sl: sl, hist: E.run(sl.rows || [], sl) }; })
+    .filter(function (r) { return r.hist.length; });
+
+  var known = {};
+  runs.forEach(function (r) { r.hist.forEach(function (d) { known[d.month] = 1; }); });
+
+  /* Every sleeve's latest row at or before this month, flagged with whether it
+     was logged in this month or carried in from an earlier one. */
+  function rowsAt(month) {
+    return runs.map(function (r) {
+      var found = null;
+      r.hist.forEach(function (d) { if (d.month <= month) found = d; });
+      return found ? { sym: r.sl.sym, d: found, own: found.month === month } : null;
+    }).filter(function (x) { return x; });
+  }
 
   function esc(t) {
     return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -109,50 +127,60 @@
       "<h3>" + esc(mx.heading || "Markets and macro") + "</h3>" + inner + "</section>";
   }
 
-  function headline(m) {
-    if (!m) return "";
-    var sign = m.pl >= 0 ? "+" : "\u2212";
-    return shortMonth(m.month) + " \u00b7 Portfolio " + usd(m.portfolio) +
-           " (" + sign + usd(Math.abs(m.pl)) + ")";
+  function headline(month) {
+    var at = rowsAt(month);
+    if (!at.length) return "";
+    var portfolio = 0, pl = 0;
+    at.forEach(function (x) { portfolio += x.d.portfolio; pl += x.d.pl; });
+    var sign = pl >= 0 ? "+" : "\u2212";
+    return shortMonth(month) + " \u00b7 Portfolio " + usd(portfolio) +
+           " (" + sign + usd(Math.abs(pl)) + ")";
   }
 
-  function figures(m) {
-    if (!m) return "";
-    var cells = [
-      ["Price paid",  usd(m.fill, 2)],
-      ["From high",   ddPct(m.drawdown)],
-      ["Tier",        m.tier.label + " \u00b7 " + pct(m.deployPct, 0)],
-      ["Bought",      m.bought + " share" + (m.bought === 1 ? "" : "s")],
-      ["Spent",       usd(m.spent)],
-      ["Reserve",     usd(m.reserve)]
-    ];
-    return '<dl class="entry-figs">' + cells.map(function (c) {
-      return "<div><dt>" + c[0] + "</dt><dd>" + c[1] + "</dd></div>";
-    }).join("") + "</dl>";
+  /* A block per fund. Price paid, tier and share count belong to one ticker, so
+     they are never added together. Only sleeves actually bought in this month
+     get a block. */
+  function figures(month) {
+    return rowsAt(month).filter(function (x) { return x.own; }).map(function (x) {
+      var m = x.d;
+      var cells = [
+        ["Price paid",  usd(m.fill, 2)],
+        ["From high",   ddPct(m.drawdown)],
+        ["Tier",        m.tier.label + " \u00b7 " + pct(m.deployPct, 0)],
+        ["Bought",      m.bought + " share" + (m.bought === 1 ? "" : "s")],
+        ["Spent",       usd(m.spent)],
+        ["Reserve",     usd(m.reserve)]
+      ];
+      return '<p class="entry-figs-sym">' + esc(x.sym) + "</p>" +
+        '<dl class="entry-figs">' + cells.map(function (c) {
+          return "<div><dt>" + c[0] + "</dt><dd>" + c[1] + "</dd></div>";
+        }).join("") + "</dl>";
+    }).join("");
   }
 
   host.innerHTML = entries.map(function (e) {
-    var m      = byMonth[e.month];
+    var has    = known[e.month];
     var body   = toParas(e.body);
     var teaser = body.length ? body[0] : "";
     var rest   = body.slice(1);
     var id     = "e-" + String(e.month);
 
-    var dev = m && m.deviated
-      ? '<p class="entry-dev">The rules said ' + m.ruleBought + " share" +
-        (m.ruleBought === 1 ? "" : "s") + ". I bought " + m.bought + ".</p>"
-      : "";
+    var dev = rowsAt(e.month).filter(function (x) { return x.own && x.d.deviated; })
+      .map(function (x) {
+        return '<p class="entry-dev">The rules said ' + x.d.ruleBought + " " + x.sym +
+          " share" + (x.d.ruleBought === 1 ? "" : "s") + ". I bought " + x.d.bought + ".</p>";
+      }).join("");
 
     return '' +
       '<article class="card" id="' + esc(id) + '">' +
         '<div class="card-head">' +
-          (m ? '<p class="card-figs">' + esc(headline(m)) + "</p>" : "") +
+          (has ? '<p class="card-figs">' + esc(headline(e.month)) + "</p>" : "") +
           "<h2>" + esc(e.title || shortMonth(e.month)) + "</h2>" +
           (e.mood ? '<p class="card-mood">' + esc(e.mood) + "</p>" : "") +
         "</div>" +
         '<div class="card-teaser"><p>' + esc(teaser) + "</p></div>" +
         '<div class="card-full" id="' + esc(id) + '-full" hidden>' +
-          (m ? figures(m) : "") + dev +
+          (has ? figures(e.month) : "") + dev +
           rest.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
           macroHTML(e.macro) +
           '<div class="card-comments" data-month="' + esc(e.month) +

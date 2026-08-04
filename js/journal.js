@@ -99,7 +99,11 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. The $556 left over goes into the reserve and waits, earning interest while it does nothing, ready for a month that is worse than this one."
+      "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. SSO was barely off its own high, so it stayed on the baseline fifth and took 2. The $1,218 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one.",
+
+      "Two funds from the start, US$800 into each, same ladder, measured separately. TQQQ was 32% under its record and SSO was under 4% under its own, so on the same afternoon one sleeve bought at a heavy discount and the other bought at close to full price. Neither reserve knows the other exists, which is the whole reason for running them apart.",
+
+      "SSO is the quieter half and it is meant to be. A 2x fund on the S&P 500 does not fall the way a 3x fund on the Nasdaq does, and I expect to hold it long after the Nasdaq sleeve has stepped down a rung. This month it did almost nothing, which is what a baseline month looks like."
     ],
 
     macro: {
@@ -118,7 +122,7 @@ window.TTF_JOURNAL = [
 
         "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I do not know which, and I do not need to.",
 
-        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. The drawdown put me in the dip tier this month. The ladder never asked my opinion on lithography."
+        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. The drawdown put TQQQ in the dip tier this month and left SSO on the baseline. The ladder never asked my opinion on lithography."
       ],
 
       table: {
