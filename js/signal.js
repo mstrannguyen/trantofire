@@ -105,8 +105,7 @@
     window.TTF_LIVE.quoteFor(sl.sym).then(function (live) {
       if (!live) return;
 
-      // Yahoo's record high replaces the stored reference wherever it is
-      // higher. SSO ships with none set, so any live figure wins there.
+      // Yahoo's record high replaces the stored reference wherever it is higher.
       var lifted = {};
       for (var k in sl) lifted[k] = sl[k];
       var better = live.ath && live.ath > (sl.HIGH_WATER_MARK || 0);

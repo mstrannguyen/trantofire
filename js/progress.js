@@ -316,6 +316,7 @@
         pct(last.deployPct, 0) + ", which wasn't enough for a whole share at " + usd(last.fill, 2) + ". It all carried forward." + deviationNote;
 
     $("asof").textContent = last.label;
+
     var pill = $("tier");
     pill.textContent = last.tier.label + " \u00b7 deploy " + pct(last.deployPct, 0);
     pill.className = "tierpill t" + last.tier.n;
@@ -332,6 +333,12 @@
     $("s-avg").firstChild.nodeValue   = usd(last.avgCost, 2);
     $("s-cash").firstChild.nodeValue  = usd(last.reserve);
     $("s-alloc").firstChild.nodeValue = Math.round(last.pctEtf * 100) + "% / " + Math.round(last.pctCash * 100) + "%";
+    var allocSub = $("s-alloc-sub");
+    if (allocSub) {
+      allocSub.textContent = sleeve.REBALANCE
+        ? "fund / cash \u00b7 back to " + pct(sleeve.REBALANCE.target, 0) + " each August"
+        : "fund / cash \u00b7 no target, never rebalanced";
+    }
 
     var months = history.map(function (d) { return d.label; });
     drawPriceChart($("chart0"), history);
@@ -342,7 +349,13 @@
     for (var k = history.length - 1; k >= 0; k--) {
       var d = history[k];
       html += "<tr>" +
-        '<td class="mth">' + d.label + (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
+        '<td class="mth">' + d.label +
+          (d.rebalance
+            ? '<br><span class="reb">' +
+              (d.rebalance.shares < 0 ? "sold " + (-d.rebalance.shares) : "bought " + d.rebalance.shares) +
+              " back to " + pct(d.rebalance.target, 0) + "</span>"
+            : "") +
+          (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
         "<td>" + usd(d.price, 2) + "</td>" +
         "<td>" + ddPct(d.drawdown) + "</td>" +
         '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +

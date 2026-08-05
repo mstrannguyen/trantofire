@@ -100,6 +100,62 @@
       invested += spent;
       moneyIn += contribution;
 
+      /* ---------- the annual rebalance ----------
+
+         Only a sleeve with cfg.REBALANCE has one, and only in its month, and
+         only from its start date. It runs AFTER that month's ordinary buy, on
+         the parcel as it then stands: this fund's shares plus this fund's
+         reserve, nothing else.
+
+         Above the target weight, sell the excess into the reserve. Below it,
+         buy with the reserve. Whole shares, rounded down either way, so the
+         result lands just short of the target rather than past it. Brokerage
+         is charged on the trade in either direction, on top of the buy's.
+
+         `rebalance:` on a data row overrides the share count, positive to buy
+         and negative to sell, the same way `shares:` overrides the buy. */
+      var reb = null;
+      var R   = cfg.REBALANCE;
+      if (R && isFinite(R.target) &&
+          parseInt(r.month.slice(5, 7), 10) === R.month &&
+          (!R.from || r.month >= R.from)) {
+
+        var parcel     = shares * fill + reserve;
+        var wantShares = parcel * R.target;
+        var overBy     = shares * fill - wantShares;
+        var n;
+
+        if (isFinite(r.rebalance)) {
+          n = Number(r.rebalance);
+        } else if (overBy > 0) {
+          n = -Math.floor(overBy / fill);                 // sell down
+        } else {
+          n = Math.floor(-overBy / fill);                 // top up
+        }
+
+        // a top-up cannot spend cash the reserve does not have
+        if (n > 0) n = Math.min(n, Math.floor(Math.max(0, reserve - brokerage) / fill));
+        if (n < 0) n = Math.max(n, -shares);              // and cannot sell what is not held
+
+        if (n !== 0) {
+          var rebFee = brokerage;
+
+          /* Selling takes its share of the cost basis out with it, so the
+             average cost of what is left does not move. Without this the basis
+             stayed put while the share count dropped, and one August sale sent
+             the average cost above the price and turned a profit into a loss
+             on every line after it. */
+          if (n < 0) invested += n * (shares ? invested / shares : 0);
+          else       invested += n * fill + rebFee;
+
+          reserve -= n * fill + rebFee;                   // n negative adds cash
+          shares  += n;
+          feesPaid += rebFee;
+          reb = { shares: n, value: Math.abs(n) * fill, fee: rebFee,
+                  target: R.target, manual: isFinite(r.rebalance) };
+        }
+      }
+
       var etfValue  = shares * price;
       var portfolio = etfValue + reserve;
 
@@ -128,9 +184,10 @@
         fee:        fee,
         spent:      spent,
         reserve:    reserve,
+        rebalance:      reb,             // null in every month but the one
         interest:       monthInterest,   // earned this month
         interestTotal:  interest,        // earned to date
-        brokerage:      fee,             // paid this month
+        brokerage:      fee + (reb ? reb.fee : 0),   // buy and rebalance both
         brokerageTotal: feesPaid,        // paid to date
         mgmtMonth:      monthMgmt,       // estimated fund fee this month
         mgmtTotal:      mgmtDrag,        // estimated fund fee to date

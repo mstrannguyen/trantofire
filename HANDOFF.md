@@ -41,15 +41,28 @@ experiment with a defined carve-out slice, not the whole portfolio.
   accrues it inside its own price, so subtracting it would double-count
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
-- **Lifecycle investing.** Leverage comes down over time, and the mechanism is
-  an ANNUAL REBALANCE OF THE MIX between the two sleeves, NOT selling TQQQ to
-  buy a lower-multiple fund. The blended exposure falls as the split tilts
-  toward SSO at 2×. Do not reinstate any "step down to QLD" wording; that was
-  the old framing and it is wrong. Targets, first rebalance date and whether it
-  runs on the calendar or on a balance are still being worked out, and the site
-  deliberately does NOT list those unknowns — it just says the leverage comes
-  down by rebalancing. Grounded in Ayres and Nalebuff, who cap at 2:1 — the
-  site says plainly that 3× goes past them.
+- **The August rebalance.** Every August, AFTER that month's buy, the TQQQ
+  parcel goes back to 50% shares / 50% cash. The parcel is TQQQ's own shares
+  plus TQQQ's own reserve. Above target, sell the excess into cash; below it,
+  the reserve buys back in. Whole shares rounded down either way, so it never
+  overshoots. Brokerage on the trade in either direction. First one Aug 2027,
+  then every August to Aug 2045. SSO has NO target and is never rebalanced.
+  Set in `js/config.js` as `REBALANCE: { target: 0.5, month: 8, from: "2027-08" }`
+  on the TQQQ sleeve only; `js/engine.js` implements it.
+- **This is a cap, not a glide path.** It holds Nasdaq exposure near 1.5× rather
+  than reducing it year on year. Lowering leverage further means lowering the
+  0.5 target, and no schedule for that is set. Do not describe it as "stepping
+  down to QLD" or as "tilting the mix between the two funds"; both were earlier
+  framings and both are wrong. Grounded in Ayres and Nalebuff, who cap at 2:1 —
+  the site says plainly that 3× goes past them.
+- **Brokerage is $3 on both funds,** and it applies to the August rebalance as
+  well as to the monthly buys. Set in `js/config.js`, repeated on each fund so
+  the two can diverge later without touching the shared value.
+- **Record highs.** Unchanged from how the site has always worked: `js/live.js`
+  derives each fund's high from Yahoo's full split-adjusted monthly history and
+  replaces the stored value wherever the live one is higher. `js/config.js`
+  keeps $88.09 for TQQQ and $70.13 for SSO. The tier comes from the logged
+  purchase price against that high, the same as before.
 - **A second sleeve in SSO.** The same counter-cyclical rules run on SSO
   (2× S&P 500) with its own reserve and its own high-water mark, meant to be
   kept long term so the geared side is not all one index, and with drawdowns

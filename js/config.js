@@ -8,9 +8,10 @@ window.TTF = {
   // 0.04 = 4% a year, accrued monthly. Set to 0 to ignore interest.
   CASH_RATE:  0.04,
 
-  // Brokerage on each buy, in US dollars. Real money leaving the account, so
-  // it comes out of the cash available before shares are bought, and it
-  // reduces the reserve.
+  // Brokerage on each trade, in US dollars. Real money leaving the account, so
+  // it comes out of the cash after the tier has set the share count, and it
+  // reduces the reserve. Repeated on each fund below so a change there is all
+  // it takes if the two ever stop matching.
   BROKERAGE:  3,
 
   /* ---------------------------------------------------------
@@ -32,7 +33,19 @@ window.TTF = {
       // reached, and it ratchets up from logged prices too.
       HIGH_WATER_MARK: 88.09,            // TQQQ record high, 3 Jun 2026
       EXPENSE_RATIO:   0.0086,           // 0.86% net of the fee waiver
-      bench:        ["QQQ", "QLD"]       // the same money into 1x and 2x
+      BROKERAGE:       3,                // monthly buys and the August rebalance
+      bench:        ["QQQ", "QLD"],      // the same money into 1x and 2x
+
+      /* Once a year, in August, after that month's buy, this fund is brought
+         back to half shares and half cash. The parcel is this fund's shares
+         plus this fund's reserve and nothing else. Above the target the excess
+         is sold into cash, below it the reserve buys back in, whole shares
+         rounded down either way so it never overshoots. Brokerage is charged
+         on that trade in either direction.
+
+         First one is August 2027, a year after the first buy, then every
+         August to 2045. */
+      REBALANCE: { target: 0.5, month: 8, from: "2027-08" }
     },
     {
       sym:          "SSO",
@@ -50,7 +63,9 @@ window.TTF = {
       // here is post-split.
       HIGH_WATER_MARK: 70.13,            // SSO record high, June 2026
       EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
+      BROKERAGE:       3,
       bench:        ["VOO", "UPRO"]
+      // No REBALANCE key: this fund is never rebalanced and has no target.
     }
   ],
 
