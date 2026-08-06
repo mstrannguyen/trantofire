@@ -175,7 +175,7 @@
     var rawArr = (quote && quote.close) || [];
     var hiArr  = (quote && quote.high)  || [];
 
-    var months = {}, highs = {}, total = {}, last = null, totalLast = null, count = 0, newest = "", oldest = "";
+    var months = {}, highs = {}, total = {}, order = [], last = null, totalLast = null, count = 0, newest = "", oldest = "";
     for (var i = 0; i < stamps.length; i++) {
       var v = rawArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) v = adjArr[i];
@@ -189,6 +189,7 @@
          reads shallower than it was and the tier lands a rung low. */
       var h = hiArr[i];
       highs[key] = (typeof h === "number" && isFinite(h) && h >= v) ? h : v;
+      order.push(key);
       if (key > newest) newest = key;
       if (!oldest || key < oldest) oldest = key;
       last = v;
@@ -201,6 +202,32 @@
       count++;
     }
     if (!count) throw new Error("no usable history");
+
+    /* One bad print can become the record high on its own.
+
+       Yahoo occasionally returns a single month's high on the wrong side of a
+       split while its neighbours are correct: SSO's September 2024 comes back
+       at $85.57 with August and October near $46, which is that month's
+       pre-split price. Taken as the record it puts SSO 20% down when it is 7%
+       down, and the tier reads a rung deeper than it should.
+
+       So a month whose high is more than half again above BOTH the month
+       before and the month after is dropped. Real moves do not look like that:
+       across the full history of these funds the largest genuine spike over
+       both neighbours is about 1.17x, and the bad bar is 1.83x, so the
+       threshold sits well clear of either. The first and last months have only
+       one neighbour and are left alone. */
+    for (var n = 1; n < order.length - 1; n++) {
+      var k = order[n], prev = highs[order[n - 1]], next = highs[order[n + 1]];
+      if (highs[k] > prev * 1.5 && highs[k] > next * 1.5) {
+        if (window.console) {
+          console.info("[Tran to Fire] dropped a suspect high for " + k + ": " +
+            highs[k].toFixed(2) + " against " + prev.toFixed(2) + " and " +
+            next.toFixed(2) + " either side. Looks like an unadjusted print.");
+        }
+        highs[k] = months[k];          // fall back to that month's close
+      }
+    }
 
     var meta = result.meta || {};
     return {

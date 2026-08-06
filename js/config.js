@@ -63,7 +63,7 @@ window.TTF = {
       // forward split on 20 November 2025, and several sites still publish an
       // unadjusted all-time high in the $160s that predates it. Everything
       // here is post-split.
-      HIGH_WATER_MARK: 70.13,            // SSO record high, June 2026
+      HIGH_WATER_MARK: 71.79,            // SSO record high, June 2026
       EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["VOO", "UPRO"]      // the same money into 1x and 3x
