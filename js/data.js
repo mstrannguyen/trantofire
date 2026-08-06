@@ -361,8 +361,9 @@ window.TTF_DATA_SSO = [
 
   // ───────── 2026 ─────────
   { month: "2026-08", price: 67.62, shares: 2 },   // 2 shares actually bought,
-  // which is what the rules called for: 3.6% below the 70.13 record high is the
-  // baseline tier, 20% of 800 is 160, and 160 buys 2 whole shares at 67.62
+  // which is what the rules called for: a few percent below SSO's record high is
+  // the baseline tier, 20% of 800 is 160, and 160 buys 2 whole shares at 67.62.
+  // No figure quoted here on purpose, since the high comes live from Yahoo
   // { month: "2026-09", price: 0.00 },
   // { month: "2026-10", price: 0.00 },
   // { month: "2026-11", price: 0.00 },

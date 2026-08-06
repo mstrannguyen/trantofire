@@ -129,8 +129,8 @@
   .ruled li{display:grid;grid-template-columns:190px 1fr;column-gap:34px;row-gap:0;padding:32px 0;border-top:1px solid var(--hair)}
   .ruled .what{font-family:var(--display);font-size:27px;color:var(--brass);line-height:1.2}
   .ruled p{margin:0;font-size:16.5px;line-height:1.7;color:#5A4850}
-  .ruled li > p{grid-column:2}
-  .ruled li > p ~ p{margin-top:20px}
+  .ruled li > .body{grid-column:2}
+  .ruled .body p ~ p{margin-top:20px}
 
   .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
   .risk h2{color:#fff}
@@ -159,7 +159,7 @@
     .rung .lab{margin-top:0}
     .grid2,.risk-list{grid-template-columns:1fr;gap:0}
     .ruled li{grid-template-columns:1fr;gap:10px}
-    .ruled li > p{grid-column:1}
+    .ruled li > .body{grid-column:1}
   }
   @media (max-width:640px){
     .wrap{padding:0 22px}
@@ -565,17 +565,23 @@
     <ul class="ruled">
       <li>
         <div class="what">A higher multiple: TQQQ and UPRO</div>
+        <div class="body">
         <p>TQQQ is 3× the Nasdaq-100 that QLD tracks. UPRO is 3× the S&amp;P 500 that SSO tracks. A higher multiple compounds harder through a bull run, and for a while that is what I intended to buy every month.</p>
         <p>What changed my mind is the other side of it. Three times the daily move falls a great deal further when the index turns, and takes far longer to come back from it. QLD lost about 60% in 2022 and TQQQ lost 82%, on the same index in the same year. That is the difference between a drawdown I can keep buying through and one I might not.</p>
         <p>So they are not off the table, they are on a different schedule. A fall that deep is the one thing that makes the extra multiple worth carrying, which is why they are the funds I buy after a crash rather than every month. That rule is set out under <a href="#crash">when it really falls</a>.</p>
+        </div>
       </li>
       <li>
         <div class="what">The SMA method</div>
+        <div class="body">
         <p>Collins' second system uses a 14-period moving average to move in and out of the fund, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also asks me to read a signal every month and to be right about when to get back in. For now I would rather have rules that never ask me to make a call. That is a preference, not a verdict on the method, which on Collins' numbers works well.</p>
+        </div>
       </li>
       <li>
         <div class="what">The 9-Sig strategy</div>
+        <div class="body">
         <p>A separate system, from Jason Kelly rather than Collins. It pairs TQQQ with a bond or cash reserve, starts around 60/40, and every quarter rebalances the TQQQ position back to a 9% growth target, selling the surplus in good quarters and buying the shortfall in bad ones. It shares my instinct exactly: react to price with fixed rules, never forecast. Selling is half the method, and every sale in a good quarter is a taxable event. Under the rules coming in from July 2027 that costs more than it used to, because the gain no longer gets halved and a 30% floor applies whatever I earn that year. That is a cost to weigh rather than a reason to rule it out. It is on my list, and I may run a separate portfolio on it in future.</p>
+        </div>
       </li>
     </ul>
   </div>
@@ -659,7 +665,7 @@
 </footer>
 
 <script src="../js/config.js?v=17" defer></script>
-<script src="../js/live.js?v=18" defer></script>
+<script src="../js/live.js?v=19" defer></script>
 <script src="../js/marks.js?v=3" defer></script>
 <script src="../js/comments.js?v=4" defer></script>
 </body>

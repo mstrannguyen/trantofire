@@ -173,14 +173,22 @@
     var adjArr = (adj && adj.adjclose) || [];
     var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
     var rawArr = (quote && quote.close) || [];
+    var hiArr  = (quote && quote.high)  || [];
 
-    var months = {}, total = {}, last = null, totalLast = null, count = 0, newest = "", oldest = "";
+    var months = {}, highs = {}, total = {}, last = null, totalLast = null, count = 0, newest = "", oldest = "";
     for (var i = 0; i < stamps.length; i++) {
       var v = rawArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) v = adjArr[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) continue;
       var key = monthKey(stamps[i]);
       months[key] = v;
+
+      /* The month's intraday high, not its close. A record high measured on
+         closes misses any peak that happened inside a month and never held to
+         the last session, which is most of them, so every drawdown afterwards
+         reads shallower than it was and the tier lands a rung low. */
+      var h = hiArr[i];
+      highs[key] = (typeof h === "number" && isFinite(h) && h >= v) ? h : v;
       if (key > newest) newest = key;
       if (!oldest || key < oldest) oldest = key;
       last = v;
@@ -197,6 +205,7 @@
     var meta = result.meta || {};
     return {
       months:    months,
+      highs:     highs,
       total:     total,
       newest:    newest,
       oldest:    oldest,
@@ -310,9 +319,9 @@
 
     return series(symbol).then(function (s) {
       if (!s || !s.months || !s.newest) return (quoteCache[symbol] = null);
-      var ath = 0, athKey = "";
-      for (var k in s.months) {
-        if (s.months[k] > ath) { ath = s.months[k]; athKey = k; }
+      var ath = 0, athKey = "", src = s.highs || s.months;
+      for (var k in src) {
+        if (src[k] > ath) { ath = src[k]; athKey = k; }
       }
       var price = s.months[s.newest];
       if (!(price > 0)) return (quoteCache[symbol] = null);
