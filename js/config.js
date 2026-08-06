@@ -15,37 +15,36 @@ window.TTF = {
   BROKERAGE:  3,
 
   /* ---------------------------------------------------------
-     The two sleeves. Same rules, same money, different index.
+     The two funds bought on a schedule. Both are 2x, one on each index.
 
      Each runs its own reserve, its own high-water mark and its own tier
      ladder. Nothing is shared between them except the rules themselves, so
      a crash in one does not reach into the other's cash.
+
+     Neither is ever rebalanced and neither has a target. Bought and held:
+     selling to trim a position realises a gain and hands over the tax, and
+     the compounding after that runs on what is left.
+
+     TQQQ and UPRO are not on this schedule and are not in this list. They
+     are crash entries, bought when an index has already fallen a long way,
+     and there is nothing to log month by month until one triggers. The rule
+     for them is written up on the Strategy page.
      --------------------------------------------------------- */
   SLEEVES: [
     {
-      sym:          "TQQQ",
+      sym:          "QLD",
       index:        "Nasdaq-100",
-      mult:         3,
+      mult:         2,
       data:         "TTF_DATA",          // window.TTF_DATA
       CONTRIBUTION: 800,                 // US$ per month
-      // Fallback only. The site pulls the record high live from Yahoo and
-      // uses that when it is higher. This is what shows if Yahoo cannot be
-      // reached, and it ratchets up from logged prices too.
-      HIGH_WATER_MARK: 88.09,            // TQQQ record high, 3 Jun 2026
-      EXPENSE_RATIO:   0.0086,           // 0.86% net of the fee waiver
-      BROKERAGE:       3,                // monthly buys and the August rebalance
-      bench:        ["QQQ", "QLD"],      // the same money into 1x and 2x
-
-      /* Once a year, in August, after that month's buy, this fund is brought
-         back to half shares and half cash. The parcel is this fund's shares
-         plus this fund's reserve and nothing else. Above the target the excess
-         is sold into cash, below it the reserve buys back in, whole shares
-         rounded down either way so it never overshoots. Brokerage is charged
-         on that trade in either direction.
-
-         First one is August 2027, a year after the first buy, then every
-         August to 2045. */
-      REBALANCE: { target: 0.5, month: 8, from: "2027-08" }
+      // TO SET: QLD's record high. Left empty rather than guessed. The site
+      // derives it from Yahoo's full split-adjusted monthly history on every
+      // load and prints the figure to the console, so read it there and paste
+      // it in as the offline fallback.
+      HIGH_WATER_MARK: null,
+      EXPENSE_RATIO:   0.0095,           // 0.95%, per the fund table on /
+      BROKERAGE:       3,
+      bench:        ["QQQ", "TQQQ"]      // the same money into 1x and 3x
     },
     {
       sym:          "SSO",
@@ -53,9 +52,8 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA_SSO",      // window.TTF_DATA_SSO
       CONTRIBUTION: 800,
-      // Fallback only. The site derives the record high from Yahoo's full
-      // split-adjusted monthly history on every load and measures the tiers
-      // against that, the same as TQQQ.
+      // Fallback only. The site pulls the record high live from Yahoo and
+      // uses that when it is higher.
       //
       // Note for anyone checking this against a data site: SSO ran a 2:1
       // forward split on 20 November 2025, and several sites still publish an
@@ -64,8 +62,7 @@ window.TTF = {
       HIGH_WATER_MARK: 70.13,            // SSO record high, June 2026
       EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
       BROKERAGE:       3,
-      bench:        ["VOO", "UPRO"]
-      // No REBALANCE key: this fund is never rebalanced and has no target.
+      bench:        ["VOO", "UPRO"]      // the same money into 1x and 3x
     }
   ],
 
@@ -81,9 +78,9 @@ window.TTF = {
 
   // Kept so anything not yet sleeve-aware still resolves. These mirror the
   // TQQQ sleeve above.
-  HIGH_WATER_MARK: 88.09,
+  HIGH_WATER_MARK: null,
   CONTRIBUTION:    800,
-  EXPENSE_RATIO:   0.0086
+  EXPENSE_RATIO:   0.0095
 };
 
 /* Convenience: the sleeve record for a symbol, with the shared settings

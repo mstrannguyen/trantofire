@@ -334,11 +334,7 @@
     $("s-cash").firstChild.nodeValue  = usd(last.reserve);
     $("s-alloc").firstChild.nodeValue = Math.round(last.pctEtf * 100) + "% / " + Math.round(last.pctCash * 100) + "%";
     var allocSub = $("s-alloc-sub");
-    if (allocSub) {
-      allocSub.textContent = sleeve.REBALANCE
-        ? "fund / cash \u00b7 back to " + pct(sleeve.REBALANCE.target, 0) + " each August"
-        : "fund / cash \u00b7 no target, never rebalanced";
-    }
+    if (allocSub) allocSub.textContent = "fund / cash \u00b7 never rebalanced";
 
     var months = history.map(function (d) { return d.label; });
     drawPriceChart($("chart0"), history);
@@ -350,11 +346,6 @@
       var d = history[k];
       html += "<tr>" +
         '<td class="mth">' + d.label +
-          (d.rebalance
-            ? '<br><span class="reb">' +
-              (d.rebalance.shares < 0 ? "sold " + (-d.rebalance.shares) : "bought " + d.rebalance.shares) +
-              " back to " + pct(d.rebalance.target, 0) + "</span>"
-            : "") +
           (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
         "<td>" + usd(d.price, 2) + "</td>" +
         "<td>" + ddPct(d.drawdown) + "</td>" +
@@ -678,7 +669,7 @@
       if (one) renderSleeve(one);
     }
     /* Each fund gets its own comparison, against the pair named in its sleeve:
-       TQQQ against QQQ and QLD, SSO against VOO and UPRO. There is nothing
+       QLD against QQQ and TQQQ, SSO against VOO and UPRO. There is nothing
        sensible to compare on the combined tab, since the two schedules run on
        different indexes, so it is hidden there. */
     var bench = document.getElementById("bench");
@@ -705,5 +696,5 @@
       if (b && b.getAttribute("data-sym")) draw(b.getAttribute("data-sym"));
     });
   }
-  draw(sleeves.length ? sleeves[0].sym : "TQQQ");
+  draw(sleeves.length ? sleeves[0].sym : "QLD");
 })();
