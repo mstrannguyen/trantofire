@@ -105,12 +105,15 @@
     window.TTF_LIVE.quoteFor(sl.sym).then(function (live) {
       if (!live) return;
 
-      // Yahoo's record high replaces the stored reference wherever it is higher.
+      /* Yahoo's figure IS the record high. The number in config is a fallback
+         for a dead feed, so it gives way to the live one whether that is higher
+         or lower. Only taking it when it was higher meant a stale constant
+         could sit above the real high and quietly read every drawdown shallow. */
       var lifted = {};
       for (var k in sl) lifted[k] = sl[k];
-      var better = live.ath && live.ath > (sl.HIGH_WATER_MARK || 0);
-      if (better) lifted.HIGH_WATER_MARK = live.ath;
-      var hist = better ? E.run(sl.rows || [], lifted) : sl.hist;
+      var haveAth = live.ath > 0;
+      if (haveAth) lifted.HIGH_WATER_MARK = live.ath;
+      var hist = haveAth ? E.run(sl.rows || [], lifted) : sl.hist;
 
       var n = E.next(hist, lifted, live.price);
       if (n) signalCard(sl, n, true);

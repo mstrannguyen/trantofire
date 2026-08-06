@@ -37,11 +37,15 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA",          // window.TTF_DATA
       CONTRIBUTION: 800,                 // US$ per month
-      // TO SET: QLD's record high. Left empty rather than guessed. The site
-      // derives it from Yahoo's full split-adjusted monthly history on every
-      // load and prints the figure to the console, so read it there and paste
-      // it in as the offline fallback.
-      HIGH_WATER_MARK: null,
+      // Fallback only. The site derives the record high from Yahoo's full
+      // split-adjusted monthly history on every load and uses that when it is
+      // higher.
+      //
+      // Note for anyone checking this against a data site: QLD ran a 2:1
+      // forward split on 20 November 2025. Several sites still report an
+      // all-time high of $153.33 from 29 October 2025, which is the pre-split
+      // price. Halved, that peak is $76.67, and the June 2026 one is higher.
+      HIGH_WATER_MARK: 101.19,           // QLD record high, June 2026
       EXPENSE_RATIO:   0.0095,           // 0.95%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["QQQ", "TQQQ"]      // the same money into 1x and 3x

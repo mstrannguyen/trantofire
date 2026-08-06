@@ -385,7 +385,8 @@
 
         // Yahoo's all-time high replaces the hardcoded reference where it is higher
         var hist = history;
-        if (live.ath && live.ath > (sleeve.HIGH_WATER_MARK || 0)) {
+        // Yahoo's figure is the record high; config only covers a dead feed
+        if (live.ath > 0) {
           var lifted = {};
           for (var ck in sleeve) lifted[ck] = sleeve[ck];
           lifted.HIGH_WATER_MARK = live.ath;
@@ -614,7 +615,7 @@
       return window.TTF_LIVE.quoteFor(r.sl.sym).then(function (q) {
         if (!q) return r;
         // the record high comes from Yahoo, so the tier column needs it too
-        if (q.ath && q.ath > (r.sl.HIGH_WATER_MARK || 0)) {
+        if (q.ath > 0) {
           var lifted = {};
           for (var k in r.sl) lifted[k] = r.sl[k];
           lifted.HIGH_WATER_MARK = q.ath;
