@@ -55,12 +55,11 @@
 window.TTF_DATA = [
 
   // ───────── 2026 ─────────
-  // The monthly Nasdaq buy is QLD now, not TQQQ. This row was the August TQQQ
-  // buy at $60.23; it is parked here rather than deleted until we decide what
-  // happens to those 4 shares. Put the QLD price you paid on the line below
-  // and delete the slashes.
+  // The monthly Nasdaq buy is QLD, not TQQQ. This row was the August TQQQ buy at
+  // $60.23; it is parked here rather than deleted until we decide what happens
+  // to those 4 shares.
   // { month: "2026-08", price: 60.23 },
-  // { month: "2026-08", price: 00.00 },   // <- QLD
+  { month: "2026-08", price: 90.21 },
   // { month: "2026-09", price: 0.00 },
   // { month: "2026-10", price: 0.00 },
   // { month: "2026-11", price: 0.00 },

@@ -99,11 +99,13 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "TQQQ was well below its June record when the order went in, so the dip tier applied and a third of the available cash went to work instead of the usual fifth. That came to 4 shares. SSO was barely off its own high, so it stayed on the baseline fifth and took 2. The $1,218 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one.",
+      "Both funds went in on the baseline tier, which releases a fifth of the available cash and not a share more. QLD was about 11% under its record and SSO under 6%, and neither is far enough down for the ladder to open up. That came to one share of QLD and two of SSO. The $1,369 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one.",
 
-      "Two funds from the start, US$800 into each, same ladder, measured separately. TQQQ was 32% under its record and SSO was under 4% under its own, so on the same afternoon one bought at a heavy discount and the other bought at close to full price. Neither reserve knows the other exists, which is the whole reason for running them apart.",
+      "Two funds from the start, US$800 into each, same ladder, measured separately. Both are 2x, one on the Nasdaq-100 and one on the S&P 500, so the geared money is not all riding on one index. Neither reserve knows the other exists, which is the whole reason for running them apart.",
 
-      "SSO is the quieter half and it is meant to be. A 2x fund on the S&P 500 does not fall the way a 3x fund on the Nasdaq does, and I expect to hold it long after the mix has started tilting away from the Nasdaq side. This month it did almost nothing, which is what a baseline month looks like."
+      "The strange part of starting this way is how little actually gets bought. Of the $1,600 that went in, $1,369 is still sitting in cash. That is the arrangement rather than a failure of it: the rules only spend properly once something has fallen, and nothing has. A first month that felt productive would mean the market had already gone badly wrong.",
+
+      "The 3x funds are not part of any of this. TQQQ and UPRO are what the crash money buys if an index falls a long way, and nothing this month came close."
     ],
 
     macro: {
@@ -122,7 +124,7 @@ window.TTF_JOURNAL = [
 
         "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I do not know which, and I do not need to.",
 
-        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. The drawdown put TQQQ in the dip tier this month and left SSO on the baseline. The ladder never asked my opinion on lithography."
+        "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. For all that noise, the drawdown left both funds on the baseline tier this month. The ladder never asked my opinion on lithography."
       ],
 
       table: {
