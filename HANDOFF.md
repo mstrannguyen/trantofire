@@ -1,7 +1,8 @@
 # Tran to Fire — project handoff
 
-Paste this into a new chat to pick up where we left off, and upload
-`trantofire-updated.zip` with it. That zip is the whole site.
+Paste this into a new chat to pick up where we left off, and upload the
+site zip with it. That zip is the whole site, and GitHub is the truth:
+always start from a fresh download, never from an old one.
 
 If the job is just this month's numbers, read `MONTHLY.md` instead. It is
 shorter and it is the only file you need for a routine update.
@@ -22,183 +23,196 @@ experiment with a defined carve-out slice, not the whole portfolio.
 
 ## The strategy
 
-- Buys **TQQQ** (3× Nasdaq-100)
-- **US$800 a month**, fixed in USD (was $2,000 → $1,500 → $1,000 → $800)
+The site went through several shapes in one long session. THIS is the current
+one. Anything else you read in an old file or an old chat is superseded.
+
+### The two funds on the monthly schedule
+
+- **QLD** (2× Nasdaq-100) and **SSO** (2× S&P 500)
+- **US$800 a month into each**, fixed in USD, so US$1,600 in total
+- Each runs its own reserve and its own record high. Nothing is shared
 - Deploy % of ALL available cash (prior reserve + this month's contribution),
-  by drawdown from the all-time high:
+  by drawdown from the record high:
   - Baseline (0 to −19%) → **20%**
   - Dip (−20%) → **33%**
   - Deep dip (−40%) → **67%**
   - Crash (−60%) → **100%**
-- Whole shares only. One buy a month. No sell rule is published; selling is
-  not ruled out and the site no longer claims it never happens.
+- Whole shares only. One buy a month per fund
+- **Neither is ever rebalanced and neither is sold**
 - 20-year horizon, Aug 2026 to Jul 2046
-- **$3 brokerage** per trade, charged by the broking app. The tier sets the
-  share count first; the fee comes out of the cash afterwards.
+- **$3 brokerage** per trade on both funds. The tier sets the share count
+  first; the fee comes out of the cash afterwards
 - **Cash reserve earns 4% a year**, accrued monthly, counted as return not as
   money in
-- TQQQ's **0.86% management fee is reported but never deducted** — an ETF
-  accrues it inside its own price, so subtracting it would double-count
+- Management fees are reported, never deducted — an ETF accrues them inside
+  its own price, so subtracting would double-count
 - **The price that decides the tier is the price actually paid** on the day
   the order is placed
-- **The August rebalance.** Every August, AFTER that month's buy, the TQQQ
-  parcel goes back to 50% shares / 50% cash. The parcel is TQQQ's own shares
-  plus TQQQ's own reserve. Above target, sell the excess into cash; below it,
-  the reserve buys back in. Whole shares rounded down either way, so it never
-  overshoots. Brokerage on the trade in either direction. First one Aug 2027,
-  then every August to Aug 2045. SSO has NO target and is never rebalanced.
-  Set in `js/config.js` as `REBALANCE: { target: 0.5, month: 8, from: "2027-08" }`
-  on the TQQQ sleeve only; `js/engine.js` implements it.
-- **This is a cap, not a glide path.** It holds Nasdaq exposure near 1.5× rather
-  than reducing it year on year. Lowering leverage further means lowering the
-  0.5 target, and no schedule for that is set. Do not describe it as "stepping
-  down to QLD" or as "tilting the mix between the two funds"; both were earlier
-  framings and both are wrong. Grounded in Ayres and Nalebuff, who cap at 2:1 —
-  the site says plainly that 3× goes past them.
-- **Brokerage is $3 on both funds,** and it applies to the August rebalance as
-  well as to the monthly buys. Set in `js/config.js`, repeated on each fund so
-  the two can diverge later without touching the shared value.
-- **Record highs.** Unchanged from how the site has always worked: `js/live.js`
-  derives each fund's high from Yahoo's full split-adjusted monthly history and
-  replaces the stored value wherever the live one is higher. `js/config.js`
-  keeps $88.09 for TQQQ and $70.13 for SSO. The tier comes from the logged
-  purchase price against that high, the same as before.
-- **A second sleeve in SSO.** The same counter-cyclical rules run on SSO
-  (2× S&P 500) with its own reserve and its own high-water mark, meant to be
-  kept long term so the geared side is not all one index, and with drawdowns
-  Tran is more comfortable sitting through. US$800 a month into each sleeve,
-  US$1,600 in total. BOTH are tracked on the site now; the earlier decision
-  not to publish SSO was reversed.
+
+### The 3× funds
+
+TQQQ and UPRO are NOT on the monthly schedule and are not in `SLEEVES`.
+
+- Bought only once a fund is **40% below its record high**, measured on the
+  3× fund itself, not on the index
+- Funded with **separate money**, not from the $800s and not from either
+  reserve
+- **DCA in over months** rather than committing at once, then hold. No target,
+  no rebalance, no selling
+- Nothing to track month by month until one triggers
+- Strategy page section `id="crash"`
+
+### What was tried and removed
+
+Do not reinstate any of these; each was built and then taken out.
+
+- TQQQ as the monthly Nasdaq buy (replaced by QLD)
+- An **August rebalance** of the TQQQ parcel to 50/50 shares and cash.
+  `js/engine.js` still supports `cfg.REBALANCE` but no fund uses it
+- Any wording about "stepping down to QLD" or "tilting the mix between the
+  two funds" as the way leverage comes down
+- A second growth chart on the home page for VOO/SSO/UPRO
+- `js/marks.js` was removed once and then brought back; it is in use now
 
 Rules come from Henrique Centieiro's TradingView Strategy 3. B.D. Collins'
-book "$1,000 to $1,000,000" is the other main source.
+book "$1,000 to $1,000,000" is the other main source. Ayres and Nalebuff's
+*Lifecycle Investing* caps leverage at 2:1, which is where the strategy now
+sits — the site says so.
+
+---
+
+## What is logged so far
+
+August 2026, the first month, in `js/data.js`:
+
+- **QLD $90.21**, 10.9% below its high, baseline tier, 1 share, $706.79 reserve
+- **SSO $67.62**, `shares: 2` pinned, baseline tier, $661.76 reserve
+- Combined $1,594 on $1,600 in, $1,368.55 cash, P/L −$6
+
+---
+
+## Record highs: read this before touching them
+
+The single most error-prone part of the site. Three separate bugs here.
+
+- Highs come **live from Yahoo on every load**, derived from the full
+  split-adjusted monthly history. `js/config.js` holds QLD **$101.19** and
+  SSO **$71.79** as offline fallbacks ONLY
+- The live figure wins **whether it is higher or lower** than the stored one.
+  An earlier "only take it when higher" ratchet let a stale constant sit above
+  the real high and read every drawdown a rung shallow
+- The high is taken from the month's **`quote.high`, not `quote.close`**. A
+  close-based maximum misses any peak that faded before the last session; QLD
+  read $98.46 that way against a true $101.19
+- A **bad-bar screen** drops any month whose high is more than 1.5× BOTH
+  neighbours. Yahoo returns SSO's Sep 2024 high as $85.57 against neighbours
+  near $46, which is that month's pre-split price. Without the screen SSO
+  reads $85.57
+- ProShares split SSO, QLD and TQQQ **2:1 on 20 Nov 2025**. Several data sites
+  still publish pre-split all-time highs (SSO in the $160s, QLD $153.33).
+  Everything on the site is post-split
 
 ---
 
 ## How the site works
 
-**One file to edit each month: `js/data.js`.** Every month Aug 2026 to Jul
-2046 is pre-written and commented out. Uncomment the line, type the price
-paid, commit. Everything else is calculated.
+**One file to edit each month: `js/data.js`.** Every month Aug 2026 to Jul 2046
+is pre-written and commented out, for both funds. Uncomment the line, type the
+price paid, commit. Everything else is calculated.
 
 ```js
-{ month: "2026-08", price: 66.00 },
+{ month: "2026-09", price: 91.40 },
 ```
 
-Optional overrides: `fill:` (actual fill price), `shares:` (if it differed
-from the rules — flags a visible deviation), `fee:`, `note:`, `high:`,
-`contribution:`.
+Optional overrides: `fill:`, `shares:` (if it differed from the rules — flags a
+visible deviation), `fee:`, `note:`, `high:`, `contribution:`, `date:`.
 
 **Journal entries: `js/journal.js`.** Words only; figures are pulled from
-data.js automatically.
+data.js automatically. Each entry also carries a macro write-up, deliberately:
+the point is that in twenty years the entries read as a record of what
+happened and what it did to the position, not just a column of prices.
 
 ### Architecture
 
-- `js/config.js` — HIGH_WATER_MARK (fallback), CONTRIBUTION 800,
-  CASH_RATE 0.04, BROKERAGE 3, EXPENSE_RATIO 0.0086
-- `js/engine.js` — the strategy as code. Everything derives from it.
-- `js/data.js` — monthly prices (the only regular edit)
-- `js/live.js` — live prices, monthly history, daily history. Exposes
-  `get()`, `series(sym)` (monthly) and `daily(sym)` (daily closes).
-- `js/signal.js` — home page cards
-- `js/progress.js` — Progress page: three charts (price + buys, profit,
-  drawdown)
-- `js/benchmark.js` — the same money into QQQ and QLD, priced on the buy day
-- `js/journal.js` / `js/journal-render.js` — the Journal
-- `js/compare.js` — growth-of-$10k chart, computed live for QQQ, QLD, TQQQ
-  plus a synthetic 3× QQQ line
+- `js/config.js` — `SLEEVES` (QLD, SSO), shared CASH_RATE 0.04, BROKERAGE 3
+- `js/engine.js` — the strategy as code. `run(rows, cfg)`, ticker-agnostic
+- `js/data.js` — `TTF_DATA` (QLD) and `TTF_DATA_SSO`. The only regular edit
+- `js/live.js` — Yahoo via the proxy. `get()`, `quoteFor(sym)`, `series(sym)`,
+  `daily(sym)`, `asOfLabel()`
+- `js/marks.js` — fills record highs printed in page text (`data-hwm="QLD|SSO"`)
+- `js/signal.js` — home page cards, one per fund plus combined totals
+- `js/progress.js` — Progress page: QLD | SSO | Both tabs, charts, log table
+- `js/benchmark.js` — per-fund comparison. QLD against QQQ and TQQQ, SSO
+  against VOO and UPRO, driven by each sleeve's `bench` pair
+- `js/compare.js` — the home page growth-of-$10k chart (hardcoded Nasdaq
+  annual balances; QLD's line is derived from QQQ and TQQQ, not typed)
+- `js/journal.js` / `js/journal-render.js` — the Journal, one figures block
+  per fund
 - `js/funds.js` — fills the return columns in the home page fund table
-- `js/comments.js` — FastComments loader. Tenant ID lives here.
-- `netlify/functions/price.js` + `netlify.toml` — fallback price route
-- `_redirects` — the `/api/price*` PROXY rules. Eight of them now: monthly
-  for TQQQ, QQQ, QLD, UPRO, SSO; daily for TQQQ, QQQ, QLD.
-- `_headers` — CSP etc. HSTS deliberately commented out.
+- `js/comments.js` — FastComments loader. Tenant ID lives here
+- `_redirects` — the `/api/price*` PROXY rules. Twelve of them: monthly for
+  TQQQ, QQQ, QLD, UPRO, SSO, VOO; daily for TQQQ, QQQ, QLD, SSO, VOO, UPRO
+- `_headers` — CSP `script-src 'self'`, so NO inline scripts. HSTS commented out
 
-**Nothing on the site is a typed-in figure that could go stale.** Fund
-returns, the growth chart and the benchmark all recalculate from Yahoo on
-each load. Third-party sources disagreed with each other by several points a
-year, which is why.
+**Nothing on the site is a typed-in figure that could go stale**, with two
+deliberate exceptions: the home page growth chart's annual balances, and the
+config fallback highs.
 
-**Live price:** Yahoo Finance via a Netlify **proxy rule** in `_redirects`
-(`/api/price ... 200`). Serverless functions were tried first and did NOT
-work, because functions need a build step that drag-and-drop deploys skip.
-The proxy needs no build. Same-origin, so CSP stays `connect-src 'self'`.
-
-**All-time high** is derived from Yahoo's full split-adjusted monthly
-history, never trusted from a published "ATH" field — two sites publish
-provably wrong figures for TQQQ because they use unadjusted data. Sanity
-checks reject anything below the 52-week high or that looks unadjusted.
+**Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
+functions were tried first and did NOT work, because functions need a build
+step that drag-and-drop deploys skip. The proxy needs no build.
 
 ### Pages
 
 Home, Strategy, Progress, Journal, My Story, Privacy.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
-Worked example, Why not just buy every month, Lifecycle investing, Other ways
-to do this, Risk, The mechanics, Comments.
-
----
+Worked example, Why not just buy every month, Lifecycle investing, When it
+really falls (`#crash`), What I didn't build this on, How this goes wrong,
+The mechanics, Comments.
 
 ## The monthly routine
 
-From now on the monthly update happens in chat rather than by hand-editing
-GitHub. The protocol, including the one rule that stops entries being lost,
-is in `MONTHLY.md`. Short version: download the zip from GitHub, upload it to
-the chat, get the two files back, commit.
+Two buys a month now, QLD and SSO, in two arrays in the same file. The
+protocol is in `MONTHLY.md`. Short version: download the zip from GitHub,
+upload it to the chat, get the two files back, commit.
 
 ## Still outstanding
 
-Ordered. Everything above the line has to happen before launch.
-
 - [ ] **Deploy the current build.** Drag the whole folder. Picking out single
-      files has already broken things twice: a new script was missing and the
-      benchmark showed dashes, and `_redirects` was missing and the daily
-      routes 404'd.
-- [ ] **Decide which day of the month the buy happens.** The last place the
-      rules leave room for judgment. One sentence on the Strategy page fixes
-      it, and it also settles what date goes in `js/data.js`.
-- [ ] **Create tran@trantofire.au** at VentraIP, plus a `privacy@` alias into
-      the same inbox. Set SPF and DKIM at the same time or replies land in
-      spam. The address is already published on My Story and `/privacy/`.
-- [x] FastComments Tenant ID is in `js/comments.js` (ndvTLjF3MQ5). Threads go
-      live on the next deploy. Add trantofire.au as a site in the FastComments
-      account before the trial ends or requests start getting refused.
-- [ ] **Force HTTPS** in Netlify once the padlock appears, then uncomment the
-      HSTS line in `_headers` and redeploy.
-- [ ] **Two-factor auth** on Netlify, VentraIP and GitHub.
-- [ ] **Domain transfer lock** at VentraIP for both domains.
-- [ ] **Log the first buy** in `js/data.js`, and write the first journal entry
-      in `js/journal.js`.
+      files has already broken things twice
+- [ ] **Decide which day of the month the buy happens.** Still open. Without a
+      `date:` in `js/data.js` the benchmark infers the buy day by matching the
+      logged price against daily closes, and the inferred date moves around
+- [ ] **Create tran@trantofire.au** at VentraIP, plus a `privacy@` alias. Set
+      SPF and DKIM at the same time or replies land in spam
+- [ ] **Force HTTPS** in Netlify, then uncomment the HSTS line in `_headers`
+- [ ] **Two-factor auth** on Netlify, VentraIP and GitHub
+- [ ] **Domain transfer lock** at VentraIP for both domains
+- [ ] Add trantofire.au as a site in the FastComments account
+- [ ] Self-host the two Google Fonts to remove the last third-party request
+- [ ] Email signup section is commented out in `index.html`. Needs a provider
 
-Not blocking launch:
-
-- [ ] Self-host the two Google Fonts to remove the last passive third-party
-      request. The privacy page currently admits this is undone.
-- [ ] Email signup section on the home page is commented out. Needs a provider
-      before it goes back.
-- [ ] Excel tracker was uploaded to be updated to match the site
-      ($800, Yahoo live price, $3 brokerage) — never completed.
-- [ ] Trademark the name and the fire-horse logo with IP Australia if you go
-      ahead: word mark first, TM Headstart, roughly $330 a class.
+Known cosmetic leftovers, flagged and not actioned: `precisely` in the home
+page capital-gains paragraph, "The bigger point is" in My Story, and
+`.table-scroll` used in markup with no CSS rule.
 
 ---
 
 ## Recent decisions worth not relitigating
 
-Things settled in the last session, so a new chat does not undo them.
-
 - The **cash reserve is excluded** from the Progress profit chart. It is not
-  TQQQ, and counting it measures the deployment schedule rather than the fund.
+  the fund, and counting it measures the deployment schedule instead
 - The **benchmark spends the same dollars**, not the same share count, and
-  prices every fund on the day of the buy using daily closes.
-- The **fund family table** and the **growth chart** compute themselves.
-- The Collins **three-methods table was removed** entirely.
-- The **email signup** and the old **"read me sceptically"** section are gone.
-  The signup markup is commented out in `index.html`, not deleted.
-- **No sell rule is published.** The site used to say the strategy never
-  sells. It does not say that any more.
-- Marker colour and size on the price chart both encode the tier. Colours
-  were separated by measuring RGB distance, not by eye.
+  prices every fund on the day of the buy using daily closes. Each row shows
+  that month's buy valued at today's price
+- The **fund family table** computes itself from Yahoo
+- **No sell rule is published** for the monthly funds
+- The home page growth chart is the **hardcoded** version, ending 2025, the
+  last complete year, so it matches the annual table beside it
+- Site copy must not use the word **"sleeve"**. It reads as AI jargon. Say
+  "fund", "the two funds", "the Nasdaq side"
+- Colours were separated by measuring **RGB distance**, not by eye
 
 ---
 

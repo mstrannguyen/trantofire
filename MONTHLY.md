@@ -1,6 +1,6 @@
 # The monthly update
 
-Ten minutes, once a month. Two buys, TQQQ and SSO. Only two files ever change:
+Ten minutes, once a month. Two buys, QLD and SSO. Only two files ever change:
 `js/data.js` and `js/journal.js`. Everything else on the site is calculated from them.
 
 ---
@@ -30,9 +30,9 @@ Say what it is:
 
 > Monthly update for October 2026. Current site attached.
 
-**3. Send the buy details, for both sleeves**
+**3. Send the buy details, for both funds**
 
-There are two buys a month now: TQQQ and SSO. They go in two arrays in the
+There are two buys a month now: QLD and SSO. They go in two arrays in the
 same file, `TTF_DATA` and `TTF_DATA_SSO`. For each one:
 
 - the month
@@ -42,8 +42,8 @@ same file, `TTF_DATA` and `TTF_DATA_SSO`. For each one:
 - the number of shares, only if it differed from what the rules said
 - the brokerage, only if it was not $3
 
-If you only bought one of them, say so. A missing month in one sleeve is
-fine; the two are independent and neither waits for the other.
+If you only bought one of them, say so. A missing month in one fund is fine;
+the two are independent and neither waits for the other.
 
 **4. Send the words for the journal**
 
@@ -58,7 +58,7 @@ a number into the journal.
 
 You should be told, before anything is written:
 
-> Found N TQQQ entries and P SSO entries in data.js, and M in journal.js.
+> Found N QLD entries and P SSO entries in data.js, and M in journal.js.
 > Adding October 2026. Nothing else touched.
 
 If N and M do not match what you expect, stop. Something is wrong with the

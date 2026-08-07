@@ -37,9 +37,12 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA",          // window.TTF_DATA
       CONTRIBUTION: 800,                 // US$ per month
-      // Fallback only. The site derives the record high from Yahoo's full
-      // split-adjusted monthly history on every load and uses that when it is
-      // higher.
+      // Fallback only, used when the live fetch fails. The site derives the
+      // record high from Yahoo's full split-adjusted monthly history on every
+      // load and takes that figure whether it is higher or lower than this
+      // one. Do not make it a ratchet: an "only when higher" test lets a stale
+      // constant sit above the real high and reads every drawdown a rung
+      // shallow.
       //
       // Note for anyone checking this against a data site: QLD ran a 2:1
       // forward split on 20 November 2025. Several sites still report an
@@ -56,8 +59,9 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA_SSO",      // window.TTF_DATA_SSO
       CONTRIBUTION: 800,
-      // Fallback only. The site pulls the record high live from Yahoo and
-      // uses that when it is higher.
+      // Fallback only, used when the live fetch fails. The site pulls the
+      // record high live from Yahoo and uses it whether it is higher or lower
+      // than this one. See the note on QLD above.
       //
       // Note for anyone checking this against a data site: SSO ran a 2:1
       // forward split on 20 November 2025, and several sites still publish an
@@ -80,8 +84,8 @@ window.TTF = {
      figure so the drag is visible rather than invisible.
      --------------------------------------------------------- */
 
-  // Kept so anything not yet sleeve-aware still resolves. These mirror the
-  // TQQQ sleeve above.
+  // Kept so anything not yet fund-aware still resolves. These mirror QLD
+  // above.
   HIGH_WATER_MARK: null,
   CONTRIBUTION:    800,
   EXPENSE_RATIO:   0.0095

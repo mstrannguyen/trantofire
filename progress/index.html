@@ -283,7 +283,7 @@
           <div class="stat"><dt>Portfolio value</dt><dd id="s-value">—<small id="s-value-sub">shares plus cash</small></dd></div>
           <div class="stat"><dt>Total money in</dt><dd id="s-in">—<small id="s-in-sub">contributions to date</small></dd></div>
           <div class="stat"><dt>Profit / loss</dt><dd id="s-pl">—<small id="s-pl-sub">on money in</small></dd></div>
-          <div class="stat"><dt>Drawdown from high</dt><dd id="s-dd">—<small id="s-dd-sub">measured on TQQQ</small></dd></div>
+          <div class="stat"><dt>Drawdown from high</dt><dd id="s-dd">—<small id="s-dd-sub">from the record high</small></dd></div>
           <div class="stat"><dt>Shares held</dt><dd id="s-sh">—<small id="s-sh-sub">whole shares only</small></dd></div>
           <div class="stat"><dt>Average cost</dt><dd id="s-avg">—<small id="s-avg-sub">per share</small></dd></div>
           <div class="stat"><dt>Cash reserve</dt><dd id="s-cash">—<small id="s-cash-sub">waiting to deploy</small></dd></div>
@@ -294,13 +294,13 @@
 
     <section class="band band-blush" style="padding-top:0;background:transparent">
       <div class="wrap">
-        <div class="chart">
+        <div class="chart" id="block-price">
           <h3>The price, the high-water mark, and every buy</h3>
           <p class="sub">The blue step is the record high, which only ever ratchets upward. The dashed lines are the tier boundaries, and they rise with it. Every triangle is a purchase: the deeper the tier, the bigger the marker and the bigger the share of cash going in.</p>
           <div id="chart0"></div>
           <div class="legend">
             <span><i style="background:#5A7BA8"></i>High-water mark</span>
-            <span><i style="background:#3A2B31"></i>TQQQ price</span>
+            <span><i style="background:#3A2B31"></i><span id="lg-price">Price</span></span>
             <span><i style="background:#2E7D32"></i>Baseline &middot; deploy 20%</span>
             <span><i style="background:#EFC61E"></i>Dip &middot; 33%</span>
             <span><i style="background:#E05A0C"></i>Deep dip &middot; 67%</span>
@@ -309,7 +309,7 @@
         </div>
 
         <div class="chart" style="margin-top:28px">
-          <h3>What TQQQ has done with the money in it</h3>
+          <h3 id="h-value">What the fund has done with the money in it</h3>
           <p class="sub">The shares only. The cash reserve is left out of both sides, because it is not the fund and counting it would measure the deployment schedule rather than the fund. Above the line is profit on the money actually invested.</p>
           <div id="chart1"></div>
           <div class="legend">
@@ -317,7 +317,7 @@
           </div>
         </div>
 
-        <div class="chart">
+        <div class="chart" id="block-drawdown">
           <h3>Drawdown from the high-water mark</h3>
           <p class="sub">Shaded bands mark the tiers. The deeper the line, the harder the rules make me buy.</p>
           <div id="chart2"></div>
@@ -401,7 +401,7 @@
 </footer>
 
 <script src="../js/config.js?v=18" defer></script>
-<script src="../js/data.js?v=16" defer></script>
+<script src="../js/data.js?v=17" defer></script>
 <script src="../js/engine.js?v=13" defer></script>
 <script src="../js/live.js?v=20" defer></script>
 <!-- benchmark.js first: progress.js calls TTF_BENCH.render on its first paint,

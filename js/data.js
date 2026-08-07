@@ -25,7 +25,7 @@
        shares:  how many you ACTUALLY bought, if it wasn't what the rules said.
                 The site flags that month and shows both numbers.
        fee:     brokerage paid, so the reserve stays honest
-       high:    a NEW record high TQQQ reached since your last buy. The site
+       high:    a NEW record high the fund reached since your last buy. The site
                 only sees one price a month, so if it spiked to a record
                 between buy days it will never know unless you say so, and
                 every later drawdown would be measured from the wrong number.
@@ -55,10 +55,6 @@
 window.TTF_DATA = [
 
   // ───────── 2026 ─────────
-  // The monthly Nasdaq buy is QLD, not TQQQ. This row was the August TQQQ buy at
-  // $60.23; it is parked here rather than deleted until we decide what happens
-  // to those 4 shares.
-  // { month: "2026-08", price: 60.23 },
   { month: "2026-08", price: 90.21 },
   // { month: "2026-09", price: 0.00 },
   // { month: "2026-10", price: 0.00 },
@@ -349,11 +345,11 @@ window.TTF_DATA = [
    Same rules, same US$800 a month, same tier ladder, different index. It runs
    its own reserve and its own high-water mark, so the two never touch.
 
-   Edit it exactly the way you edit the TQQQ log above: find the month, delete
+   Edit it exactly the way you edit the QLD log above: find the month, delete
    the two slashes, type the price you paid.
 
    August 2026 is logged. Every later month is commented out, the same as the
-   TQQQ log above.
+   QLD log above.
    --------------------------------------------------------------------------- */
 
 window.TTF_DATA_SSO = [

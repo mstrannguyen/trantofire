@@ -336,6 +336,13 @@
     var allocSub = $("s-alloc-sub");
     if (allocSub) allocSub.textContent = "fund / cash \u00b7 never rebalanced";
 
+    show("block-price");
+    show("block-drawdown");
+    var lgPrice = $("lg-price");
+    if (lgPrice) lgPrice.textContent = sleeve.sym + " price";
+    var hValue = $("h-value");
+    if (hValue) hValue.textContent = "What " + sleeve.sym + " has done with the money in it";
+
     var months = history.map(function (d) { return d.label; });
     drawPriceChart($("chart0"), history);
     drawValueChart($("chart1"), history, sleeve.sym);
@@ -535,7 +542,15 @@
       if (e) e.className = "";
     });
 
+    var hValue = $("h-value");
+    if (hValue) hValue.textContent = "What the two funds have done with the money in them";
     drawValueChart($("chart1"), merged, "both funds");
+
+    /* A price line and a drawdown line belong to one fund. Two funds at two
+       prices against two record highs cannot share either axis, so both blocks
+       come off the page here rather than standing empty above their captions. */
+    hide("block-price");
+    hide("block-drawdown");
     ["chart0", "chart2"].forEach(function (id) {
       var c = $(id); if (c) c.innerHTML = "";
     });
