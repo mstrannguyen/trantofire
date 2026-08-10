@@ -230,6 +230,12 @@
     }
 
     var meta = result.meta || {};
+
+    /* The highest monthly close, used to screen the 52-week high below. An
+       unadjusted figure sits far above every adjusted close in the series. */
+    var maxClose = 0;
+    for (var mk in months) if (months[mk] > maxClose) maxClose = months[mk];
+
     return {
       months:    months,
       highs:     highs,
@@ -238,6 +244,9 @@
       oldest:    oldest,
       last:      last,
       totalLast: totalLast,
+      maxClose:  maxClose,
+      week52:    typeof meta.fiftyTwoWeekHigh === "number" && isFinite(meta.fiftyTwoWeekHigh)
+                   ? meta.fiftyTwoWeekHigh : null,
       asOf:   meta.regularMarketTime
                 ? new Date(meta.regularMarketTime * 1000).toISOString()
                 : new Date().toISOString()
@@ -332,9 +341,15 @@
      series() already fetches. The high comes from the full split-adjusted
      history rather than from any published "all-time high" field, because two
      sites publish provably wrong figures for these funds by using unadjusted
-     data. Deriving it from the whole series cannot be lower than the 52-week
-     high, so the sanity check the TQQQ route needs is satisfied by
-     construction.
+     data.
+
+     The monthly series alone is not enough. Yahoo's bar for the month still
+     running does not carry the month's own intraday high: on 7 August 2026 the
+     August bar came back with a high of 71.83, the last session's high, while
+     SSO had traded at 72.42 on 5 August. The record read 71.83 and the
+     drawdown 0.2% instead of 1.0%. So the 52-week high is taken from meta and
+     used whenever it is higher, screened first against the highest monthly
+     close so an unadjusted figure cannot get in.
 
      The derived high is printed once so it can be pasted into config.js as
      the offline fallback. */
@@ -352,6 +367,21 @@
       }
       var price = s.months[s.newest];
       if (!(price > 0)) return (quoteCache[symbol] = null);
+
+      // the running month's bar can lag its own intraday peak
+      if (s.week52 !== null && s.week52 > ath) {
+        if (s.maxClose > 0 && s.week52 > s.maxClose * 1.5) {
+          if (window.console) {
+            console.info("[Tran to Fire] ignored a 52-week high for " + symbol + ": " +
+              s.week52.toFixed(2) + " against a highest monthly close of " +
+              s.maxClose.toFixed(2) + ". Looks unadjusted.");
+          }
+        } else {
+          ath = s.week52;
+          athKey = "52-week high";
+        }
+      }
+      if (price > ath) { ath = price; athKey = "today"; }
 
       if (window.console && ath > 0) {
         console.info("[Tran to Fire] " + symbol + " record high from Yahoo's full history: " +
