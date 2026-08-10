@@ -281,6 +281,48 @@
      you just left would land on the tab you just opened. */
   var renderToken = 0;
 
+  function paintTier(row) {
+    var pill = $("tier");
+    if (!pill) return;
+    if (row.highKnown) {
+      pill.textContent = row.tier.label + " \u00b7 deploy " + pct(row.deployPct || row.tier.pct, 0);
+      pill.className = "tierpill t" + row.tier.n;
+    } else {
+      pill.textContent = "Tier unknown until the record high loads";
+      pill.className = "tierpill";
+    }
+  }
+
+  /* The drawdown and tier columns depend on the record high, which arrives
+     from the network after the first paint. The table is rebuilt rather than
+     patched in place so both layers go through the same code. */
+  function logRows(history) {
+    var html = "";
+    for (var k = history.length - 1; k >= 0; k--) {
+      var d = history[k];
+      html += "<tr>" +
+        '<td class="mth">' + d.label +
+          (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
+        "<td>" + usd(d.price, 2) + "</td>" +
+        "<td>" + (d.highKnown ? ddPct(d.drawdown) : "\u2014") + "</td>" +
+        (d.highKnown
+          ? '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>"
+          : "<td>\u2014</td>") +
+        "<td>" + pct(d.deployPct, 0) + "</td>" +
+        "<td>" + usd(d.available) + "</td>" +
+        "<td>" + usd(d.spent) + "</td>" +
+        "<td>" + d.bought + (d.deviated ? '<span class="dev" title="The rules said ' + d.ruleBought + '">\u2260</span>' : "") + "</td>" +
+        "<td>" + d.shares + "</td>" +
+        "<td>" + usd(d.avgCost, 2) + "</td>" +
+        "<td>" + usd(d.reserve) + "</td>" +
+        "<td>" + usd(d.portfolio) + "</td>" +
+        "<td>" + usd(d.moneyIn) + "</td>" +
+        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
+        "</tr>";
+    }
+    return html;
+  }
+
   function renderSleeve(sleeve) {
     document.getElementById("data").setAttribute("data-sym", sleeve.sym);
     var grid = $("r-grid"); if (grid) grid.classList.remove("hidden");
@@ -317,9 +359,7 @@
 
     $("asof").textContent = last.label;
 
-    var pill = $("tier");
-    pill.textContent = last.tier.label + " \u00b7 deploy " + pct(last.deployPct, 0);
-    pill.className = "tierpill t" + last.tier.n;
+    paintTier(last);
 
     $("s-value").firstChild.nodeValue = usd(last.portfolio);
     $("s-in").firstChild.nodeValue    = usd(last.moneyIn);
@@ -327,8 +367,10 @@
     plEl.firstChild.nodeValue = (last.pl < 0 ? "\u2212" : "") + usd(Math.abs(last.pl));
     plEl.className = last.pl >= 0 ? "pos" : "neg";
     $("s-pl-sub").textContent = pct(last.ret) + " on money in";
-    $("s-dd").firstChild.nodeValue    = ddPct(last.drawdown);
-    $("s-dd-sub").textContent         = "high-water mark " + usd(last.high, 2);
+    $("s-dd").firstChild.nodeValue    = last.highKnown ? ddPct(last.drawdown) : "\u2014";
+    $("s-dd-sub").textContent         = last.highKnown
+      ? "high-water mark " + usd(last.high, 2)
+      : "waiting on the record high from Yahoo Finance";
     $("s-sh").firstChild.nodeValue    = last.shares.toLocaleString("en-US");
     $("s-avg").firstChild.nodeValue   = usd(last.avgCost, 2);
     $("s-cash").firstChild.nodeValue  = usd(last.reserve);
@@ -336,59 +378,52 @@
     var allocSub = $("s-alloc-sub");
     if (allocSub) allocSub.textContent = "fund / cash \u00b7 never rebalanced";
 
-    show("block-price");
-    show("block-drawdown");
     var lgPrice = $("lg-price");
     if (lgPrice) lgPrice.textContent = sleeve.sym + " price";
     var hValue = $("h-value");
     if (hValue) hValue.textContent = "What " + sleeve.sym + " has done with the money in it";
 
     var months = history.map(function (d) { return d.label; });
-    drawPriceChart($("chart0"), history);
+
+    /* Both of these draw the record high. Without one the step would sit on
+       the price line and the drawdown would be a flat zero, which reads as a
+       fund that has never been down rather than as a figure the page does not
+       have yet. */
+    if (last.highKnown) {
+      show("block-price"); show("block-drawdown");
+      drawPriceChart($("chart0"), history);
+      drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
+    } else {
+      hide("block-price"); hide("block-drawdown");
+      $("chart0").innerHTML = ""; $("chart2").innerHTML = "";
+    }
     drawValueChart($("chart1"), history, sleeve.sym);
-    drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
 
-    var html = "";
-    for (var k = history.length - 1; k >= 0; k--) {
-      var d = history[k];
-      html += "<tr>" +
-        '<td class="mth">' + d.label +
-          (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
-        "<td>" + usd(d.price, 2) + "</td>" +
-        "<td>" + ddPct(d.drawdown) + "</td>" +
-        '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +
-        "<td>" + pct(d.deployPct, 0) + "</td>" +
-        "<td>" + usd(d.available) + "</td>" +
-        "<td>" + usd(d.spent) + "</td>" +
-        "<td>" + d.bought + (d.deviated ? '<span class="dev" title="The rules said ' + d.ruleBought + '">\u2260</span>' : "") + "</td>" +
-        "<td>" + d.shares + "</td>" +
-        "<td>" + usd(d.avgCost, 2) + "</td>" +
-        "<td>" + usd(d.reserve) + "</td>" +
-        "<td>" + usd(d.portfolio) + "</td>" +
-        "<td>" + usd(d.moneyIn) + "</td>" +
-        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
-        "</tr>";
-    }
-    var iEl = document.getElementById("p-interest");
-    if (iEl) {
-      var bits = [];
-      if (last.brokerageTotal > 0)
-        bits.push(usd(last.brokerageTotal, 2) + " paid in brokerage");
-      if (last.mgmtTotal > 0)
-        bits.push("about " + usd(last.mgmtTotal, 2) + " borne in fund fees, already inside the price");
-      if (last.interestTotal > 0)
-        bits.push(usd(last.interestTotal, 2) + " earned as interest on the reserve");
-      if (bits.length) iEl.innerHTML = "So far: " + bits.join(" \u00b7 ") + ".";
-    }
+    $("rows").innerHTML = logRows(history);
 
-    $("rows").innerHTML = html;
     show("data");
 
     // ---- upgrade the valuation to a live market price if available ----
     if (window.TTF_LIVE) {
       var token = ++renderToken;
       window.TTF_LIVE.quoteFor(sleeve.sym).then(function (live) {
-        if (!live || token !== renderToken) return;   // a later tab click wins
+        if (token !== renderToken) return;            // a later tab click wins
+
+        /* Feed down. The high on screen is the last one Yahoo gave, kept in
+           this browser, so the drawdown and the tier still stand. Only the
+           valuation is stale, and it is the last logged price either way. */
+        if (!live) {
+          var kept = sleeve.HIGH_WATER_MARK_KEPT;
+          var st = document.getElementById("p-live");
+          if (st && kept) {
+            st.textContent = "Yahoo Finance did not answer. The record high of " +
+              usd(kept.ath, 2) + " is the last one it gave, saved in this browser on " +
+              new Date(kept.savedAt).toLocaleDateString("en-AU",
+                { day: "numeric", month: "short", year: "numeric" }) +
+              ". Everything else is the last logged price.";
+          }
+          return;
+        }
 
         // Yahoo's all-time high replaces the hardcoded reference where it is higher
         var hist = history;
@@ -403,6 +438,13 @@
         var r = E.revalue(hist, live.price);
         if (!r) return;
 
+        /* The first paint ran without a record high, so the tier pill and the
+           drawdown and tier columns were left blank. Now there is one. */
+        if (r.highKnown) {
+          paintTier(hist[hist.length - 1]);
+          $("rows").innerHTML = logRows(hist);
+        }
+
         // the chart's last point should agree with the cards above it
         // the last point moves to the live price, so the chart agrees with the cards
         var live = hist.slice();
@@ -411,7 +453,12 @@
         lastRow.etfValue = r.etfValue;
         live[live.length - 1] = lastRow;
         drawValueChart($("chart1"), live, sleeve.sym);
-        drawPriceChart($("chart0"), live);
+        if (r.highKnown) {
+          show("block-price"); show("block-drawdown");
+          drawPriceChart($("chart0"), live);
+          drawDrawdownChart($("chart2"), live.map(function (d) { return d.label; }),
+            live.map(function (d) { return -Math.abs(d.drawdown); }));
+        }
 
         // only the "what is it worth now" figures move; the log stays as bought
         $("s-value").firstChild.nodeValue = usd(r.portfolio);
@@ -419,8 +466,10 @@
         plEl.firstChild.nodeValue = (r.pl < 0 ? "\u2212" : "") + usd(Math.abs(r.pl));
         plEl.className = r.pl >= 0 ? "pos" : "neg";
         $("s-pl-sub").textContent = pct(r.ret) + " on money in";
-        $("s-dd").firstChild.nodeValue = ddPct(r.drawdown);
-        $("s-dd-sub").textContent = "high-water mark " + usd(r.high, 2);
+        $("s-dd").firstChild.nodeValue = r.highKnown ? ddPct(r.drawdown) : "\u2014";
+        $("s-dd-sub").textContent = r.highKnown
+          ? "high-water mark " + usd(r.high, 2)
+          : "waiting on the record high from Yahoo Finance";
         $("s-alloc").firstChild.nodeValue =
           Math.round(r.pctEtf * 100) + "% / " + Math.round(r.pctCash * 100) + "%";
 
@@ -657,8 +706,10 @@
       return "<tr>" +
         '<td class="mth">' + r.sl.sym + "<br><span class=\"sub-note\">" + d.label + "</span></td>" +
         "<td>" + usd(d.fill, 2) + "</td>" +
-        "<td>" + ddPct(d.drawdown) + "</td>" +
-        '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>" +
+        "<td>" + (d.highKnown ? ddPct(d.drawdown) : "\u2014") + "</td>" +
+        (d.highKnown
+          ? '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>"
+          : "<td>\u2014</td>") +
         "<td>" + pct(d.tier.pct, 0) + "</td>" +
         "<td>" + usd(d.available) + "</td>" +
         "<td>" + usd(d.spent) + "</td>" +

@@ -334,6 +334,56 @@
     return dailyCache[symbol];
   }
 
+  /* ---------------------------------------------------------------------
+     The last record high Yahoo gave, kept in the browser.
+
+     There is no figure for this in the repository any more. Instead every
+     successful fetch writes what it got to localStorage, and a failed fetch
+     reads it back, so a dead feed shows the last real Yahoo number rather
+     than a blank or a constant somebody typed months ago. It refreshes itself
+     on every load that works.
+
+     It expires. A forward split halves the price overnight and a remembered
+     pre-split high would read every drawdown about twice as deep as it is,
+     which is the direction that spends the reserve. ProShares split these
+     funds in November 2025. Anything older than 120 days is thrown away
+     instead of trusted, which is far longer than the monthly visit that
+     refreshes it.
+     --------------------------------------------------------------------- */
+
+  var STORE_PREFIX = "ttf:high:";
+  var STORE_MAX_AGE = 120 * 24 * 60 * 60 * 1000;
+
+  function rememberHigh(symbol, ath, athDate) {
+    if (!(ath > 0)) return;
+    try {
+      window.localStorage.setItem(STORE_PREFIX + symbol, JSON.stringify({
+        ath: ath, athDate: athDate || null, savedAt: Date.now()
+      }));
+    } catch (e) { /* private browsing, quota, storage off: nothing to do */ }
+  }
+
+  function storedHigh(symbol) {
+    var raw;
+    try { raw = window.localStorage.getItem(STORE_PREFIX + symbol); }
+    catch (e) { return null; }
+    if (!raw) return null;
+
+    var kept;
+    try { kept = JSON.parse(raw); } catch (e) { return null; }
+    if (!kept || !(kept.ath > 0) || !(kept.savedAt > 0)) return null;
+
+    if (Date.now() - kept.savedAt > STORE_MAX_AGE) {
+      try { window.localStorage.removeItem(STORE_PREFIX + symbol); } catch (e) {}
+      if (window.console) {
+        console.info("[Tran to Fire] discarded a remembered high for " + symbol +
+          "; older than 120 days and a split could have moved it.");
+      }
+      return null;
+    }
+    return kept;
+  }
+
   /* Live price and record high for any sleeve.
 
      TQQQ keeps get(), which has the serverless function behind it as a second
@@ -351,8 +401,8 @@
      used whenever it is higher, screened first against the highest monthly
      close so an unadjusted figure cannot get in.
 
-     The derived high is printed once so it can be pasted into config.js as
-     the offline fallback. */
+     The figure is printed to the console once per load so it can be checked
+     against a data site without opening the network tab. */
   var quoteCache = {};
 
   function quoteFor(symbol) {
@@ -385,8 +435,9 @@
 
       if (window.console && ath > 0) {
         console.info("[Tran to Fire] " + symbol + " record high from Yahoo's full history: " +
-          ath.toFixed(2) + " (" + athKey + "). Paste into HIGH_WATER_MARK in js/config.js.");
+          ath.toFixed(2) + " (" + athKey + ").");
       }
+      rememberHigh(symbol, ath, athKey);
       return (quoteCache[symbol] = {
         price: price, ath: ath > 0 ? ath : null, athDate: athKey,
         asOf: s.asOf, source: "Yahoo Finance", suspect: false
@@ -395,5 +446,6 @@
   }
 
   window.TTF_LIVE = { get: get, quoteFor: quoteFor, series: series,
-                      daily: daily, asOfLabel: asOfLabel };
+                      daily: daily, asOfLabel: asOfLabel,
+                      storedHigh: storedHigh, rememberHigh: rememberHigh };
 })();

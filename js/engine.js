@@ -33,7 +33,18 @@
 
   /* Walks the months in order, applying the rules month by month. */
   function run(rows, cfg) {
-    var high     = cfg.HIGH_WATER_MARK;
+    /* The record high is not stored anywhere. It comes from Yahoo on every
+       load, so before that arrives there is nothing to measure against.
+
+       The running maximum of the logged prices is still tracked, because the
+       tier has to resolve to something for the share counts to compute, and
+       that maximum is a floor on the true high: it can read a drawdown too
+       shallow but never too deep. What it must not do is get printed as
+       though it were the record. Every row carries highKnown for that, and a
+       caller showing a drawdown, a tier or a high-water mark has to check it.
+       An explicit `high:` on a row is a real record and sets it true. */
+    var haveHigh = isFinite(cfg.HIGH_WATER_MARK) && Number(cfg.HIGH_WATER_MARK) > 0;
+    var high     = haveHigh ? Number(cfg.HIGH_WATER_MARK) : 0;
     var reserve  = 0;
     var shares   = 0;
     var invested = 0;    // total spent on shares
@@ -71,9 +82,10 @@
 
       // The high-water mark only ever ratchets upward. It normally rises from
       // the prices logged here, but the site only ever sees one price a month
-      // — the day you bought. If TQQQ set a record BETWEEN buy days, say so
-      // with `high:` on that month's line or every later drawdown is wrong.
-      if (isFinite(r.high) && Number(r.high) > high) high = Number(r.high);
+      // and that is the day you bought. If the fund set a record BETWEEN buy
+      // days, say so with `high:` on that month's line or every later drawdown
+      // is wrong.
+      if (isFinite(r.high) && Number(r.high) > high) { high = Number(r.high); haveHigh = true; }
       if (price > high) high = price;
 
       var drawdown  = (price - high) / high;          // 0 or negative
@@ -173,6 +185,7 @@
         price:      price,
         fill:       fill,
         high:       high,
+        highKnown:  haveHigh,
         drawdown:   drawdown,
         tier:       tier,
         available:  available,
@@ -209,7 +222,9 @@
   /* What the rules say to do next month, given where things stand. */
   function next(history, cfg, priceNow) {
     var last      = history.length ? history[history.length - 1] : null;
-    var high      = last ? last.high : cfg.HIGH_WATER_MARK;
+    var haveHigh  = last ? !!last.highKnown
+                         : (isFinite(cfg.HIGH_WATER_MARK) && Number(cfg.HIGH_WATER_MARK) > 0);
+    var high      = last ? last.high : Number(cfg.HIGH_WATER_MARK) || 0;
     var reserve   = last ? last.reserve : 0;
     var price     = isFinite(priceNow) ? Number(priceNow) : (last ? last.price : null);
     if (price === null) return null;
@@ -222,7 +237,7 @@
     var bought    = Math.floor(target / price);
 
     return {
-      price: price, high: high, drawdown: drawdown, tier: tier,
+      price: price, high: high, highKnown: haveHigh, drawdown: drawdown, tier: tier,
       available: available, target: target, bought: bought,
       spend: bought * price
     };
@@ -276,6 +291,7 @@
       costsTotal:     feesPaid + mgmtDrag,
       avgCost:    last.avgCost,
       high:       high,
+      highKnown:  !!last.highKnown,
       drawdown:   drawdown,
       tier:       tier,
       pctEtf:     portfolio ? etfValue / portfolio : 0,

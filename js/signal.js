@@ -83,7 +83,7 @@
        whatever the fund had actually done. The card waits for Yahoo instead of
        printing a tier it cannot stand behind. The money below is unaffected:
        the buy is logged at the shares actually bought. */
-    if (sl.HIGH_WATER_MARK) signalCard(sl, last, false);
+    if (last.highKnown) signalCard(sl, last, false);
     else {
       setText("sg-deploy-" + sl.sym, "\u2014");
       setText("sg-deploy-sub-" + sl.sym, "Waiting on the record high from Yahoo Finance.");
@@ -105,10 +105,11 @@
     window.TTF_LIVE.quoteFor(sl.sym).then(function (live) {
       if (!live) return;
 
-      /* Yahoo's figure IS the record high. The number in config is a fallback
-         for a dead feed, so it gives way to the live one whether that is higher
-         or lower. Only taking it when it was higher meant a stale constant
-         could sit above the real high and quietly read every drawdown shallow. */
+      /* Yahoo's figure IS the record high. Nothing is stored to compare it
+         against, so it is taken as it comes. An earlier version kept a
+         constant in config and only took the live figure when it was higher,
+         which let a stale number sit above the real high and read every
+         drawdown a rung shallow. */
       var lifted = {};
       for (var k in sl) lifted[k] = sl[k];
       var haveAth = live.ath > 0;

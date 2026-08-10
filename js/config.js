@@ -37,18 +37,16 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA",          // window.TTF_DATA
       CONTRIBUTION: 800,                 // US$ per month
-      // Fallback only, used when the live fetch fails. The site derives the
-      // record high from Yahoo's full split-adjusted monthly history on every
-      // load and takes that figure whether it is higher or lower than this
-      // one. Do not make it a ratchet: an "only when higher" test lets a stale
-      // constant sit above the real high and reads every drawdown a rung
-      // shallow.
+      // No record high is stored. It comes from Yahoo's full split-adjusted
+      // monthly history on every load, and from the 52-week high where the
+      // running month's bar has not caught up with its own peak. If the fetch
+      // fails the page says so rather than showing a figure that has been
+      // sitting in this file going stale.
       //
       // Note for anyone checking this against a data site: QLD ran a 2:1
       // forward split on 20 November 2025. Several sites still report an
       // all-time high of $153.33 from 29 October 2025, which is the pre-split
       // price. Halved, that peak is $76.67, and the June 2026 one is higher.
-      HIGH_WATER_MARK: 101.19,           // QLD record high, June 2026
       EXPENSE_RATIO:   0.0095,           // 0.95%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["QQQ", "TQQQ"]      // the same money into 1x and 3x
@@ -59,15 +57,12 @@ window.TTF = {
       mult:         2,
       data:         "TTF_DATA_SSO",      // window.TTF_DATA_SSO
       CONTRIBUTION: 800,
-      // Fallback only, used when the live fetch fails. The site pulls the
-      // record high live from Yahoo and uses it whether it is higher or lower
-      // than this one. See the note on QLD above.
+      // Live from Yahoo, same as QLD above. Nothing stored.
       //
       // Note for anyone checking this against a data site: SSO ran a 2:1
       // forward split on 20 November 2025, and several sites still publish an
       // unadjusted all-time high in the $160s that predates it. Everything
       // here is post-split.
-      HIGH_WATER_MARK: 72.42,            // SSO record high, 5 August 2026
       EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["VOO", "UPRO"]      // the same money into 1x and 3x
@@ -85,14 +80,22 @@ window.TTF = {
      --------------------------------------------------------- */
 
   // Kept so anything not yet fund-aware still resolves. These mirror QLD
-  // above.
+  // above. HIGH_WATER_MARK stays null on purpose: there is no stored record
+  // high anywhere on this site.
   HIGH_WATER_MARK: null,
   CONTRIBUTION:    800,
   EXPENSE_RATIO:   0.0095
 };
 
 /* Convenience: the sleeve record for a symbol, with the shared settings
-   folded in, so callers can hand one object straight to TTF_ENGINE.run(). */
+   folded in, so callers can hand one object straight to TTF_ENGINE.run().
+
+   The record high is not in this file. It comes from Yahoo on every load. What
+   goes in here is the last figure Yahoo gave, which live.js kept in the
+   browser, so the page has something real to draw before the network answers
+   and something real to keep showing if it never does. First visit with a dead
+   feed is the one case with no figure at all, and the page says so rather than
+   inventing one. */
 window.TTF.sleeve = function (sym) {
   var base = window.TTF, out = null;
   (base.SLEEVES || []).forEach(function (s) { if (s.sym === sym) out = s; });
@@ -100,5 +103,13 @@ window.TTF.sleeve = function (sym) {
   var cfg = { CASH_RATE: base.CASH_RATE, BROKERAGE: base.BROKERAGE };
   for (var k in out) cfg[k] = out[k];
   cfg.rows = window[out.data] || [];
+
+  if (!(cfg.HIGH_WATER_MARK > 0) && window.TTF_LIVE && window.TTF_LIVE.storedHigh) {
+    var kept = window.TTF_LIVE.storedHigh(sym);
+    if (kept) {
+      cfg.HIGH_WATER_MARK = kept.ath;
+      cfg.HIGH_WATER_MARK_KEPT = kept;      // so a page can say where it came from
+    }
+  }
   return cfg;
 };
