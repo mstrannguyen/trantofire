@@ -102,7 +102,7 @@
   .src-note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:36px}
 
   /* misconception cards */
-  .myths{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .myths{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
   .myths li{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 32px}
   .myth-n{display:block;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:12px}
   .myths h3{font-size:23px;line-height:1.26;margin-bottom:20px}
@@ -251,28 +251,30 @@
     <p>Leveraged ETFs were not on my radar. Living in Australia you do not run into them. They are not in the super menus, the local brokers do not put them in front of you, and the conversation here is index funds and property. I only found out they existed by reading what people overseas were doing with them.</p>
     <p>They are index funds. QLD tracks the Nasdaq-100, the same index QQQ tracks, and SSO tracks the S&amp;P 500. Nothing is stock-picked and nobody is forecasting anything. What changes is how much index each dollar buys: a dollar in QQQ moves with the Nasdaq, and a dollar in QLD moves like two dollars would, day by day. The borrowing that makes that possible sits inside the fund, not in a loan with my name on it.</p>
     <p>So I went and learned. I read what I could find, then built my own backtests, because I wanted the numbers coming out of a spreadsheet I had made rather than off a chart someone had posted.</p>
-    <div class="quote"><p>That they get margin-called. That you can't hold one past a day. That decay grinds them to zero. I had never checked any of it.</p></div>
-    <p>Here are the three I checked first.</p>
+    <div class="quote"><p>The warnings are always the same. That they get margin-called. That you can't hold one past a day. That decay grinds them to zero.</p></div>
+    <p>Here are the four I went through first.</p>
   </div>
 
   <div class="wrap">
     <ul class="myths">
       <li>
-        <div class="myth-h"><span class="myth-n">What I had wrong</span><h3>"Decay drags them to zero."</h3></div>
+        <div class="myth-h"><span class="myth-n">What people say</span><h3>"You'll get margin-called."</h3></div>
+        <p><strong>The borrowing sits inside the fund.</strong> ProShares puts the comparison plainly: $10 in a 2× fund buys $20 of exposure and the most you can lose is the $10, while borrowing $10 to put $20 on margin risks the whole $20, and a sharp fall there can bring a call for more cash or a forced sale. The fund resets its own exposure at each day's close and no broker can ask me for money. Losing the lot is still possible, through the price rather than a phone call: SSO's prospectus says that if the S&amp;P 500 approaches a 50% loss at any point in a single day, the fund could lose its entire investment. Buying the fund itself on margin would put the call straight back, and FINRA doubles the maintenance requirement on a 2× fund to 50% for exactly that reason.</p>
+      </li>
+      <li>
+        <div class="myth-h"><span class="myth-n">What people say</span><h3>"Decay drags them to zero."</h3></div>
         <p><strong>The maths says otherwise.</strong> Collins takes an index that falls one percent every single day and follows both funds down. After ten days the plain fund is down about 9% and the 3× is down about 26%. That is 2.88 times worse, not three. After a hundred days the index is down 64% and the 3× is down 95%, which is only 1.48 times worse. Three times a shrinking number is itself a shrinking number, so the further it falls the less the multiple costs you. It gets very close to zero and never arrives.</p>
-        <p><strong>What's still true.</strong> Being down 95% is not a rescue. Not reaching zero and being worth holding are two different claims, and only the first one is proven.</p>
       </li>
       <li>
-        <div class="myth-h"><span class="myth-n">What I had wrong</span><h3>"You'd have to time it perfectly."</h3></div>
+        <div class="myth-h"><span class="myth-n">What people say</span><h3>"You'd have to time it perfectly."</h3></div>
         <p><strong>Collins tested that.</strong> He ran the same twenty years of monthly buying twice, changing one thing: the month he started. One run began at the bottom of the 2003 crash, the best moment available. The other began at the top of the 2007 peak, close to the worst. Both ended on the same annual growth rate. Keep buying for long enough and the day you started stops being the thing that decides it.</p>
-        <p><strong>What's still true.</strong> Same growth rate, very different totals. The one who started in 2007 ends up with a fraction of what the 2003 starter has. Timing does not ruin it, and it does not stop mattering either.</p>
       </li>
       <li>
-        <div class="myth-h"><span class="myth-n">What I had wrong</span><h3>"Volatility drag is the problem."</h3></div>
+        <div class="myth-h"><span class="myth-n">What people say</span><h3>"Volatility drag is the problem."</h3></div>
         <p><strong>Every fund has it.</strong> Drag is what a bouncing price costs you. Fall 10% and then rise 10% and you are not back where you started, you are 1% down. That happens to a plain index fund too, in smaller amounts. So if 1× is fine to hold for decades with drag in it, drag on its own cannot be the reason to rule out 3×. The real question is where the line belongs, and nobody explains why it lands at exactly 1×.</p>
-        <p><strong>What's still true.</strong> The cost you can count on is the fee, not the drag. Roughly 1% a year, every year, whatever the market does. No tier schedule makes that go away.</p>
       </li>
     </ul>
+    <p class="src-note">Sources: ProShares, <a href="https://www.proshares.com/resources/geared-faqs" rel="noopener">About Geared Funds</a>, for the exposure and maximum-loss comparison. The 50% figure is the Leverage Risk paragraph in the ProShares Ultra S&amp;P500 prospectus. Margin requirements are FINRA's <a href="https://www.finra.org/rules-guidance/guidance/interps-4210" rel="noopener">interpretations of Rule 4210</a>, which raise the requirement on a leveraged fund in line with its multiple, capped at 100% on a long position. Decay and timing figures are from Collins.</p>
   </div>
 </section>
 

@@ -99,13 +99,7 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "Both funds went in on the baseline tier, which releases a fifth of the available cash and not a share more. QLD was about 11% under its record and SSO under 6%, and neither is far enough down for the ladder to open up. That came to one share of QLD and two of SSO. The $1,369 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one.",
-
-      "Two funds from the start, US$800 into each, same ladder, measured separately. Both are 2x, one on the Nasdaq-100 and one on the S&P 500, so the geared money is not all riding on one index. Neither reserve knows the other exists, which is the whole reason for running them apart.",
-
-      "The strange part of starting this way is how little actually gets bought. Of the $1,600 that went in, $1,369 is still sitting in cash. That is the arrangement rather than a failure of it: the rules only spend properly once something has fallen, and nothing has. A first month that felt productive would mean the market had already gone badly wrong.",
-
-      "The 3x funds are not part of any of this. TQQQ and UPRO are what the crash money buys if an index falls a long way, and nothing this month came close."
+      "Both funds went in on the baseline tier, which releases a fifth of the available cash and not a share more. QLD was about 11% under its record and SSO under 6%, and neither is far enough down for the ladder to open up. That came to one share of QLD and two of SSO. The $1,369 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one."
     ],
 
     macro: {
@@ -122,7 +116,7 @@ window.TTF_JOURNAL = [
 
         "Then the earnings landed and argued the other way. Microsoft did $90.0 billion of revenue against $87.6 billion expected, grew Azure 43%, and held its capital spending guidance instead of raising it. Amazon followed a day later with AWS up 37%, its fastest since 2021, and lifted 2026 capex to $220 billion anyway. Samsung reported semiconductor operating profit more than 250 times what it earned a year ago, then told analysts the memory shortage will be worse in 2027 than in 2026 and will run into 2028.",
 
-        "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals. One of those two groups is wrong. I do not know which, and I do not need to.",
+        "So the month closes with the market selling the companies that make the chips while the companies that buy them post record demand and sign multi-year supply deals.",
 
         "Aschenbrenner held ordinary shares with four times leverage borrowed on top, from three prime brokers who could ask for it back. They did, and he was sold out near the bottom on their schedule. I hold a leveraged fund bought outright with cash, so nobody can force me out of it. That is the only real edge I have over him. For all that noise, the drawdown left both funds on the baseline tier this month. The ladder never asked my opinion on lithography."
       ],
