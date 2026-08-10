@@ -61,7 +61,16 @@
   .hero h1{max-width:16ch;margin:0 auto}
   .hero .lede{max-width:56ch;margin:28px auto 0}
 
-  .band{padding:70px 0 96px}
+  .band{padding:88px 0}
+  /* Section rhythm. One value everywhere: 88px above and below on desktop,
+     64px on a phone. Two sections of the SAME background sitting next to each
+     other used to add both paddings together and leave a void with nothing in
+     it, so the second one drops most of its top padding. Sections that change
+     background keep the full pair, because the colour edge is what the space
+     is separating. */
+  .band:not(.band-blush) + .band:not(.band-blush),
+  .band-blush + .band-blush{padding-top:32px}
+
 
   /* journal cards */
   .card{background:#fff;border:1px solid var(--hair);border-radius:20px;padding:34px 36px;margin:0 auto 22px;max-width:760px;transition:border-color .2s}
@@ -148,6 +157,9 @@
     .entry-figs div:nth-child(4){border-left:0}
     .entry-figs div:nth-child(n+4){border-top:1px solid rgba(58,43,49,.08)} }
   @media (max-width:560px){ .wrap{padding:0 22px} .hero{padding:52px 0 0}
+    .band{padding:64px 0}
+    .band:not(.band-blush) + .band:not(.band-blush),
+    .band-blush + .band-blush{padding-top:24px}
     .card{padding:28px 22px}
     .bar-row{grid-template-columns:52px 1fr 66px;gap:9px}
     .entry-table table{font-size:14.5px}

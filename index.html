@@ -168,7 +168,16 @@
   }
 
   /* ---------- sections ---------- */
-  .band{padding:104px 0}
+  .band{padding:88px 0}
+  /* Section rhythm. One value everywhere: 88px above and below on desktop,
+     64px on a phone. Two sections of the SAME background sitting next to each
+     other used to add both paddings together and leave a void with nothing in
+     it, so the second one drops most of its top padding. Sections that change
+     background keep the full pair, because the colour edge is what the space
+     is separating. */
+  .band:not(.band-blush) + .band:not(.band-blush),
+  .band-blush + .band-blush{padding-top:32px}
+
   .band-blush{background:var(--blush-soft)}
 
   /* the 1 July 2027 split — soft card pair */
@@ -204,7 +213,7 @@
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
   /* risk — kept heavy on purpose */
-  .risk{background:var(--plum-deep);color:#E4D9DC;padding:104px 0}
+  .risk{background:var(--plum-deep);color:#E4D9DC;padding:88px 0}
   .risk h2{color:#fff}
   .risk .eyebrow{color:var(--brass)}
   .risk .lede{color:#C3B2B7}
@@ -260,7 +269,9 @@
   @media (max-width:640px){
     .wrap{padding:0 22px}
     .hero{padding:22px 0 12px}
-    .band,.risk,.signup{padding:70px 0}
+    .band,.risk,.signup{padding:64px 0}
+    .band:not(.band-blush) + .band:not(.band-blush),
+    .band-blush + .band-blush{padding-top:24px}
     .card{padding:34px 28px}
     .nav-links{gap:18px;font-size:10.5px}
     .strip-grid div{padding:28px 14px}

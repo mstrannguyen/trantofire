@@ -69,7 +69,16 @@
   .hero h1{max-width:17ch;margin:0 auto}
   .hero .lede{max-width:58ch;margin:30px auto 0}
 
-  .band{padding:92px 0}
+  .band{padding:88px 0}
+  /* Section rhythm. One value everywhere: 88px above and below on desktop,
+     64px on a phone. Two sections of the SAME background sitting next to each
+     other used to add both paddings together and leave a void with nothing in
+     it, so the second one drops most of its top padding. Sections that change
+     background keep the full pair, because the colour edge is what the space
+     is separating. */
+  .band:not(.band-blush) + .band:not(.band-blush),
+  .band-blush + .band-blush{padding-top:32px}
+
   .band-blush{background:var(--blush-soft)}
   .chapter{margin-bottom:14px}
 
@@ -111,7 +120,7 @@
   .myths strong{color:var(--plum)}
 
   /* ledger */
-  .ledger-band{background:var(--plum-deep);color:#E4D9DC;padding:96px 0}
+  .ledger-band{background:var(--plum-deep);color:#E4D9DC;padding:88px 0}
   .ledger-band h2{color:#fff}
   .ledger-band .eyebrow{color:var(--brass)}
   .ledger-band .lede{color:#C3B2B7}
@@ -157,6 +166,8 @@
     .compare td,.compare th{padding-right:12px}
     .hero{padding:58px 0 12px}
     .band,.ledger-band{padding:64px 0}
+    .band:not(.band-blush) + .band:not(.band-blush),
+    .band-blush + .band-blush{padding-top:24px}
     .nav-links{gap:18px;font-size:10.5px}
     .quote{padding-left:22px}
     .ledger-row,.ledger-head{grid-template-columns:28px 1fr;gap:16px}
