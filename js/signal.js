@@ -65,10 +65,25 @@
     setText("sg-portfolio", usd(portfolio));
     setText("sg-portfolio-sub", usd(position) + " in funds plus the reserves.");
 
+    /* The percentage on its own is not checkable. The line under it carries the
+       dollar gain and the money in, so a reader can see what the figure is a
+       percentage OF without opening the Progress page.
+
+       Green, red or neither is decided by the figure as DISPLAYED, not as held.
+       A position eight cents under water rounds to 0.0% and to $0, and printing
+       that in red behind a minus sign tells the reader the month went against
+       them when it did nothing at all. Same rule as ddPct in the engine: the
+       display must not claim something the figures have not done. */
     if (ret) {
-      var r = moneyIn ? (portfolio - moneyIn) / moneyIn : 0;
-      ret.textContent = (r >= 0 ? "+" : "\u2212") + pct(Math.abs(r));
-      ret.className = "sg-return " + (r >= 0 ? "pos" : "neg");
+      var pl = portfolio - moneyIn;
+      var r  = moneyIn ? pl / moneyIn : 0;
+      var showR  = Math.abs(r * 100) < 0.05 ? 0 : r;   // pct() prints 1 decimal
+      var showPl = Math.abs(pl) < 0.5      ? 0 : pl;   // usd() prints whole dollars
+
+      ret.textContent = (showR > 0 ? "+" : "") + pct(showR);
+      ret.className = "sg-return " + (showR > 0 ? "pos" : showR < 0 ? "neg" : "flat");
+      setText("sg-return-sub",
+        (showPl > 0 ? "+" : "") + usd(showPl) + " on " + usd(moneyIn) + " in.");
     }
   }
 

@@ -184,8 +184,10 @@ upload it to the chat, get the two files back, commit.
 - [ ] **Decide which day of the month the buy happens.** Still open. Without a
       `date:` in `js/data.js` the benchmark infers the buy day by matching the
       logged price against daily closes, and the inferred date moves around
-- [ ] **Create tran@trantofire.au** at VentraIP, plus a `privacy@` alias. Set
-      SPF and DKIM at the same time or replies land in spam
+- [ ] **Email is off the site entirely.** No address is published on any page;
+      comments are the only contact route, and the privacy page's data-removal
+      answer points there. If tran@trantofire.au is ever created at VentraIP,
+      set SPF and DKIM at the same time or replies land in spam
 - [ ] **Force HTTPS** in Netlify, then uncomment the HSTS line in `_headers`
 - [ ] **Two-factor auth** on Netlify, VentraIP and GitHub
 - [ ] **Domain transfer lock** at VentraIP for both domains

@@ -122,9 +122,9 @@ The first paragraph is always the teaser. Everything after it is behind
 
 ## Still to do before promoting the site
 
-- [x] Contact address on My Story and the privacy page is tran@trantofire.au.
-      Set that mailbox up at VentraIP, plus a privacy@ alias into the same inbox
-- [ ] Set up email forwarding for that address at VentraIP
+- [ ] No email address is published anywhere on the site. Comments are the only
+      contact route, on My Story and on the privacy page. If a mailbox is ever
+      set up at VentraIP, both pages need the address adding back
 - [ ] Turn on Force HTTPS in Netlify once the padlock appears
 - [ ] Turn on two-factor auth: Netlify, VentraIP, GitHub
 - [ ] Turn on the domain transfer lock at VentraIP for both domains

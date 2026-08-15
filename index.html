@@ -132,9 +132,17 @@
 
 
   .sig-grid-2{margin-top:22px}
-  .sg-return{font-weight:600}
-  .sg-return.pos{color:#5E7350}
-  .sg-return.neg{color:#A85A48}
+
+  /* The return is the answer the rest of the panel is working towards, so it
+     is set larger than its neighbours and carries the only colour. The pair is
+     the one already used for gains and losses on the Progress page, measured
+     rather than picked: 6.4:1 and 6.9:1 against white, and 131 apart in RGB,
+     against 78 for the pair this replaced. Colour is never the only signal,
+     since the figure always carries its own + or minus. */
+  .sig-card-return dd{font-size:clamp(46px,5.8vw,66px);font-weight:400}
+  .sg-return.pos{color:#2F6B33}
+  .sg-return.neg{color:#A33220}
+  .sg-return.flat{color:var(--muted)}
 
   /* live signal band */
   .signal-band{padding:70px 0 10px}
@@ -417,16 +425,21 @@
 
     </div>
     <p class="eyebrow center" id="sg-summary-h" hidden style="margin:52px 0 26px">Portfolio overview</p>
-    <div class="sig-grid sig-grid-2 sig-grid-2up" id="sg-summary" hidden>
-      <div class="sig-card">
-        <dt>Cash reserve</dt>
-        <dd id="sg-reserve">—</dd>
-        <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile.</p>
+    <div class="sig-grid sig-grid-2" id="sg-summary" hidden>
+      <div class="sig-card sig-card-return">
+        <dt>Return on money in</dt>
+        <dd id="sg-return" class="sg-return">—</dd>
+        <p class="sub" id="sg-return-sub">Waiting on the first buy.</p>
       </div>
       <div class="sig-card">
         <dt>Portfolio value</dt>
         <dd id="sg-portfolio">—</dd>
-        <p class="sub"><span id="sg-portfolio-sub">Both funds plus both reserves.</span> <span id="sg-return" class="sg-return">—</span> on money in.</p>
+        <p class="sub" id="sg-portfolio-sub">Both funds plus both reserves.</p>
+      </div>
+      <div class="sig-card">
+        <dt>Cash reserve</dt>
+        <dd id="sg-reserve">—</dd>
+        <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile.</p>
       </div>
     </div>
     <p class="sig-foot"><span id="sg-live"></span> Portfolio value is both fund positions plus both cash reserves, with the reserves earning 4% a year while they wait. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
