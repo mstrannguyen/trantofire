@@ -53,8 +53,9 @@ one. Anything else you read in an old file or an old chat is superseded.
 
 TQQQ and UPRO are NOT on the monthly schedule and are not in `SLEEVES`.
 
-- Bought only once a fund is **50% below its record high**, measured on the
-  3× fund itself, not on the index. Was 40% until Aug 2026
+- Bought only once a fund is **40% below its record high**, measured on the
+  3× fund itself, not on the index. Briefly changed to 50% in Aug 2026 and
+  changed straight back; 40% is the rule
 - Funded with **separate money**, not from the $800s and not from either
   reserve
 - **DCA in over months** rather than committing at once, then hold. No target,
