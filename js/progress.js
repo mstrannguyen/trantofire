@@ -122,8 +122,18 @@
     }
 
     /* The high-water mark only ever rises, and each tier boundary is a fixed
-       fraction of it, so all four step together. */
+       fraction of it, so all four step together.
+
+       One month is still a line. Without the n === 1 case the path is a bare
+       moveto, which SVG draws as nothing, so the record high and all three
+       tier boundaries vanished and the chart came up empty with only the
+       right-hand labels floating beside it. A flat line across the plot is
+       what those levels actually did that month. */
     function step(values) {
+      if (n === 1) {
+        var only = y(values[0]);
+        return "M" + L + "," + only + " L" + (W - R) + "," + only;
+      }
       var d = "";
       for (var i = 0; i < n; i++) {
         var px = x(i), py = y(values[i]);
@@ -149,6 +159,10 @@
     if (n > 1) {
       s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: "#3A2B31",
         "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    } else {
+      // no line to draw yet, so the price gets a dot, same as the other charts
+      s.appendChild(el("circle", { cx: pts[0][0], cy: pts[0][1], r: "5",
+        fill: "#3A2B31", stroke: "#FFFFFF", "stroke-width": "1.5" }));
     }
 
     rows.forEach(function (d, i) {
@@ -237,7 +251,7 @@
       s.appendChild(t1);
       var t2 = el("text", { x: cx, y: ty + 16, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
         "font-size": "12.5", fill: col });
-      t2.textContent = (cost[i] > 0 ? pct(pl[i] / cost[i]) : "\u2014") + " on money in " + (label || "the funds");
+      t2.textContent = (cost[i] > 0 ? pct(pl[i] / cost[i]) : "\u2014") + " on money invested in " + (label || "the funds");
       s.appendChild(t2);
     });
 
