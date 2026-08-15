@@ -234,23 +234,6 @@
   .door h3{font-size:27px;margin-bottom:12px}
   .door p{margin:0;font-size:15.5px;line-height:1.65;color:#5A4850}
 
-  /* signup */
-  .signup{background:var(--blush);padding:96px 0}
-  .signup h2{max-width:20ch;margin-left:auto;margin-right:auto}
-  .signup .lede{max-width:52ch;margin:0 auto;color:#5A4850}
-  .form{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:38px auto 0;max-width:540px}
-  .form input{
-    flex:1 1 260px;font-family:var(--body);font-size:15px;padding:17px 22px;
-    border:1px solid rgba(58,43,49,.2);background:rgba(255,255,255,.72);color:var(--plum);border-radius:100px;
-  }
-  .form input::placeholder{color:#A2908F}
-  .form button{
-    font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-    padding:17px 34px;border:0;border-radius:100px;background:var(--plum);color:var(--ivory);cursor:pointer;transition:.25s;
-  }
-  .form button:hover{background:var(--brass)}
-  .signup small{display:block;font-size:12.5px;color:#7A6469;margin-top:20px;letter-spacing:.02em}
-
   /* footer */
   .foot{padding:64px 0 80px;background:var(--ivory);border-top:1px solid var(--hair)}
   .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
@@ -269,7 +252,7 @@
   @media (max-width:640px){
     .wrap{padding:0 22px}
     .hero{padding:22px 0 12px}
-    .band,.risk,.signup{padding:64px 0}
+    .band,.risk{padding:64px 0}
     .band:not(.band-blush) + .band:not(.band-blush),
     .band-blush + .band-blush{padding-top:24px}
     .card{padding:34px 28px}
@@ -677,26 +660,6 @@
   </div>
 </section>
 
-<!-- Email signup, parked for now. To bring it back, delete this comment
-     line and the closing marker below it. The .signup and .form styles are
-     still in the stylesheet, so it will render as it did before.
-
-<section class="signup">
-  <div class="wrap center">
-    <span class="orn"></span>
-    <p class="eyebrow">Once a month, nothing else</p>
-    <h2>One email with the numbers in it.</h2>
-    <p class="lede">Sent the first week of every month: the update, the table, and any change to the rules. No course, no coaching, no affiliate links. I'm not selling anything.</p>
-    <div class="form">
-      <label for="email" style="position:absolute;left:-9999px">Email address</label>
-      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
-      <button type="button">Join</button>
-    </div>
-    <small>Unsubscribe any time. Connect this to your email provider before launch.</small>
-  </div>
-</section>
-
--->
 
 <section class="comments">
   <div class="wrap narrow center">
