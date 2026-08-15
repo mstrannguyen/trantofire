@@ -23,8 +23,34 @@
   if (!sleeves.length || !E) return;
 
   var summary  = $("sg-summary");
+  var summary2 = $("sg-summary-2");
   var summaryH = $("sg-summary-h");
   var ret      = $("sg-return");
+  var retFunds = $("sg-return-funds");
+
+  /* Paints one of the two return cards.
+
+     Green, red or neither is decided by the figure as DISPLAYED, not as held.
+     A position eight cents under water rounds to 0.0% and to $0, and printing
+     that in red behind a minus sign tells the reader the month went against
+     them when it did nothing at all. Same rule as ddPct in the engine: the
+     display must not claim something the figures have not done. */
+  function paintReturn(el, subId, gain, base, tail) {
+    if (!el) return;
+    if (!(base > 0)) {
+      el.textContent = "\u2014";
+      el.className = "sg-return flat";
+      setText(subId, "Nothing bought yet.");
+      return;
+    }
+    var r      = gain / base;
+    var showR  = Math.abs(r * 100) < 0.05 ? 0 : r;    // pct() prints 1 decimal
+    var showG  = Math.abs(gain)     < 0.5  ? 0 : gain; // usd() prints whole dollars
+
+    el.textContent = (showR > 0 ? "+" : "") + pct(showR);
+    el.className = "sg-return " + (showR > 0 ? "pos" : showR < 0 ? "neg" : "flat");
+    setText(subId, (showG > 0 ? "+" : "") + usd(showG) + " on " + usd(base) + " " + tail);
+  }
 
   /* per sleeve: the run, and the latest valuation to fold into the totals */
   var state = {};
@@ -44,7 +70,7 @@
   /* The totals are re-rendered every time a sleeve reports, so the row is
      right after the first one lands and right again after the second. */
   function totals() {
-    var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, any = false;
+    var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, cost = 0, any = false;
     sleeves.forEach(function (sl) {
       var v = state[sl.sym];
       if (!v) return;
@@ -53,38 +79,33 @@
       position  += v.etfValue;
       portfolio += v.portfolio;
       moneyIn   += v.moneyIn;
+      cost      += v.shares * v.avgCost;   // avgCost already carries the brokerage
       setText("sg-hold-" + sl.sym, v.shares + " share" + (v.shares === 1 ? "" : "s") +
         " at " + usd(v.avgCost, 2) + " \u00b7 " + usd(v.reserve) + " in reserve");
     });
     if (!any) return;
 
     if (summary)  summary.hidden  = false;
+    if (summary2) summary2.hidden = false;
     if (summaryH) summaryH.hidden = false;
 
     setText("sg-reserve", usd(reserve));
     setText("sg-portfolio", usd(portfolio));
     setText("sg-portfolio-sub", usd(position) + " in funds plus the reserves.");
 
-    /* The percentage on its own is not checkable. The line under it carries the
-       dollar gain and the money in, so a reader can see what the figure is a
-       percentage OF without opening the Progress page.
+    /* Two returns, one gain, two denominators.
 
-       Green, red or neither is decided by the figure as DISPLAYED, not as held.
-       A position eight cents under water rounds to 0.0% and to $0, and printing
-       that in red behind a minus sign tells the reader the month went against
-       them when it did nothing at all. Same rule as ddPct in the engine: the
-       display must not claim something the figures have not done. */
-    if (ret) {
-      var pl = portfolio - moneyIn;
-      var r  = moneyIn ? pl / moneyIn : 0;
-      var showR  = Math.abs(r * 100) < 0.05 ? 0 : r;   // pct() prints 1 decimal
-      var showPl = Math.abs(pl) < 0.5      ? 0 : pl;   // usd() prints whole dollars
+       Money invested is what has actually been spent on shares. Money in is
+       every dollar contributed, most of which is still cash while the ladder
+       sits on baseline. The gains differ only by the interest the reserve has
+       earned, which counts as return rather than as money in, so the two
+       figures are equal until the first month of interest lands.
 
-      ret.textContent = (showR > 0 ? "+" : "") + pct(showR);
-      ret.className = "sg-return " + (showR > 0 ? "pos" : showR < 0 ? "neg" : "flat");
-      setText("sg-return-sub",
-        (showPl > 0 ? "+" : "") + usd(showPl) + " on " + usd(moneyIn) + " in.");
-    }
+       A percentage with no denominator on the page cannot be checked, so each
+       card prints its own underneath. */
+    paintReturn(retFunds, "sg-return-funds-sub", position - cost, cost, "spent on shares.");
+    paintReturn(ret,      "sg-return-sub",       portfolio - moneyIn, moneyIn,
+      "in, " + usd(reserve) + " of it still cash.");
   }
 
   /* ---------- layer 1: whatever is already logged ---------- */

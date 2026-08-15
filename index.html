@@ -132,6 +132,7 @@
 
 
   .sig-grid-2{margin-top:22px}
+  #sg-summary-2{margin-top:16px}
 
   /* The return is the answer the rest of the panel is working towards, so it
      is set larger than its neighbours and carries the only colour. The pair is
@@ -425,12 +426,19 @@
 
     </div>
     <p class="eyebrow center" id="sg-summary-h" hidden style="margin:52px 0 26px">Portfolio overview</p>
-    <div class="sig-grid sig-grid-2" id="sg-summary" hidden>
+    <div class="sig-grid sig-grid-2 sig-grid-2up" id="sg-summary" hidden>
       <div class="sig-card sig-card-return">
-        <dt>Return on money in</dt>
+        <dt>Return on money invested</dt>
+        <dd id="sg-return-funds" class="sg-return">—</dd>
+        <p class="sub" id="sg-return-funds-sub">Waiting on the first buy.</p>
+      </div>
+      <div class="sig-card sig-card-return">
+        <dt>Return including the reserve</dt>
         <dd id="sg-return" class="sg-return">—</dd>
         <p class="sub" id="sg-return-sub">Waiting on the first buy.</p>
       </div>
+    </div>
+    <div class="sig-grid sig-grid-2 sig-grid-2up" id="sg-summary-2" hidden>
       <div class="sig-card">
         <dt>Portfolio value</dt>
         <dd id="sg-portfolio">—</dd>
@@ -442,7 +450,7 @@
         <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile.</p>
       </div>
     </div>
-    <p class="sig-foot"><span id="sg-live"></span> Portfolio value is both fund positions plus both cash reserves, with the reserves earning 4% a year while they wait. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
+    <p class="sig-foot"><span id="sg-live"></span> Return on money invested counts only what has been spent on shares, brokerage included. Return including the reserve counts every dollar contributed, with the cash still waiting for a dip. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
   </div>
 </section>
 
