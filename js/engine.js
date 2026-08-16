@@ -334,6 +334,7 @@
 
   window.TTF_ENGINE = {
     run: run, next: next, revalue: revalue, tierFor: tierFor, monthLabel: monthLabel,
+    TIERS: TIERS,
     usd: usd, pct: pct, ddPct: ddPct
   };
 })();

@@ -259,6 +259,101 @@
     host.innerHTML = ""; host.appendChild(s);
   }
 
+  /* Both returns on one axis.
+
+     The dollar gain behind these two is nearly the same figure. What differs
+     is what it is divided by: the money actually spent on shares, or every
+     dollar contributed including the cash still waiting. Early on the ladder
+     leaves most of the money in cash, so the second line sits close to flat
+     while the first swings, and they converge as the reserve gets spent.
+
+     Both series are percentages, so they share one axis. A dual axis here
+     would mislead, because the two denominators grow at different rates.
+
+     #8A6428 and #5A7BA8 are both already on the site. Measured rather than
+     picked: 139 apart in RGB, 5.3:1 and 4.3:1 on white. */
+  var RET_INVESTED = "#8A6428", RET_TOTAL = "#5A7BA8";
+
+  function drawReturnChart(host, rows) {
+    var W = 880, H = 360, L = 62, R = 150, T = 26, B = 48, n = rows.length;
+    if (!host) return;
+    if (!n) { host.innerHTML = ""; return; }
+
+    var inv = [], tot = [];
+    rows.forEach(function (d) {
+      var cost = d.shares * d.avgCost;
+      inv.push(cost > 0 ? (d.etfValue - cost) / cost : 0);
+      tot.push(d.moneyIn > 0 ? (d.portfolio - d.moneyIn) / d.moneyIn : 0);
+    });
+
+    var all = inv.concat(tot).concat([0]);
+    var hi = Math.max.apply(null, all), lo = Math.min.apply(null, all);
+    var pad = (hi - lo) * 0.18 || 0.02;
+    hi += pad; lo -= pad;
+
+    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+    var s = svgRoot(W, H);
+
+    for (var g = 0; g <= 4; g++) {
+      var gv = lo + (hi - lo) * g / 4, gy = y(gv);
+      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
+        stroke: "#3A2B31", "stroke-opacity": ".07" }));
+      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
+      t.textContent = pct(gv, 0);
+      s.appendChild(t);
+    }
+
+    var z = y(0);
+    s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z,
+      stroke: "#3A2B31", "stroke-opacity": ".5", "stroke-width": "1.4" }));
+    var zt = el("text", { x: L + 4, y: z - 7, "font-family": "EB Garamond,Georgia,serif",
+      "font-size": "11.5", fill: "#7A6A6F" });
+    zt.textContent = "break even";
+    s.appendChild(zt);
+
+    var ends = [];
+    [[inv, RET_INVESTED, "on money invested"], [tot, RET_TOTAL, "on money in"]]
+      .forEach(function (line) {
+        var vals = line[0], col = line[1];
+        var pts = vals.map(function (v, i) { return [x(i), y(v)]; });
+        if (n > 1) {
+          s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: col,
+            "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+        }
+        var cx = pts[n - 1][0], cy = pts[n - 1][1];
+        s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col,
+          stroke: "#FFFFFF", "stroke-width": "1.5" }));
+        ends.push({ y: cy, colour: col, name: line[2],
+                    text: (vals[n - 1] > 0 ? "+" : "") + pct(vals[n - 1]) });
+      });
+
+    /* Two months of similar returns put the end labels on top of each other.
+       Both are placed only after both positions are known, and the lower one
+       is pushed down until the pair clears. */
+    ends.sort(function (a, b) { return a.y - b.y; });
+    var GAP = 38;
+    if (ends[1].y - ends[0].y < GAP) ends[1].y = ends[0].y + GAP;
+    var overflow = ends[1].y + 18 - (H - B);
+    if (overflow > 0) { ends[0].y -= overflow; ends[1].y -= overflow; }
+
+    ends.forEach(function (e) {
+      var t1 = el("text", { x: W - R + 12, y: e.y - 1,
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "16",
+        "font-weight": "700", fill: e.colour });
+      t1.textContent = e.text;
+      s.appendChild(t1);
+      var t2 = el("text", { x: W - R + 12, y: e.y + 15,
+        "font-family": "EB Garamond,Georgia,serif", "font-size": "12", fill: e.colour });
+      t2.textContent = e.name;
+      s.appendChild(t2);
+    });
+
+    xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
+    host.innerHTML = ""; host.appendChild(s);
+  }
+
   function drawDrawdownChart(host, months, dds) {
     var W = 880, H = 300, L = 52, R = 18, T = 18, B = 44, n = months.length;
     var floor = Math.min(-0.70, Math.min.apply(null, dds.concat([0])) - 0.05);
@@ -305,6 +400,43 @@
       pill.textContent = "Tier unknown until the record high loads";
       pill.className = "tierpill";
     }
+  }
+
+  /* Tier tally: how many months the ladder has spent on each rung.
+
+     The ladder comes from the engine rather than being written out again here,
+     so a change to the rules cannot leave this table describing the old ones.
+     Rows with no record high are skipped: without one the engine reads no
+     drawdown at all, which would file every month under Baseline and make the
+     ladder look untested when it is only unmeasured. */
+  function paintTally(history, what) {
+    var body = $("tally-rows");
+    if (!body) return;
+    var head = $("tally-h");
+    if (head) head.textContent = "Months at each tier" + (what ? " \u00b7 " + what : "");
+
+    var known = history.filter(function (d) { return d.highKnown; });
+    var count = {}, worst = {};
+    known.forEach(function (d) {
+      var k = d.tier.label;
+      count[k] = (count[k] || 0) + 1;
+      if (worst[k] === undefined || d.drawdown < worst[k]) worst[k] = d.drawdown;
+    });
+
+    var ladder = (E.TIERS || []).slice().reverse();   // Baseline first, Crash last
+    body.innerHTML = ladder.map(function (t) {
+      var n = count[t.label] || 0;
+      return "<tr>" +
+        '<td><span class="sig s' + t.n + '">' + t.label + "</span></td>" +
+        '<td' + (n ? "" : ' class="none"') + ">" + n + "</td>" +
+        "<td>" + pct(t.pct, 0) + "</td>" +
+        '<td' + (n ? "" : ' class="none"') + ">" +
+          (n ? ddPct(worst[t.label]) : "\u2014") + "</td>" +
+        "</tr>";
+    }).join("");
+
+    var wrap = $("tally-wrap");
+    if (wrap) wrap.classList.toggle("hidden", known.length === 0);
   }
 
   /* The drawdown and tier columns depend on the record high, which arrives
@@ -392,6 +524,9 @@
     var allocSub = $("s-alloc-sub");
     if (allocSub) allocSub.textContent = "fund / cash \u00b7 never rebalanced";
 
+    hide("block-return");
+    var c3 = $("chart3"); if (c3) c3.innerHTML = "";
+
     var lgPrice = $("lg-price");
     if (lgPrice) lgPrice.textContent = sleeve.sym + " price";
     var hValue = $("h-value");
@@ -414,6 +549,7 @@
     drawValueChart($("chart1"), history, sleeve.sym);
 
     $("rows").innerHTML = logRows(history);
+    paintTally(history, sleeve.sym);
 
     show("data");
 
@@ -457,6 +593,7 @@
         if (r.highKnown) {
           paintTier(hist[hist.length - 1]);
           $("rows").innerHTML = logRows(hist);
+          paintTally(hist, sleeve.sym);
         }
 
         // the chart's last point should agree with the cards above it
@@ -609,6 +746,12 @@
     if (hValue) hValue.textContent = "What the two funds have done with the money in them";
     drawValueChart($("chart1"), merged, "both funds");
 
+    /* Only on Both. Per fund the cash reserve is one of two, so dividing that
+       fund's gain by its own share of the money in answers a question nobody
+       asked. Across the whole position it is the return. */
+    show("block-return");
+    drawReturnChart($("chart3"), merged);
+
     /* A price line and a drawdown line belong to one fund. Two funds at two
        prices against two record highs cannot share either axis, so both blocks
        come off the page here rather than standing empty above their captions. */
@@ -736,6 +879,12 @@
         '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
         "</tr>";
     }).join("");
+
+    /* Both funds pooled. A month where QLD was on Deep dip and SSO on Dip
+       counts once under each, because the ladder ran separately on each. */
+    var all = [];
+    runs.forEach(function (r) { all = all.concat(r.hist); });
+    paintTally(all, "both funds");
   }
 
   /* ---------- tabs ---------- */
