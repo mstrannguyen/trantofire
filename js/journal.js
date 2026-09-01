@@ -94,6 +94,59 @@
 window.TTF_JOURNAL = [
 
   {
+    month: "2026-09",
+    title: "One index at a record, the other still short of one",
+    mood:  "Baseline on both, for a second month",
+
+    body: [
+      "Baseline again on both funds, which is the tier that releases a fifth of the available cash and nothing more. QLD sits a good deal further under its record than SSO does, and neither is close to the rung where the ladder opens up. Whole shares only, so the target buys what it buys and the remainder stays as cash.",
+
+      "The reserve earned its first interest this month. It is small enough to ignore and it will not be small in ten years."
+    ],
+
+    macro: {
+      heading: "Markets and macro",
+
+      body: [
+        "August finished with the S&P 500 up 2.5%, the Nasdaq-100 up 3.8% and the Dow up 1.4%. The headline hides the thing that matters to these two funds. The S&P closed out the summer selloff about a month ago and went back to setting records. The Nasdaq-100 ended the month around 4% below its 2 June peak, the last of the big American gauges yet to reclaim its high. Doubled, that gap is most of why one of these funds is much further from its record than the other.",
+
+        "Bonds set the tone. The ten-year Treasury finished August near 4.72%, up about four basis points on the month and roughly 46 higher than a year ago, with the two-year at 4.34%. Kevin Warsh used his first Jackson Hole speech as chair to say inflation has not meaningfully slowed and that policymakers may have work to do, that 2% is a fixed objective, and that financial conditions are not currently restrictive. He called interest rates the Fed's predominant tool. By the end of the month futures were pricing somewhere between a half and a 57% chance of a rate rise in September, up from about 40% a week earlier. Markets spent the year expecting cuts and are now pricing a hike.",
+
+        "Gold rose 9.76% over the month and is up about 28% on the year. It reached roughly $4,674 an ounce on 24 August and then fell back below $4,450 as Warsh's remarks revived the case for higher rates. Bitcoin sat near $76,700 in late August, about $35,800 below where it traded a year earlier. Two assets that get sold together as a hedge against currency debasement, and over twelve months one is up 28% while the other has lost roughly a third. Whatever gold is pricing this year, bitcoin is not pricing it.",
+
+        "Inside tech the rotation carried on. Since 22 June the equal-weight S&P Software and Services ETF has gained around 24% while the equal-weight S&P Semiconductor ETF has lost around 24%. That is software's biggest two-month run against chips since at least 2001, and it is a straight reversal of early 2026, when chips led by the widest margin on record. The Philadelphia Semiconductor Index fell 2.3% in the week to 28 August even though Nvidia and Marvell both beat expectations, and fibre optics and power names went with it. Over the full month the chip index managed a 2.2% bounce after falling nearly 19% in July, and Nvidia rose 8.6%.",
+
+        "The Nasdaq-100 holds both sides of that trade, so at the index level the fight mostly cancels out and the drawdown I buy against is the residue of it. Ten months of the two halves of tech pulling apart is why the index has not got its record back while the S&P has. Nothing in the ladder cares which half is winning."
+      ],
+
+      table: {
+        caption: "Two months of the same market, measured four ways.",
+        head: [ "", "August", "Past 12 months" ],
+        rows: [
+          [ "S&P 500",        "+2.5%",  "at record highs" ],
+          [ "Nasdaq-100",     "+3.8%",  "4% below its June peak" ],
+          [ "Gold",           "+9.8%",  "+28%" ],
+          [ "Bitcoin",        "",       "about $35,800 lower" ]
+        ],
+        note: "Index moves are calendar August. The buys happen on their own day, so the fund prices logged here will not line up with these figures."
+      },
+
+      chart: {
+        title: "Software against semiconductors, equal weight, since 22 June",
+        bars: [
+          { label: "Software",   value: 24 },
+          { label: "Chips",      value: -24 }
+        ],
+        suffix: "%",
+        decimals: 0,
+        note: "The widest two-month gap in software's favour since at least 2001, and the mirror image of how 2026 started."
+      },
+
+      note: "Sources: Trading Economics for index and commodity levels, Advisor Perspectives for Treasury yields, CME FedWatch pricing as reported at month end, Fortune for daily gold and bitcoin prices, Bloomberg on the Nasdaq-100's distance from its record, and TradeStation and GuruFocus on the software and semiconductor spread."
+    }
+  },
+
+  {
     month: "2026-08",
     title: "The first buy",
     mood:  "Starting a long way under the high",
