@@ -94,6 +94,60 @@
 window.TTF_JOURNAL = [
 
   {
+    month: "2026-10",
+    title: "The first rate hike since 2023",
+    mood:  "Baseline, third month running",
+
+    body: [
+      "Baseline on both funds for the third month in a row. QLD has closed some of the distance to its record since the last buy and SSO has slipped a little further from its own, but both are a long way above the first rung. A fifth of the cash goes in, whole shares only, and the rest waits."
+    ],
+
+    macro: {
+      heading: "Markets and macro",
+
+      body: [
+        "The Fed raised rates on 16 September, a quarter point to 3.75 to 4.00%, its first increase since July 2023. The vote was 12 to 0, two months after three members dissented in favour of a hike. Kevin Warsh said inflation is too high and has been for too long, and described the move as removing a dose of accommodation. Sixteen of eighteen officials now pencil in at least one more hike this year. Futures had it at 92% that morning, so the decision itself surprised nobody. On 3 September JD Vance had said the Fed should cut to make homes more affordable.",
+
+        "The bond market went further than the Fed. The ten-year Treasury reached 5.25% on 29 September, its highest since June 2007, after sitting near 4.77% at the start of the month. That is 48 basis points in four weeks and more than a full point since just before the Iran war began. The thirty-year touched 5.49%, a level last seen in 2004. BMO measured the one-month correlation between US crude and the ten-year at 0.96, which is another way of saying the bond market is trading the oil price. In February the Congressional Budget Office expected the ten-year to average 4.1% this year. By 26 September futures put the odds of a second hike in October at 64%.",
+
+        "The oil comes from the Gulf. The US and Iran fired on each other\'s ships over the first weekend of September and Saudi Aramco facilities were reportedly hit, which sent Brent to about $97.70, its highest since late July. On 28 September President Trump rejected an Iranian proposal to reopen the Strait of Hormuz within seven days and Brent rose more than 3% to near $108. The conflict is close to seven months old. Crude is high but not at a record: Brent peaked at $126 in April and the all-time high is still 2008's. Diesel is the product at a record, at the pump, and the Energy Secretary has reportedly warned the industry to prepare for limits on diesel exports.",
+
+        "The other story came from inside the AI industry. On 12 September Anthropic's chief executive Dario Amodei published an essay proposing that frontier labs slow how quickly they improve their most capable models, with a three-step plan meant to do it without giving up commercial ground or America's lead. Sam Altman and Elon Musk both backed it the same day, Musk in three words: Dario is right. AI stocks fell the following Monday. Trump dismissed the idea, saying a slowdown would hand ground to China. Altman ruled out an OpenAI listing this year, and a lawsuit has since been filed arguing that rival labs agreeing to slow down together is an illegal agreement. Ten days after the essay, OpenAI and Anthropic both released new models and cut prices rather than claiming a jump in capability. Morgan Stanley, one of the banks lined up for Anthropic's listing, said none of it changes how much the industry spends.",
+
+        "The spending is the part that reaches the Nasdaq-100, since chipmakers and cloud companies make up so much of it, and on Morgan Stanley\'s reading the spending has not changed. The hike reaches these funds a second way. A 2x fund gets its second dollar of exposure through swaps priced off short-term rates, so each hike adds a little to what the leverage costs for as long as rates stay there. It never appears as a fee. It shows up in the price, a fraction at a time.",
+
+        "None of it moved either fund off the baseline tier."
+      ],
+
+      table: {
+        caption: "September in four numbers.",
+        head: [ "", "Level", "For context" ],
+        rows: [
+          [ "Fed funds",        "3.75 to 4.00%", "first hike since July 2023" ],
+          [ "Ten-year yield",   "5.25%",         "highest since June 2007" ],
+          [ "Thirty-year yield","5.49%",         "highest since 2004" ],
+          [ "Brent crude",      "about $107",    "2026 peak was $126 in April" ]
+        ],
+        note: "Bond yields as of 29 September for the ten-year and 26 September for the thirty-year. Brent is the 28 September level after the Hormuz proposal was rejected."
+      },
+
+      chart: {
+        title: "How far the ten-year yield rose after 3 September",
+        bars: [
+          { label: "15 Sep, eve of the hike", value: 23 },
+          { label: "26 Sep",                  value: 46 },
+          { label: "29 Sep",                  value: 48 }
+        ],
+        suffix: " bp",
+        decimals: 0,
+        note: "Basis points above the 4.77% close on 3 September. About half the rise came after the Fed moved."
+      },
+
+      note: "Sources: the Federal Reserve and CNBC on the 16 September decision, Charles Schwab and J.P. Morgan Asset Management on the projections, CNBC, Fortune and Trading Economics on Treasury yields, CNBC and Al Jazeera on the Gulf strikes and oil, Bloomberg on diesel, CNBC, CoinDesk and PBS on the AI slowdown essay and the responses to it, and BeInCrypto on the 22 September releases."
+    }
+  },
+
+  {
     month: "2026-09",
     title: "One index at a record, the other still short of one",
     mood:  "Baseline on both, for a second month",
