@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Strategy | Tran to Fire</title>
+<link rel="canonical" href="https://trantofire.au/strategy/">
+<link rel="icon" href="../favicon.png">
+<meta name="description" content="The full tier ladder: US$800 a month into each of QLD and SSO, deploying 20% near the high and up to 100% in a crash. Every rule published before the first buy.">
+<meta property="og:title" content="The Strategy | Tran to Fire">
+<meta property="og:description" content="The full tier ladder: US$800 a month into each of QLD and SSO, deploying 20% near the high and up to 100% in a crash. Every rule published before the first buy.">
+<meta property="og:site_name" content="Tran to Fire">
+<meta name="twitter:title" content="The Strategy | Tran to Fire">
+<meta name="twitter:description" content="The full tier ladder: US$800 a month into each of QLD and SSO, deploying 20% near the high and up to 100% in a crash. Every rule published before the first buy.">
+<meta property="og:image" content="https://trantofire.au/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
+    --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
+    --hair:rgba(58,43,49,.14);
+    --display:"Cormorant Garamond",Georgia,serif;
+    --body:"EB Garamond",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--ivory);color:var(--plum);font-family:var(--body);font-size:19px;line-height:1.75;font-variant-numeric:lining-nums tabular-nums}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .narrow{max-width:720px;margin-left:auto;margin-right:auto}
+  .center{text-align:center}
+
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.12;margin:0;letter-spacing:-.005em}
+  h1{font-size:clamp(44px,7vw,86px);font-weight:300}
+  h2{font-size:clamp(32px,4.6vw,52px);font-weight:300;margin-bottom:22px}
+  h3{font-size:26px;margin-bottom:10px}
+  p{margin:0 0 22px}
+  em{font-family:var(--display);font-style:italic;font-size:1.08em}
+  strong{font-weight:600}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);margin:0 0 22px}
+  .lede{font-size:clamp(18px,1.9vw,21px);line-height:1.72;color:#54424A}
+  .center .lede{text-align:left}
+  .hero .lede,.comments .lede{text-align:center}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:3px}
+
+  .orn{display:block;margin:0 auto 26px;width:64px;height:1px;background:var(--brass);opacity:.65;position:relative}
+  .orn::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--brass);transform:rotate(45deg)}
+
+  .nav{border-bottom:1px solid var(--hair)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:26px 0;flex-wrap:wrap}
+  .mark{display:inline-flex;align-items:center;gap:11px;font-family:var(--display);font-size:25px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--plum)}
+  .mark span{color:var(--brass)}
+  .mk{width:56px;height:42px;flex:0 0 56px;display:block}
+  .foot-mark{display:inline-flex;align-items:center;gap:10px}
+  .foot-mark .mk{width:48px;height:36px;flex:0 0 48px}
+  .nav-links{display:flex;gap:30px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+  .nav-links a{text-decoration:none;color:var(--plum);opacity:.72;padding-bottom:3px}
+  .nav-links a:hover,.nav-links a[aria-current]{opacity:1;border-bottom:1px solid var(--brass)}
+
+  .hero{padding:96px 0 0;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-160px;left:-180px;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle at 60% 40%,var(--blush) 0%,rgba(237,217,210,0) 70%);opacity:.8;pointer-events:none}
+  .hero-in{position:relative}
+  .hero h1{max-width:16ch;margin:0 auto}
+  .hero .lede{max-width:60ch;margin:30px auto 0}
+
+  .strip{background:var(--blush-soft);margin-top:80px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .strip-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+  .strip-grid div{padding:38px 20px;border-left:1px solid rgba(58,43,49,.09)}
+  .strip-grid div:first-child{border-left:0}
+  .strip-grid dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .strip-grid dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.15}
+  .strip-grid dd small{display:block;font-family:var(--body);font-size:12px;color:var(--muted);margin-top:8px}
+
+  .band{padding:88px 0}
+  /* Section rhythm. One value everywhere: 88px above and below on desktop,
+     64px on a phone. Two sections of the SAME background sitting next to each
+     other used to add both paddings together and leave a void with nothing in
+     it, so the second one drops most of its top padding. Sections that change
+     background keep the full pair, because the colour edge is what the space
+     is separating. */
+  .band:not(.band-blush) + .band:not(.band-blush),
+  .band-blush + .band-blush{padding-top:32px}
+
+  .band-blush{background:var(--blush-soft)}
+
+  /* counter-cyclical diagram */
+  .figure{margin:52px auto 0;max-width:960px}
+  .figure svg{width:100%;height:auto;display:block}
+  .figcap{text-align:center;font-size:14.5px;line-height:1.7;color:var(--muted);margin:22px auto 0;max-width:64ch}
+  .figcap a{color:var(--brass)}
+  .src-note{font-size:14.5px;line-height:1.7;color:var(--muted)}
+  .src-note a{color:var(--brass)}
+
+  .hwm-pair{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .hwm{display:inline-block;border:1px solid rgba(176,137,79,.4);border-radius:100px;padding:14px 30px;margin:0;background:#fff}
+  .hwm dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .hwm dd{margin:0;font-family:var(--display);font-size:30px;line-height:1.1}
+  .hwm dd small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);margin-top:4px}
+
+  .gauge{margin-top:48px;display:grid;gap:16px}
+  .rung{display:grid;grid-template-columns:190px 1fr;align-items:center;gap:34px;border-radius:18px;padding:38px 42px;border:1px solid var(--hair)}
+  .rung .depth{text-align:center}
+  .rung .num{font-family:var(--display);font-size:clamp(38px,5vw,54px);font-weight:300;line-height:1;display:block}
+  .rung .lab{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-top:12px;display:block}
+  .rung h3{font-size:27px;margin-bottom:12px}
+  .deploy{font-size:16px;line-height:1.7;margin:0 0 12px;font-weight:500}
+  .deploy .amt{font-family:var(--display);font-size:26px;color:var(--brass);font-weight:500}
+  .rung-note{margin:0;font-size:15.5px;line-height:1.65;opacity:.82}
+  .r0{background:#fff;border-color:rgba(176,137,79,.55)}
+  .r1{background:var(--blush-soft)}
+  .r2{background:var(--clay)}
+  .r3{background:var(--plum);color:#EFE5E7;border-color:var(--plum)}
+  .r3 h3{color:#fff}
+  .r3 .deploy .amt{color:#E0B978}
+  .r3 .rung-note{color:#C7B5BA}
+  .flag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:var(--brass);color:#fff;padding:6px 14px;border-radius:100px;margin-bottom:14px}
+  .gauge-foot{text-align:center;font-size:14.5px;color:var(--muted);margin:30px 0 0}
+
+  .money{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
+  .money caption{text-align:center;font-size:15.5px;color:var(--muted);margin-bottom:26px;line-height:1.6}
+  .money th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass)}
+  .money td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair)}
+  .money tr:last-child td{border-bottom:0}
+  .money .band-name{font-family:var(--display);font-size:23px;white-space:nowrap}
+  .money .total{font-weight:600}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:52px;padding:0;list-style:none}
+  .grid2 li{padding:32px 0;border-top:1px solid var(--hair)}
+  .grid2 h3{font-size:23px;margin-bottom:8px}
+  .grid2 p{margin:0;font-size:16px;line-height:1.7;color:#5A4850}
+
+  .ruled{list-style:none;padding:0;margin:48px 0 0}
+  .ruled li{display:grid;grid-template-columns:190px 1fr;column-gap:34px;row-gap:0;padding:32px 0;border-top:1px solid var(--hair)}
+  .ruled .what{font-family:var(--display);font-size:27px;color:var(--brass);line-height:1.2}
+  .ruled p{margin:0;font-size:16.5px;line-height:1.7;color:#5A4850}
+  .ruled li > .body{grid-column:2}
+  .ruled .body p ~ p{margin-top:20px}
+
+  .risk{background:var(--plum-deep);color:#E4D9DC;padding:88px 0}
+  .risk h2{color:#fff}
+  .risk .eyebrow{color:var(--brass)}
+  .risk .lede{color:#C3B2B7}
+  .risk .orn{background:var(--brass)}
+  .risk-list{list-style:none;padding:0;margin:52px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+  .risk-list li{padding:30px 0;border-top:1px solid rgba(255,255,255,.16)}
+  .risk-list h3{color:#fff;font-size:23px;margin-bottom:8px}
+  .risk-list p{margin:0;font-size:16px;line-height:1.7;color:#B3A2A8}
+  .pull{font-family:var(--display);font-weight:300;font-size:clamp(26px,3.6vw,40px);line-height:1.24;color:#fff;margin:64px auto 0;max-width:22ch;text-align:center}
+  .pull span{color:var(--brass);font-style:italic}
+
+  .foot{padding:64px 0 80px;border-top:1px solid var(--hair)}
+  .foot-mark{font-family:var(--display);font-size:23px;letter-spacing:.06em;margin-bottom:26px}
+  .foot p{font-size:13.5px;line-height:1.85;color:var(--muted);max-width:74ch;margin:0 0 16px}
+  .foot-links{margin-top:26px}
+  .foot-links a{color:var(--brass);text-decoration:none;border-bottom:1px solid rgba(176,137,79,.4);padding-bottom:2px}
+
+  @media (max-width:900px){
+    .strip-grid{grid-template-columns:repeat(2,1fr)}
+    .strip-grid div:nth-child(3){border-left:0}
+    .strip-grid div:nth-child(3),.strip-grid div:nth-child(4){border-top:1px solid rgba(58,43,49,.09)}
+    .rung{grid-template-columns:1fr;gap:20px;text-align:center;padding:34px 28px}
+    .rung .depth{display:flex;align-items:baseline;justify-content:center;gap:16px}
+    .rung .lab{margin-top:0}
+    .grid2,.risk-list{grid-template-columns:1fr;gap:0}
+    .ruled li{grid-template-columns:1fr;gap:10px}
+    .ruled li > .body{grid-column:1}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 22px}
+    .hero{padding:60px 0 0}
+    .band,.risk{padding:64px 0}
+    .band:not(.band-blush) + .band:not(.band-blush),
+    .band-blush + .band-blush{padding-top:24px}
+    .nav-links{gap:18px;font-size:10.5px}
+  }
+  .methods{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
+  .methods caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
+  .methods th{text-align:right;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 14px 14px 0;border-bottom:1px solid var(--brass)}
+  .methods th:first-child,.methods td:first-child{text-align:left}
+  .methods td{text-align:right;padding:18px 14px;border-bottom:1px solid var(--hair);vertical-align:top}
+  .methods tr:last-child td{border-bottom:0}
+  .methods .band-name{font-family:var(--display);font-size:20px;line-height:1.2}
+  .methods .sub{font-family:var(--body);font-size:12.5px;color:var(--muted)}
+  .methods .total{font-weight:600;color:var(--plum)}
+  .methods .ok{color:#5E7350}
+  .methods .bad{color:#A85A48;font-weight:600}
+  .bad-inline{color:#A85A48;font-weight:600}
+  .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 36px}
+  .clarify-h{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
+  .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
+  .clarify p:last-child{margin-bottom:0}
+  .clarify strong{color:var(--plum)}
+  @media (max-width:560px){ .clarify{padding:26px 22px} }
+
+  /* comments (FastComments, see js/comments.js) */
+  .comments{padding:64px 0 80px;border-top:1px solid var(--hair);background:var(--ivory)}
+  .comments h2{font-size:clamp(24px,3.4vw,34px);font-weight:300;margin:0 0 16px}
+  .comments .lede{max-width:50ch;margin:0 auto 38px}
+  .fc-slot{max-width:760px;margin:0 auto;min-height:60px}
+  .fc-note{font-size:14px;color:var(--muted);text-align:center;margin:0}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="../index.html"><img class="mk" src="../mark.png" alt="" width="56" height="42">Tran to Fire<span>.</span></a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../strategy/index.html" aria-current="page">The Strategy</a>
+      <a href="../progress/index.html">Progress</a>
+      <a href="../updates/index.html">Journal</a>
+      <a href="../about/index.html">My Story</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-in center">
+    <p class="eyebrow">The Strategy</p>
+    <h1>My rules, written down <em>before I needed them</em>.</h1>
+    <p class="lede">US$800 a month into a 2× Nasdaq-100 fund and another US$800 into a 2× S&amp;P 500 fund, both under the same rules. Each fund is measured against its own record high. Sitting close to that high I invest only a fifth of the cash I'm holding for it and bank the rest. The further it falls, the bigger the share I spend, and at −60% I spend all of it. Every rule is written out below.</p>
+  </div>
+</header>
+
+<section class="strip">
+  <div class="wrap">
+    <dl class="strip-grid">
+      <div><dt>Holding</dt><dd>QLD · SSO<small>2× Nasdaq-100 and 2× S&amp;P 500, daily reset</small></dd></div>
+      <div><dt>Contribution</dt><dd>US$800 each<small>US$1,600 a month, fixed in USD</small></dd></div>
+      <div><dt>Started</dt><dd>Aug 2026<small>First buy</small></dd></div>
+      <div><dt>Horizon</dt><dd>20 years<small>240 months, a buy in each fund</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The intention</p>
+    <h2>Take more risk when risk is cheap.</h2>
+    <p class="lede">Most people do the opposite without meaning to. Confidence rises with the market, so we buy hardest near the top and go quiet after a crash, which is when future returns are best. Counter-cyclical leverage flips that instinct and makes it mechanical, so it doesn't depend on how brave I feel that week.</p>
+    <p class="lede">On the way up my leverage falls. I buy a small slice and let cash pile up next to it. On the way down it rises. The cash converts into shares, faster the deeper it goes. The cash isn't sitting idle. It's waiting for a trigger I already agreed to.</p>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 960 440" role="img" aria-labelledby="ccl-title ccl-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="ccl-title">Counter-cyclical leverage</title>
+      <desc id="ccl-desc">A market price line rising over time with two drawdowns. Cash accumulates while the market climbs, and is deployed into shares at the bottom of each fall.</desc>
+
+      <defs>
+        <linearGradient id="under" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#EDD9D2" stop-opacity=".75"/>
+          <stop offset="100%" stop-color="#EDD9D2" stop-opacity="0"/>
+        </linearGradient>
+        <marker id="arrowDown" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto">
+          <path d="M0,0 L9,0 L4.5,9 Z" fill="#B0894F"/>
+        </marker>
+        <marker id="arrowUp" markerWidth="9" markerHeight="9" refX="4.5" refY="1" orient="auto">
+          <path d="M4.5,0 L9,9 L0,9 Z" fill="#8D9C86"/>
+        </marker>
+      </defs>
+
+      <!-- baseline -->
+      <line x1="40" y1="392" x2="920" y2="392" stroke="#3A2B31" stroke-opacity=".18"/>
+      <text x="40" y="418" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">TIME</text>
+
+      <!-- area under curve -->
+      <path d="M40,300 C110,268 150,214 210,206 C270,198 288,290 340,318 C392,346 424,268 480,236
+               C536,204 556,318 606,348 C656,378 690,236 748,178 C806,120 860,104 920,88
+               L920,392 L40,392 Z" fill="url(#under)"/>
+
+      <!-- price line -->
+      <path d="M40,300 C110,268 150,214 210,206 C270,198 288,290 340,318 C392,346 424,268 480,236
+               C536,204 556,318 606,348 C656,378 690,236 748,178 C806,120 860,104 920,88"
+            fill="none" stroke="#3A2B31" stroke-width="2.4" stroke-linecap="round"/>
+
+      <!-- high-water marks -->
+      <line x1="210" y1="206" x2="470" y2="206" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
+      <line x1="480" y1="236" x2="600" y2="236" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
+      <text x="216" y="196" font-family="EB Garamond,Georgia,serif" font-size="11.5" font-weight="600" fill="#B0894F" letter-spacing="2">HIGH-WATER MARK</text>
+
+      <!-- deploy arrows at troughs — labels sit in a clear band above the curve -->
+      <line x1="340" y1="162" x2="340" y2="304" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
+      <circle cx="340" cy="318" r="6.5" fill="#B0894F"/>
+      <text x="340" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Cash → shares</text>
+
+      <line x1="606" y1="162" x2="606" y2="334" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
+      <circle cx="606" cy="348" r="8" fill="#B0894F"/>
+      <text x="606" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Deeper fall, bigger buy</text>
+
+      <!-- accumulate arrows on the climbs -->
+      <line x1="128" y1="300" x2="128" y2="252" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="128" y="326" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <line x1="440" y1="330" x2="440" y2="282" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="440" y="356" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <line x1="812" y1="250" x2="812" y2="202" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="812" y="276" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+
+      <!-- legend -->
+      <circle cx="46" cy="46" r="5.5" fill="#B0894F"/>
+      <text x="60" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage up, spend the reserve</text>
+      <circle cx="360" cy="46" r="5.5" fill="#8D9C86"/>
+      <text x="374" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage down, rebuild the reserve</text>
+    </svg>
+  </div>
+  <p class="figcap">The concept is Henrique Centieiro's counter-cyclical leverage framework, published on TradingView. The drawing is mine; any clumsiness in it is mine too.</p>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Optimal leverage</p>
+    <h2>The point where more leverage stops paying.</h2>
+    <p class="lede">Leverage does not just scale a return up. Tony Cooper's 2010 paper works out the long-run compound return of a leveraged fund and finds it traces a hill. Returns climb as leverage rises, reach a peak, then fall away. Go far enough past the peak and the long-run return turns negative while the index underneath it is still going up.</p>
+    <p class="lede">The peak sits at roughly the index's return divided by the square of its volatility. Volatility is squared in that sum and the return is not, so volatility carries far more weight. Everything below follows from that.</p>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 960 460" role="img" aria-labelledby="opt-title opt-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="opt-title">Long-run return against daily leverage</title>
+      <desc id="opt-desc">Two curves showing compound return rising with leverage, peaking, then falling. The S&amp;P 500 curve peaks near three times leverage. The Nasdaq-100 curve peaks near two times, which is where I sit, and is already falling by three times.</desc>
+
+      <!-- grid -->
+      <line x1="287.4" y1="64" x2="287.4" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="478.9" y1="64" x2="478.9" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="670.3" y1="64" x2="670.3" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="861.7" y1="64" x2="861.7" y2="372" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="96" y1="64" x2="96" y2="372" stroke="#3A2B31" stroke-opacity=".18"/>
+
+      <!-- break-even -->
+      <line x1="96" y1="285.4" x2="900" y2="285.4" stroke="#3A2B31" stroke-opacity=".22" stroke-dasharray="4 5"/>
+      <text x="150" y="277" font-family="EB Garamond,Georgia,serif" font-size="13" fill="#8A7A7E">Break even</text>
+
+      <!-- S&P 500 -->
+      <polyline fill="none" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7" stroke-linecap="round" stroke-linejoin="round"
+        points="96.0,285.4 115.1,272.1 134.3,259.4 153.4,247.0 172.6,235.2 191.7,223.7 210.9,212.8 230.0,202.2 249.1,192.2 268.3,182.5 287.4,173.4 306.6,164.7 325.7,156.4 344.9,148.6 364.0,141.2 383.1,134.3 402.3,127.8 421.4,121.8 440.6,116.3 459.7,111.2 478.9,106.5 498.0,102.3 517.1,98.5 536.3,95.2 555.4,92.4 574.6,90.0 593.7,88.0 612.9,86.5 632.0,85.5 651.1,84.9 670.3,84.7 689.4,85.1 708.6,85.8 727.7,87.0 746.9,88.7 766.0,90.8 785.1,93.4 804.3,96.4 823.4,99.8 842.6,103.7 861.7,108.1 880.9,112.9 900.0,118.2"/>
+
+      <!-- Nasdaq-100 -->
+      <polyline fill="none" stroke="#211A1D" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"
+        points="96.0,285.4 115.1,271.0 134.3,257.3 153.4,244.5 172.6,232.4 191.7,221.2 210.9,210.7 230.0,201.0 249.1,192.1 268.3,184.0 287.4,176.6 306.6,170.1 325.7,164.3 344.9,159.3 364.0,155.1 383.1,151.7 402.3,149.1 421.4,147.2 440.6,146.2 459.7,145.9 478.9,146.4 498.0,147.7 517.1,149.8 536.3,152.7 555.4,156.3 574.6,160.8 593.7,166.0 612.9,172.0 632.0,178.8 651.1,186.4 670.3,194.7 689.4,203.9 708.6,213.8 727.7,224.6 746.9,236.1 766.0,248.4 785.1,261.4 804.3,275.3 823.4,290.0 842.6,305.4 861.7,321.6 880.9,338.6 900.0,356.4"/>
+
+      <!-- peaks -->
+      <circle cx="456.8" cy="145.9" r="6" fill="#211A1D"/>
+      <text x="456.8" y="180" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#211A1D">Nasdaq-100 peaks near 2×</text>
+      <circle cx="666.9" cy="84.7" r="6" fill="#5F7D53"/>
+      <text x="646" y="72" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#4E6A44">S&amp;P 500 peaks near 3×</text>
+
+      <!-- where TQQQ sits -->
+      <line x1="670.3" y1="70" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".8"/>
+      <line x1="456.8" y1="190" x2="456.8" y2="372" stroke="#211A1D" stroke-width="1.3" stroke-dasharray="3 5" opacity=".45"/>
+      <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
+      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
+      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#9A7C52">where this experiment sits</text>
+
+      <!-- axes -->
+      <text x="287.4" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">1×</text>
+      <text x="478.9" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">2×</text>
+      <text x="670.3" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">3×</text>
+      <text x="861.7" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">4×</text>
+      <text x="498" y="426" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">DAILY LEVERAGE</text>
+      <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
+
+      <!-- legend -->
+      <line x1="96" y1="42" x2="138" y2="42" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7"/>
+      <text x="148" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#4E6A44">S&amp;P 500, 1950 to 2009</text>
+      <line x1="352" y1="42" x2="394" y2="42" stroke="#211A1D" stroke-width="3.2"/>
+      <text x="404" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#211A1D">Nasdaq-100, 1971 to 2009</text>
+    </svg>
+  </div>
+  <p class="figcap">The shape of Cooper's result, drawn from his return and volatility figures for the two indexes. The vertical scale is left unlabelled because the height of the hill depends on which decades you measure, so the position of the peak is the only part worth reading off it.</p>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="methods">
+        <caption>Cooper's own figures. Return is the compound annual return of the index. Volatility is its annualised daily standard deviation. Peak leverage is where his return-versus-leverage curves top out.</caption>
+        <thead><tr><th>Index</th><th>Annual return</th><th>Volatility</th><th>Peak leverage</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="band-name">S&amp;P 500<br><span class="sub">1950 to 2009</span></td>
+            <td>7.0%</td><td>15.3%</td><td class="total">about 3×</td>
+          </tr>
+          <tr>
+            <td class="band-name">Nasdaq-100<br><span class="sub">1971 to 2009</span></td>
+            <td>7.7%</td><td>20.2%</td><td class="total">about 2×</td>
+          </tr>
+          <tr>
+            <td class="band-name">US market<br><span class="sub">1885 to 2009</span></td>
+            <td>3.9%</td><td>16.7%</td><td class="total">about 2×</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">The Nasdaq-100 returned <em>more</em> than the S&amp;P 500 across these windows and it still has the lower ceiling, because it was about a third more volatile and volatility is the term that gets squared. The livelier index is the one that tolerates less leverage. Across the ten markets Cooper tested, the optimum usually landed near 2, reached 3 in a few cases, and never reached 4.</p>
+  </div>
+
+  <div class="wrap">
+    <ul class="grid2">
+      <li>
+        <h3>Below the peak</h3>
+        <p>Each extra turn of leverage adds return along with the volatility, so you are being paid for the risk you take on. Being early on the curve also buys you room to be wrong. If the real peak turns out to sit lower than the estimate, you give up part of the gain rather than all of it.</p>
+      </li>
+      <li>
+        <h3>Above the peak</h3>
+        <p>Each extra turn still adds the full volatility and now subtracts return, so you carry more risk to earn less. The error runs the other way too. A stretch of lower returns or higher volatility pulls the peak to the left, and a position that was slightly past it becomes badly past it, with nothing to announce that it happened.</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wrap narrow">
+    <p class="src-note" style="margin-top:30px">Figures and formula from Tony Cooper, <a href="https://ssrn.com/abstract=1664823">Alpha Generation and Risk Smoothing using Managed Volatility</a>, Double-Digit Numerics, 2010. The curves above are my drawing of his result, not a reproduction of his charts.</p>
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The tier ladder</p>
+    <h2>How much I deploy, by depth.</h2>
+    <p class="lede">One number decides everything: how far the fund has fallen from its record high. That sets the percentage. Each fund is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the price I actually pay on the day I place the order</strong>, not a month-end figure or an average. So the tier is fixed by the same number that appears in my log, and anyone can check the two agree.</p>
+    <div class="hwm-pair">
+      <dl class="hwm"><dt>QLD high-water mark</dt><dd><span data-hwm="QLD">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
+      <dl class="hwm"><dt>SSO high-water mark</dt><dd><span data-hwm="SSO">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="gauge">
+      <div class="rung r0">
+        <div class="depth"><span class="num">0–19%</span><span class="lab">Baseline</span></div>
+        <div>
+          <span class="flag">Where we are now</span>
+          <h3>Near the high</h3>
+          <p class="deploy">Deploy <span class="amt">20%</span> of all available cash</p>
+          <p class="rung-note">Four fifths of everything I hold stays in cash. This is the boring state and it might last years. Most of the work is not spending money.</p>
+        </div>
+      </div>
+      <div class="rung r1">
+        <div class="depth"><span class="num">−20%</span><span class="lab">Dip</span></div>
+        <div>
+          <h3>Correction</h3>
+          <p class="deploy">Deploy <span class="amt">33%</span> of all available cash</p>
+          <p class="rung-note">A third of the pile. On a 3× fund a −20% print means the Nasdaq-100 itself has barely moved.</p>
+        </div>
+      </div>
+      <div class="rung r2">
+        <div class="depth"><span class="num">−40%</span><span class="lab">Deep dip</span></div>
+        <div>
+          <h3>Bear market</h3>
+          <p class="deploy">Deploy <span class="amt">67%</span> of all available cash</p>
+          <p class="rung-note">Two thirds, in one order. Whatever is left carries into next month and gets counted again.</p>
+        </div>
+      </div>
+      <div class="rung r3">
+        <div class="depth"><span class="num">−60%</span><span class="lab">Crash</span></div>
+        <div>
+          <h3>Everything in</h3>
+          <p class="deploy">Deploy <span class="amt">100%</span> of all available cash</p>
+          <p class="rung-note">The entire reserve, in the month the headlines are worst. After that I'm fully invested and all I have left is next month's US$800. This is the tier I'll find hardest to do, and the one most likely to hurt.</p>
+        </div>
+      </div>
+    </div>
+    <p class="gauge-foot">Drawdown is measured on the fund itself, not on the index behind it. The fund falls roughly three times as hard, so these tiers are reached far more readily than the index would suggest.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Worked example</p>
+    <h2>Four months of eight hundred dollars.</h2>
+    <p class="lede">Starting from nothing, with US$800 going in on the same day every month, which is what I actually contribute. The rules take their slice, whatever is left waits for next month, and the market does what it does. This is where the reserve comes from.</p>
+  </div>
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="money">
+        <caption>All figures in US dollars, rounded to the nearest dollar. Cash available is last month's carry plus the new $800.</caption>
+        <thead><tr><th>Month</th><th>The fund vs its high</th><th>Tier</th><th>Cash available</th><th>Deployed</th><th>Carried forward</th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">Month 1</td><td>−4%</td><td>Baseline <span class="sub">20%</span></td><td>$800</td><td class="total">$160</td><td>$640</td></tr>
+          <tr><td class="band-name">Month 2</td><td>−9%</td><td>Baseline <span class="sub">20%</span></td><td>$1,440</td><td class="total">$288</td><td>$1,152</td></tr>
+          <tr><td class="band-name">Month 3</td><td>−14%</td><td>Baseline <span class="sub">20%</span></td><td>$1,952</td><td class="total">$390</td><td>$1,562</td></tr>
+          <tr><td class="band-name">Month 4</td><td>−43%</td><td>Deep dip <span class="sub">67%</span></td><td>$2,362</td><td class="total">$1,583</td><td>$779</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">The first three months look like nothing is happening. Each one buys a small parcel and leaves four fifths of the cash alone, so by month four there is $1,562 sitting idle.</p>
+    <p>Then the market falls, and month four puts <strong>$1,583</strong> to work in a single buy, nearly ten times what month one managed, at prices 43% below the high. That money only exists because the three months before it refused to spend.</p>
+    <p>Two things this table leaves out, both of which the real log on the Progress page includes: the reserve earns 4% a year while it waits, and every buy costs $3 in brokerage and gets rounded down to whole shares.</p>
+  </div>
+</section>
+
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Why not just buy every month</p>
+    <h2>Because of when you start.</h2>
+    <p class="lede">Buying the same amount every month, with no tiers at all, is the simpler version of this. It is a real strategy and for most people it is the better one. Holding a reserve only pays off if prices fall after I start, and nobody knows in advance whether they will.</p>
+    <p class="lede">Collins ran both against TQQQ over twenty years, changing nothing but the month you begin.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll">
+      <table class="money">
+        <caption>From Collins. Same fund, same monthly habit. His 80/20 method starts at a fifth near a high and buys more as prices fall. Figures rounded.</caption>
+        <thead><tr><th>When you started</th><th>Plain monthly buying</th><th>Holding cash for the falls</th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">At a low<br><span class="sub">Jan 2003</span></td><td>$1.91m</td><td>$1.91m</td></tr>
+          <tr><td class="band-name">At a high<br><span class="sub">Oct 2007</span></td><td>$335k</td><td class="total">$389k</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">Start at the bottom of 2003 and the two finish neck and neck. Nothing is gained by holding cash, because the market only went up from there. Start at the top of 2007, right before the crash, and holding cash finishes about sixteen percent ahead. Same fund, same contributions, same twenty years. The only difference was the starting point, and nobody gets to know theirs in advance.</p>
+    <p>I am beginning in August 2026 with the Nasdaq off its record high and the S&amp;P close to one, which is neither a clean low nor a fresh peak. Holding the reserve is what I am paying to not have to guess which one it turns out to be.</p>
+
+    <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
+    <div class="clarify" style="margin-top:34px">
+      <p class="clarify-h">The discipline this actually requires</p>
+      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and what is left is whatever I happened to buy before it started. Collins has a figure for that version: $1,000 put into TQQQ once, in January 2000, was still worth about $1,000 twenty years later. A simulated 3× Nasdaq fell around 99% in the crash that followed, and a position that stops being added to has no way back from a fall like that.</p>
+      <p>A 2026 paper out of the University of Waterloo gets to the same place from another direction. Forsyth, van Staden and Li test leveraged funds against a century of market data, rebuilt back to 1926 because the funds themselves only date from 2006 and their real record covers an unusually kind stretch of history. They find these funds reward a strategy that decides how much to hold and keeps changing it, and punish one that buys and then sits. Their other warning is about which index sits underneath: a leveraged fund on a broad market behaves nothing like one on a narrow, volatile sector, and most of the horror stories come from the second kind.</p>
+      <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here.</p>
+    </div>
+
+    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method starts at 20% near a high and deploys more as the market falls. My numbered tiers come from Henrique Centieiro; they put exact percentages on that same idea. The Waterloo paper is Forsyth, van Staden and Li, <a href="https://cs.uwaterloo.ca/~paforsyt/letf_explanation.pdf">Making Leveraged Exchange-Traded Funds Work for your Portfolio</a>, March 2026.</p>
+  </div>
+</section>
+
+
+
+<section class="band band-blush" id="lifecycle">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Lifecycle investing</p>
+    <h2>The leverage comes down over time.</h2>
+  </div>
+
+  <div class="wrap narrow">
+    <p>Ian Ayres and Barry Nalebuff, both at Yale, set the idea out in <em>Lifecycle Investing</em> in 2010, and their argument is about diversifying across time rather than only across assets. In your first years of investing you have very little money in the market and decades of future contributions that are not in it yet. By the end you have a large balance and almost nothing left to add. Measured across a whole working life, you are badly underexposed early and heavily exposed late, which is the opposite of what most people assume they are doing.</p>
+    <p>Their fix is to take more exposure early, when the amount at stake is small, and less later, when it is not. Using stock data back to 1871 they found that borrowing when young and holding more conservative investments when older beat both standard lifecycle funds and being fully in equities. Instead of shifting from shares into bonds as you age, you start leveraged and reduce the leverage.</p>
+    <p>They cap it at two to one, and say so explicitly: past that, on their numbers, the risk of being wiped out early outweighs the extra exposure. Two is where I have ended up, which was not the plan when I started reading them.</p>
+    <p>They write about borrowing, because that is what leverage meant when they wrote. Margin loans and deep in-the-money call options are the tools in the book. Three-times funds barely existed at the time: UPRO launched in 2009 and TQQQ in 2010, the year the book came out, with no record to test the idea against.</p>
+    <p>A leveraged ETF gets to a similar place without a loan in my name. The borrowing happens inside the fund, so there is no lender, no margin call, and I cannot lose more than I put in. What I can still do is watch it fall ninety percent and hold it, which is a different problem and not the one they were warning about.</p>
+    <p>I started at 2&#215;, but I have never actually carried 2&#215;. Holding cash back to average in and to buy the dips means the leverage I am really running is under two, and it moves with the market rather than sitting still. That is the level I am comfortable holding for the next twenty years.</p>
+    <p>The cost is that this will not keep up with TQQQ or UPRO in a good run. What I get for it is a drawdown I can keep contributing through. Those two get their turn <a href="#crash">once a market has already fallen a long way</a>.</p>
+
+    <p class="src-note">Ian Ayres and Barry Nalebuff, <em>Lifecycle Investing</em> (2010), and their paper <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1149340">Life-Cycle Investing and Leverage: Buying Stock on Margin Can Reduce Retirement Risk</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="crash">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">When it really falls</p>
+    <h2>The 3&#215; funds wait for a proper fall.</h2>
+  </div>
+
+  <div class="wrap narrow">
+    <p>TQQQ and UPRO are not on the monthly schedule. They are what I start buying into once they are 30% below their record high, measured on the fund itself rather than on the index behind it, with money set aside for that and nothing else.</p>
+    <p>Three times a daily move compounds, so the index does not have to fall anything like as far. An index down about 12% puts a 3&#215; fund past 30%. TQQQ went through that level in the 2020 crash and again in 2022, when it finished 82% below its high.</p>
+    <p>The money is separate. It does not come out of the US$800 that goes into QLD and SSO each month, and it does not come out of either reserve. Those two schedules carry on unchanged through a crash, which is the point of them. If that money is not there when the fall comes, there is no buying.</p>
+
+    <p>I buy in over months rather than all at once, and then hold.</p>
+  </div>
+</section>
+
+<section class="band band-blush" id="other">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Other ways to do this</p>
+    <h2>What I didn't build this on.</h2>
+    <p class="lede">None of these is a bad idea. They are just not what the monthly schedule runs on, and the reasons are below.</p>
+  </div>
+  <div class="wrap">
+    <ul class="ruled">
+      <li>
+        <div class="what">A higher multiple: TQQQ and UPRO</div>
+        <div class="body">
+        <p>TQQQ is 3× the Nasdaq-100 that QLD tracks. UPRO is 3× the S&amp;P 500 that SSO tracks. A higher multiple compounds harder through a bull run, and for a while that is what I intended to buy every month.</p>
+        <p>What changed my mind is the other side of it. Three times the daily move falls a great deal further when the index turns, and takes far longer to come back from it. QLD lost about 60% in 2022 and TQQQ lost 82%, on the same index in the same year. That is the difference between a drawdown I can keep buying through and one I might not.</p>
+        <p>So they are not off the table, they are on a different schedule. A fall that deep is the one thing that makes the extra multiple worth carrying, which is why I start buying them once they are 30% below their record high rather than every month. That rule is set out under <a href="#crash">when it really falls</a>.</p>
+        </div>
+      </li>
+      <li>
+        <div class="what">The SMA method</div>
+        <div class="body">
+        <p>Collins' second system uses a 14-period moving average to move in and out of the fund, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also asks me to read a signal every month and to be right about when to get back in. For now I would rather have rules that never ask me to make a call. That is a preference, not a verdict on the method, which on Collins' numbers works well.</p>
+        </div>
+      </li>
+      <li>
+        <div class="what">The 9-Sig strategy</div>
+        <div class="body">
+        <p>A separate system, from Jason Kelly rather than Collins. It pairs TQQQ with a bond or cash reserve, starts around 60/40, and every quarter rebalances the TQQQ position back to a 9% growth target, selling the surplus in good quarters and buying the shortfall in bad ones. It shares my instinct exactly: react to price with fixed rules, never forecast. Selling is half the method, and every sale in a good quarter is a taxable event. Under the rules coming in from July 2027 that costs more than it used to, because the gain no longer gets halved and a 30% floor applies whatever I earn that year. That is a cost to weigh rather than a reason to rule it out. It is on my list, and I may run a separate portfolio on it in future.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="risk">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Please read this part twice</p>
+    <h2>How this goes wrong.</h2>
+    <p class="lede">A soft website does not make a leveraged strategy safe. I'm publishing the failure modes with the same detail as the rules, because a strategy page that only lists the upside isn't a strategy page. It's a sales pitch.</p>
+  </div>
+  <div class="wrap">
+    <ul class="risk-list">
+      <li><h3>The bottom tier is the last one</h3><p>At −60% the rules spend the entire reserve. If the fall keeps going to −70% or −80%, and in 2022 QLD fell about 60% while TQQQ fell 82%, all I have left is the next US$800 a month. There is nothing below that.</p></li>
+      <li><h3>Daily reset, not 2× the period</h3><p>QLD and SSO target twice their index's <em>daily</em> move. Over months and years in choppy markets, compounding drags the result well below 2× the index return, sometimes below zero while the index is flat.</p></li>
+      <li><h3>Currency and concentration</h3><p>An Australian buying a US-domiciled fund is also taking an unhedged AUD/USD bet, in an index where a handful of companies carry most of the weight.</p></li>
+      <li><h3>The rules have not met a crash yet</h3><p>The ladder is easy on a spreadsheet. Emptying the entire reserve into a market that has more than halved is a different thing on the day. Nothing here has been through that, so treat the deepest tiers as written rather than proven.</p></li>
+    </ul>
+    <p class="pull">Read the <span>risk section</span> twice. The tier table can wait.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The mechanics</p>
+    <h2>The unglamorous rules.</h2>
+  </div>
+  <div class="wrap">
+    <ul class="grid2">
+      <li><h3>The price I pay is the price that decides the tier</h3><p>There is only one price in play each month: whatever the fund costs when I place the order. That single number sets the drawdown, the tier, the deployment percentage and the share count, and it is the number published in the log. If I ever get filled at something different from the price I based the decision on, both figures go on the record.</p></li>
+      <li><h3>Every trade costs $3</h3><p>That is what my broking app charges to place the trade, not anything the fund charges. The tier decides the share count on its own, and brokerage comes out of the cash afterwards, so the fee never shrinks the buy, it just leaves a little less in the reserve. Over twenty years that is 480 monthly buys across the two funds, $1,440, which the site tracks and reports rather than hiding.</p></li>
+      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. Take a baseline month and a price of $90: 20% of an $800 contribution is $160, which buys one share at $90. Brokerage of $3 comes out of the cash as well, and the other $707 waits in the reserve.</p></li>
+      <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$800 a month to each fund, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="comments">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Comments</p>
+    <h2>What would you do differently?</h2>
+    <p class="lede">If you run leveraged ETFs, or a set of rules of your own, I'd like to hear how you settled on them and whether they have held up. Flaws in mine are worth hearing too, and better now than in year four.</p>
+  </div>
+  <div class="wrap">
+    <div class="fc-slot" data-comments="strategy"
+         data-comments-title="The Strategy (Tran to Fire)"
+         data-comments-url="https://trantofire.au/strategy/"></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
+    <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio, including the parts that don't work.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Consider your own circumstances and seek licensed advice before acting on anything you read here. Figures are in US dollars, because both funds are US-listed and I contribute a fixed US$800 to each of them every month; the AUD cost of that moves with the exchange rate. Figures ignore brokerage, FX conversion costs, tax and dividends.</p>
+    <p class="foot-links"><a href="../privacy/index.html">Privacy</a></p>
+    <p>© 2026 Tran to Fire</p>
+  </div>
+</footer>
+
+<script src="../js/config.js?v=19" defer></script>
+<script src="../js/live.js?v=21" defer></script>
+<script src="../js/marks.js?v=4" defer></script>
+<script src="../js/comments.js?v=4" defer></script>
+</body>
+</html>

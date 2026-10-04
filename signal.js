@@ -1,122 +1,179 @@
 /* Home page signal cards.
  *
  * Two layers. First, anything already logged in js/data.js renders instantly.
- * Then the live TQQQ price arrives from Yahoo and upgrades the valuation.
+ * Then the live prices arrive from Yahoo and upgrade the valuation.
  *
- * The live layer runs even when NOTHING has been logged yet, because "what is
- * TQQQ doing right now and what would the rules say about it" is useful from
+ * The live layer runs even when NOTHING has been logged, because "what is the
+ * fund doing right now and what would the rules say about it" is useful from
  * the first day the site is up, long before the first buy.
+ *
+ * One card per sleeve up top, shaded by that sleeve's own tier, so the state
+ * of both funds reads at a glance without doubling the number of cards. The
+ * portfolio row underneath is the two sleeves added together, with the split
+ * in the small print.
  */
 (function () {
   "use strict";
   var E = window.TTF_ENGINE, cfg = window.TTF, usd = E.usd, pct = E.pct, ddPct = E.ddPct;
-  function setText(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+  function $(id) { return document.getElementById(id); }
+  function setText(id, v) { var e = $(id); if (e) e.textContent = v; }
 
-  var history = E.run(window.TTF_DATA || [], cfg);
-  var last    = history.length ? history[history.length - 1] : null;
-  var act     = document.getElementById("sg-act");
-  var summary   = document.getElementById("sg-summary");
-  var summaryH  = document.getElementById("sg-summary-h");
+  var sleeves = (cfg.SLEEVES || []).map(function (s) { return cfg.sleeve(s.sym); })
+                  .filter(function (s) { return s; });
+  if (!sleeves.length || !E) return;
 
-  /* the heading only makes sense when the row underneath it is showing */
-  function showSummary() {
-    if (summary)  summary.hidden  = false;
-    if (summaryH) summaryH.hidden = false;
+  var summary  = $("sg-summary");
+  var summary2 = $("sg-summary-2");
+  var summaryH = $("sg-summary-h");
+  var ret      = $("sg-return");
+  var retFunds = $("sg-return-funds");
+
+  /* Paints one of the two return cards.
+
+     Green, red or neither is decided by the figure as DISPLAYED, not as held.
+     A position eight cents under water rounds to 0.0% and to $0, and printing
+     that in red behind a minus sign tells the reader the month went against
+     them when it did nothing at all. Same rule as ddPct in the engine: the
+     display must not claim something the figures have not done. */
+  function paintReturn(el, subId, gain, base, tail) {
+    if (!el) return;
+    if (!(base > 0)) {
+      el.textContent = "\u2014";
+      el.className = "sg-return flat";
+      setText(subId, "Nothing bought yet.");
+      return;
+    }
+    var r      = gain / base;
+    var showR  = Math.abs(r * 100) < 0.05 ? 0 : r;    // pct() prints 1 decimal
+    var showG  = Math.abs(gain)     < 0.5  ? 0 : gain; // usd() prints whole dollars
+
+    el.textContent = (showR > 0 ? "+" : "") + pct(showR);
+    el.className = "sg-return " + (showR > 0 ? "pos" : showR < 0 ? "neg" : "flat");
+    setText(subId, (showG > 0 ? "+" : "") + usd(showG) + " on " + usd(base) + " " + tail);
   }
-  var ret     = document.getElementById("sg-return");
+
+  /* per sleeve: the run, and the latest valuation to fold into the totals */
+  var state = {};
+
+  function signalCard(sl, d, liveNote) {
+    setText("sg-deploy-" + sl.sym, pct(d.tier.pct, 0));
+    setText("sg-deploy-sub-" + sl.sym,
+      d.tier.label + " \u00b7 " + usd(d.price, 2) + ", " +
+      (Math.abs(d.drawdown) < 0.0005
+        ? "at its record high"
+        : ddPct(d.drawdown) + " below its " + usd(d.high, 2) + " high") +
+      (liveNote ? " \u00b7 live" : ""));
+    var card = $("sg-act-" + sl.sym);
+    if (card) card.className = "sig-card act t" + d.tier.n;
+  }
+
+  /* The totals are re-rendered every time a sleeve reports, so the row is
+     right after the first one lands and right again after the second. */
+  function totals() {
+    var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, cost = 0, any = false;
+    sleeves.forEach(function (sl) {
+      var v = state[sl.sym];
+      if (!v) return;
+      any = true;
+      reserve   += v.reserve;
+      position  += v.etfValue;
+      portfolio += v.portfolio;
+      moneyIn   += v.moneyIn;
+      cost      += v.shares * v.avgCost;   // avgCost already carries the brokerage
+      setText("sg-hold-" + sl.sym, v.shares + " share" + (v.shares === 1 ? "" : "s") +
+        " at " + usd(v.avgCost, 2) + " \u00b7 " + usd(v.reserve) + " in reserve");
+    });
+    if (!any) return;
+
+    if (summary)  summary.hidden  = false;
+    if (summary2) summary2.hidden = false;
+    if (summaryH) summaryH.hidden = false;
+
+    setText("sg-reserve", usd(reserve));
+    setText("sg-portfolio", usd(portfolio));
+    setText("sg-portfolio-sub", usd(position) + " in funds plus the reserves.");
+
+    /* Two returns, one gain, two denominators.
+
+       Money invested is what has actually been spent on shares. Money in is
+       every dollar contributed, most of which is still cash while the ladder
+       sits on baseline. The gains differ only by the interest the reserve has
+       earned, which counts as return rather than as money in, so the two
+       figures are equal until the first month of interest lands.
+
+       A percentage with no denominator on the page cannot be checked, so each
+       card prints its own underneath. */
+    paintReturn(retFunds, "sg-return-funds-sub", position - cost, cost, "spent on shares.");
+    paintReturn(ret,      "sg-return-sub",       portfolio - moneyIn, moneyIn,
+      "in, " + usd(reserve) + " of it still cash.");
+  }
 
   /* ---------- layer 1: whatever is already logged ---------- */
-  if (last) {
-    setText("sg-ath", usd(last.high, 2));
-    setText("sg-price", usd(last.price, 2));
-    setText("sg-price-sub", last.label + " \u00b7 " +
-      (Math.abs(last.drawdown) < 0.0005 ? "at the high" : ddPct(last.drawdown) + " below the high"));
+  sleeves.forEach(function (sl) {
+    sl.hist = E.run(sl.rows || [], sl);
+    var last = sl.hist.length ? sl.hist[sl.hist.length - 1] : null;
+    if (!last) return;
 
-    setText("sg-deploy", pct(last.deployPct, 0));
-    setText("sg-deploy-sub", last.tier.label + " \u00b7 " +
-      usd(last.spent) + " of " + usd(last.available) + " available \u00b7 " +
-      last.bought + " share" + (last.bought === 1 ? "" : "s"));
-    if (act) act.className = "sig-card act t" + last.tier.n;
-
-    if (summary) {
-      showSummary();
-      setText("sg-reserve", usd(last.reserve));
-      setText("sg-invested", usd(last.portfolio - last.reserve));
-      setText("sg-invested-sub", last.shares + " share" + (last.shares === 1 ? "" : "s") +
-        " at " + usd(last.avgCost, 2) + " average");
-      setText("sg-portfolio", usd(last.portfolio));
-      if (ret) {
-        ret.textContent = (last.ret >= 0 ? "+" : "\u2212") + pct(Math.abs(last.ret));
-        ret.className = "sg-return " + (last.ret >= 0 ? "pos" : "neg");
-      }
+    /* Without a record high there is nothing to measure a drawdown from, and
+       the engine reads that as no drawdown at all, which would show Baseline
+       whatever the fund had actually done. The card waits for Yahoo instead of
+       printing a tier it cannot stand behind. The money below is unaffected:
+       the buy is logged at the shares actually bought. */
+    if (last.highKnown) signalCard(sl, last, false);
+    else {
+      setText("sg-deploy-" + sl.sym, "\u2014");
+      setText("sg-deploy-sub-" + sl.sym, "Waiting on the record high from Yahoo Finance.");
     }
-  }
-
-  /* ---------- layer 2: the live market, whether or not anything is logged ---------- */
-  if (!window.TTF_LIVE) return;
-
-  window.TTF_LIVE.get().then(function (live) {
-    if (!live) return;
-
-    // Yahoo's all-time high replaces the hardcoded reference where it is higher
-    var liveCfg = {
-      HIGH_WATER_MARK: (live.ath && live.ath > cfg.HIGH_WATER_MARK) ? live.ath : cfg.HIGH_WATER_MARK,
-      CONTRIBUTION:    cfg.CONTRIBUTION,
-      CASH_RATE:       cfg.CASH_RATE,
-      BROKERAGE:       cfg.BROKERAGE,
-      EXPENSE_RATIO:   cfg.EXPENSE_RATIO
+    state[sl.sym] = {
+      reserve: last.reserve, etfValue: last.portfolio - last.reserve,
+      portfolio: last.portfolio, moneyIn: last.moneyIn,
+      shares: last.shares, avgCost: last.avgCost
     };
-    var hist = (live.ath && live.ath > cfg.HIGH_WATER_MARK)
-      ? E.run(window.TTF_DATA || [], liveCfg)
-      : history;
+  });
+  totals();
 
-    // what the rules would call for at today's price, from wherever we stand
-    var n = E.next(hist, liveCfg, live.price);
-    if (!n) return;
+  /* ---------- layer 2: the live market ---------- */
+  if (!window.TTF_LIVE || !window.TTF_LIVE.quoteFor) return;
 
-    setText("sg-ath", usd(n.high, 2));
+  var stamped = false;
 
-    var athNote = document.getElementById("sg-ath-sub");
-    if (athNote && live.ath) {
-      var d = live.athDate ? new Date(live.athDate) : null;
-      athNote.textContent = "TQQQ record high" +
-        (d && !isNaN(d.getTime())
-          ? ", " + d.toLocaleDateString("en-AU", { month: "long", year: "numeric" })
-          : "") +
-        ", from " + live.source + ". Every tier is measured from this one number.";
-    }
+  sleeves.forEach(function (sl) {
+    window.TTF_LIVE.quoteFor(sl.sym).then(function (live) {
+      if (!live) return;
 
-    setText("sg-price", usd(n.price, 2));
-    setText("sg-price-sub", "Live \u00b7 " +
-      (Math.abs(n.drawdown) < 0.0005 ? "at the high" : ddPct(n.drawdown) + " below the high"));
+      /* Yahoo's figure IS the record high. Nothing is stored to compare it
+         against, so it is taken as it comes. An earlier version kept a
+         constant in config and only took the live figure when it was higher,
+         which let a stale number sit above the real high and read every
+         drawdown a rung shallow. */
+      var lifted = {};
+      for (var k in sl) lifted[k] = sl[k];
+      var haveAth = live.ath > 0;
+      if (haveAth) lifted.HIGH_WATER_MARK = live.ath;
+      var hist = haveAth ? E.run(sl.rows || [], lifted) : sl.hist;
 
-    setText("sg-deploy", pct(n.tier.pct, 0));
-    setText("sg-deploy-sub", hist.length
-      ? n.tier.label + " \u00b7 what the rules would call for today"
-      : n.tier.label + " \u00b7 what the rules would call for on the first buy");
-    if (act) act.className = "sig-card act t" + n.tier.n;
+      var n = E.next(hist, lifted, live.price);
+      if (n) signalCard(sl, n, true);
 
-    // portfolio figures only exist once something has been bought
-    if (hist.length) {
-      var r = E.revalue(hist, live.price);
-      if (r && summary) {
-        showSummary();
-        setText("sg-reserve", usd(r.reserve));
-        setText("sg-invested", usd(r.etfValue));
-        setText("sg-invested-sub", r.shares + " share" + (r.shares === 1 ? "" : "s") +
-          " at " + usd(r.avgCost, 2) + " average \u00b7 cost " + usd(r.invested));
-        setText("sg-portfolio", usd(r.portfolio));
-        if (ret) {
-          ret.textContent = (r.ret >= 0 ? "+" : "\u2212") + pct(Math.abs(r.ret));
-          ret.className = "sg-return " + (r.ret >= 0 ? "pos" : "neg");
+      if (hist.length) {
+        var r = E.revalue(hist, live.price);
+        if (r) {
+          state[sl.sym] = {
+            reserve: r.reserve, etfValue: r.etfValue, portfolio: r.portfolio,
+            moneyIn: r.moneyIn, shares: r.shares, avgCost: r.avgCost
+          };
+          totals();
         }
       }
-    }
 
-    var stamp = document.getElementById("sg-live");
-    if (stamp) {
-      stamp.textContent = "Live TQQQ price from " + live.source +
-        (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") + ".";
-    }
+      if (!stamped) {
+        stamped = true;
+        var stamp = $("sg-live");
+        if (stamp) {
+          stamp.textContent = "Live prices from " + live.source +
+            (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") + ".";
+        }
+      }
+    });
   });
 })();

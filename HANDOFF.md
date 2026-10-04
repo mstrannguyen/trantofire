@@ -53,9 +53,10 @@ one. Anything else you read in an old file or an old chat is superseded.
 
 TQQQ and UPRO are NOT on the monthly schedule and are not in `SLEEVES`.
 
-- Bought only once a fund is **40% below its record high**, measured on the
-  3× fund itself, not on the index. Briefly changed to 50% in Aug 2026 and
-  changed straight back; 40% is the rule
+- Bought only once a fund is **30% below its record high**, measured on the
+  3× fund itself, not on the index. History of the threshold: 40% at launch,
+  50% briefly in Aug 2026, back to 40%, then 30% from Sep 2026. 30% is the rule.
+  An index down about 12% puts a 3× fund past 30% (0.88³ = 0.68)
 - Funded with **separate money**, not from the $800s and not from either
   reserve
 - **DCA in over months** rather than committing at once, then hold. No target,

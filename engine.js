@@ -33,7 +33,18 @@
 
   /* Walks the months in order, applying the rules month by month. */
   function run(rows, cfg) {
-    var high     = cfg.HIGH_WATER_MARK;
+    /* The record high is not stored anywhere. It comes from Yahoo on every
+       load, so before that arrives there is nothing to measure against.
+
+       The running maximum of the logged prices is still tracked, because the
+       tier has to resolve to something for the share counts to compute, and
+       that maximum is a floor on the true high: it can read a drawdown too
+       shallow but never too deep. What it must not do is get printed as
+       though it were the record. Every row carries highKnown for that, and a
+       caller showing a drawdown, a tier or a high-water mark has to check it.
+       An explicit `high:` on a row is a real record and sets it true. */
+    var haveHigh = isFinite(cfg.HIGH_WATER_MARK) && Number(cfg.HIGH_WATER_MARK) > 0;
+    var high     = haveHigh ? Number(cfg.HIGH_WATER_MARK) : 0;
     var reserve  = 0;
     var shares   = 0;
     var invested = 0;    // total spent on shares
@@ -71,9 +82,10 @@
 
       // The high-water mark only ever ratchets upward. It normally rises from
       // the prices logged here, but the site only ever sees one price a month
-      // — the day you bought. If TQQQ set a record BETWEEN buy days, say so
-      // with `high:` on that month's line or every later drawdown is wrong.
-      if (isFinite(r.high) && Number(r.high) > high) high = Number(r.high);
+      // and that is the day you bought. If the fund set a record BETWEEN buy
+      // days, say so with `high:` on that month's line or every later drawdown
+      // is wrong.
+      if (isFinite(r.high) && Number(r.high) > high) { high = Number(r.high); haveHigh = true; }
       if (price > high) high = price;
 
       var drawdown  = (price - high) / high;          // 0 or negative
@@ -100,6 +112,62 @@
       invested += spent;
       moneyIn += contribution;
 
+      /* ---------- the annual rebalance ----------
+
+         Only a sleeve with cfg.REBALANCE has one, and only in its month, and
+         only from its start date. It runs AFTER that month's ordinary buy, on
+         the parcel as it then stands: this fund's shares plus this fund's
+         reserve, nothing else.
+
+         Above the target weight, sell the excess into the reserve. Below it,
+         buy with the reserve. Whole shares, rounded down either way, so the
+         result lands just short of the target rather than past it. Brokerage
+         is charged on the trade in either direction, on top of the buy's.
+
+         `rebalance:` on a data row overrides the share count, positive to buy
+         and negative to sell, the same way `shares:` overrides the buy. */
+      var reb = null;
+      var R   = cfg.REBALANCE;
+      if (R && isFinite(R.target) &&
+          parseInt(r.month.slice(5, 7), 10) === R.month &&
+          (!R.from || r.month >= R.from)) {
+
+        var parcel     = shares * fill + reserve;
+        var wantShares = parcel * R.target;
+        var overBy     = shares * fill - wantShares;
+        var n;
+
+        if (isFinite(r.rebalance)) {
+          n = Number(r.rebalance);
+        } else if (overBy > 0) {
+          n = -Math.floor(overBy / fill);                 // sell down
+        } else {
+          n = Math.floor(-overBy / fill);                 // top up
+        }
+
+        // a top-up cannot spend cash the reserve does not have
+        if (n > 0) n = Math.min(n, Math.floor(Math.max(0, reserve - brokerage) / fill));
+        if (n < 0) n = Math.max(n, -shares);              // and cannot sell what is not held
+
+        if (n !== 0) {
+          var rebFee = brokerage;
+
+          /* Selling takes its share of the cost basis out with it, so the
+             average cost of what is left does not move. Without this the basis
+             stayed put while the share count dropped, and one August sale sent
+             the average cost above the price and turned a profit into a loss
+             on every line after it. */
+          if (n < 0) invested += n * (shares ? invested / shares : 0);
+          else       invested += n * fill + rebFee;
+
+          reserve -= n * fill + rebFee;                   // n negative adds cash
+          shares  += n;
+          feesPaid += rebFee;
+          reb = { shares: n, value: Math.abs(n) * fill, fee: rebFee,
+                  target: R.target, manual: isFinite(r.rebalance) };
+        }
+      }
+
       var etfValue  = shares * price;
       var portfolio = etfValue + reserve;
 
@@ -117,6 +185,7 @@
         price:      price,
         fill:       fill,
         high:       high,
+        highKnown:  haveHigh,
         drawdown:   drawdown,
         tier:       tier,
         available:  available,
@@ -128,9 +197,10 @@
         fee:        fee,
         spent:      spent,
         reserve:    reserve,
+        rebalance:      reb,             // null in every month but the one
         interest:       monthInterest,   // earned this month
         interestTotal:  interest,        // earned to date
-        brokerage:      fee,             // paid this month
+        brokerage:      fee + (reb ? reb.fee : 0),   // buy and rebalance both
         brokerageTotal: feesPaid,        // paid to date
         mgmtMonth:      monthMgmt,       // estimated fund fee this month
         mgmtTotal:      mgmtDrag,        // estimated fund fee to date
@@ -152,7 +222,9 @@
   /* What the rules say to do next month, given where things stand. */
   function next(history, cfg, priceNow) {
     var last      = history.length ? history[history.length - 1] : null;
-    var high      = last ? last.high : cfg.HIGH_WATER_MARK;
+    var haveHigh  = last ? !!last.highKnown
+                         : (isFinite(cfg.HIGH_WATER_MARK) && Number(cfg.HIGH_WATER_MARK) > 0);
+    var high      = last ? last.high : Number(cfg.HIGH_WATER_MARK) || 0;
     var reserve   = last ? last.reserve : 0;
     var price     = isFinite(priceNow) ? Number(priceNow) : (last ? last.price : null);
     if (price === null) return null;
@@ -165,7 +237,7 @@
     var bought    = Math.floor(target / price);
 
     return {
-      price: price, high: high, drawdown: drawdown, tier: tier,
+      price: price, high: high, highKnown: haveHigh, drawdown: drawdown, tier: tier,
       available: available, target: target, bought: bought,
       spend: bought * price
     };
@@ -219,6 +291,7 @@
       costsTotal:     feesPaid + mgmtDrag,
       avgCost:    last.avgCost,
       high:       high,
+      highKnown:  !!last.highKnown,
       drawdown:   drawdown,
       tier:       tier,
       pctEtf:     portfolio ? etfValue / portfolio : 0,
@@ -261,6 +334,7 @@
 
   window.TTF_ENGINE = {
     run: run, next: next, revalue: revalue, tierFor: tierFor, monthLabel: monthLabel,
+    TIERS: TIERS,
     usd: usd, pct: pct, ddPct: ddPct
   };
 })();

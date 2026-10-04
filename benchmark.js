@@ -45,34 +45,116 @@
 (function () {
   "use strict";
 
-  var FUNDS = [
-    { sym: "QQQ",  mult: "1\u00d7", note: "Nasdaq-100, unleveraged" },
-    { sym: "QLD",  mult: "2\u00d7", note: "twice the daily move" },
-    { sym: "TQQQ", mult: "3\u00d7", note: "what I actually buy" }
-  ];
+  /* Which funds a sleeve is compared against comes from js/config.js. This is
+     only the wording and the multiple for each ticker. The sleeve's own fund
+     joins its two comparators and the three are ordered by leverage, which for
+     the S&P side puts the fund actually held in the middle rather than at the
+     end. */
+  var META = {
+    QQQ:  { mult: 1, index: "Nasdaq-100" },
+    QLD:  { mult: 2, index: "Nasdaq-100" },
+    TQQQ: { mult: 3, index: "Nasdaq-100" },
+    VOO:  { mult: 1, index: "S&P 500" },
+    SSO:  { mult: 2, index: "S&P 500" },
+    UPRO: { mult: 3, index: "S&P 500" }
+  };
+
+  function fundsFor(sleeve) {
+    var syms = (sleeve.bench || []).concat([sleeve.sym]);
+    return syms.map(function (sym) {
+      var m = META[sym] || { mult: 0, index: "" };
+      return {
+        sym:  sym,
+        mult: m.mult + "\u00d7",
+        n:    m.mult,
+        index: m.index,
+        note: sym === sleeve.sym ? "what I actually buy"
+              : m.mult === 1 ? m.index + ", unleveraged"
+              : m.mult === 2 ? "twice the daily move"
+              : "three times the daily move"
+      };
+    }).sort(function (a, b) { return a.n - b.n; });
+  }
 
   function $(id) { return document.getElementById(id); }
 
-  function hide() {
+  /* This section used to delete itself whenever anything went wrong, which
+     meant a broken fetch and a working-but-empty month looked identical: a
+     hole in the page. It now stays put and says what it is waiting for. */
+  function fail(reason) {
     var sec = $("bench");
-    if (sec && sec.parentNode) sec.parentNode.removeChild(sec);
+    if (!sec) return;
+    var cards = $("bench-cards");
+    if (cards) cards.innerHTML = "";
+    var state = $("bench-state");
+    if (state) state.textContent = reason;
+    sec.classList.remove("hidden");
+    if (window.console) console.warn("[Tran to Fire] benchmark: " + reason);
+  }
+
+  /* The close on a given day, or the nearest trading day before it. */
+  function closeOn(d, dateKey) {
+    if (!d || !dateKey) return null;
+    if (d.days[dateKey] > 0) return d.days[dateKey];
+    for (var i = d.dates.length - 1; i >= 0; i--) {
+      if (d.dates[i] <= dateKey) return d.days[d.dates[i]];
+    }
+    return null;
+  }
+
+  /* Which day was this month's buy made on?
+
+     If the log records a date, that is the answer. If it does not, the price
+     in the log is still a fact, so the closest close for the fund actually
+     held, inside that month, is used as the anchor. It is an inference and it is stated on the page,
+     but it beats pricing a September buy at an August close. */
+  function buyDate(month, row, ownDaily) {
+    if (row && typeof row.date === "string" && row.date.length === 10) return row.date;
+
+    if (ownDaily && row && row.price > 0) {
+      var best = null, bestGap = Infinity;
+      for (var i = 0; i < ownDaily.dates.length; i++) {
+        var k = ownDaily.dates[i];
+        if (k.slice(0, 7) !== month) continue;
+        var gap = Math.abs(ownDaily.days[k] - row.price);
+        if (gap < bestGap) { bestGap = gap; best = k; }
+      }
+      if (best) return best;
+    }
+
+    /* No trading day inside that month yet. This happens at the start of a
+       month, and on any buy logged before the market has opened in it. The
+       last day of the month is returned so that closeOn walks back to the
+       most recent close available, which is a far better answer than none. */
+    return month + "-28";
   }
 
   /* Walk the log once, spending the same cash in every fund. */
-  function build(history, series) {
-    var state = {}, missing = {}, usedLive = {};
+  function build(history, series, dailies, rawByMonth, FUNDS, ownSym) {
+    var state = {}, missing = {}, usedLive = {}, livePx = {};
     FUNDS.forEach(function (f) {
       state[f.sym]   = { shares: 0, cost: 0, lastPrice: null };
       missing[f.sym] = 0;
       usedLive[f.sym] = false;
+      // today's price, needed inside the row loop as well as for the totals
+      var d = dailies[f.sym];
+      livePx[f.sym] = (series[f.sym] && series[f.sym].last) ||
+                      (d && d.dates.length ? d.days[d.dates[d.dates.length - 1]] : null);
     });
 
     var rows = history.map(function (h) {
-      var row = { month: h.month, label: h.label, spent: h.spent, px: {}, ret: {} };
+      var row = { month: h.month, label: h.label, spent: h.spent, on: null, px: {}, ret: {} };
+
+      var when = buyDate(h.month, rawByMonth[h.month], dailies[ownSym]);
+      row.on = when;
 
       FUNDS.forEach(function (f) {
         var s  = state[f.sym];
-        var px = series[f.sym] ? series[f.sym].months[h.month] : null;
+
+        // the close on the day of the buy, else the month's close if the
+        // daily window does not reach back that far
+        var px = closeOn(dailies[f.sym], when);
+        if (!(px > 0)) px = series[f.sym] ? series[f.sym].months[h.month] : null;
 
         // No live-price stand-in here. Pricing a month at today's price makes
         // every fund show the same return, because the only difference from
@@ -82,20 +164,26 @@
         if (typeof px !== "number" || !(px > 0)) {
           missing[f.sym]++;
           row.px[f.sym]  = null;
-          row.ret[f.sym] = (s.cost && s.lastPrice)
-            ? (s.shares * s.lastPrice - s.cost) / s.cost
-            : null;
+          row.ret[f.sym] = null;
           return;
         }
 
+        var units = 0;
         if (h.spent > 0) {
           var cash = h.spent - h.fee;            // brokerage first, then shares
-          if (cash > 0) s.shares += cash / px;
+          if (cash > 0) units = cash / px;
+          s.shares += units;
           s.cost += h.spent;                     // identical outlay, every fund
         }
         s.lastPrice    = px;
         row.px[f.sym]  = px;
-        row.ret[f.sym] = s.cost ? (s.shares * px - s.cost) / s.cost : null;
+
+        /* This month's buy, valued at today's price. Valuing it at the price it
+           was bought at, which is what this did before, cancels down to minus
+           the brokerage for every fund, so a 1x and a 3x fund showed the same
+           figure and neither agreed with the cards above. */
+        var now = livePx[f.sym] || px;
+        row.ret[f.sym] = h.spent > 0 ? (units * now - h.spent) / h.spent : null;
       });
 
       return row;
@@ -103,7 +191,7 @@
 
     var totals = FUNDS.map(function (f) {
       var s     = state[f.sym];
-      var price = (series[f.sym] && series[f.sym].last) || s.lastPrice;
+      var price = livePx[f.sym] || s.lastPrice;
       var value = price ? s.shares * price : null;
       return {
         sym:     f.sym,
@@ -149,84 +237,132 @@
     }).join("");
   }
 
-  function renderRows(rows) {
-    var E = window.TTF_ENGINE;
-    return rows.map(function (r) {
-      var best = null;
-      FUNDS.forEach(function (f) {
-        var v = r.ret[f.sym];
-        if (typeof v === "number" && (best === null || v > best)) best = v;
-      });
+  /* The Progress page calls this on every tab change, so a comparison still in
+     flight for the fund you have just left must not paint over the one you have
+     just opened. */
+  var token = 0;
 
-      return "<tr>" +
-        '<td class="mth">' + r.label + "</td>" +
-        "<td>" + (r.spent ? E.usd(r.spent, 2) : "\u2014") + "</td>" +
-        FUNDS.map(function (f) {
-          var ret = r.ret[f.sym];
-          var px  = r.px[f.sym];
-          var cls = (typeof ret === "number" && ret === best) ? ' class="best"' : "";
-          return "<td" + cls + ">" +
-            (ret === null ? "\u2014" : E.pct(ret)) +
-            '<span class="bpx">' + (px === null ? "" : "at " + E.usd(px, 2)) + "</span>" +
-          "</td>";
-        }).join("") +
-      "</tr>";
-    }).join("");
+  function headings(FUNDS, sleeve) {
+    var others = FUNDS.filter(function (f) { return f.sym !== sleeve.sym; })
+                      .map(function (f) { return f.sym; });
+    var title = $("bench-title");
+    if (title) title.textContent = "What if it had gone into " + others.join(" or ") + " instead.";
+
+    var howEach = FUNDS.map(function (f) {
+      return f.n === 1 ? f.sym + " tracks the " + f.index + " with no leverage"
+           : f.n === 2 ? f.sym + " doubles the daily move"
+           : f.sym + " triples it";
+    }).join(", ");
+
+    var lede = $("bench-lede");
+    if (lede) {
+      lede.textContent = "The rules decide how much cash leaves the account each month. " +
+        "This spends that same amount on two other funds tracking the same index, at the price " +
+        "each closed at on the day of the buy, and prices the result at today's market. The money " +
+        "going in is the same in all three. Only the leverage changes. " + howEach + ".";
+    }
   }
 
-  function start() {
+  function render(sleeve) {
+    var mine = ++token;
     var E = window.TTF_ENGINE;
     var sec = $("bench");
-    if (!sec || !E || !window.TTF_LIVE || !window.TTF_LIVE.series) return hide();
+    if (!sec || !sleeve) return;
+    if (!E || !window.TTF_LIVE || !window.TTF_LIVE.series) {
+      return fail("Comparison unavailable: a script did not load. Check that js/engine.js and js/live.js are deployed.");
+    }
 
-    var cfg = window.TTF;
-    if (!cfg || !isFinite(cfg.CONTRIBUTION) || !isFinite(cfg.HIGH_WATER_MARK)) return hide();
+    if (!window.TTF || !isFinite(sleeve.CONTRIBUTION)) {
+      return fail("Comparison unavailable: js/config.js did not load.");
+    }
 
-    var history = E.run(window.TTF_DATA || [], cfg);
-    if (!history.length) return hide();
+    var FUNDS = fundsFor(sleeve);
+    headings(FUNDS, sleeve);
+
+    var history = E.run(sleeve.rows || [], sleeve);
+    if (!history.length) {
+      return fail("Nothing logged yet. The comparison starts with the first buy.");
+    }
 
     // A month that produced no usable outlay means the engine could not run.
     // Better to show nothing than a grid of dashes that looks like a result.
     var usable = history.some(function (h) { return isFinite(h.spent) && h.spent > 0; });
-    if (!usable) return hide();
+    if (!usable) {
+      return fail("Nothing deployed yet, so there is nothing to compare.");
+    }
 
-    Promise.all(FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }))
+    var rawByMonth = {};
+    (sleeve.rows || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
+
+    Promise.all(
+      FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }).concat(
+      FUNDS.map(function (f) {
+        return window.TTF_LIVE.daily ? window.TTF_LIVE.daily(f.sym) : null;
+      }))
+    )
       .then(function (results) {
-        var series = {}, ok = 0;
-        results.forEach(function (r, i) {
-          series[FUNDS[i].sym] = r;
-          if (r) ok++;
+        if (mine !== token) return;                 // a later tab click wins
+        var series = {}, dailies = {}, ok = 0;
+        FUNDS.forEach(function (f, i) {
+          series[f.sym]  = results[i];
+          dailies[f.sym] = results[i + FUNDS.length] || null;
+          if (results[i]) ok++;
         });
-        if (ok < FUNDS.length) return hide();   // a partial comparison is a misleading one
+        // A fund needs a price source, but either one will do: daily closes do
+        // the pricing and monthly is only the fallback for older months. Only
+        // give up when a fund has neither.
+        var usable = FUNDS.filter(function (f) {
+          return series[f.sym] || dailies[f.sym];
+        }).length;
+        if (usable < FUNDS.length) {
+          var dead = FUNDS.filter(function (f) { return !series[f.sym] && !dailies[f.sym]; })
+                          .map(function (f) { return f.sym; }).join(", ");
+          return fail("Prices unavailable for " + dead + ". Yahoo did not answer, or the " +
+                      "/api routes in _redirects are not deployed.");
+        }
 
-        var out = build(history, series);
+        var out   = build(history, series, dailies, rawByMonth, FUNDS, sleeve.sym);
+        var own   = series[sleeve.sym];
+        var stamp = (own && own.asOf) ? window.TTF_LIVE.asOfLabel(own.asOf) : "";
+        var table = sec.querySelector(".table-scroll");
 
-        // Nothing priced yet means nothing comparable yet.
+        /* A month needs a published monthly close before it can be compared.
+           Pricing an unclosed month at today\'s price makes all three funds
+           show the same return, because the only difference from cost is the
+           brokerage. So the section stays on the page and says what it is
+           waiting for, rather than vanishing or inventing a number. */
         var priced = out.totals.some(function (t) { return t.shares > 0; });
-        if (!priced) return hide();
+        if (!priced) {
+          return fail("No price found yet for " + history[history.length - 1].label +
+                      ". The comparison fills in as soon as one is published.");
+        }
 
+        if (table) table.style.display = "";
         $("bench-cards").innerHTML = renderCards(out.totals);
-        $("bench-rows").innerHTML  = renderRows(out.rows);
-
-        var stamp = window.TTF_LIVE.asOfLabel(series.TQQQ.asOf);
+    
         var gaps = out.totals.reduce(function (n, t) { return n + t.missing; }, 0);
-        var live = out.totals.some(function (t) { return t.usedLive; });
+        var back = out.rows.some(function (r) {
+          return r.on && String(r.on).slice(-2) === "28" && r.month + "-28" === r.on;
+        });
         $("bench-state").innerHTML =
-          "Monthly and live prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + "." +
-          (live ? " The newest month has no published monthly close yet, so the live price stands in for it." : "") +
-          (gaps ? " Some months had no published close and are carried forward." : "");
+          "Prices from Yahoo Finance" + (stamp ? ", live as at " + stamp : "") + ". " +
+          "Each month is priced on the day of the buy, using every fund's close that day." +
+          (back ? " Where the market has not traded yet in a logged month, the most recent close before it is used instead." : "") +
+          (gaps ? " Months with no price at all are left out until they have one." : "");
 
         sec.classList.remove("hidden");
       })
-      .catch(hide);
+      .catch(function (e) {
+        fail("Comparison could not be built: " + (e && e.message ? e.message : e));
+      });
   }
 
-  /* exposed for testing and for poking at in the browser console */
-  window.TTF_BENCH = { build: build, FUNDS: FUNDS };
+  /* Switching to the combined tab hides this section, but a comparison already
+     in flight would finish and show itself again. cancel() retires the token so
+     the late reply lands nowhere. */
+  function cancel() { token++; }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  /* Driven by the Progress page's tab controller, and exposed for poking at in
+     the browser console. */
+  window.TTF_BENCH = { render: render, cancel: cancel, build: build, fundsFor: fundsFor };
 })();
