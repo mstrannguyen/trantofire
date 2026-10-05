@@ -25,6 +25,8 @@
      other's standing position in the headline, carried forward, so the
      portfolio figure on a card matches the Progress page rather than dropping
      a fund that happened to be logged a day late. */
+  var sleeves = (cfg.SLEEVES || []).map(function (s) { return cfg.sleeve(s.sym); })
+    .filter(function (sl) { return sl; });
   var runs = (cfg.SLEEVES || []).map(function (s) { return cfg.sleeve(s.sym); })
     .filter(function (sl) { return sl; })
     .map(function (sl) { return { sl: sl, hist: E.run(sl.rows || [], sl) }; })
@@ -132,9 +134,8 @@
     if (!at.length) return "";
     var portfolio = 0, pl = 0;
     at.forEach(function (x) { portfolio += x.d.portfolio; pl += x.d.pl; });
-    var sign = pl >= 0 ? "+" : "\u2212";
     return shortMonth(month) + " \u00b7 Portfolio " + usd(portfolio) +
-           " (" + sign + usd(Math.abs(pl)) + ")";
+           " (" + E.signedUsd(pl, 2) + ")";
   }
 
   /* A block per fund. Price paid, tier and share count belong to one ticker, so
@@ -145,8 +146,8 @@
       var m = x.d;
       var cells = [
         ["Price paid",  usd(m.fill, 2)],
-        ["From high",   ddPct(m.drawdown)],
-        ["Tier",        m.tier.label + " \u00b7 " + pct(m.deployPct, 0)],
+        ["From high",   m.highKnown ? ddPct(m.drawdown) : "\u2014"],
+        ["Tier",        m.highKnown ? m.tier.label + " \u00b7 " + pct(m.deployPct, 0) : "\u2014"],
         ["Bought",      m.bought + " share" + (m.bought === 1 ? "" : "s")],
         ["Spent",       usd(m.spent)],
         ["Reserve",     usd(m.reserve)]
@@ -174,13 +175,14 @@
     return '' +
       '<article class="card" id="' + esc(id) + '">' +
         '<div class="card-head">' +
-          (has ? '<p class="card-figs">' + esc(headline(e.month)) + "</p>" : "") +
+          (has ? '<p class="card-figs" data-month="' + esc(e.month) + '">' + esc(headline(e.month)) + "</p>" : "") +
           "<h2>" + esc(e.title || shortMonth(e.month)) + "</h2>" +
           (e.mood ? '<p class="card-mood">' + esc(e.mood) + "</p>" : "") +
         "</div>" +
         '<div class="card-teaser"><p>' + esc(teaser) + "</p></div>" +
         '<div class="card-full" id="' + esc(id) + '-full" hidden>' +
-          (has ? figures(e.month) : "") + dev +
+          '<div class="entry-figs-wrap" data-month="' + esc(e.month) + '">' +
+            (has ? figures(e.month) : "") + dev + "</div>" +
           rest.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
           macroHTML(e.macro) +
           '<div class="card-comments" data-month="' + esc(e.month) +
@@ -194,6 +196,39 @@
         "</button>" +
       "</article>";
   }).join("");
+
+  /* The first paint has no record high unless this browser remembers one, so
+     the drawdown and tier show as dashes. Once Yahoo answers, every month is
+     re-run against the record high as it stood on that buy day, the same
+     history the Progress page uses, and the figures are replaced in place so
+     an entry the reader has open stays open. */
+  if (window.TTF_LIVE && window.TTF_LIVE.withHighs) {
+    Promise.all(sleeves.map(function (sl) { return window.TTF_LIVE.withHighs(sl); }))
+      .then(function (got) {
+        var upgraded = got.map(function (withH, i) {
+          var sl = withH && withH.rows ? withH : sleeves[i];
+          return { sl: sl, hist: E.run(sl.rows || [], sl) };
+        }).filter(function (r) { return r.hist.length; });
+        if (!upgraded.length) return;
+        runs = upgraded;
+
+        var heads = host.querySelectorAll(".card-figs[data-month]");
+        for (var i = 0; i < heads.length; i++) {
+          heads[i].textContent = headline(heads[i].getAttribute("data-month"));
+        }
+        var wraps = host.querySelectorAll(".entry-figs-wrap[data-month]");
+        for (var j = 0; j < wraps.length; j++) {
+          var m = wraps[j].getAttribute("data-month");
+          var dev = rowsAt(m).filter(function (x) { return x.own && x.d.deviated; })
+            .map(function (x) {
+              return '<p class="entry-dev">The rules said ' + x.d.ruleBought + " " + x.sym +
+                " share" + (x.d.ruleBought === 1 ? "" : "s") + ". I bought " + x.d.bought + ".</p>";
+            }).join("");
+          wraps[j].innerHTML = (known[m] ? figures(m) : "") + dev;
+        }
+      })
+      .catch(function () { /* the first paint stays */ });
+  }
 
   host.addEventListener("click", function (ev) {
     var btn = ev.target.closest ? ev.target.closest(".card-more") : null;

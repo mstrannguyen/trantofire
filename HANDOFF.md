@@ -110,6 +110,15 @@ The single most error-prone part of the site. Three separate bugs here.
   neighbours. Yahoo returns SSO's Sep 2024 high as $85.57 against neighbours
   near $46, which is that month's pre-split price. Without the screen SSO
   reads $85.57
+- **Each past month is measured against the record high as it stood on that
+  buy day**, not today's. `TTF_LIVE.withHighs(sleeve)` gives every row the
+  highest price before its buy (earlier months' intraday highs, plus the buy
+  month's daily highs up to the day before the order) and seeds the engine
+  with the first. Today's record reaches only today's figures, through
+  `revalue(hist, price, athNow)` and `next(..., athNow)`. Seeding the engine
+  with today's record rewrote history: a new high after the last buy pushed
+  every earlier month a rung deeper, and the engine then recomputed past share
+  counts. Every page, the Journal included, now goes through `withHighs`
 - ProShares split SSO, QLD and TQQQ **2:1 on 20 Nov 2025**. Several data sites
   still publish pre-split all-time highs (SSO in the $160s, QLD $153.33).
   Everything on the site is post-split
@@ -145,7 +154,11 @@ happened and what it did to the position, not just a column of prices.
 - `js/signal.js` — home page cards, one per fund plus combined totals
 - `js/progress.js` — Progress page: QLD | SSO | Both tabs, charts, log table
 - `js/benchmark.js` — per-fund comparison. QLD against QQQ and TQQQ, SSO
-  against VOO and UPRO, driven by each sleeve's `bench` pair
+  against VOO and UPRO, driven by each sleeve's `bench` pair. Cards show
+  today; a daily chart under them plots the fund against its 1x fund only
+  (QQQ, VOO), same cash on the same buy days, same $3, priced at every close
+- `TTF_ENGINE.ticks()` — round-number gridlines for any chart that crosses
+  zero. Use it for new charts; quarters of the range put "0%" off zero
 - `js/compare.js` — the home page growth-of-$10k chart (hardcoded Nasdaq
   annual balances; QLD's line is derived from QQQ and TQQQ, not typed)
 - `js/journal.js` / `js/journal-render.js` — the Journal, one figures block
@@ -217,6 +230,15 @@ page capital-gains paragraph, "The bigger point is" in My Story, and
 - Site copy must not use the word **"sleeve"**. It reads as AI jargon. Say
   "fund", "the two funds", "the Nasdaq side"
 - Colours were separated by measuring **RGB distance**, not by eye
+- **One rule for every result figure**: `E.signedPct` / `E.signedUsd` /
+  `E.signClass`. Gains show +, losses −, anything rounding to zero neither.
+  Profits and interest are shown **to the cent**, and a total is built from
+  its rounded parts, so "profit on shares + interest = profit" adds up as
+  printed. Gain and loss colours are `#2F6B33` / `#A33220` everywhere; the
+  tier colours mean tiers only
+- **One name per measure**: "on money invested" (shares only, against what
+  was spent on them) and "on money in" (cash and interest included, against
+  every dollar contributed). Use exactly these words
 
 ---
 
