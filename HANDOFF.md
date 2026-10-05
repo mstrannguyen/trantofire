@@ -59,8 +59,12 @@ TQQQ and UPRO are NOT on the monthly schedule and are not in `SLEEVES`.
   An index down about 12% puts a 3× fund past 30% (0.88³ = 0.68)
 - Funded with **separate money**, not from the $800s and not from either
   reserve
-- **DCA in over months** rather than committing at once, then hold. No target,
-  no rebalance, no selling
+- **Laddered by depth, on each monthly buy day**: 10% of the set-aside money
+  at 30% below the record, 20% at 50%, 30% at 70%. Small first, larger as the
+  fall deepens. If the fund climbs back above 30%, the rest waits for the next
+  fall. Then hold. No target, no rebalance, no selling. The Strategy page shows
+  2022 month by month: all in by June at about 63% below the high, down half at
+  the December trough, 2.7x at the December 2024 recovery
 - Nothing to track month by month until one triggers
 - Strategy page section `id="crash"`
 

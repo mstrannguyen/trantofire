@@ -53,8 +53,8 @@
     var set = function (period, value) {
       var el = document.getElementById("f-" + sym + "-" + period);
       if (!el) return;
-      el.textContent = (value === null || !isFinite(value)) ? "\u2014" : E.pct(value, 1);
-      el.className = value === null ? "" : (value < 0 ? "neg" : "pos");
+      el.textContent = (value === null || !isFinite(value)) ? "\u2014" : E.signedPct(value, 1);
+      el.className = value === null ? "" : E.signClass(value, 1, true);
     };
 
     var oneYearAgo = priceAt(series, back(series.newest, 12));

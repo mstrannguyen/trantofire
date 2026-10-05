@@ -220,7 +220,10 @@
   }
 
   /* What the rules say to do next month, given where things stand. */
-  function next(history, cfg, priceNow) {
+  /* athNow is today's record high. The rows carry the high as it stood on
+     each buy day, so a record set since the last buy only reaches today's
+     figures through this argument. */
+  function next(history, cfg, priceNow, athNow) {
     var last      = history.length ? history[history.length - 1] : null;
     var haveHigh  = last ? !!last.highKnown
                          : (isFinite(cfg.HIGH_WATER_MARK) && Number(cfg.HIGH_WATER_MARK) > 0);
@@ -228,6 +231,7 @@
     var reserve   = last ? last.reserve : 0;
     var price     = isFinite(priceNow) ? Number(priceNow) : (last ? last.price : null);
     if (price === null) return null;
+    if (athNow > high) { high = Number(athNow); haveHigh = true; }
     if (price > high) high = price;
 
     var drawdown  = (price - high) / high;
@@ -249,7 +253,7 @@
      only answers "what is the position worth right now?".
 
      Returns null if there is no history or no usable price. */
-  function revalue(history, livePrice) {
+  function revalue(history, livePrice, athNow) {
     if (!history || !history.length) return null;
     var price = Number(livePrice);
     if (!isFinite(price) || price <= 0) return null;
@@ -267,8 +271,10 @@
     var portfolio = etfValue + reserve;
     var pl        = portfolio - moneyIn;
 
-    // high-water mark ratchets on live price too
-    var high = price > last.high ? price : last.high;
+    // today's record, then the live price, can only lift the high-water mark
+    var high = last.high;
+    if (athNow > high) high = Number(athNow);
+    if (price > high) high = price;
     var drawdown = (price - high) / high;
     var tier = tierFor(drawdown);
 
@@ -291,7 +297,7 @@
       costsTotal:     feesPaid + mgmtDrag,
       avgCost:    last.avgCost,
       high:       high,
-      highKnown:  !!last.highKnown,
+      highKnown:  !!last.highKnown || athNow > 0,
       drawdown:   drawdown,
       tier:       tier,
       pctEtf:     portfolio ? etfValue / portfolio : 0,
@@ -332,9 +338,64 @@
     return rounded.toFixed(1) + "%";
   }
 
+  /* Gridline values for a chart axis. Steps are 1, 2 or 5 times a power of
+     ten, and every value is a whole multiple of the step, so zero is always
+     one of them when the range crosses it. The charts used to put gridlines
+     at quarters of whatever the range happened to be and label them rounded,
+     which left a "0%" label sitting beside a line that was not zero. */
+  function ticks(lo, hi, target) {
+    var range = hi - lo;
+    if (!(range > 0)) return { values: [lo], step: 0 };
+    var want = (target || 4) + 1;
+    var mag  = Math.pow(10, Math.floor(Math.log(range / (target || 4)) / Math.LN10));
+    // whichever clean step lands closest to the wanted number of lines; on a
+    // tie the larger step, so the axis never gets busier than it needs to be
+    var step = mag, gap = Infinity;
+    [0.5, 1, 2, 5, 10, 20].forEach(function (m) {
+      var st = m * mag;
+      var count = Math.floor(hi / st + 1e-9) - Math.ceil(lo / st - 1e-9) + 1;
+      var off = Math.abs(count - want);
+      if (off <= gap) { gap = off; step = st; }
+    });
+    var out = [];
+    for (var k = Math.ceil(lo / step); k * step <= hi + step * 1e-9; k++) {
+      var v = k * step;
+      out.push(Math.abs(v) < step * 1e-9 ? 0 : v);
+    }
+    return { values: out, step: step };
+  }
+
+  /* Every result on the site goes through these two: a gain shows +, a loss
+     shows the minus sign, and anything that rounds to zero at the precision
+     shown carries neither, so a position a hair under break even is never
+     printed as a loss. The sign is decided from the rounded figure, which is
+     also what a reader sees, so the two can never disagree. */
+  function signedPct(v, dp) {
+    if (v === null || v === undefined || !isFinite(v)) return "\u2014";
+    dp = dp === undefined ? 1 : dp;
+    var f = Math.pow(10, dp), r = Math.round(v * 100 * f) / f;
+    if (r === 0) r = 0;
+    return (r > 0 ? "+" : r < 0 ? "\u2212" : "") + Math.abs(r).toFixed(dp) + "%";
+  }
+  function signedUsd(v, dp) {
+    if (v === null || v === undefined || !isFinite(v)) return "\u2014";
+    dp = dp === undefined ? 0 : dp;
+    var f = Math.pow(10, dp), r = Math.round(v * f) / f;
+    if (r === 0) r = 0;
+    return (r > 0 ? "+" : r < 0 ? "\u2212" : "") + usd(Math.abs(r), dp);
+  }
+  /* "pos", "neg" or "flat", from the same rounded figure the reader sees. */
+  function signClass(v, dp, asPct) {
+    if (v === null || v === undefined || !isFinite(v)) return "";
+    dp = dp === undefined ? (asPct ? 1 : 0) : dp;
+    var f = Math.pow(10, dp), r = Math.round((asPct ? v * 100 : v) * f) / f;
+    return r > 0 ? "pos" : r < 0 ? "neg" : "flat";
+  }
+
   window.TTF_ENGINE = {
     run: run, next: next, revalue: revalue, tierFor: tierFor, monthLabel: monthLabel,
-    TIERS: TIERS,
+    TIERS: TIERS, ticks: ticks,
+    signedPct: signedPct, signedUsd: signedUsd, signClass: signClass,
     usd: usd, pct: pct, ddPct: ddPct
   };
 })();

@@ -136,6 +136,7 @@
   .chart svg{width:100%;height:auto;display:block;overflow:visible}
   .legend{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px;font-size:13.5px;color:#5A4850}
   .legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
+  .legend i.dash{background:repeating-linear-gradient(90deg,#0047AB 0 6px,transparent 6px 10px)}
 
   /* table */
   /* Tier tally. Same card as the log table below it, but narrower: four
@@ -391,14 +392,15 @@
                 <th>Month</th><th>Price</th><th>From high</th><th>Tier</th>
                 <th>Deploy</th><th>Available</th><th>Spent</th><th>Bought</th>
                 <th>Shares</th><th>Avg cost</th><th>Reserve</th>
-                <th>Portfolio</th><th>Money in</th><th>Return</th>
+                <th>Portfolio</th><th>Money in</th><th>Return on money in</th>
               </tr>
             </thead>
             <tbody id="rows"></tbody>
           </table>
         </div>
 
-        <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage my broking app charges on every buy, which is taken from the cash after the rules have set the share count and is separate from anything the fund charges. They ignore FX conversion costs, tax and dividends, so the real return is still a little worse than what you see here. each fund's management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
+        <p class="note" id="srcnote">Every figure here is derived from the monthly prices in the site's own data file, using the rules published on the Strategy page. Where a month is marked ≠, what I actually bought differed from what the rules called for, and both numbers are shown. Figures in US dollars and they include the $3 brokerage my broking app charges on every buy, which is taken from the cash after the rules have set the share count and is separate from anything the fund charges. They ignore FX conversion costs and tax, which would make the real return a little worse, and dividends, which would make it a little better. Each fund's management fee is not subtracted here, because a fund charges it inside its own price rather than billing you, so these figures already carry it. Subtracting it again would count it twice. The estimate below shows roughly what it has cost, and there is a fuller explanation <a href="../index.html#fees">on the home page</a>. It cuts the other way too: the cash reserve is credited with interest at 4% a year, accrued monthly, which is roughly what a high-interest saver or offset account pays. That interest counts as return, not as money in, and the figure below shows how much of the gain came from it.</p>
+        <p class="note" id="srcnote-figs"></p>
       </div>
     </section>
 
@@ -413,9 +415,20 @@
       <div class="wrap">
         <div id="bench-cards" class="bench-cards"></div>
 
+        <div class="chart hidden" id="bench-chart-block">
+          <h3 id="bench-chart-h">The same money, day by day</h3>
+          <p class="sub">Return on the money spent, measured at every close since the first buy. Both lines spend exactly what the rules spent, on the same days, and pay the same $3 brokerage, so the gap between them comes from the leverage. Each open circle is a buy. The shading shows which is ahead: gold where the leveraged fund leads, blue where the unleveraged one does. New money starts out down by its brokerage, so both lines dip a little on a buy day, and more in the early months when each buy was small.</p>
+          <div id="bench-chart"></div>
+          <div class="legend">
+            <span><i style="background:#B8860B"></i><span id="bench-lg-own">What the rules bought</span></span>
+            <span><i class="dash"></i><span id="bench-lg-base">The same money in the unleveraged fund</span></span>
+          </div>
+          <p class="note" id="bench-chart-sum" style="margin-top:14px"></p>
+        </div>
+
         <p class="note" id="bench-state" style="margin-top:18px"></p>
 
-        <p class="note">Each card spends the same money as the real schedule, on the same days, and values the result at today's price. Money in is identical across the three, so the only thing being measured is the leverage. All three are priced on the day the order went in rather than at month end. The comparison buys fractional shares, which it has to, because a month's deployment often would not buy one whole share of the unleveraged fund, while the real portfolio buys whole shares and strands the rest as cash, so this flatters the comparison slightly. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so the unleveraged fund is understated by the most. And the tier ladder runs off the drawdown of the fund I actually hold, so a portfolio built on one of the others would have had its own high-water mark and bought in different months. The schedule is held fixed to isolate the fund choice.</p>
+        <p class="note">The card for the fund I hold shows the shares I actually bought at the prices I actually paid, valued at today's price. The other two spend the same money on the same days, at each fund's closing price that day, and are valued the same way. Money in is identical across the three, so the only thing being measured is the leverage. The comparison funds buy fractional shares, which they have to, because a month's deployment often would not buy one whole share of the unleveraged fund, while the real portfolio buys whole shares and strands the rest as cash, so this flatters the comparison slightly. Closes are corrected for splits but not for distributions, the same as everywhere else on this site, so the unleveraged fund is understated by the most. And the tier ladder runs off the drawdown of the fund I actually hold, so a portfolio built on one of the others would have had its own high-water mark and bought in different months. The schedule is held fixed to isolate the fund choice.</p>
       </div>
     </section>
 

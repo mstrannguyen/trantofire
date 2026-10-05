@@ -43,13 +43,10 @@
       setText(subId, "Nothing bought yet.");
       return;
     }
-    var r      = gain / base;
-    var showR  = Math.abs(r * 100) < 0.05 ? 0 : r;    // pct() prints 1 decimal
-    var showG  = Math.abs(gain)     < 0.5  ? 0 : gain; // usd() prints whole dollars
-
-    el.textContent = (showR > 0 ? "+" : "") + pct(showR);
-    el.className = "sg-return " + (showR > 0 ? "pos" : showR < 0 ? "neg" : "flat");
-    setText(subId, (showG > 0 ? "+" : "") + usd(showG) + " on " + usd(base) + " " + tail);
+    var r = gain / base;
+    el.textContent = E.signedPct(r);
+    el.className = "sg-return " + E.signClass(r, 1, true);
+    setText(subId, E.signedUsd(gain, 2) + " on " + usd(base) + " " + tail);
   }
 
   /* per sleeve: the run, and the latest valuation to fold into the totals */
@@ -70,7 +67,7 @@
   /* The totals are re-rendered every time a sleeve reports, so the row is
      right after the first one lands and right again after the second. */
   function totals() {
-    var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, cost = 0, any = false;
+    var reserve = 0, position = 0, portfolio = 0, moneyIn = 0, cost = 0, interest = 0, any = false;
     sleeves.forEach(function (sl) {
       var v = state[sl.sym];
       if (!v) return;
@@ -80,8 +77,10 @@
       portfolio += v.portfolio;
       moneyIn   += v.moneyIn;
       cost      += v.shares * v.avgCost;   // avgCost already carries the brokerage
+      interest  += v.interest || 0;
+      // "average cost", as on the Progress page: the $3 is in it, so it is not a price paid
       setText("sg-hold-" + sl.sym, v.shares + " share" + (v.shares === 1 ? "" : "s") +
-        " at " + usd(v.avgCost, 2) + " \u00b7 " + usd(v.reserve) + " in reserve");
+        ", average cost " + usd(v.avgCost, 2) + " \u00b7 " + usd(v.reserve) + " in reserve");
     });
     if (!any) return;
 
@@ -103,9 +102,15 @@
 
        A percentage with no denominator on the page cannot be checked, so each
        card prints its own underneath. */
-    paintReturn(retFunds, "sg-return-funds-sub", position - cost, cost, "spent on shares.");
-    paintReturn(ret,      "sg-return-sub",       portfolio - moneyIn, moneyIn,
-      "in, " + usd(reserve) + " of it still cash.");
+    /* Both gains to the cent, and the second built from the first plus the
+       interest, so "+$34.90 on shares" and "+$47.87, including $12.97 interest"
+       add up exactly as printed. */
+    var c2 = function (v) { return Math.round((v || 0) * 100) / 100; };
+    var gainShares = c2(position - cost), gainAll = gainShares + c2(interest);
+    paintReturn(retFunds, "sg-return-funds-sub", gainShares, cost, "spent on shares.");
+    paintReturn(ret,      "sg-return-sub",       gainAll, moneyIn,
+      "in" + (c2(interest) > 0 ? ", including " + usd(interest, 2) + " interest" : "") +
+      ", with " + usd(reserve) + " still in cash.");
   }
 
   /* ---------- layer 1: whatever is already logged ---------- */
@@ -127,7 +132,7 @@
     state[sl.sym] = {
       reserve: last.reserve, etfValue: last.portfolio - last.reserve,
       portfolio: last.portfolio, moneyIn: last.moneyIn,
-      shares: last.shares, avgCost: last.avgCost
+      shares: last.shares, avgCost: last.avgCost, interest: last.interestTotal || 0
     };
   });
   totals();
@@ -138,7 +143,11 @@
   var stamped = false;
 
   sleeves.forEach(function (sl) {
-    window.TTF_LIVE.quoteFor(sl.sym).then(function (live) {
+    Promise.all([
+      window.TTF_LIVE.quoteFor(sl.sym),
+      window.TTF_LIVE.withHighs ? window.TTF_LIVE.withHighs(sl) : null
+    ]).then(function (got) {
+      var live = got[0], withH = got[1];
       if (!live) return;
 
       /* Yahoo's figure IS the record high. Nothing is stored to compare it
@@ -146,21 +155,30 @@
          constant in config and only took the live figure when it was higher,
          which let a stale number sit above the real high and read every
          drawdown a rung shallow. */
+      /* Past months against the record high as it stood on each buy day,
+         today's signal against today's record. Same as the Progress page. */
       var lifted = {};
       for (var k in sl) lifted[k] = sl[k];
       var haveAth = live.ath > 0;
-      if (haveAth) lifted.HIGH_WATER_MARK = live.ath;
-      var hist = haveAth ? E.run(sl.rows || [], lifted) : sl.hist;
+      var hist;
+      if (withH && withH.rows) {
+        lifted = withH;
+        hist = E.run(withH.rows, withH);
+      } else {
+        if (haveAth) lifted.HIGH_WATER_MARK = live.ath;
+        hist = haveAth ? E.run(sl.rows || [], lifted) : sl.hist;
+      }
 
-      var n = E.next(hist, lifted, live.price);
+      var n = E.next(hist, lifted, live.price, live.ath);
       if (n) signalCard(sl, n, true);
 
       if (hist.length) {
-        var r = E.revalue(hist, live.price);
+        var r = E.revalue(hist, live.price, live.ath);
         if (r) {
           state[sl.sym] = {
             reserve: r.reserve, etfValue: r.etfValue, portfolio: r.portfolio,
-            moneyIn: r.moneyIn, shares: r.shares, avgCost: r.avgCost
+            moneyIn: r.moneyIn, shares: r.shares, avgCost: r.avgCost,
+            interest: r.interestTotal || 0
           };
           totals();
         }

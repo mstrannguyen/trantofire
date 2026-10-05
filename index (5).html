@@ -149,23 +149,30 @@
   .signal-band{padding:70px 0 10px}
   .sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .sig-grid-2up{grid-template-columns:repeat(2,1fr)}
-  .sig-card{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 30px;text-align:center}
-  .sig-card dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  /* Blush cards. Every text colour on them is measured against its own
+     background: labels and small text at 4.5:1 or better, large figures at 3:1
+     or better. The tier cards keep stepping darker as the fall deepens. Dip
+     moved from the old blush to #E6C6BA so it still stands apart from the
+     Baseline blush by the same margin it used to stand apart from white
+     (ΔE 14.5). Deep dip's text was 2.1:1 and 2.6:1 on clay, and Crash's label
+     4.2:1 on plum; both corrected here. */
+  .sig-card{background:#F6EAE6;border:1px solid transparent;border-radius:18px;padding:34px 30px;text-align:center}
+  .sig-card dt{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#715F65;margin-bottom:16px}
   .sig-card dd{margin:0;font-family:var(--display);font-size:clamp(38px,4.6vw,52px);font-weight:300;line-height:1;letter-spacing:-.02em}
-  .sig-card .sub{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
-  .sig-card.act.t1{background:var(--blush);border-color:rgba(58,43,49,.12)}
-  .sig-card.act.t1 dt{color:#8A6A2E}
+  .sig-card .sub{margin:16px 0 0;font-size:14px;line-height:1.55;color:#6B5A60}
+  .sig-card.act.t1{background:#E6C6BA;border-color:transparent}
+  .sig-card.act.t1 dt{color:#654A1C}
   .sig-card.act.t1 dd{color:var(--plum)}
-  .sig-card.act.t1 .sub{color:#6B5A5F}
-  .sig-card.act.t2{background:var(--clay);border-color:rgba(58,43,49,.12)}
-  .sig-card.act.t2 dt{color:#7A5A22}
+  .sig-card.act.t1 .sub{color:#5F4E53}
+  .sig-card.act.t2{background:var(--clay);border-color:transparent}
+  .sig-card.act.t2 dt{color:#2A1E23}
   .sig-card.act.t2 dd{color:var(--plum)}
-  .sig-card.act.t2 .sub{color:#5F4E53}
+  .sig-card.act.t2 .sub{color:#33252B}
   .sig-card.act.t3{background:var(--plum);border-color:var(--plum);color:#EFE5E7}
-  .sig-card.act.t3 dt{color:var(--brass)}
+  .sig-card.act.t3 dt{color:#D9B98A}
   .sig-card.act.t3 dd{color:#fff}
   .sig-card.act.t3 .sub{color:#C7B5BA}
-  .sig-card .hold{margin-top:14px;padding-top:14px;border-top:1px solid rgba(58,43,49,.10);font-size:13.5px}
+  .sig-card .hold{margin-top:14px;padding-top:14px;border-top:1px solid rgba(58,43,49,.12);font-size:13.5px}
   .sig-card.act.t3 .hold{border-top-color:rgba(255,255,255,.16)}
   .live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5E7A55;margin-right:7px;vertical-align:middle}
   .sig-foot{text-align:center;font-size:13.5px;color:var(--muted);margin:26px 0 0}
@@ -328,7 +335,7 @@
   .annual .q{color:#5E7350}
   .annual .t{color:#8A6A2E;font-weight:600}
   .annual .qbal{color:#5E7350}
-  .annual .neg{color:#A85A48}
+  .annual .neg{color:#A33220}
   .annual tr.crash td{background:rgba(168,90,72,.06)}
   .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
   .annual tfoot .q,.annual tfoot .t{font-weight:400}
@@ -346,8 +353,8 @@
   .fsub{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:3px}
   .hsub{display:block;font-size:9.5px;font-weight:400;letter-spacing:.08em;text-transform:none;color:var(--muted);opacity:.85;margin-top:5px}
   .funds th{white-space:nowrap}
-  .funds td.pos{color:#4E7A4A}
-  .funds td.neg{color:#A85A48}
+  .funds td.pos{color:#2F6B33}
+  .funds td.neg{color:#A33220}
   @media (max-width:900px){ .funds th,.funds td{padding:12px 9px} .funds{font-size:14px} .funds .band-name{font-size:18px} }
   .funds tr:last-child td{border-bottom:0}
   .funds .band-name{font-family:var(--display);font-size:22px}
@@ -433,7 +440,7 @@
         <p class="sub" id="sg-return-funds-sub">Waiting on the first buy.</p>
       </div>
       <div class="sig-card sig-card-return">
-        <dt>Return including the reserve</dt>
+        <dt>Return on money in, cash included</dt>
         <dd id="sg-return" class="sg-return">—</dd>
         <p class="sub" id="sg-return-sub">Waiting on the first buy.</p>
       </div>
@@ -450,7 +457,7 @@
         <p class="sub">Both reserves, waiting on the next dip and earning 4% a year meanwhile.</p>
       </div>
     </div>
-    <p class="sig-foot"><span id="sg-live"></span> Return on money invested counts only what has been spent on shares, brokerage included. Return including the reserve counts every dollar contributed, with the cash still waiting for a dip. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
+    <p class="sig-foot"><span id="sg-live"></span> Return on money invested counts only what has been spent on shares, brokerage included. Return on money in counts every dollar contributed, including the cash still waiting for a dip and the interest it has earned. <a href="strategy/index.html">How the tiers work</a> · <a href="progress/index.html">Full history</a></p>
   </div>
 </section>
 

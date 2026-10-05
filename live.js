@@ -299,19 +299,30 @@
     var stamps = result.timestamp || [];
     var quote  = result.indicators && result.indicators.quote && result.indicators.quote[0];
     var closes = (quote && quote.close) || [];
+    var his    = (quote && quote.high)  || [];
 
-    var days = {}, dates = [], n = 0;
+    var days = {}, highs = {}, dates = [], n = 0;
     for (var i = 0; i < stamps.length; i++) {
       var v = closes[i];
       if (typeof v !== "number" || !isFinite(v) || v <= 0) continue;
       var k = dayKey(stamps[i]);
       days[k] = v;
+      var h = his[i];
+      highs[k] = (typeof h === "number" && isFinite(h) && h >= v) ? h : v;
       dates.push(k);
       n++;
     }
     if (!n) throw new Error("no usable daily history");
     dates.sort();
-    return { days: days, dates: dates };
+
+    /* Same screen as the monthly series: a day whose high is more than half as
+       high again as both neighbours is a bad print, usually a pre-split price,
+       and it would otherwise become the record. */
+    for (var j = 1; j < dates.length - 1; j++) {
+      var dk = dates[j], hp = highs[dates[j - 1]], hn = highs[dates[j + 1]];
+      if (highs[dk] > hp * 1.5 && highs[dk] > hn * 1.5) highs[dk] = days[dk];
+    }
+    return { days: days, highs: highs, dates: dates };
   }
 
   /* Resolves to null on any failure. Callers fall back to monthly closes. */
@@ -332,6 +343,91 @@
       });
 
     return dailyCache[symbol];
+  }
+
+  /* ---------------------------------------------------------------------
+     Which day was a month's buy made on?
+
+     The log's date if it has one. Otherwise the trading day in that month
+     whose close is nearest the logged price, which is an inference but beats
+     treating the whole month as one day. With no trading day in the month yet,
+     the 28th, so a price lookup walks back to the latest close there is; for
+     the record high the result is the same as any other day in that month,
+     since there are no trading days in it to count. Every page uses this
+     one function, so the benchmark and the record high can never disagree
+     about when a buy happened.
+     --------------------------------------------------------------------- */
+  function buyDate(row, d) {
+    if (row && typeof row.date === "string" && row.date.length === 10) return row.date;
+    var month = row && row.month, best = null, gap = Infinity;
+    if (d && row && row.price > 0) {
+      for (var i = 0; i < d.dates.length; i++) {
+        var k = d.dates[i];
+        if (k.slice(0, 7) !== month) continue;
+        var g = Math.abs(d.days[k] - row.price);
+        if (g < gap) { gap = g; best = k; }
+      }
+    }
+    return best || (month + "-28");
+  }
+
+  /* ---------------------------------------------------------------------
+     The record high as it stood on each buy day.
+
+     Every month is measured against the highest price before that buy: the
+     intraday highs of every earlier month, plus the daily highs of the buy
+     month up to the day before the order. Not today's record. Measuring an
+     old month against today's high would read it a rung deeper than it was
+     whenever a new high had been set since, and once that crossed a tier line
+     the engine would recompute the month's share count and the log would show
+     a purchase that never happened.
+
+     Today's record still drives today's figures. withHighs() hands back both:
+     a copy of the fund's settings whose rows each carry the high as of their
+     buy, and the record high now, for the revaluation at today's price.
+     --------------------------------------------------------------------- */
+  var highsCache = {};
+
+  function withHighs(sleeve) {
+    if (!sleeve) return Promise.resolve(null);
+    var sym = sleeve.sym;
+    if (highsCache[sym]) return highsCache[sym];
+
+    highsCache[sym] = Promise.all([series(sym), daily(sym), quoteFor(sym)]).then(function (got) {
+      var s = got[0], d = got[1], q = got[2];
+      var cfg = {};
+      for (var k in sleeve) cfg[k] = sleeve[k];
+      cfg.ATH_NOW   = q && q.ath > 0 ? q.ath : null;
+      cfg.PRICE_NOW = q && q.price > 0 ? q.price : null;
+      if (!s || !s.highs) return cfg;            // no history: keep whatever seed there was
+
+      var keys = Object.keys(s.highs).sort();
+      var rows = (sleeve.rows || []).map(function (r) {
+        var out = {};
+        for (var rk in r) out[rk] = r[rk];
+        var on = buyDate(r, d), month = r.month, hi = 0;
+        for (var i = 0; i < keys.length && keys[i] < month; i++) {
+          if (s.highs[keys[i]] > hi) hi = s.highs[keys[i]];
+        }
+        if (d && d.highs) {
+          for (var j = 0; j < d.dates.length; j++) {
+            var dk = d.dates[j];
+            if (dk.slice(0, 7) === month && dk < on && d.highs[dk] > hi) hi = d.highs[dk];
+          }
+        }
+        if (hi > 0) out.high = Math.max(hi, Number(r.high) || 0);
+        out.buyOn = on;
+        return out;
+      });
+      cfg.rows = rows;
+      if (rows.length && rows[0].high > 0) cfg.HIGH_WATER_MARK = rows[0].high;
+      return cfg;
+    }).catch(function (e) {
+      if (window.console) console.info("[Tran to Fire] record highs unavailable for " + sym + ":", e && e.message);
+      highsCache[sym] = null;
+      return null;
+    });
+    return highsCache[sym];
   }
 
   /* ---------------------------------------------------------------------
@@ -447,5 +543,6 @@
 
   window.TTF_LIVE = { get: get, quoteFor: quoteFor, series: series,
                       daily: daily, asOfLabel: asOfLabel,
-                      storedHigh: storedHigh, rememberHigh: rememberHigh };
+                      storedHigh: storedHigh, rememberHigh: rememberHigh,
+                      buyDate: buyDate, withHighs: withHighs };
 })();

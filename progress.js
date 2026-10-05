@@ -207,14 +207,15 @@
     var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
     var s = svgRoot(W, H), z = y(0);
 
-    for (var g = 0; g <= 4; g++) {
-      var gv = lo + (hi - lo) * g / 4, gy = y(gv);
-      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".07" }));
+    var tk = E.ticks(lo, hi, 4);
+    tk.values.forEach(function (gv) {
+      var gy = y(gv);
+      if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".07" }));
       var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
         "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = usd(gv, 0);
+      t.textContent = usd(gv, tk.step < 1 ? 2 : 0);
       s.appendChild(t);
-    }
+    });
 
     var pts = pl.map(function (v, i) { return [x(i), y(v)]; });
     s.appendChild(el("path", { d: pathFrom(pts) + " L" + x(n - 1) + "," + z + " L" + x(0) + "," + z + " Z",
@@ -239,7 +240,10 @@
 
     marks.forEach(function (m) {
       var i = m.i, cx = x(i), cy = y(pl[i]);
-      var col = pl[i] >= 0 ? "#2E7D32" : "#8E1414";
+      /* The site's gain and loss colours. This used the Baseline and Crash
+         tier colours, which mean something else on the price chart above. */
+      var sc  = E.signClass(pl[i], 2);
+      var col = sc === "pos" ? "#2F6B33" : sc === "neg" ? "#A33220" : "#8A7A7E";
       s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col, stroke: "#FFFFFF", "stroke-width": "1.5" }));
       /* Two lines of label, clear of the marker in both directions. The old
          spacing put the second line at cy exactly, which is where the dot is. */
@@ -247,11 +251,11 @@
       var anchor = n === 1 ? "middle" : (i === 0 ? "start" : (i === n - 1 ? "end" : "middle"));
       var t1 = el("text", { x: cx, y: ty, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
         "font-size": "15", "font-weight": "700", fill: col });
-      t1.textContent = usd(pl[i]);
+      t1.textContent = E.signedUsd(pl[i], 2);
       s.appendChild(t1);
       var t2 = el("text", { x: cx, y: ty + 16, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
         "font-size": "12.5", fill: col });
-      t2.textContent = (cost[i] > 0 ? pct(pl[i] / cost[i]) : "\u2014") + " on money invested in " + (label || "the funds");
+      t2.textContent = (cost[i] > 0 ? E.signedPct(pl[i] / cost[i]) : "\u2014") + " on money invested in " + (label || "the funds");
       s.appendChild(t2);
     });
 
@@ -295,15 +299,16 @@
     var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
     var s = svgRoot(W, H);
 
-    for (var g = 0; g <= 4; g++) {
-      var gv = lo + (hi - lo) * g / 4, gy = y(gv);
-      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
+    var tk = E.ticks(lo, hi, 4);
+    tk.values.forEach(function (gv) {
+      var gy = y(gv);
+      if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
         stroke: "#3A2B31", "stroke-opacity": ".07" }));
       var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
         "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = pct(gv, 0);
+      t.textContent = pct(gv, tk.step < 0.01 ? 1 : 0);
       s.appendChild(t);
-    }
+    });
 
     var z = y(0);
     s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z,
@@ -326,7 +331,7 @@
         s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col,
           stroke: "#FFFFFF", "stroke-width": "1.5" }));
         ends.push({ y: cy, colour: col, name: line[2],
-                    text: (vals[n - 1] > 0 ? "+" : "") + pct(vals[n - 1]) });
+                    text: E.signedPct(vals[n - 1]) });
       });
 
     /* Two months of similar returns put the end labels on top of each other.
@@ -389,6 +394,36 @@
      live price arrives from the network: without it a slow reply for the tab
      you just left would land on the tab you just opened. */
   var renderToken = 0;
+
+  /* The headline profit line, carrying both returns the way the home page
+     does. The profit figure above it includes the interest the cash reserve
+     has earned and is measured against every dollar put in, while the cards
+     and charts further down measure the shares alone against the money spent
+     on them. Without both on the same line the page shows two profits for one
+     fund and says nothing about why. Percentages are rounded once and the sign
+     taken from the rounded figure, so nothing prints as minus zero. */
+  /* Profit to the cent, built from its two parts: the gain on the shares and
+     the interest on the cash, each rounded to the cent and then added. Rounded
+     to whole dollars, a $26.43 gain and $6.47 of interest showed as $26 and $6
+     beside a total of $33, which a reader adding them up would not get. */
+  function cents(v) { return Math.round((v || 0) * 100) / 100; }
+  function plShown(etfValue, cost, interest) { return cents(etfValue - cost) + cents(interest); }
+
+  /* What the note under the log promises: the fund-fee estimate and the
+     interest, for whichever fund or funds are on screen. */
+  function paintCosts(mgmt, interest) {
+    var el = $("srcnote-figs");
+    if (!el) return;
+    el.textContent = "So far: fund management fees, already inside the prices above, have cost an estimated " +
+      usd(mgmt || 0, 2) + ", and interest on the cash reserve has added " + usd(interest || 0, 2) + ".";
+  }
+
+  function plLine(moneyIn, pl, interest, etfValue, cost) {
+    var first = E.signedPct(moneyIn ? pl / moneyIn : 0) + " on money in";
+    if (cents(interest) > 0) first += ", including " + usd(interest, 2) + " interest";
+    if (!(cost > 0)) return first;
+    return first + " \u00b7 " + E.signedPct((etfValue - cost) / cost) + " on money invested";
+  }
 
   function paintTier(row) {
     var pill = $("tier");
@@ -463,7 +498,7 @@
         "<td>" + usd(d.reserve) + "</td>" +
         "<td>" + usd(d.portfolio) + "</td>" +
         "<td>" + usd(d.moneyIn) + "</td>" +
-        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
+        '<td class="' + E.signClass(d.ret, 1, true) + '">' + E.signedPct(d.ret) + "</td>" +
         "</tr>";
     }
     return html;
@@ -510,9 +545,12 @@
     $("s-value").firstChild.nodeValue = usd(last.portfolio);
     $("s-in").firstChild.nodeValue    = usd(last.moneyIn);
     var plEl = $("s-pl");
-    plEl.firstChild.nodeValue = (last.pl < 0 ? "\u2212" : "") + usd(Math.abs(last.pl));
-    plEl.className = last.pl >= 0 ? "pos" : "neg";
-    $("s-pl-sub").textContent = pct(last.ret) + " on money in";
+    var shownL = plShown(last.etfValue, last.shares * last.avgCost, last.interestTotal);
+    plEl.firstChild.nodeValue = E.signedUsd(shownL, 2);
+    plEl.className = E.signClass(shownL, 2);
+    paintCosts(last.mgmtTotal, last.interestTotal);
+    $("s-pl-sub").textContent = plLine(last.moneyIn, last.pl, last.interestTotal,
+                                       last.etfValue, last.shares * last.avgCost);
     $("s-dd").firstChild.nodeValue    = last.highKnown ? ddPct(last.drawdown) : "\u2014";
     $("s-dd-sub").textContent         = last.highKnown
       ? "high-water mark " + usd(last.high, 2)
@@ -556,7 +594,11 @@
     // ---- upgrade the valuation to a live market price if available ----
     if (window.TTF_LIVE) {
       var token = ++renderToken;
-      window.TTF_LIVE.quoteFor(sleeve.sym).then(function (live) {
+      Promise.all([
+        window.TTF_LIVE.quoteFor(sleeve.sym),
+        window.TTF_LIVE.withHighs ? window.TTF_LIVE.withHighs(sleeve) : null
+      ]).then(function (got) {
+        var live = got[0], withH = got[1];
         if (token !== renderToken) return;            // a later tab click wins
 
         /* Feed down. The high on screen is the last one Yahoo gave, kept in
@@ -575,17 +617,21 @@
           return;
         }
 
-        // Yahoo's all-time high replaces the hardcoded reference where it is higher
+        /* Each month measured against the record high as it stood on that buy
+           day, from withHighs(). Today's record only reaches today's figures,
+           through revalue. If the history could not be fetched, today's record
+           stands in for every month, which is what the site did before. */
         var hist = history;
-        // Yahoo's figure is the record high; config only covers a dead feed
-        if (live.ath > 0) {
+        if (withH && withH.rows) {
+          hist = E.run(withH.rows, withH);
+        } else if (live.ath > 0) {
           var lifted = {};
           for (var ck in sleeve) lifted[ck] = sleeve[ck];
           lifted.HIGH_WATER_MARK = live.ath;
           hist = E.run(sleeve.rows || [], lifted);
         }
 
-        var r = E.revalue(hist, live.price);
+        var r = E.revalue(hist, live.price, live.ath);
         if (!r) return;
 
         /* The first paint ran without a record high, so the tier pill and the
@@ -614,9 +660,12 @@
         // only the "what is it worth now" figures move; the log stays as bought
         $("s-value").firstChild.nodeValue = usd(r.portfolio);
         var plEl = $("s-pl");
-        plEl.firstChild.nodeValue = (r.pl < 0 ? "\u2212" : "") + usd(Math.abs(r.pl));
-        plEl.className = r.pl >= 0 ? "pos" : "neg";
-        $("s-pl-sub").textContent = pct(r.ret) + " on money in";
+        var shownR = plShown(r.etfValue, r.shares * r.avgCost, r.interestTotal);
+        plEl.firstChild.nodeValue = E.signedUsd(shownR, 2);
+        plEl.className = E.signClass(shownR, 2);
+        paintCosts(r.mgmtTotal, r.interestTotal);
+        $("s-pl-sub").textContent = plLine(r.moneyIn, r.pl, r.interestTotal,
+                                           r.etfValue, r.shares * r.avgCost);
         $("s-dd").firstChild.nodeValue = r.highKnown ? ddPct(r.drawdown) : "\u2014";
         $("s-dd-sub").textContent = r.highKnown
           ? "high-water mark " + usd(r.high, 2)
@@ -642,7 +691,7 @@
             "<td>" + usd(r.reserve) + "</td>" +
             "<td>" + usd(r.portfolio) + "</td>" +
             "<td>" + usd(r.moneyIn) + "</td>" +
-            '<td class="' + (r.ret >= 0 ? "pos" : "neg") + '">' + pct(r.ret) + "</td>";
+            '<td class="' + E.signClass(r.ret, 1, true) + '">' + E.signedPct(r.ret) + "</td>";
           rowsEl.insertBefore(tr, rowsEl.firstChild);
         }
 
@@ -702,7 +751,26 @@
 
   function paintBoth(runs) {
     var merged = mergeHistories(runs);
-    var value = 0, moneyIn = 0, reserve = 0, etfValue = 0;
+
+    /* The fund tabs move their chart's last point to today's price so it
+       agrees with the figures at the top of the page. This tab used to stop
+       at the last buy, so its headline was valued today while both charts
+       under it were valued at the October fills, and the two "on money
+       invested" figures disagreed. Same fix here: once live prices are in,
+       the last point carries them. Money in, cost and reserve do not move with
+       the market, so only the two values change. */
+    if (merged.length && runs.some(function (r) { return r.live; })) {
+      var lastM = {}, src = merged[merged.length - 1];
+      for (var key in src) lastM[key] = src[key];
+      lastM.etfValue = 0; lastM.portfolio = 0;
+      runs.forEach(function (r) {
+        var v = r.live || r.hist[r.hist.length - 1];
+        lastM.etfValue  += v.etfValue;
+        lastM.portfolio += v.portfolio;
+      });
+      merged[merged.length - 1] = lastM;
+    }
+    var value = 0, moneyIn = 0, reserve = 0, etfValue = 0, interest = 0, cost = 0;
 
     runs.forEach(function (r) {
       var v = r.live || r.hist[r.hist.length - 1];
@@ -710,6 +778,8 @@
       moneyIn  += v.moneyIn;
       reserve  += v.reserve;
       etfValue += v.etfValue;
+      interest += v.interestTotal || 0;
+      cost     += (v.shares || 0) * (v.avgCost || 0);
     });
 
     var pl = value - moneyIn;
@@ -724,9 +794,13 @@
       return r.sl.sym; }).join(" and ");
 
     var plEl = $("s-pl");
-    plEl.firstChild.nodeValue = (pl < 0 ? "\u2212" : "") + usd(Math.abs(pl));
-    plEl.className = pl >= 0 ? "pos" : "neg";
-    $("s-pl-sub").textContent = pct(moneyIn ? pl / moneyIn : 0) + " on money in";
+    var mgmt = 0;
+    runs.forEach(function (r) { var v = r.live || r.hist[r.hist.length - 1]; mgmt += v.mgmtTotal || 0; });
+    var shownB = plShown(etfValue, cost, interest);
+    plEl.firstChild.nodeValue = E.signedUsd(shownB, 2);
+    plEl.className = E.signClass(shownB, 2);
+    paintCosts(mgmt, interest);
+    $("s-pl-sub").textContent = plLine(moneyIn, pl, interest, etfValue, cost);
 
     $("s-cash").firstChild.nodeValue = usd(reserve);
     $("s-cash-sub").textContent = "both reserves";
@@ -833,16 +907,22 @@
     var token = ++renderToken;
 
     Promise.all(runs.map(function (r) {
-      return window.TTF_LIVE.quoteFor(r.sl.sym).then(function (q) {
+      return Promise.all([
+        window.TTF_LIVE.quoteFor(r.sl.sym),
+        window.TTF_LIVE.withHighs ? window.TTF_LIVE.withHighs(r.sl) : null
+      ]).then(function (got) {
+        var q = got[0], withH = got[1];
         if (!q) return r;
-        // the record high comes from Yahoo, so the tier column needs it too
-        if (q.ath > 0) {
+        // each month against its own record high, as on the fund tabs
+        if (withH && withH.rows) {
+          r.hist = E.run(withH.rows, withH);
+        } else if (q.ath > 0) {
           var lifted = {};
           for (var k in r.sl) lifted[k] = r.sl[k];
           lifted.HIGH_WATER_MARK = q.ath;
           r.hist = E.run(r.sl.rows || [], lifted);
         }
-        r.live = E.revalue(r.hist, q.price);
+        r.live = E.revalue(r.hist, q.price, q.ath);
         r.asOf = q.asOf;
         return r;
       }).catch(function () { return r; });
@@ -876,7 +956,7 @@
         "<td>" + usd(d.reserve) + "</td>" +
         "<td>" + usd(d.portfolio) + "</td>" +
         "<td>" + usd(d.moneyIn) + "</td>" +
-        '<td class="' + (d.ret >= 0 ? "pos" : "neg") + '">' + pct(d.ret) + "</td>" +
+        '<td class="' + E.signClass(d.ret, 1, true) + '">' + E.signedPct(d.ret) + "</td>" +
         "</tr>";
     }).join("");
 
