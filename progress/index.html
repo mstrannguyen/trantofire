@@ -322,6 +322,18 @@
 
     <section class="band band-blush" style="padding-top:0;background:transparent">
       <div class="wrap">
+        <div class="chart hidden" id="bench-chart-block">
+          <h3 id="bench-chart-h">The same money, day by day</h3>
+          <p class="sub">Return on the money spent, measured at every close since the first buy. Both lines spend exactly what the rules spent, on the same days, and pay the same $3 brokerage, so the gap between them comes from the leverage. Each open circle is a buy. The shading shows which is ahead: gold where the leveraged fund leads, blue where the unleveraged one does. New money starts out down by its brokerage, so both lines dip a little on a buy day, and more in the early months when each buy was small.</p>
+          <div id="bench-chart"></div>
+          <div class="legend">
+            <span><i style="background:#B8860B"></i><span id="bench-lg-own">What the rules bought</span></span>
+            <span><i class="dash"></i><span id="bench-lg-base">The same money in the unleveraged fund</span></span>
+          </div>
+          <p class="note" id="bench-chart-sum" style="margin-top:14px"></p>
+          <p class="note" style="margin-top:6px">The dashed line is close, not exact. It buys at the closing price on each buy day, in fractions of a share, with dividends left out, and when the log does not record the buy day it is worked out from the price I paid.</p>
+        </div>
+
         <div class="chart" id="block-price">
           <h3>The price, the high-water mark, and every buy</h3>
           <p class="sub">The blue step is the record high, which only ever ratchets upward. The dashed lines are the tier boundaries, and they rise with it. Every triangle is a purchase: the deeper the tier, the bigger the marker and the bigger the share of cash going in.</p>
@@ -414,17 +426,6 @@
 
       <div class="wrap">
         <div id="bench-cards" class="bench-cards"></div>
-
-        <div class="chart hidden" id="bench-chart-block">
-          <h3 id="bench-chart-h">The same money, day by day</h3>
-          <p class="sub">Return on the money spent, measured at every close since the first buy. Both lines spend exactly what the rules spent, on the same days, and pay the same $3 brokerage, so the gap between them comes from the leverage. Each open circle is a buy. The shading shows which is ahead: gold where the leveraged fund leads, blue where the unleveraged one does. New money starts out down by its brokerage, so both lines dip a little on a buy day, and more in the early months when each buy was small.</p>
-          <div id="bench-chart"></div>
-          <div class="legend">
-            <span><i style="background:#B8860B"></i><span id="bench-lg-own">What the rules bought</span></span>
-            <span><i class="dash"></i><span id="bench-lg-base">The same money in the unleveraged fund</span></span>
-          </div>
-          <p class="note" id="bench-chart-sum" style="margin-top:14px"></p>
-        </div>
 
         <p class="note" id="bench-state" style="margin-top:18px"></p>
 

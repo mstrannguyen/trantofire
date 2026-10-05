@@ -522,6 +522,24 @@
     var rawByMonth = {};
     (sleeve.rows || []).forEach(function (r) { if (r && r.month) rawByMonth[r.month] = r; });
 
+    /* The chart now sits first among the charts, above the record-high chart,
+       and its prices arrive a moment after the page. Shown straight away with
+       its space reserved, it fills in place instead of appearing late and
+       pushing everything under it down. If the prices never come, it goes. */
+    var blkEarly = $("bench-chart-block");
+    if (blkEarly) {
+      var hEarly = $("bench-chart-h");
+      var baseEarly = null;
+      (sleeve.bench || []).forEach(function (b) { if (META[b] && META[b].mult === 1) baseEarly = b; });
+      if (hEarly && baseEarly) hEarly.textContent = sleeve.sym + " against " + baseEarly + ", day by day";
+      var hostEarly = $("bench-chart");
+      if (hostEarly && !hostEarly.firstChild) hostEarly.innerHTML =
+        '<div style="aspect-ratio:880/340;display:flex;align-items:center;justify-content:center;color:#8A7A7E;font-size:14px">Loading daily prices\u2026</div>';
+      var sumEarly = $("bench-chart-sum");
+      if (sumEarly) sumEarly.textContent = "";
+      blkEarly.classList.remove("hidden");
+    }
+
     Promise.all(
       FUNDS.map(function (f) { return window.TTF_LIVE.series(f.sym); }).concat(
       FUNDS.map(function (f) {
