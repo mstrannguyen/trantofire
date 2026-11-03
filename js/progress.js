@@ -484,7 +484,9 @@
       html += "<tr>" +
         '<td class="mth">' + d.label +
           (d.note ? '<br><span style="font-family:var(--body);font-size:12.5px;color:var(--muted)">' + d.note + "</span>" : "") + "</td>" +
-        "<td>" + usd(d.price, 2) + "</td>" +
+        // the price the buy was sized on, and what was paid when the fill differed
+        "<td>" + usd(d.price, 2) +
+          (Math.abs(d.fill - d.price) >= 0.005 ? '<br><span class="sub-note">paid ' + usd(d.fill, 2) + "</span>" : "") + "</td>" +
         "<td>" + (d.highKnown ? ddPct(d.drawdown) : "\u2014") + "</td>" +
         (d.highKnown
           ? '<td><span class="sig s' + d.tier.n + '">' + d.tier.label + "</span></td>"
@@ -502,6 +504,24 @@
         "</tr>";
     }
     return html;
+  }
+
+  /* The latest buy, in plain language. The drawdown in it is only printed
+     once the record high is known: before that the engine measures against
+     the highest logged price, which reads too shallow, so the line leaves
+     the reason out and is painted again when withHighs() comes back. */
+  function paintLatest(last, sym) {
+    var deviationNote = last.deviated
+      ? " <b>The rules said " + last.ruleBought + " share" + (last.ruleBought === 1 ? "" : "s") +
+        "; I bought " + last.bought + ".</b>" + (last.note ? " " + last.note + "." : "")
+      : "";
+    var why = last.highKnown ? ", because " + sym + " was " + ddPct(last.drawdown) + " below its high" : "";
+    $("r-line").innerHTML = last.bought > 0
+      ? "Bought <b>" + last.bought + " share" + (last.bought === 1 ? "" : "s") + "</b> at " + usd(last.fill, 2) +
+        ", spending <b>" + usd(last.spent) + "</b>, " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
+        " available" + why + ". " + usd(last.reserve) + " carried into next month." + deviationNote
+      : "No shares bought this month. " + usd(last.available) + " was available and the rules deployed " +
+        pct(last.deployPct, 0) + ", which wasn't enough for a whole share at " + usd(last.price, 2) + ". It all carried forward." + deviationNote;
   }
 
   function renderSleeve(sleeve) {
@@ -526,17 +546,7 @@
     $("r-spend").textContent   = usd(last.spent);
     $("r-shares").textContent  = last.bought;
     $("r-reserve").textContent = usd(last.reserve);
-    var deviationNote = last.deviated
-      ? " <b>The rules said " + last.ruleBought + " share" + (last.ruleBought === 1 ? "" : "s") +
-        "; I bought " + last.bought + ".</b>" + (last.note ? " " + last.note + "." : "")
-      : "";
-    $("r-line").innerHTML = last.bought > 0
-      ? "Bought <b>" + last.bought + " share" + (last.bought === 1 ? "" : "s") + "</b> at " + usd(last.fill, 2) +
-        ", spending <b>" + usd(last.spent) + "</b>, " + pct(last.deployPct, 0) + " of the " + usd(last.available) +
-        " available, because " + sleeve.sym + " was " + ddPct(last.drawdown) + " below its high. " +
-        usd(last.reserve) + " carried into next month." + deviationNote
-      : "No shares bought this month. " + usd(last.available) + " was available and the rules deployed " +
-        pct(last.deployPct, 0) + ", which wasn't enough for a whole share at " + usd(last.fill, 2) + ". It all carried forward." + deviationNote;
+    paintLatest(last, sleeve.sym);
 
     $("asof").textContent = last.label;
 
@@ -638,6 +648,7 @@
            drawdown and tier columns were left blank. Now there is one. */
         if (r.highKnown) {
           paintTier(hist[hist.length - 1]);
+          paintLatest(hist[hist.length - 1], sleeve.sym);
           $("rows").innerHTML = logRows(hist);
           paintTally(hist, sleeve.sym);
         }

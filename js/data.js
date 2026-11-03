@@ -8,7 +8,8 @@
 
        1. find that month
        2. delete the two slashes at the front of the line
-       3. put in the price you paid
+       3. put in the price the buy was sized on: the last close before
+          the order went in (and fill: the price you actually paid)
        4. commit
 
    That is the whole job. The site works out the drawdown, which tier applies,
@@ -21,7 +22,9 @@
        date:    "2026-08-03", the day the order went in. Optional, and worth
                 adding: it lets the benchmark price QQQ and QLD on the same
                 day. Without it the day is inferred from the price.
-       fill:    the price you were actually filled at, if not the price above
+       fill:    the price you were actually filled at, if not the price above.
+                The tier and the share count are set at the price above; the
+                fill only decides what the shares cost and what is left over.
        shares:  how many you ACTUALLY bought, if it wasn't what the rules said.
                 The site flags that month and shows both numbers.
        fee:     brokerage paid, so the reserve stays honest
@@ -58,7 +61,7 @@ window.TTF_DATA = [
   { month: "2026-08", price: 90.21 },
   { month: "2026-09", price: 90.24 },
   { month: "2026-10", price: 95.27 },
-  // { month: "2026-11", price: 0.00 },
+  { month: "2026-11", price: 82.59, fill: 83.69, date: "2026-11-02" },
   // { month: "2026-12", price: 0.00 },
 
   // ───────── 2027 ─────────
@@ -361,7 +364,8 @@ window.TTF_DATA_SSO = [
   // No figure quoted here on purpose, since the high comes live from Yahoo
   { month: "2026-09", price: 70.54 },
   { month: "2026-10", price: 69.98 },
-  // { month: "2026-11", price: 0.00 },
+  { month: "2026-11", price: 67.67, fill: 68.33, date: "2026-11-02", shares: 6,
+    note: "Sized at the limit price instead of the last close" },
   // { month: "2026-12", price: 0.00 },
 
   // ───────── 2027 ─────────

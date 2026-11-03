@@ -94,6 +94,66 @@
 window.TTF_JOURNAL = [
 
   {
+    month: "2026-11",
+    title: "A record on 6 October, then earnings week",
+    mood:  "Baseline on both, QLD near the first rung",
+
+    body: [
+      "Baseline on both funds for a fourth month, but QLD is closer to the first rung than it has been since the log began. The Nasdaq-100 set a record on 6 October and spent the rest of the month giving it back, so QLD went in a long way under a fresh high while SSO sits only a little below its own. Another bad stretch for tech and the next QLD buy is a Dip month, which releases a third of the cash instead of a fifth.",
+
+      "SSO came in one share short of what the rules called for, and the log shows both numbers. I sized the order at my limit price, a little above the last close, rather than at the close, and at the limit the baseline fifth came up just short of the last share. The rules size the buy at the last close, and at that price it covered it. The share that was not bought is still in the reserve and waits for December with the rest."
+    ],
+
+    macro: {
+      heading: "Markets and macro",
+
+      body: [
+        "October was the month the market started asking what the AI build-out costs. The Nasdaq-100 finished it 6.7% lower, its worst month since March 2025, while the S&P 500 lost about 1% and the Dow gained 1.5%. Most of that came in the last two sessions, after the biggest spenders reported. Alphabet grew search revenue 12% against the 15% analysts wanted, spent $51.4 billion on capital expenditure in the quarter, more than double a year earlier, and ran negative free cash flow of about $9.1 billion. On 29 October its shares fell 12.6%, the worst day since it listed in 2004, and about $480 billion of value went with them. Amazon kept its capital spending plan at $220 billion and reported a free cash outflow of $42.4 billion over the twelve months to September. Neither Alphabet nor Microsoft raised its spending guidance, and the market read that as caution.",
+
+        "Friday 30 October finished the month. Intel fell 29% on a weak fourth-quarter outlook, its worst day since 1974, and took the chipmakers with it: AMD lost 12% and Nvidia 5%. Reddit fell 29% the same day. The technology sector of the S&P 500 dropped nearly 5%, the Nasdaq Composite had its worst day since June, and the VIX rose by about a third during the session. Over the month CoreWeave lost 37% and Nebius close to 35%. What money left tech went to the defensive end of the market.",
+
+        "The Fed held at 3.75 to 4.00% on 28 October, six days before the midterm elections. The vote was 10 to 2, and both dissenters, Governor Lisa Cook and Cleveland's Beth Hammack, wanted another quarter point. Kevin Warsh said politics played no role in the decision and that inflation remains elevated. September's CPI came in at 3.7%, up from 3.4%, while employers added only 29,000 jobs and unemployment rose to 4.2%. After the meeting, futures put the odds of a December hike above 80%. The bond market moved the other way. The ten-year Treasury went above 5.3% early in the month and finished it at 4.94%, down from 5.29% at the end of September.",
+
+        "The war with Iran is close to eight months old. Brent stayed above $100 a barrel for the whole of October. In the last week tankers in the Strait of Hormuz were hit by attacks and mines, and President Trump said the war is going to end soon, without saying how.",
+
+        "At home, the ABS reported on 28 October that consumer prices rose 4.3% in the year to September, up from 4.0% in August. Housing was the largest contributor, and fuel pushed transport up 8.7%. The RBA lifted the cash rate to 4.60% on 29 September, its fourth rise this year, and all four major banks expect a fifth at the 3 November meeting.",
+
+        "That split is what matters for these two funds. The companies that fell hardest in October are a far bigger share of the Nasdaq-100 than of the S&P 500, which also holds the energy companies and the consumer staples, so the same month left QLD a long way under its record and SSO only a little under its own. The ladder does not care why. It reads the distance from the high, and for QLD that distance is now close to the first rung.",
+
+        "Both funds stayed on the baseline tier."
+      ],
+
+      table: {
+        caption: "The rates behind the month.",
+        head: [ "", "Level", "For context" ],
+        rows: [
+          [ "Fed funds",       "3.75 to 4.00%", "held, 10 to 2" ],
+          [ "US CPI",          "3.7%",          "up from 3.4%" ],
+          [ "Ten-year yield",  "4.94%",         "down from 5.29%" ],
+          [ "RBA cash rate",   "4.60%",         "fourth rise of 2026" ],
+          [ "Australian CPI",  "4.3%",          "up from 4.0%" ]
+        ],
+        note: "The Fed decision was on 28 October. US CPI is for September and Australian CPI for the year to September, both published in October. The ten-year is the 30 October close against the end of September. The RBA rise was on 29 September."
+      },
+
+      chart: {
+        title: "October, by index",
+        bars: [
+          { label: "Nasdaq-100", value: -6.7 },
+          { label: "S&P 500",    value: -1.0 },
+          { label: "Dow",        value: 1.5 }
+        ],
+        suffix: "%",
+        decimals: 1,
+        plus: true,
+        note: "Calendar October. The S&P 500 figure is rounded, since sources put it between -0.9% and -1.2%. The buys happen on their own day, so the fund prices logged here will not line up with these figures."
+      },
+
+      note: "Sources: Bloomberg via KuCoin on the Nasdaq-100's month, Yahoo Finance on the Dow and the 30 October session, Fortune on Alphabet's results and its fall, Wealth Professional on Amazon, CoreWeave and Nebius, TheStreet on Intel, Reddit, the chipmakers and the Strait of Hormuz, Yahoo Finance and Charles Schwab on the Fed decision and the US data, Forbes on Treasury yields, the ABS on Australian inflation, and Aussie on the RBA."
+    }
+  },
+
+  {
     month: "2026-10",
     title: "The first rate hike since 2023",
     mood:  "Baseline, third month running",

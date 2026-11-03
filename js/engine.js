@@ -93,13 +93,16 @@
       var available = reserve + contribution;
       var target    = available * tier.pct;
 
-      // The rules decide the share count on the tier amount alone. Brokerage is
-      // then taken out of the cash afterwards, so the fee reduces the reserve
-      // rather than the size of the buy.
+      // The rules decide the share count on the tier amount alone, at the same
+      // price the tier was measured against: the last close before the order
+      // went in. The fill only decides what the shares cost, so an order sized
+      // the night before and filled at the open always matches the rules.
+      // Brokerage is then taken out of the cash afterwards, so the fee reduces
+      // the reserve rather than the size of the buy.
       var brokerage = isFinite(r.fee) ? Number(r.fee)
                     : (isFinite(cfg.BROKERAGE) ? Number(cfg.BROKERAGE) : 0);
 
-      var ruleBought = Math.floor(target / fill);
+      var ruleBought = Math.floor(target / price);
       var bought     = isFinite(r.shares) ? Number(r.shares) : ruleBought;
       var deviated   = bought !== ruleBought;
 
@@ -236,13 +239,18 @@
 
     var drawdown  = (price - high) / high;
     var tier      = tierFor(drawdown);
-    var available = reserve + cfg.CONTRIBUTION;
+    // the month's interest lands before the new money, exactly as run() adds it
+    // when the month is logged, so the buy shown here is the buy the log will
+    // call for at this price
+    var monthlyRate = (isFinite(cfg.CASH_RATE) ? Number(cfg.CASH_RATE) : 0) / 12;
+    var interest  = last && reserve > 0 ? reserve * monthlyRate : 0;
+    var available = reserve + interest + cfg.CONTRIBUTION;
     var target    = available * tier.pct;
     var bought    = Math.floor(target / price);
 
     return {
       price: price, high: high, highKnown: haveHigh, drawdown: drawdown, tier: tier,
-      available: available, target: target, bought: bought,
+      available: available, interest: interest, target: target, bought: bought,
       spend: bought * price
     };
   }
