@@ -46,8 +46,11 @@ one. Anything else you read in an old file or an old chat is superseded.
   money in
 - Management fees are reported, never deducted — an ETF accrues them inside
   its own price, so subtracting would double-count
-- **The price that decides the tier is the price actually paid** on the day
-  the order is placed
+- **The price that decides the tier and the share count is the last close
+  before the order goes in** (`price:` in `js/data.js`). The fill (`fill:`)
+  only decides what the shares cost and what stays in the reserve, so an order
+  sized the night before always matches the rules. Until November 2026 the
+  price logged was the fill and the two were the same thing
 
 ### The 3× funds
 
@@ -133,7 +136,8 @@ The single most error-prone part of the site. Three separate bugs here.
 
 **One file to edit each month: `js/data.js`.** Every month Aug 2026 to Jul 2046
 is pre-written and commented out, for both funds. Uncomment the line, type the
-price paid, commit. Everything else is calculated.
+last close the buy was sized on, add `fill:` with the price paid, commit.
+Everything else is calculated.
 
 ```js
 { month: "2026-09", price: 91.40 },
