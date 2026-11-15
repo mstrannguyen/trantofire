@@ -353,12 +353,12 @@
       <circle cx="666.9" cy="84.7" r="6" fill="#5F7D53"/>
       <text x="646" y="72" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#4E6A44">S&amp;P 500 peaks near 3×</text>
 
-      <!-- where TQQQ sits -->
+      <!-- 3x on the Nasdaq-100, past its peak -->
       <line x1="670.3" y1="70" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".8"/>
       <line x1="456.8" y1="190" x2="456.8" y2="372" stroke="#211A1D" stroke-width="1.3" stroke-dasharray="3 5" opacity=".45"/>
       <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
-      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#B0894F">TQQQ, 3× the Nasdaq-100</text>
-      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#9A7C52">where this experiment sits</text>
+      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#B0894F">3× the Nasdaq-100</text>
+      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#9A7C52">already past its peak</text>
 
       <!-- axes -->
       <text x="287.4" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">1×</text>
@@ -425,7 +425,7 @@
     <span class="orn"></span>
     <p class="eyebrow">The tier ladder</p>
     <h2>How much I deploy, by depth.</h2>
-    <p class="lede">One number decides everything: how far the fund has fallen from its record high. That sets the percentage. Each fund is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the price I actually pay on the day I place the order</strong>, not a month-end figure or an average. So the tier is fixed by the same number that appears in my log, and anyone can check the two agree.</p>
+    <p class="lede">One number decides everything: how far the fund has fallen from its record high. That sets the percentage. Each fund is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the fund's last close before I place the order</strong>, not a month-end figure or an average. That close is the number in my log, with the price I paid beside it when the two differ, so anyone can check the tier against it.</p>
     <div class="hwm-pair">
       <dl class="hwm"><dt>QLD high-water mark</dt><dd><span data-hwm="QLD">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
       <dl class="hwm"><dt>SSO high-water mark</dt><dd><span data-hwm="SSO">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
@@ -447,7 +447,7 @@
         <div>
           <h3>Correction</h3>
           <p class="deploy">Deploy <span class="amt">33%</span> of all available cash</p>
-          <p class="rung-note">A third of the pile. On a 3× fund a −20% print means the Nasdaq-100 itself has barely moved.</p>
+          <p class="rung-note">A third of the pile. On a 2× fund a −20% print means the index itself is down about half that.</p>
         </div>
       </div>
       <div class="rung r2">
@@ -467,7 +467,7 @@
         </div>
       </div>
     </div>
-    <p class="gauge-foot">Drawdown is measured on the fund itself, not on the index behind it. The fund falls roughly three times as hard, so these tiers are reached far more readily than the index would suggest.</p>
+    <p class="gauge-foot">Drawdown is measured on the fund itself, not on the index behind it. The fund falls roughly twice as hard, so these tiers are reached far more readily than the index would suggest.</p>
   </div>
 </section>
 
@@ -551,52 +551,13 @@
     <p>They write about borrowing, because that is what leverage meant when they wrote. Margin loans and deep in-the-money call options are the tools in the book. Three-times funds barely existed at the time: UPRO launched in 2009 and TQQQ in 2010, the year the book came out, with no record to test the idea against.</p>
     <p>A leveraged ETF gets to a similar place without a loan in my name. The borrowing happens inside the fund, so there is no lender, no margin call, and I cannot lose more than I put in. What I can still do is watch it fall ninety percent and hold it, which is a different problem and not the one they were warning about.</p>
     <p>I started at 2&#215;, but I have never actually carried 2&#215;. Holding cash back to average in and to buy the dips means the leverage I am really running is under two, and it moves with the market rather than sitting still. That is the level I am comfortable holding for the next twenty years.</p>
-    <p>The cost is that this will not keep up with TQQQ or UPRO in a good run. What I get for it is a drawdown I can keep contributing through. Those two get their turn <a href="#crash">once a market has already fallen a long way</a>.</p>
+    <p>The cost is that this will not keep up with TQQQ or UPRO in a good run. What I get for it is a drawdown I can keep contributing through.</p>
 
     <p class="src-note">Ian Ayres and Barry Nalebuff, <em>Lifecycle Investing</em> (2010), and their paper <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1149340">Life-Cycle Investing and Leverage: Buying Stock on Margin Can Reduce Retirement Risk</a>.</p>
   </div>
 </section>
 
-<section class="band" id="crash">
-  <div class="wrap narrow center">
-    <span class="orn"></span>
-    <p class="eyebrow">When it really falls</p>
-    <h2>The 3&#215; funds buy more the further they fall.</h2>
-  </div>
-
-  <div class="wrap narrow">
-    <p>TQQQ and UPRO are not on the monthly schedule. I start buying them once they are 30% below their record high, measured on the fund itself rather than on the index behind it, with money set aside for that and nothing else.</p>
-    <p>Three times a daily move compounds, so the index does not have to fall anything like as far. An index down about 12% puts a 3&#215; fund past 30%. TQQQ went through that level in the 2020 crash and again in 2022, when it finished 82% below its high.</p>
-    <p>Buying starts at 30% below the record, small at first, and gets larger the further the fund falls. If it climbs back above 30% before the money is used, the rest waits for the next fall.</p>
-    <p>The money is separate. It does not come out of the US$800 that goes into QLD and SSO each month, and it does not come out of either reserve. Those two schedules carry on unchanged through a crash, which is the point of them. If that money is not there when the fall comes, there is no buying.</p>
-  </div>
-
-  <div class="wrap narrow">
-    <div class="table-scroll">
-      <table class="money">
-        <caption>TQQQ in 2022. How far it sat below its November 2021 record at each month's close, rounded to the nearest percent.</caption>
-        <thead><tr><th>Month</th><th>Below the high</th><th>Buying</th></tr></thead>
-        <tbody>
-          <tr><td class="band-name">Jan</td><td>&#8722;33%</td><td>Starts, small</td></tr>
-          <tr><td class="band-name">Feb</td><td>&#8722;44%</td><td>Small</td></tr>
-          <tr><td class="band-name">Mar</td><td>&#8722;37%</td><td>Small</td></tr>
-          <tr><td class="band-name">Apr</td><td>&#8722;61%</td><td class="total">Larger</td></tr>
-          <tr><td class="band-name">May</td><td>&#8722;64%</td><td class="total">Larger</td></tr>
-          <tr><td class="band-name">Jun</td><td>&#8722;74%</td><td class="total">Larger again</td></tr>
-          <tr><td class="band-name">28 Dec</td><td>&#8722;82%</td><td>The low</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="wrap narrow">
-    <p>The fall did not stop in June. TQQQ kept going down for six more months, to 82% below its record on 28 December, and got back to its old high on 4 December 2024. The deepest prices came late, which is why the buying has to leave something for a fall that keeps going.</p>
-    <p>Once the money is in, I hold.</p>
-    <p class="src-note">Monthly returns from StatMuse, applied to TQQQ's 2021 close and intraday high. The low of 28 December 2022, 81.67% below the November 2021 peak, and the recovery to that peak on 4 December 2024 are from QuantFlow Lab's drawdown figures. Worked through at month-end prices, the monthly returns land about 81.5% down at the close of December.</p>
-  </div>
-</section>
-
-<section class="band band-blush" id="other">
+<section class="band" id="other">
   <div class="wrap narrow center">
     <span class="orn"></span>
     <p class="eyebrow">Other ways to do this</p>
@@ -610,7 +571,6 @@
         <div class="body">
         <p>TQQQ is 3× the Nasdaq-100 that QLD tracks. UPRO is 3× the S&amp;P 500 that SSO tracks. A higher multiple compounds harder through a bull run, and for a while that is what I intended to buy every month.</p>
         <p>What changed my mind is the other side of it. Three times the daily move falls a great deal further when the index turns, and takes far longer to come back from it. QLD lost about 60% in 2022 and TQQQ lost 82%, on the same index in the same year. That is the difference between a drawdown I can keep buying through and one I might not.</p>
-        <p>So they are not off the table, they are on a different schedule. A fall that deep is the one thing that makes the extra multiple worth carrying, which is why I start buying them, a little at a time, once they are 30% below their record high rather than every month. That rule is set out under <a href="#crash">when it really falls</a>.</p>
         </div>
       </li>
       <li>

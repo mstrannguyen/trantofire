@@ -17,7 +17,10 @@
   ];
 
   function tierFor(drawdown) {
-    var d = Math.abs(drawdown);
+    /* Rounded to six decimal places first. A price exactly 20% under the high
+       comes out of the subtraction as 0.19999999999999993, which would land on
+       the rung below the one the rules name. */
+    var d = Math.round(Math.abs(drawdown) * 1e6) / 1e6;
     for (var i = 0; i < TIERS.length; i++) {
       if (d >= TIERS[i].at) return TIERS[i];
     }

@@ -54,22 +54,16 @@ one. Anything else you read in an old file or an old chat is superseded.
 
 ### The 3× funds
 
-TQQQ and UPRO are NOT on the monthly schedule and are not in `SLEEVES`.
+TQQQ and UPRO are **not part of the plan**. The site is SSO and QLD only.
 
-- Bought only once a fund is **30% below its record high**, measured on the
-  3× fund itself, not on the index. History of the threshold: 40% at launch,
-  50% briefly in Aug 2026, back to 40%, then 30% from Sep 2026. 30% is the rule.
-  An index down about 12% puts a 3× fund past 30% (0.88³ = 0.68)
-- Funded with **separate money**, not from the $800s and not from either
-  reserve
-- **Laddered by depth, on each monthly buy day**: 10% of the set-aside money
-  at 30% below the record, 20% at 50%, 30% at 70%. Small first, larger as the
-  fall deepens. If the fund climbs back above 30%, the rest waits for the next
-  fall. Then hold. No target, no rebalance, no selling. The Strategy page shows
-  2022 month by month: all in by June at about 63% below the high, down half at
-  the December trough, 2.7x at the December 2024 recovery
-- Nothing to track month by month until one triggers
-- Strategy page section `id="crash"`
+- Until 15 Nov 2026 the Strategy page had a section, "When it really falls"
+  (`id="crash"`), on buying TQQQ and UPRO from 30% below their record high
+  with separate money. It was removed on that day, with every line that
+  pointed to it (Home, Strategy, `js/config.js`). Do not bring it back
+- TQQQ and UPRO stay on the site as **comparisons only**: the fund family
+  table and growth chart on Home, the leverage chart and "What I didn't build
+  this on" on Strategy, and each fund's `bench` pair on Progress
+- Site copy must not describe the plan's own funds as 3×. QLD and SSO are 2×
 
 ### What was tried and removed
 
@@ -190,9 +184,8 @@ step that drag-and-drop deploys skip. The proxy needs no build.
 Home, Strategy, Progress, Journal, My Story, Privacy.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
-Worked example, Why not just buy every month, Lifecycle investing, When it
-really falls (`#crash`), What I didn't build this on, How this goes wrong,
-The mechanics, Comments.
+Worked example, Why not just buy every month, Lifecycle investing, What I
+didn't build this on, How this goes wrong, The mechanics, Comments.
 
 ## The monthly routine
 
@@ -247,6 +240,22 @@ page capital-gains paragraph, "The bigger point is" in My Story, and
 - **One name per measure**: "on money invested" (shares only, against what
   was spent on them) and "on money in" (cash and interest included, against
   every dollar contributed). Use exactly these words
+- **A fall of exactly 20%, 40% or 60% is the deeper tier** (15 Nov 2026).
+  `tierFor` rounds the drawdown to six decimal places first. SSO at $58.24
+  against a high of $72.80 is exactly 20% down, but the subtraction leaves
+  0.19999999999999993, which read as Baseline
+- On Progress, the pill beside the live figures is **the tier at the live
+  price**, marked "live", as on the home page. The log's rows keep each buy's
+  own tier. In the same block, the chart's copy of the log is called `points`:
+  named `live`, it replaced the price quote and the line read "from undefined"
+- **October 2026 is dated 14 Oct** in `js/data.js`, the only day that month
+  both logged prices traded. Undated, QLD's day was inferred as 1 Oct, before
+  its 6 Oct record, and October read 5.9% below the high instead of 6.2%
+- `/updates/2026-08/` was an unfinished template page. It now only sends
+  readers to the Journal
+- The site's wording follows the engine: **the tier is set on the fund's last
+  close before the order**, and the capital gains change is described as law
+  (Treasury Laws Amendment (Tax Reform No. 1) Act 2026, 26 June 2026)
 
 ---
 

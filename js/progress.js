@@ -429,7 +429,8 @@
     var pill = $("tier");
     if (!pill) return;
     if (row.highKnown) {
-      pill.textContent = row.tier.label + " \u00b7 deploy " + pct(row.deployPct || row.tier.pct, 0);
+      pill.textContent = row.tier.label + " \u00b7 deploy " + pct(row.deployPct || row.tier.pct, 0) +
+        (row.live ? " \u00b7 live" : "");
       pill.className = "tierpill t" + row.tier.n;
     } else {
       pill.textContent = "Tier unknown until the record high loads";
@@ -655,17 +656,17 @@
 
         // the chart's last point should agree with the cards above it
         // the last point moves to the live price, so the chart agrees with the cards
-        var live = hist.slice();
+        var points = hist.slice();
         var lastRow = {};
-        for (var k in live[live.length - 1]) lastRow[k] = live[live.length - 1][k];
+        for (var k in points[points.length - 1]) lastRow[k] = points[points.length - 1][k];
         lastRow.etfValue = r.etfValue;
-        live[live.length - 1] = lastRow;
-        drawValueChart($("chart1"), live, sleeve.sym);
+        points[points.length - 1] = lastRow;
+        drawValueChart($("chart1"), points, sleeve.sym);
         if (r.highKnown) {
           show("block-price"); show("block-drawdown");
-          drawPriceChart($("chart0"), live);
-          drawDrawdownChart($("chart2"), live.map(function (d) { return d.label; }),
-            live.map(function (d) { return -Math.abs(d.drawdown); }));
+          drawPriceChart($("chart0"), points);
+          drawDrawdownChart($("chart2"), points.map(function (d) { return d.label; }),
+            points.map(function (d) { return -Math.abs(d.drawdown); }));
         }
 
         // only the "what is it worth now" figures move; the log stays as bought
@@ -677,6 +678,10 @@
         paintCosts(r.mgmtTotal, r.interestTotal);
         $("s-pl-sub").textContent = plLine(r.moneyIn, r.pl, r.interestTotal,
                                            r.etfValue, r.shares * r.avgCost);
+        /* The cards here are valued at the live price, so the pill is the tier
+           at that price too. Left on the last buy's tier it could sit beside a
+           drawdown from a different rung. */
+        if (r.highKnown) paintTier({ highKnown: true, tier: r.tier, live: true });
         $("s-dd").firstChild.nodeValue = r.highKnown ? ddPct(r.drawdown) : "\u2014";
         $("s-dd-sub").textContent = r.highKnown
           ? "high-water mark " + usd(r.high, 2)
@@ -711,7 +716,7 @@
           stamp.textContent = "Valued at the live " + sleeve.sym + " price of " + usd(r.price, 2) +
             " from " + live.source +
             (live.asOf ? ", " + window.TTF_LIVE.asOfLabel(live.asOf) + " Sydney time" : "") +
-            ". The table below shows the prices actually paid.";
+            ". The table below shows the price logged at each buy.";
         }
       });
     }

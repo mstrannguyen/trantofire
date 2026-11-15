@@ -25,10 +25,9 @@ window.TTF = {
      selling to trim a position realises a gain and hands over the tax, and
      the compounding after that runs on what is left.
 
-     TQQQ and UPRO are not on this schedule and are not in this list. They
-     are crash entries, bought when an index has already fallen a long way,
-     and there is nothing to log month by month until one triggers. The rule
-     for them is written up on the Strategy page.
+     TQQQ and UPRO are not part of the plan and are not in this list. They
+     appear on the site only as comparisons (each fund's `bench` pair, the
+     fund table and the growth chart).
      --------------------------------------------------------- */
   SLEEVES: [
     {

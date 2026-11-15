@@ -60,7 +60,7 @@ window.TTF_DATA = [
   // ───────── 2026 ─────────
   { month: "2026-08", price: 90.21 },
   { month: "2026-09", price: 90.24 },
-  { month: "2026-10", price: 95.27 },
+  { month: "2026-10", price: 95.27, date: "2026-10-14" },
   { month: "2026-11", price: 82.59, fill: 83.69, date: "2026-11-02" },
   // { month: "2026-12", price: 0.00 },
 
@@ -363,7 +363,7 @@ window.TTF_DATA_SSO = [
   // the baseline tier, 20% of 800 is 160, and 160 buys 2 whole shares at 67.62.
   // No figure quoted here on purpose, since the high comes live from Yahoo
   { month: "2026-09", price: 70.54 },
-  { month: "2026-10", price: 69.98 },
+  { month: "2026-10", price: 69.98, date: "2026-10-14" },
   { month: "2026-11", price: 67.67, fill: 68.33, date: "2026-11-02", shares: 6,
     note: "Sized at the limit price instead of the last close" },
   // { month: "2026-12", price: 0.00 },
