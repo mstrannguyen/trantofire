@@ -99,8 +99,10 @@ August 2026, the first month, in `js/data.js`:
 The single most error-prone part of the site. Three separate bugs here.
 
 - Highs come **live from Yahoo on every load**, derived from the full
-  split-adjusted monthly history. `js/config.js` holds QLD **$101.19** and
-  SSO **$71.79** as offline fallbacks ONLY
+  split-adjusted monthly history. **No record high is stored in the
+  repository.** Each fetch that works is kept in the visitor's browser for
+  120 days (`ttf:high:QLD`, `ttf:high:SSO`), and a fetch that fails falls back
+  to that. With neither, the pages leave the figure out
 - The live figure wins **whether it is higher or lower** than the stored one.
   An earlier "only take it when higher" ratchet let a stale constant sit above
   the real high and read every drawdown a rung shallow
@@ -163,6 +165,13 @@ happened and what it did to the position, not just a column of prices.
   zero. Use it for new charts; quarters of the range put "0%" off zero
 - `js/compare.js` — the home page growth-of-$10k chart (hardcoded Nasdaq
   annual balances; QLD's line is derived from QQQ and TQQQ, not typed)
+- `js/chartkit.js` — what every chart shares (`TTF_CHART`). The colours, read
+  from the `--k-*` variables in each page's `:root`. `fit()` draws a chart at
+  the width it is shown at and again when that changes. `plate()` puts a white
+  plate behind words on the plot, `spread()` moves right-hand labels apart,
+  `caption()` puts "break even" where no line runs, `thin()` drops a date
+  along the foot that would touch its neighbour. Loaded on Home and Progress,
+  before the chart scripts
 - `js/journal.js` / `js/journal-render.js` — the Journal, one figures block
   per fund
 - `js/funds.js` — fills the return columns in the home page fund table
@@ -171,9 +180,8 @@ happened and what it did to the position, not just a column of prices.
   TQQQ, QQQ, QLD, UPRO, SSO, VOO; daily for TQQQ, QQQ, QLD, SSO, VOO, UPRO
 - `_headers` — CSP `script-src 'self'`, so NO inline scripts. HSTS commented out
 
-**Nothing on the site is a typed-in figure that could go stale**, with two
-deliberate exceptions: the home page growth chart's annual balances, and the
-config fallback highs.
+**Nothing on the site is a typed-in figure that could go stale**, with one
+deliberate exception: the home page growth chart's annual balances.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
 functions were tried first and did NOT work, because functions need a build
@@ -230,7 +238,38 @@ page capital-gains paragraph, "The bigger point is" in My Story, and
   last complete year, so it matches the annual table beside it
 - Site copy must not use the word **"sleeve"**. It reads as AI jargon. Say
   "fund", "the two funds", "the Nasdaq side"
-- Colours were separated by measuring **RGB distance**, not by eye
+- **Chart colours (20 Nov 2026).** Every chart uses one set, the same one as
+  the Studio. They are CSS variables in the `:root` block of Home, Strategy,
+  Progress and Journal, and the four blocks must stay the same. Each has a
+  darker step for words (`--k-*-t`):
+  - **blue** `#2563EB`: the record high, and whatever a fund is measured
+    against (QQQ or VOO, the return on money in, the S&P 500 on the leverage
+    chart)
+  - **orange** `#F2641A`: the fund itself (what the rules bought, the return
+    on money invested, QLD on the growth chart, the Nasdaq-100 on the leverage
+    chart)
+  - **purple** `#A21CAF`: 3× (TQQQ on the growth chart, the 3× marker on the
+    leverage chart)
+  - **green** `#089981`, **amber** `#D97706`, **deep orange** `#D9480F`,
+    **red** `#B91C1C`: Baseline, Dip, Deep dip, Crash, on the price chart's
+    markers and boundaries and the drawdown chart's bands
+  - `#2563EB` and `#E11D48`: a Journal bar above and below zero
+  - Gains and losses printed as figures stay `#2F6B33` / `#A33220`, on the
+    value chart's callouts too
+  - Chosen with a colour-blind simulation and a contrast check, not by eye:
+    every mark is 3:1 or better against the white card and every coloured
+    word 4.5:1 or better. The tier cards, pills and rungs keep the page's own
+    blush, clay and plum
+- **Charts are drawn at the width they are shown at** (20 Nov 2026). Each used
+  to be drawn 880 wide and scaled down, and on a phone its labels came out at
+  four or five pixels. `TTF_CHART.fit()` hands the painter the host's width,
+  and under 560px the painter uses narrower gutters. The two drawings on
+  Strategy are static, so each is on the page twice (`.fig-w` and `.fig-n`)
+  and CSS shows the one that suits the width. Change both when either changes
+- **No label sits on another label or under a line.** Right-hand labels go
+  through `spread()`, words on the plot go on a `plate()`, and a callout with
+  no free place is left off. Checked at eight widths from 320 to 1280 against
+  logs of one month, two, a year and five years
 - **One rule for every result figure**: `E.signedPct` / `E.signedUsd` /
   `E.signClass`. Gains show +, losses −, anything rounding to zero neither.
   Profits and interest are shown **to the cent**, and a total is built from

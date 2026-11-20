@@ -2,14 +2,16 @@
    end of 2010. Compounded Yahoo Finance annual total returns, held in this
    file, stopping at the last complete year.
 
-   Colour carries the multiple: green is the plain index, terracotta is 2x,
-   brass is 3x.
+   Colour carries the multiple, the same way as on the rest of the site: blue
+   is the plain index, orange is 2x, purple is 3x. The line that is not a fund
+   stays grey. The colours themselves are in js/chartkit.js.
 
    Pure SVG, no library, log scale, defensive against a missing host. */
 (function () {
   "use strict";
 
   var START = 10000;
+  var CK = window.TTF_CHART;
 
   function money(v) {
     if (v >= 1000000) {
@@ -20,90 +22,68 @@
     return "$" + Math.round(v);
   }
 
-  function el(tag, a) {
-    var e = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    for (var k in a) e.setAttribute(k, a[k]);
-    return e;
-  }
-
   /* ---------------------------------------------------------------------
-     The painter, shared by both charts.
+     The painter.
 
-     Label colours are darker relatives of the line colours, dark enough to
-     read at this size: 5.0 to 7.3 to one against the card, where the lines
-     themselves only have to clear the 3:1 that non-text needs. Separated by
-     measuring RGB distance rather than by eye, the closest pair of lines
-     sitting 62 apart and the closest pair of labels 47.
+     A line wears the mark step of its colour and its end label the text
+     step, which is dark enough to read at this size. The end labels sit in
+     the right-hand gutter, outside the plotting area, so no line can run
+     through them, and are moved apart when two funds finish close together.
+     On a phone the gutters are narrower and the chart is drawn at the
+     phone's width, so the words keep their size.
      --------------------------------------------------------------------- */
   function paint(host, o) {
-    var W = 900, H = 430, L = 66, R = 120, T = 20, B = 46;
+    CK.fit(host, 900, function (W, narrow) {
+      var H = narrow ? 340 : 430, L = narrow ? 44 : 66, R = narrow ? 98 : 120, T = 20, B = 46;
+      var el = CK.el;
 
-    var xf = function (x) { return L + (W - L - R) * (x - o.x0) / (o.x1 - o.x0); };
-    var lg = function (v) { return Math.log10(v); };
-    var yf = function (v) { return T + (H - T - B) * (1 - (lg(v) - lg(o.lo)) / (lg(o.hi) - lg(o.lo))); };
+      var xf = function (x) { return L + (W - L - R) * (x - o.x0) / (o.x1 - o.x0); };
+      var lg = function (v) { return Math.log10(v); };
+      var yf = function (v) { return T + (H - T - B) * (1 - (lg(v) - lg(o.lo)) / (lg(o.hi) - lg(o.lo))); };
 
-    var s = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
-      "aria-label": "Growth of $10,000 in " +
+      var s = CK.svg(host, W, H, "Growth of $10,000 in " +
         o.series.map(function (p) { return p.name; }).join(", ") +
-        " from " + o.startLabel + ", log scale" });
-    s.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        " from " + o.startLabel + ", log scale");
 
-    o.grid.forEach(function (v) {
-      var gy = yf(v);
-      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
-        stroke: "#3A2B31", "stroke-opacity": ".10" }));
-      var t = el("text", { x: L - 12, y: gy + 4, "text-anchor": "end",
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = money(v);
-      s.appendChild(t);
+      o.grid.forEach(function (v) {
+        var gy = yf(v);
+        s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
+          stroke: CK.K.ink, "stroke-opacity": ".10" }));
+        CK.text(s, L - (narrow ? 8 : 12), gy + 4, money(v), { "text-anchor": "end" });
+      });
+
+      CK.thin(o.ticks.map(function (tk) {
+        var frac = (tk.x - o.x0) / (o.x1 - o.x0);
+        return CK.text(s, xf(tk.x), H - 16, tk.label,
+          { "text-anchor": frac < 0.02 ? "start" : (frac > 0.98 ? "end" : "middle") });
+      }), 8);
+
+      o.series.forEach(function (p) {
+        var d = p.pts.map(function (q, i) {
+          return (i ? "L" : "M") + xf(q[0]).toFixed(1) + "," + yf(q[1]).toFixed(1);
+        }).join(" ");
+        s.appendChild(el("path", { d: d, fill: "none", stroke: p.colour, "stroke-width": p.w,
+          "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": p.dash || "" }));
+      });
+
+      // shared starting dot. Its label sits below it, on a plate: every line
+      // climbs out of the dot to the right, and one of them dips under it first.
+      s.appendChild(el("circle", { cx: xf(o.x0), cy: yf(START), r: "4", fill: CK.K.ink,
+        stroke: CK.K.card, "stroke-width": "1.5" }));
+      var st = CK.text(s, xf(o.x0) + 8, yf(START) + 24, "$10k, " + o.startLabel);
+      CK.plate(s, st, 2);
+
+      var ends = o.series.map(function (p) {
+        var last = p.pts[p.pts.length - 1];
+        return { name: p.name, value: last[1], y: yf(last[1]), h: 18, fill: p.labelColour };
+      });
+      CK.spread(ends, T + 4, H - B, 6);
+
+      ends.forEach(function (e) {
+        CK.text(s, W - R + (narrow ? 8 : 12), e.y + 4, e.name + "  " + money(e.value),
+          { "font-size": "12.5", "font-weight": "600", fill: e.fill });
+      });
     });
-
-    o.ticks.forEach(function (tk) {
-      var frac = (tk.x - o.x0) / (o.x1 - o.x0);
-      var t = el("text", { x: xf(tk.x), y: H - 16,
-        "text-anchor": frac < 0.02 ? "start" : (frac > 0.98 ? "end" : "middle"),
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = tk.label;
-      s.appendChild(t);
-    });
-
-    // shared starting dot. Its label sits below it: every line climbs out of
-    // the dot to the right, and above it they cut through the text.
-    s.appendChild(el("circle", { cx: xf(o.x0), cy: yf(START), r: "4", fill: "#3A2B31" }));
-    var st = el("text", { x: xf(o.x0) + 8, y: yf(START) + 24,
-      "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-    st.textContent = "$10k, " + o.startLabel;
-    s.appendChild(st);
-
-    o.series.forEach(function (p) {
-      var d = p.pts.map(function (q, i) {
-        return (i ? "L" : "M") + xf(q[0]).toFixed(1) + "," + yf(q[1]).toFixed(1);
-      }).join(" ");
-      s.appendChild(el("path", { d: d, fill: "none", stroke: p.colour, "stroke-width": p.w,
-        "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": p.dash || "" }));
-    });
-
-    /* End labels sit in the right-hand gutter, outside the plotting area, so
-       no line can run through the text, then get pushed apart in case two
-       funds finish close together. */
-    var ends = o.series.map(function (p) {
-      var last = p.pts[p.pts.length - 1];
-      return { name: p.name, value: last[1], y: yf(last[1]) + 4, fill: p.labelColour };
-    }).sort(function (a, b) { return a.y - b.y; });
-
-    for (var i = 1; i < ends.length; i++) {
-      if (ends[i].y - ends[i - 1].y < 26) ends[i].y = ends[i - 1].y + 26;
-    }
-
-    ends.forEach(function (e) {
-      var t = el("text", { x: W - R + 12, y: e.y, "font-family": "EB Garamond,Georgia,serif",
-        "font-size": "12.5", "font-weight": "600", fill: e.fill });
-      t.textContent = e.name + "  " + money(e.value);
-      s.appendChild(t);
-    });
-
-    host.innerHTML = "";
-    host.appendChild(s);
   }
 
   /* ---------------------------------------------------------------------
@@ -167,14 +147,15 @@
       ticks: [2010, 2014, 2018, 2022, 2025].map(function (y) { return { x: y, label: y }; }),
       startLabel: "end of 2010",
       series: [
-        { name: "QQQ",         pts: qqq,  colour: "#2E7D32", labelColour: "#2E7D32", w: "2.2", dash: "2 4" },
-        { name: "3\u00d7 QQQ", pts: trip, colour: "#8A7A7E", labelColour: "#6B5F62", w: "1.8", dash: "7 5" },
-        { name: "QLD",         pts: qld,  colour: "#B4532E", labelColour: "#8F3F1C", w: "2.2" },
-        { name: "TQQQ",        pts: tqqq, colour: "#B0894F", labelColour: "#8A6A2E", w: "3" }
+        { name: "QQQ",         pts: qqq,  colour: CK.K.blue,   labelColour: CK.txt(CK.K.blue),   w: "2.2", dash: "2 4" },
+        { name: "3\u00d7 QQQ", pts: trip, colour: CK.K.grey,   labelColour: CK.K.greyText,       w: "1.8", dash: "7 5" },
+        { name: "QLD",         pts: qld,  colour: CK.K.orange, labelColour: CK.txt(CK.K.orange), w: "2.2" },
+        { name: "TQQQ",        pts: tqqq, colour: CK.K.purple, labelColour: CK.txt(CK.K.purple), w: "3" }
       ]
     });
   }
 
+  if (!CK) return;
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", nasdaq);
   } else {

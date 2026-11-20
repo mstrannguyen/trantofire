@@ -6,17 +6,12 @@
   function show(id) { var e = $(id); if (e) e.classList.remove("hidden"); }
   function hide(id) { var e = $(id); if (e) e.classList.add("hidden"); }
 
-  /* ---------- svg helpers ---------- */
-  function el(tag, attrs) {
-    var e = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    return e;
-  }
-  function svgRoot(w, h) {
-    var s = el("svg", { viewBox: "0 0 " + w + " " + h, role: "img" });
-    s.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    return s;
-  }
+  /* ---------- svg helpers ----------
+     The colours, and the helpers that keep a chart's words readable, are in
+     js/chartkit.js and shared with the other charts on the site. Every chart
+     here is drawn at the width it is shown at (CK.fit), with narrower gutters
+     on a phone, so the labels keep the size they are set in. */
+  var CK = window.TTF_CHART, K = CK.K, el = CK.el;
   function pathFrom(pts) {
     return pts.map(function (p, i) {
       return (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1);
@@ -28,13 +23,9 @@
   function xLabels(s, months, x, H, n) {
     if (!n) return;
 
+    var made = [];
     function put(i, anchor, text) {
-      var t = el("text", {
-        x: x(i), y: H - 16, "text-anchor": anchor,
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E"
-      });
-      t.textContent = text;
-      s.appendChild(t);
+      made.push(CK.text(s, x(i), H - 16, text, { "text-anchor": anchor }));
     }
 
     if (n === 1) { put(0, "middle", months[0]); return; }
@@ -47,7 +38,7 @@
       if (per * k >= 52) { step = k; return true; }
       return false;
     });
-    if (n <= 4) step = 1;
+    if (n <= 4 && per >= 52) step = 1;
 
     var shown = [];
     for (var i = 0; i < n; i += step) shown.push(i);
@@ -66,37 +57,31 @@
       lastYear = yr || lastYear;
       put(i, i === 0 ? "start" : (i === n - 1 ? "end" : "middle"), text);
     });
+    CK.thin(made, 8);   // measured, in case two still touch at this width
   }
 
-  /* What TQQQ did with the money actually in it.
+  /* Price, the high-water mark, the tier thresholds, and every buy.
 
-     The cash reserve is excluded from both sides. It is not TQQQ, it earns a
-     different return, and leaving it in drags the figure toward zero while it
-     sits waiting, which tells you about the schedule rather than about the
-     fund. The line is dollars, because dollars are what compounds. The
-     percentage rides along at the points worth naming.
-
-     A second axis was the obvious way to show both and the wrong one: the
-     amount invested grows every month, so a percentage axis fixed to today's
-     cost basis would misread every earlier point on the chart. */
-  /* Price, the high-water mark, the tier thresholds, and every buy. */
+     Blue is the record high. The tiers run from green at Baseline through
+     amber and orange to red at Crash, the same colours as the legend under
+     the chart and the bands on the drawdown chart. */
   function drawPriceChart(host, rows) {
-    var W = 880, H = 380, L = 58, R = 118, T = 20, B = 46, n = rows.length;
-    if (!n) { host.innerHTML = ""; return; }
+    var n = rows.length;
+    if (!n) { CK.clear(host); return; }
 
     var TIER = [
-      { at: 0.60, colour: "#8E1414", label: "\u221260% \u00b7 100%" },
-      { at: 0.40, colour: "#E05A0C", label: "\u221240% \u00b7 67%" },
-      { at: 0.20, colour: "#C9A012", label: "\u221220% \u00b7 33%" }
+      { at: 0.60, colour: K.h3, label: "\u221260% \u00b7 100%" },
+      { at: 0.40, colour: K.h2, label: "\u221240% \u00b7 67%" },
+      { at: 0.20, colour: K.h1, label: "\u221220% \u00b7 33%" }
     ];
     /* Colour and size both carry the tier. Size is the useful half: a bigger
        triangle is a bigger share of the pile going in, so the markers grow as
        the price falls without anyone needing to read the legend. */
     var MARK = {
-      "Baseline": { c: "#2E7D32", r: 5.0 },
-      "Dip":      { c: "#EFC61E", r: 6.5 },
-      "Deep dip": { c: "#E05A0C", r: 8.0 },
-      "Crash":    { c: "#8E1414", r: 9.5 }
+      "Baseline": { c: K.up, r: 5.0 },
+      "Dip":      { c: K.h1, r: 6.5 },
+      "Deep dip": { c: K.h2, r: 8.0 },
+      "Crash":    { c: K.h3, r: 9.5 }
     };
 
     var lo = Infinity, hi = 0;
@@ -107,160 +92,207 @@
     var pad = (hi - lo) * 0.10 || 1;
     lo = Math.max(0, lo - pad); hi = hi + pad;
 
-    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
-    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
-    var s = svgRoot(W, H);
+    CK.fit(host, 880, function (W, narrow) {
+      var H = narrow ? 330 : 380, L = narrow ? 40 : 58, R = narrow ? 78 : 118, T = 20, B = 46;
+      var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+      var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+      var s = CK.svg(host, W, H, "The price, its record high, the three tier boundaries and every buy");
 
-    for (var g = 0; g <= 4; g++) {
-      var gv = lo + (hi - lo) * g / 4, gy = y(gv);
-      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
-        stroke: "#3A2B31", "stroke-opacity": g === 0 ? ".22" : ".07" }));
-      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = usd(gv, 0);
-      s.appendChild(t);
-    }
-
-    /* The high-water mark only ever rises, and each tier boundary is a fixed
-       fraction of it, so all four step together.
-
-       One month is still a line. Without the n === 1 case the path is a bare
-       moveto, which SVG draws as nothing, so the record high and all three
-       tier boundaries vanished and the chart came up empty with only the
-       right-hand labels floating beside it. A flat line across the plot is
-       what those levels actually did that month. */
-    function step(values) {
-      if (n === 1) {
-        var only = y(values[0]);
-        return "M" + L + "," + only + " L" + (W - R) + "," + only;
+      for (var g = 0; g <= 4; g++) {
+        var gv = lo + (hi - lo) * g / 4, gy = y(gv);
+        s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
+          stroke: K.ink, "stroke-opacity": g === 0 ? ".22" : ".07" }));
+        CK.text(s, L - (narrow ? 7 : 10), gy + 4, usd(gv, 0), { "text-anchor": "end" });
       }
-      var d = "";
-      for (var i = 0; i < n; i++) {
-        var px = x(i), py = y(values[i]);
-        if (i === 0) { d = "M" + px + "," + py; }
-        else { d += " L" + px + "," + y(values[i - 1]) + " L" + px + "," + py; }
+
+      /* The high-water mark only ever rises, and each tier boundary is a fixed
+         fraction of it, so all four step together.
+
+         One month is still a line. Without the n === 1 case the path is a bare
+         moveto, which SVG draws as nothing, so the record high and all three
+         tier boundaries vanished and the chart came up empty with only the
+         right-hand labels floating beside it. A flat line across the plot is
+         what those levels actually did that month. */
+      function step(values) {
+        if (n === 1) {
+          var only = y(values[0]);
+          return "M" + L + "," + only + " L" + (W - R) + "," + only;
+        }
+        var d = "";
+        for (var i = 0; i < n; i++) {
+          var px = x(i), py = y(values[i]);
+          if (i === 0) { d = "M" + px + "," + py; }
+          else { d += " L" + px + "," + y(values[i - 1]) + " L" + px + "," + py; }
+        }
+        return d;
       }
-      return d;
-    }
-    s.appendChild(el("path", { d: step(rows.map(function (d) { return d.high; })),
-      fill: "none", stroke: "#5A7BA8", "stroke-width": "1.8", "stroke-opacity": ".85" }));
-    TIER.forEach(function (tier) {
-      var vals = rows.map(function (d) { return d.high * (1 - tier.at); });
-      s.appendChild(el("path", { d: step(vals), fill: "none", stroke: tier.colour,
-        "stroke-width": "1.4", "stroke-opacity": ".55", "stroke-dasharray": "5 4" }));
-      var t = el("text", { x: W - R + 6, y: y(vals[n - 1]) + 4,
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11",
-        "font-weight": "600", fill: tier.colour });
-      t.textContent = tier.label;
-      s.appendChild(t);
+
+      /* Everything printed down the right-hand side is collected first and
+         placed together, so a tier label can never sit under a price box, and
+         the two boxes move apart when the price is at its record. */
+      var side = [];
+
+      TIER.forEach(function (tier) {
+        var vals = rows.map(function (d) { return d.high * (1 - tier.at); });
+        s.appendChild(el("path", { d: step(vals), fill: "none", stroke: tier.colour,
+          "stroke-width": "1.5", "stroke-opacity": ".9", "stroke-dasharray": "5 4" }));
+        side.push({ y: y(vals[n - 1]), h: 14, text: tier.label, colour: tier.colour });
+      });
+      s.appendChild(el("path", { d: step(rows.map(function (d) { return d.high; })),
+        fill: "none", stroke: K.blue, "stroke-width": "2" }));
+
+      var pts = rows.map(function (d, i) { return [x(i), y(d.price)]; });
+      if (n > 1) {
+        s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: K.ink,
+          "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      } else {
+        // no line to draw yet, so the price gets a dot, same as the other charts
+        s.appendChild(el("circle", { cx: pts[0][0], cy: pts[0][1], r: "5",
+          fill: K.ink, stroke: K.card, "stroke-width": "1.5" }));
+      }
+
+      rows.forEach(function (d, i) {
+        if (!(d.bought > 0)) return;
+        var m = MARK[d.tier.label] || MARK.Baseline;
+        var px = x(i), py = y(d.price) + 11 + m.r;
+        s.appendChild(el("path", {
+          d: "M" + px + "," + (py - m.r * 1.25) + " L" + (px + m.r) + "," + (py + m.r * 0.55) +
+             " L" + (px - m.r) + "," + (py + m.r * 0.55) + " Z",
+          fill: m.c, stroke: K.card, "stroke-width": "1"
+        }));
+      });
+
+      var last = rows[n - 1];
+      side.push({ y: y(last.high),  h: 22, boxed: K.blue, ink: "#FFFFFF", text: usd(last.high, 2) });
+      side.push({ y: y(last.price), h: 22, boxed: K.ink,  ink: "#FBF7F1", text: usd(last.price, 2) });
+      CK.spread(side, T - 6, H - B + 12, 2);
+
+      var bx = W - R + (narrow ? 10 : 12), bw = narrow ? 66 : 84;
+      side.forEach(function (it) {
+        if (it.boxed) {
+          s.appendChild(el("rect", { x: bx, y: it.y - 11, width: bw, height: 22, rx: "4", fill: it.boxed }));
+          CK.text(s, bx + bw / 2, it.y + 4, it.text,
+            { "text-anchor": "middle", "font-size": narrow ? "12" : "12.5", "font-weight": "600", fill: it.ink });
+        } else {
+          CK.text(s, bx, it.y + 4, it.text,
+            { "font-size": "11", "font-weight": "600", fill: CK.txt(it.colour) });
+        }
+      });
+
+      xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
     });
-
-    var pts = rows.map(function (d, i) { return [x(i), y(d.price)]; });
-    if (n > 1) {
-      s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: "#3A2B31",
-        "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
-    } else {
-      // no line to draw yet, so the price gets a dot, same as the other charts
-      s.appendChild(el("circle", { cx: pts[0][0], cy: pts[0][1], r: "5",
-        fill: "#3A2B31", stroke: "#FFFFFF", "stroke-width": "1.5" }));
-    }
-
-    rows.forEach(function (d, i) {
-      if (!(d.bought > 0)) return;
-      var m = MARK[d.tier.label] || MARK.Baseline;
-      var px = x(i), py = y(d.price) + 11 + m.r;
-      s.appendChild(el("path", {
-        d: "M" + px + "," + (py - m.r * 1.25) + " L" + (px + m.r) + "," + (py + m.r * 0.55) +
-           " L" + (px - m.r) + "," + (py + m.r * 0.55) + " Z",
-        fill: m.c, stroke: "#FFFFFF", "stroke-width": "1"
-      }));
-    });
-
-    var last = rows[n - 1];
-    [[last.high, "#5A7BA8"], [last.price, "#3A2B31"]].forEach(function (r) {
-      var ry = y(r[0]);
-      s.appendChild(el("rect", { x: W - R + 8, y: ry - 11, width: 84, height: 22, rx: "4", fill: r[1] }));
-      var t = el("text", { x: W - R + 50, y: ry + 4, "text-anchor": "middle",
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "12.5",
-        "font-weight": "600", fill: "#FBF7F1" });
-      t.textContent = usd(r[0], 2);
-      s.appendChild(t);
-    });
-
-    xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
-    host.innerHTML = ""; host.appendChild(s);
   }
 
+  /* What the fund did with the money actually in it.
+
+     The cash reserve is excluded from both sides. It is not the fund, it earns
+     a different return, and leaving it in drags the figure toward zero while
+     it sits waiting, which tells you about the schedule rather than about the
+     fund. The line is dollars, because dollars are what compounds. The
+     percentage rides along at the points worth naming.
+
+     A second axis was the obvious way to show both and the wrong one: the
+     amount invested grows every month, so a percentage axis fixed to today's
+     cost basis would misread every earlier point on the chart. */
   function drawValueChart(host, rows, label) {
-    var W = 880, H = 360, L = 74, R = 20, T = 34, B = 48, n = rows.length;
-    if (!n) { host.innerHTML = ""; return; }
+    var n = rows.length;
+    if (!n) { CK.clear(host); return; }
 
     var cost = rows.map(function (d) { return d.shares * d.avgCost; });
     var pl   = rows.map(function (d, i) { return d.etfValue - cost[i]; });
 
-    var hi = Math.max.apply(null, pl.concat([0]));
-    var lo = Math.min.apply(null, pl.concat([0]));
+    var top = Math.max.apply(null, pl.concat([0]));
+    var bot = Math.min.apply(null, pl.concat([0]));
+    var hi = top, lo = bot;
     var pad = (hi - lo) * 0.16 || 1;
     hi += pad * (n < 3 ? 2.2 : 1); lo -= pad;   // headroom for the callouts
 
-    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
-    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
-    var s = svgRoot(W, H), z = y(0);
+    CK.fit(host, 880, function (W, narrow) {
+      var H = narrow ? 330 : 360, L = narrow ? 52 : 74, R = narrow ? 14 : 20, T = 34, B = 48;
+      var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+      var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+      var s = CK.svg(host, W, H, "Value of the shares less what they cost, month by month"), z = y(0);
 
-    var tk = E.ticks(lo, hi, 4);
-    tk.values.forEach(function (gv) {
-      var gy = y(gv);
-      if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".07" }));
-      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = usd(gv, tk.step < 1 ? 2 : 0);
-      s.appendChild(t);
+      var tk = E.ticks(lo, hi, 4);
+      tk.values.forEach(function (gv) {
+        var gy = y(gv);
+        if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: K.ink, "stroke-opacity": ".07" }));
+        CK.text(s, L - (narrow ? 7 : 10), gy + 4, usd(gv, tk.step < 1 ? 2 : 0), { "text-anchor": "end" });
+      });
+
+      /* The wash between the line and break even, strongest where the line is
+         furthest from it and fading out at the break-even line itself. */
+      var pts = pl.map(function (v, i) { return [x(i), y(v)]; });
+      var yTop = y(top), yBot = y(bot);
+      if (yBot - yTop > 0.5) {
+        var zo = (z - yTop) / (yBot - yTop);
+        var fill = CK.wash(s, K.orange, yTop, yBot,
+          [[0, top > 0 ? 0.30 : 0.02], [zo, 0.02], [1, bot < 0 ? 0.30 : 0.02]]);
+        s.appendChild(el("path", { d: pathFrom(pts) + " L" + x(n - 1) + "," + z + " L" + x(0) + "," + z + " Z",
+          fill: fill }));
+      }
+      s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z, stroke: K.ink,
+        "stroke-opacity": ".5", "stroke-width": "1.4" }));
+      if (n > 1) {
+        s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: K.orange,
+          "stroke-width": "2.6", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      }
+      function argmin(a) { var b = 0; for (var i = 1; i < a.length; i++) if (a[i] < a[b]) b = i; return b; }
+      function argmax(a) { var b = 0; for (var i = 1; i < a.length; i++) if (a[i] > a[b]) b = i; return b; }
+      var marks = [{ i: n - 1, below: pl[n - 1] < 0 }], lowI = argmin(pl), highI = argmax(pl);
+      if (pl[lowI] < 0 && lowI !== n - 1) marks.push({ i: lowI, below: true });
+      if (pl[highI] > 0 && highI !== n - 1) marks.push({ i: highI, below: false });
+
+      /* The newest month is labelled first and always is. Each label goes on
+         its own side of the line (under a loss, over a gain) unless the line
+         itself runs through that place and the other side is clear. The best
+         and the worst month are left as a dot when both sides are taken: a
+         label printed over another one tells nobody anything. */
+      var taken = [];
+      function clash(b) { return taken.some(function (p) { return CK.overlap(b, p); }); }
+      marks.forEach(function (m, k) {
+        var i = m.i, cx = x(i), cy = y(pl[i]);
+        /* The site's gain and loss colours. This used the Baseline and Crash
+           tier colours, which mean something else on the price chart above. */
+        var sc  = E.signClass(pl[i], 2);
+        var col = sc === "pos" ? "#2F6B33" : sc === "neg" ? "#A33220" : K.grey;
+        s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col, stroke: K.card, "stroke-width": "1.5" }));
+        var anchor = n === 1 ? "middle" : (i === 0 ? "start" : (i === n - 1 ? "end" : "middle"));
+
+        /* Two lines of label, clear of the marker in both directions. On a
+           phone the fund's name is left off: the heading over the chart has
+           it, and the full line is wider than the plot. */
+        function put(below) {
+          var ty = below ? cy + 26 : cy - 34;
+          var t1 = CK.text(s, cx, ty, E.signedUsd(pl[i], 2),
+            { "text-anchor": anchor, "font-size": "15", "font-weight": "700", fill: col });
+          var t2 = CK.text(s, cx, ty + 16,
+            (cost[i] > 0 ? E.signedPct(pl[i] / cost[i]) : "\u2014") + " on money invested" +
+              (narrow ? "" : " in " + (label || "the funds")),
+            { "text-anchor": anchor, "font-size": "12.5", fill: col });
+          CK.keepIn([t1, t2], narrow ? L + 2 : 4, W - 4);
+          var b = CK.bounds([t1, t2]);
+          // it may hang under the plot, as far as the dates along the foot
+          var bad = !b ? 0 : (clash(b) ? 4 : 0) + (b.y < 2 || b.y + b.height > H - 29 ? 4 : 0) +
+                             (CK.crosses(b, [pts]) ? 1 : 0);
+          return { t: [t1, t2], b: b, bad: bad };
+        }
+        function drop(c) { c.t.forEach(function (t) { s.removeChild(t); }); }
+        var pick = put(m.below);
+        if (pick.bad) {
+          var other = put(!m.below);
+          if (other.bad < pick.bad) { drop(pick); pick = other; } else { drop(other); }
+        }
+        if (pick.bad >= 4 && k > 0) { drop(pick); return; }   // the dot stays, unlabelled
+        if (pick.b) taken.push(pick.b);
+        CK.plate(s, pick.t, 2);
+      });
+
+      // after the line and its callouts, and placed clear of both
+      CK.caption(s, "break even", z, L, W - R, [pts], taken, { fill: "#7A6A6F" });
+
+      xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
     });
-
-    var pts = pl.map(function (v, i) { return [x(i), y(v)]; });
-    s.appendChild(el("path", { d: pathFrom(pts) + " L" + x(n - 1) + "," + z + " L" + x(0) + "," + z + " Z",
-      fill: "#B0894F", "fill-opacity": ".12" }));
-    s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z, stroke: "#3A2B31",
-      "stroke-opacity": ".5", "stroke-width": "1.4" }));
-    var zt = el("text", { x: L + 4, y: z - 7, "font-family": "EB Garamond,Georgia,serif",
-      "font-size": "11.5", fill: "#7A6A6F" });
-    zt.textContent = "break even";
-    s.appendChild(zt);
-    if (n > 1) {
-      s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: "#B0894F",
-        "stroke-width": "2.6", "stroke-linecap": "round", "stroke-linejoin": "round" }));
-    }
-
-    function argmin(a) { var b = 0; for (var i = 1; i < a.length; i++) if (a[i] < a[b]) b = i; return b; }
-    function argmax(a) { var b = 0; for (var i = 1; i < a.length; i++) if (a[i] > a[b]) b = i; return b; }
-    var marks = [], lowI = argmin(pl), highI = argmax(pl);
-    if (pl[lowI] < 0 && lowI !== n - 1) marks.push({ i: lowI, below: true });
-    if (pl[highI] > 0 && highI !== n - 1) marks.push({ i: highI, below: false });
-    marks.push({ i: n - 1, below: pl[n - 1] < 0 });
-
-    marks.forEach(function (m) {
-      var i = m.i, cx = x(i), cy = y(pl[i]);
-      /* The site's gain and loss colours. This used the Baseline and Crash
-         tier colours, which mean something else on the price chart above. */
-      var sc  = E.signClass(pl[i], 2);
-      var col = sc === "pos" ? "#2F6B33" : sc === "neg" ? "#A33220" : "#8A7A7E";
-      s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col, stroke: "#FFFFFF", "stroke-width": "1.5" }));
-      /* Two lines of label, clear of the marker in both directions. The old
-         spacing put the second line at cy exactly, which is where the dot is. */
-      var ty = m.below ? cy + 26 : cy - 34;
-      var anchor = n === 1 ? "middle" : (i === 0 ? "start" : (i === n - 1 ? "end" : "middle"));
-      var t1 = el("text", { x: cx, y: ty, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
-        "font-size": "15", "font-weight": "700", fill: col });
-      t1.textContent = E.signedUsd(pl[i], 2);
-      s.appendChild(t1);
-      var t2 = el("text", { x: cx, y: ty + 16, "text-anchor": anchor, "font-family": "EB Garamond,Georgia,serif",
-        "font-size": "12.5", fill: col });
-      t2.textContent = (cost[i] > 0 ? E.signedPct(pl[i] / cost[i]) : "\u2014") + " on money invested in " + (label || "the funds");
-      s.appendChild(t2);
-    });
-
-    xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
-    host.innerHTML = ""; host.appendChild(s);
   }
 
   /* Both returns on one axis.
@@ -274,14 +306,14 @@
      Both series are percentages, so they share one axis. A dual axis here
      would mislead, because the two denominators grow at different rates.
 
-     #8A6428 and #5A7BA8 are both already on the site. Measured rather than
-     picked: 139 apart in RGB, 5.3:1 and 4.3:1 on white. */
-  var RET_INVESTED = "#8A6428", RET_TOTAL = "#5A7BA8";
+     Orange is the money in the fund, as on the charts above it, and blue is
+     the measure it is set against. */
+  var RET_INVESTED = K.orange, RET_TOTAL = K.blue;
 
   function drawReturnChart(host, rows) {
-    var W = 880, H = 360, L = 62, R = 150, T = 26, B = 48, n = rows.length;
+    var n = rows.length;
     if (!host) return;
-    if (!n) { host.innerHTML = ""; return; }
+    if (!n) { CK.clear(host); return; }
 
     var inv = [], tot = [];
     rows.forEach(function (d) {
@@ -295,96 +327,87 @@
     var pad = (hi - lo) * 0.18 || 0.02;
     hi += pad; lo -= pad;
 
-    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
-    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
-    var s = svgRoot(W, H);
+    CK.fit(host, 880, function (W, narrow) {
+      var H = narrow ? 320 : 360, L = narrow ? 44 : 62, R = narrow ? 108 : 150, T = 26, B = 48;
+      var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+      var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+      var s = CK.svg(host, W, H, "Return on money invested and return on money in, month by month");
 
-    var tk = E.ticks(lo, hi, 4);
-    tk.values.forEach(function (gv) {
-      var gy = y(gv);
-      if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
-        stroke: "#3A2B31", "stroke-opacity": ".07" }));
-      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end",
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = pct(gv, tk.step < 0.01 ? 1 : 0);
-      s.appendChild(t);
-    });
-
-    var z = y(0);
-    s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z,
-      stroke: "#3A2B31", "stroke-opacity": ".5", "stroke-width": "1.4" }));
-    var zt = el("text", { x: L + 4, y: z - 7, "font-family": "EB Garamond,Georgia,serif",
-      "font-size": "11.5", fill: "#7A6A6F" });
-    zt.textContent = "break even";
-    s.appendChild(zt);
-
-    var ends = [];
-    [[inv, RET_INVESTED, "on money invested"], [tot, RET_TOTAL, "on money in"]]
-      .forEach(function (line) {
-        var vals = line[0], col = line[1];
-        var pts = vals.map(function (v, i) { return [x(i), y(v)]; });
-        if (n > 1) {
-          s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: col,
-            "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
-        }
-        var cx = pts[n - 1][0], cy = pts[n - 1][1];
-        s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col,
-          stroke: "#FFFFFF", "stroke-width": "1.5" }));
-        ends.push({ y: cy, colour: col, name: line[2],
-                    text: E.signedPct(vals[n - 1]) });
+      var tk = E.ticks(lo, hi, 4);
+      tk.values.forEach(function (gv) {
+        var gy = y(gv);
+        if (gv !== 0) s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy,
+          stroke: K.ink, "stroke-opacity": ".07" }));
+        CK.text(s, L - (narrow ? 7 : 10), gy + 4, pct(gv, tk.step < 0.01 ? 1 : 0), { "text-anchor": "end" });
       });
 
-    /* Two months of similar returns put the end labels on top of each other.
-       Both are placed only after both positions are known, and the lower one
-       is pushed down until the pair clears. */
-    ends.sort(function (a, b) { return a.y - b.y; });
-    var GAP = 38;
-    if (ends[1].y - ends[0].y < GAP) ends[1].y = ends[0].y + GAP;
-    var overflow = ends[1].y + 18 - (H - B);
-    if (overflow > 0) { ends[0].y -= overflow; ends[1].y -= overflow; }
+      var z = y(0);
+      s.appendChild(el("line", { x1: L, y1: z, x2: W - R, y2: z,
+        stroke: K.ink, "stroke-opacity": ".5", "stroke-width": "1.4" }));
+      var ends = [], drawn = [];
+      [[tot, RET_TOTAL, "on money in"], [inv, RET_INVESTED, "on money invested"]]
+        .forEach(function (line) {
+          var vals = line[0], col = line[1];
+          var pts = vals.map(function (v, i) { return [x(i), y(v)]; });
+          drawn.push(pts);
+          if (n > 1) {
+            s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: col,
+              "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+          }
+          var cx = pts[n - 1][0], cy = pts[n - 1][1];
+          s.appendChild(el("circle", { cx: cx, cy: cy, r: "4.5", fill: col,
+            stroke: K.card, "stroke-width": "1.5" }));
+          ends.push({ y: cy + 3, h: 36, colour: CK.txt(col), name: line[2],
+                      text: E.signedPct(vals[n - 1]) });
+        });
+      CK.caption(s, "break even", z, L, W - R, drawn, null, { fill: "#7A6A6F" });
 
-    ends.forEach(function (e) {
-      var t1 = el("text", { x: W - R + 12, y: e.y - 1,
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "16",
-        "font-weight": "700", fill: e.colour });
-      t1.textContent = e.text;
-      s.appendChild(t1);
-      var t2 = el("text", { x: W - R + 12, y: e.y + 15,
-        "font-family": "EB Garamond,Georgia,serif", "font-size": "12", fill: e.colour });
-      t2.textContent = e.name;
-      s.appendChild(t2);
+      /* Two months of similar returns put the end labels on top of each other.
+         Both are placed only after both positions are known, and moved apart
+         until the pair clears. */
+      CK.spread(ends, T, H - B + 8, 2);
+
+      ends.forEach(function (e) {
+        CK.text(s, W - R + (narrow ? 9 : 12), e.y - 4, e.text,
+          { "font-size": narrow ? "15" : "16", "font-weight": "700", fill: e.colour });
+        CK.text(s, W - R + (narrow ? 9 : 12), e.y + 12, e.name,
+          { "font-size": narrow ? "11.5" : "12", fill: e.colour });
+      });
+
+      xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
     });
-
-    xLabels(s, rows.map(function (d) { return d.label; }), x, H, n);
-    host.innerHTML = ""; host.appendChild(s);
   }
 
+  /* How far under its record high the fund was at each buy. The three bands
+     are the tiers, in the colours the price chart gives them. */
   function drawDrawdownChart(host, months, dds) {
-    var W = 880, H = 300, L = 52, R = 18, T = 18, B = 44, n = months.length;
+    var n = months.length;
     var floor = Math.min(-0.70, Math.min.apply(null, dds.concat([0])) - 0.05);
-    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
-    var y = function (v) { return T + (H - T - B) * (v / floor); };
-    var s = svgRoot(W, H);
-    [[0, -0.20, "#FFFFFF"], [-0.20, -0.40, "#EDD9D2"], [-0.40, -0.60, "#E3C7BE"], [-0.60, floor, "#3A2B31"]]
-      .forEach(function (b) {
-        var y1 = y(b[0]), y2 = y(b[1]);
-        s.appendChild(el("rect", { x: L, y: y1, width: W - L - R, height: Math.max(0, y2 - y1), fill: b[2], "fill-opacity": b[2] === "#3A2B31" ? ".14" : ".55" }));
+
+    CK.fit(host, 880, function (W, narrow) {
+      var H = narrow ? 270 : 300, L = narrow ? 42 : 52, R = narrow ? 12 : 18, T = 18, B = 44;
+      var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+      var y = function (v) { return T + (H - T - B) * (v / floor); };
+      var s = CK.svg(host, W, H, "Drawdown from the record high at each buy, against the three tiers");
+      [[-0.20, -0.40, K.h1, ".13"], [-0.40, -0.60, K.h2, ".16"], [-0.60, floor, K.h3, ".19"]]
+        .forEach(function (b) {
+          var y1 = y(b[0]), y2 = y(b[1]);
+          s.appendChild(el("rect", { x: L, y: y1, width: W - L - R, height: Math.max(0, y2 - y1), fill: b[2], "fill-opacity": b[3] }));
+        });
+      [[0, K.ink], [-0.20, K.h1], [-0.40, K.h2], [-0.60, K.h3]].forEach(function (v) {
+        var gy = y(v[0]);
+        s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: v[1],
+          "stroke-opacity": v[0] === 0 ? ".25" : ".75", "stroke-dasharray": v[0] === 0 ? "" : "4 4" }));
+        CK.text(s, L - (narrow ? 7 : 10), gy + 4, (v[0] * 100) + "%", { "text-anchor": "end" });
       });
-    [0, -0.20, -0.40, -0.60].forEach(function (v) {
-      var gy = y(v);
-      s.appendChild(el("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": v === 0 ? ".25" : ".14", "stroke-dasharray": v === 0 ? "" : "4 4" }));
-      var t = el("text", { x: L - 10, y: gy + 4, "text-anchor": "end", "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" });
-      t.textContent = (v * 100) + "%";
-      s.appendChild(t);
+      var pts = dds.map(function (v, i) { return [x(i), y(v)]; });
+      if (n > 1) {
+        s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: K.ink, "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      } else if (n === 1) {
+        s.appendChild(el("circle", { cx: x(0), cy: y(dds[0]), r: "6", fill: K.ink }));
+      }
+      xLabels(s, months, x, H, n);
     });
-    var pts = dds.map(function (v, i) { return [x(i), y(v)]; });
-    if (n > 1) {
-      s.appendChild(el("path", { d: pathFrom(pts), fill: "none", stroke: "#3A2B31", "stroke-width": "2.4", "stroke-linecap": "round", "stroke-linejoin": "round" }));
-    } else {
-      s.appendChild(el("circle", { cx: x(0), cy: y(dds[0]), r: "6", fill: "#3A2B31" }));
-    }
-    xLabels(s, months, x, H, n);
-    host.innerHTML = ""; host.appendChild(s);
   }
 
   /* ---------- render one sleeve ----------
@@ -574,7 +597,7 @@
     if (allocSub) allocSub.textContent = "fund / cash \u00b7 never rebalanced";
 
     hide("block-return");
-    var c3 = $("chart3"); if (c3) c3.innerHTML = "";
+    CK.clear($("chart3"));
 
     var lgPrice = $("lg-price");
     if (lgPrice) lgPrice.textContent = sleeve.sym + " price";
@@ -593,7 +616,7 @@
       drawDrawdownChart($("chart2"), months, history.map(function (d) { return -Math.abs(d.drawdown); }));
     } else {
       hide("block-price"); hide("block-drawdown");
-      $("chart0").innerHTML = ""; $("chart2").innerHTML = "";
+      CK.clear($("chart0")); CK.clear($("chart2"));
     }
     drawValueChart($("chart1"), history, sleeve.sym);
 
@@ -847,9 +870,7 @@
        come off the page here rather than standing empty above their captions. */
     hide("block-price");
     hide("block-drawdown");
-    ["chart0", "chart2"].forEach(function (id) {
-      var c = $(id); if (c) c.innerHTML = "";
-    });
+    ["chart0", "chart2"].forEach(function (id) { CK.clear($(id)); });
   }
 
   /* The receipt is one fund's buy. Under Both it becomes a sentence per fund,

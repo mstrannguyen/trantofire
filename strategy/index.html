@@ -23,6 +23,17 @@
     --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
     --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
     --hair:rgba(58,43,49,.14);
+
+    /* Chart colours. The same block on every page with a chart; what each
+       one is for is in js/chartkit.js. -t is the step for words. */
+    --k-blue:#2563EB;   --k-blue-t:#1D4ED8;
+    --k-orange:#F2641A; --k-orange-t:#C2410C;
+    --k-purple:#A21CAF; --k-purple-t:#A21CAF;
+    --k-up:#089981;     --k-up-t:#047857;
+    --k-h1:#D97706;     --k-h1-t:#B45309;
+    --k-h2:#D9480F;     --k-h2-t:#C2410C;
+    --k-h3:#B91C1C;     --k-h3-t:#B91C1C;
+    --k-red:#E11D48;    --k-red-t:#BE123C;
     --display:"Cormorant Garamond",Georgia,serif;
     --body:"EB Garamond",Georgia,serif;
   }
@@ -88,8 +99,16 @@
   .band-blush{background:var(--blush-soft)}
 
   /* counter-cyclical diagram */
-  .figure{margin:52px auto 0;max-width:960px}
-  .figure svg{width:100%;height:auto;display:block}
+  .figure{margin:52px auto 0;max-width:960px;max-width:min(960px,calc(100% - 40px));background:#fff;border:1px solid var(--hair);border-radius:18px;padding:26px 24px 18px;box-sizing:border-box}
+  .figure svg{width:100%;height:auto;display:block;overflow:visible}
+  /* Each drawing is on the page twice: one for wide screens, and one drawn for a phone, with its words at a size a phone can read. */
+  .figure .fig-n{display:none}
+  @media (max-width:900px){
+    .figure{padding:18px 12px 12px;max-width:520px;max-width:min(520px,calc(100% - 28px))}
+    .figure .fig-w{display:none}
+    .figure .fig-n{display:block}
+  }
+  @media (max-width:380px){ .figure{padding:14px 8px 10px;max-width:calc(100% - 20px)} }
   .figcap{text-align:center;font-size:14.5px;line-height:1.7;color:var(--muted);margin:22px auto 0;max-width:64ch}
   .figcap a{color:var(--brass)}
   .src-note{font-size:14.5px;line-height:1.7;color:var(--muted)}
@@ -249,7 +268,7 @@
   </div>
 
   <div class="figure">
-    <svg viewBox="0 0 960 440" role="img" aria-labelledby="ccl-title ccl-desc" xmlns="http://www.w3.org/2000/svg">
+    <svg class="fig-w" viewBox="0 0 960 440" role="img" aria-labelledby="ccl-title ccl-desc" xmlns="http://www.w3.org/2000/svg">
       <title id="ccl-title">Counter-cyclical leverage</title>
       <desc id="ccl-desc">A market price line rising over time with two drawdowns. Cash accumulates while the market climbs, and is deployed into shares at the bottom of each fall.</desc>
 
@@ -259,10 +278,10 @@
           <stop offset="100%" stop-color="#EDD9D2" stop-opacity="0"/>
         </linearGradient>
         <marker id="arrowDown" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto">
-          <path d="M0,0 L9,0 L4.5,9 Z" fill="#B0894F"/>
+          <path d="M0,0 L9,0 L4.5,9 Z" fill="var(--k-orange)"/>
         </marker>
         <marker id="arrowUp" markerWidth="9" markerHeight="9" refX="4.5" refY="1" orient="auto">
-          <path d="M4.5,0 L9,9 L0,9 Z" fill="#8D9C86"/>
+          <path d="M4.5,0 L9,9 L0,9 Z" fill="var(--k-up)"/>
         </marker>
       </defs>
 
@@ -281,34 +300,83 @@
             fill="none" stroke="#3A2B31" stroke-width="2.4" stroke-linecap="round"/>
 
       <!-- high-water marks -->
-      <line x1="210" y1="206" x2="470" y2="206" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
-      <line x1="480" y1="236" x2="600" y2="236" stroke="#B0894F" stroke-width="1.2" stroke-dasharray="5 5" opacity=".7"/>
-      <text x="216" y="196" font-family="EB Garamond,Georgia,serif" font-size="11.5" font-weight="600" fill="#B0894F" letter-spacing="2">HIGH-WATER MARK</text>
+      <line x1="210" y1="206" x2="470" y2="206" stroke="var(--k-blue)" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <line x1="480" y1="236" x2="600" y2="236" stroke="var(--k-blue)" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <text x="322" y="194" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="11.5" font-weight="600" fill="var(--k-blue-t)" letter-spacing="2">HIGH-WATER MARK</text>
 
       <!-- deploy arrows at troughs — labels sit in a clear band above the curve -->
-      <line x1="340" y1="162" x2="340" y2="304" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
-      <circle cx="340" cy="318" r="6.5" fill="#B0894F"/>
-      <text x="340" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Cash → shares</text>
+      <line x1="340" y1="162" x2="340" y2="304" stroke="var(--k-orange)" stroke-width="1.8" marker-end="url(#arrowDown)"/>
+      <circle cx="340" cy="318" r="6.5" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="340" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="var(--k-orange-t)">Cash → shares</text>
 
-      <line x1="606" y1="162" x2="606" y2="334" stroke="#B0894F" stroke-width="1.6" stroke-opacity=".85" marker-end="url(#arrowDown)"/>
-      <circle cx="606" cy="348" r="8" fill="#B0894F"/>
-      <text x="606" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="#B0894F">Deeper fall, bigger buy</text>
+      <line x1="606" y1="162" x2="606" y2="334" stroke="var(--k-orange)" stroke-width="1.8" marker-end="url(#arrowDown)"/>
+      <circle cx="606" cy="348" r="8" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="606" y="150" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" font-weight="600" fill="var(--k-orange-t)">Deeper fall, bigger buy</text>
 
       <!-- accumulate arrows on the climbs -->
-      <line x1="128" y1="300" x2="128" y2="252" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="128" y="326" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <line x1="128" y1="300" x2="128" y2="252" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="128" y="326" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
 
-      <line x1="440" y1="330" x2="440" y2="282" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="440" y="356" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <line x1="440" y1="330" x2="440" y2="282" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="440" y="356" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
 
-      <line x1="812" y1="250" x2="812" y2="202" stroke="#8D9C86" stroke-width="1.8" marker-end="url(#arrowUp)"/>
-      <text x="812" y="276" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#7C8B78">Bank cash</text>
+      <line x1="812" y1="250" x2="812" y2="202" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp)"/>
+      <text x="812" y="276" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
 
       <!-- legend -->
-      <circle cx="46" cy="46" r="5.5" fill="#B0894F"/>
+      <circle cx="46" cy="46" r="5.5" fill="var(--k-orange)"/>
       <text x="60" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage up, spend the reserve</text>
-      <circle cx="360" cy="46" r="5.5" fill="#8D9C86"/>
+      <circle cx="360" cy="46" r="5.5" fill="var(--k-up)"/>
       <text x="374" y="51" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#5A4850">Leverage down, rebuild the reserve</text>
+    </svg>
+    <svg class="fig-n" viewBox="0 0 330 310" role="img" aria-labelledby="ccl-title-n ccl-desc-n" xmlns="http://www.w3.org/2000/svg">
+      <title id="ccl-title-n">Counter-cyclical leverage</title>
+      <desc id="ccl-desc-n">A market price line rising over time with two drawdowns. Cash accumulates while the market climbs, and is deployed into shares at the bottom of each fall.</desc>
+
+      <defs>
+        <linearGradient id="under-n" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#EDD9D2" stop-opacity=".75"/>
+          <stop offset="100%" stop-color="#EDD9D2" stop-opacity="0"/>
+        </linearGradient>
+        <marker id="arrowDown-n" markerWidth="9" markerHeight="9" refX="4.5" refY="8" orient="auto">
+          <path d="M0,0 L9,0 L4.5,9 Z" fill="var(--k-orange)"/>
+        </marker>
+        <marker id="arrowUp-n" markerWidth="9" markerHeight="9" refX="4.5" refY="1" orient="auto">
+          <path d="M4.5,0 L9,9 L0,9 Z" fill="var(--k-up)"/>
+        </marker>
+      </defs>
+
+      <!-- legend, one entry to a row -->
+      <circle cx="19" cy="14" r="5" fill="var(--k-orange)"/>
+      <text x="31" y="18.5" font-family="EB Garamond,Georgia,serif" font-size="13" fill="#5A4850">Leverage up, spend the reserve</text>
+      <circle cx="19" cy="36" r="5" fill="var(--k-up)"/>
+      <text x="31" y="40.5" font-family="EB Garamond,Georgia,serif" font-size="13" fill="#5A4850">Leverage down, rebuild the reserve</text>
+
+      <line x1="14" y1="282" x2="316" y2="282" stroke="#3A2B31" stroke-opacity=".18"/>
+      <text x="14" y="301" font-family="EB Garamond,Georgia,serif" font-size="11.5" fill="#8A7A7E" letter-spacing="2">TIME</text>
+
+      <path d="M14,225.7 C38,206.1 51.8,173.1 72.3,168.2 C92.9,163.3 99.1,219.6 117,236.7 C134.8,253.9 145.8,206.1 165,186.6 C184.2,167 191.1,236.7 208.2,255.1 C225.4,273.4 237.1,186.6 257,151.1 C276.9,115.6 295.4,105.8 316,96 L316,282 L14,282 Z" fill="url(#under-n)"/>
+      <path d="M14,225.7 C38,206.1 51.8,173.1 72.3,168.2 C92.9,163.3 99.1,219.6 117,236.7 C134.8,253.9 145.8,206.1 165,186.6 C184.2,167 191.1,236.7 208.2,255.1 C225.4,273.4 237.1,186.6 257,151.1 C276.9,115.6 295.4,105.8 316,96" fill="none" stroke="#3A2B31" stroke-width="2.2" stroke-linecap="round"/>
+
+      <line x1="72.3" y1="168.2" x2="161.6" y2="168.2" stroke="var(--k-blue)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="165" y1="186.6" x2="206.2" y2="186.6" stroke="var(--k-blue)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="14" y="158.2" font-family="EB Garamond,Georgia,serif" font-size="12" font-weight="600" fill="var(--k-blue-t)">High-water mark</text>
+
+      <line x1="117" y1="118" x2="117" y2="228.2" stroke="var(--k-orange)" stroke-width="1.8" marker-end="url(#arrowDown-n)"/>
+      <circle cx="117" cy="236.7" r="5.5" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="117" y="109" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13" font-weight="600" fill="var(--k-orange-t)">Cash → shares</text>
+
+      <line x1="208.2" y1="118" x2="208.2" y2="246.5" stroke="var(--k-orange)" stroke-width="1.8" marker-end="url(#arrowDown-n)"/>
+      <circle cx="208.2" cy="255.1" r="7" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="208.2" y="94" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13" font-weight="600" fill="var(--k-orange-t)">Deeper fall,</text>
+      <text x="208.2" y="109" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13" font-weight="600" fill="var(--k-orange-t)">bigger buy</text>
+
+      <line x1="44.2" y1="225.7" x2="44.2" y2="196.3" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp-n)"/>
+      <text x="44.2" y="242.8" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
+      <line x1="151.3" y1="244.1" x2="151.3" y2="214.7" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp-n)"/>
+      <text x="151.3" y="261.2" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
+      <line x1="278.9" y1="195.1" x2="278.9" y2="165.8" stroke="var(--k-up)" stroke-width="1.8" marker-end="url(#arrowUp-n)"/>
+      <text x="278.9" y="212.2" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="var(--k-up-t)">Bank cash</text>
     </svg>
   </div>
   <p class="figcap">The concept is Henrique Centieiro's counter-cyclical leverage framework, published on TradingView. The drawing is mine; any clumsiness in it is mine too.</p>
@@ -324,7 +392,7 @@
   </div>
 
   <div class="figure">
-    <svg viewBox="0 0 960 460" role="img" aria-labelledby="opt-title opt-desc" xmlns="http://www.w3.org/2000/svg">
+    <svg class="fig-w" viewBox="0 0 960 460" role="img" aria-labelledby="opt-title opt-desc" xmlns="http://www.w3.org/2000/svg">
       <title id="opt-title">Long-run return against daily leverage</title>
       <desc id="opt-desc">Two curves showing compound return rising with leverage, peaking, then falling. The S&amp;P 500 curve peaks near three times leverage. The Nasdaq-100 curve peaks near two times, which is where I sit, and is already falling by three times.</desc>
 
@@ -340,25 +408,25 @@
       <text x="150" y="277" font-family="EB Garamond,Georgia,serif" font-size="13" fill="#8A7A7E">Break even</text>
 
       <!-- S&P 500 -->
-      <polyline fill="none" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7" stroke-linecap="round" stroke-linejoin="round"
+      <polyline fill="none" stroke="var(--k-blue)" stroke-width="3.2" stroke-dasharray="11 7" stroke-linecap="round" stroke-linejoin="round"
         points="96.0,285.4 115.1,272.1 134.3,259.4 153.4,247.0 172.6,235.2 191.7,223.7 210.9,212.8 230.0,202.2 249.1,192.2 268.3,182.5 287.4,173.4 306.6,164.7 325.7,156.4 344.9,148.6 364.0,141.2 383.1,134.3 402.3,127.8 421.4,121.8 440.6,116.3 459.7,111.2 478.9,106.5 498.0,102.3 517.1,98.5 536.3,95.2 555.4,92.4 574.6,90.0 593.7,88.0 612.9,86.5 632.0,85.5 651.1,84.9 670.3,84.7 689.4,85.1 708.6,85.8 727.7,87.0 746.9,88.7 766.0,90.8 785.1,93.4 804.3,96.4 823.4,99.8 842.6,103.7 861.7,108.1 880.9,112.9 900.0,118.2"/>
 
       <!-- Nasdaq-100 -->
-      <polyline fill="none" stroke="#211A1D" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"
+      <polyline fill="none" stroke="var(--k-orange)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"
         points="96.0,285.4 115.1,271.0 134.3,257.3 153.4,244.5 172.6,232.4 191.7,221.2 210.9,210.7 230.0,201.0 249.1,192.1 268.3,184.0 287.4,176.6 306.6,170.1 325.7,164.3 344.9,159.3 364.0,155.1 383.1,151.7 402.3,149.1 421.4,147.2 440.6,146.2 459.7,145.9 478.9,146.4 498.0,147.7 517.1,149.8 536.3,152.7 555.4,156.3 574.6,160.8 593.7,166.0 612.9,172.0 632.0,178.8 651.1,186.4 670.3,194.7 689.4,203.9 708.6,213.8 727.7,224.6 746.9,236.1 766.0,248.4 785.1,261.4 804.3,275.3 823.4,290.0 842.6,305.4 861.7,321.6 880.9,338.6 900.0,356.4"/>
 
       <!-- peaks -->
-      <circle cx="456.8" cy="145.9" r="6" fill="#211A1D"/>
-      <text x="456.8" y="180" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#211A1D">Nasdaq-100 peaks near 2×</text>
-      <circle cx="666.9" cy="84.7" r="6" fill="#5F7D53"/>
-      <text x="646" y="72" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="#4E6A44">S&amp;P 500 peaks near 3×</text>
+      <circle cx="456.8" cy="145.9" r="6" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="456.8" y="180" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="var(--k-orange-t)">Nasdaq-100 peaks near 2×</text>
+      <circle cx="666.9" cy="84.7" r="6" fill="var(--k-blue)" stroke="#fff" stroke-width="1.5"/>
+      <text x="646" y="72" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="700" fill="var(--k-blue-t)">S&amp;P 500 peaks near 3×</text>
 
       <!-- 3x on the Nasdaq-100, past its peak -->
-      <line x1="670.3" y1="70" x2="670.3" y2="372" stroke="#B0894F" stroke-width="1.4" stroke-dasharray="5 5" opacity=".8"/>
-      <line x1="456.8" y1="190" x2="456.8" y2="372" stroke="#211A1D" stroke-width="1.3" stroke-dasharray="3 5" opacity=".45"/>
-      <circle cx="670.3" cy="194.7" r="7" fill="#B0894F"/>
-      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#B0894F">3× the Nasdaq-100</text>
-      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#9A7C52">already past its peak</text>
+      <line x1="670.3" y1="70" x2="670.3" y2="372" stroke="var(--k-purple)" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <line x1="456.8" y1="190" x2="456.8" y2="372" stroke="var(--k-orange)" stroke-width="1.5" stroke-dasharray="3 5"/>
+      <circle cx="670.3" cy="194.7" r="7" fill="var(--k-purple)" stroke="#fff" stroke-width="1.5"/>
+      <text x="692" y="141" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="var(--k-purple-t)">3× the Nasdaq-100</text>
+      <text x="692" y="162" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="var(--k-purple-t)">already past its peak</text>
 
       <!-- axes -->
       <text x="287.4" y="398" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="13.5" fill="#8A7A7E">1×</text>
@@ -369,10 +437,53 @@
       <text transform="translate(74 218) rotate(-90)" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E" letter-spacing="2.4">LONG-RUN RETURN</text>
 
       <!-- legend -->
-      <line x1="96" y1="42" x2="138" y2="42" stroke="#5F7D53" stroke-width="3.2" stroke-dasharray="11 7"/>
-      <text x="148" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#4E6A44">S&amp;P 500, 1950 to 2009</text>
-      <line x1="352" y1="42" x2="394" y2="42" stroke="#211A1D" stroke-width="3.2"/>
-      <text x="404" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#211A1D">Nasdaq-100, 1971 to 2009</text>
+      <line x1="96" y1="42" x2="138" y2="42" stroke="var(--k-blue)" stroke-width="3.2" stroke-dasharray="11 7"/>
+      <text x="148" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#3A2B31">S&amp;P 500, 1950 to 2009</text>
+      <line x1="352" y1="42" x2="394" y2="42" stroke="var(--k-orange)" stroke-width="3.2"/>
+      <text x="404" y="47" font-family="EB Garamond,Georgia,serif" font-size="14.5" font-weight="600" fill="#3A2B31">Nasdaq-100, 1971 to 2009</text>
+    </svg>
+    <svg class="fig-n" viewBox="0 0 330 340" role="img" aria-labelledby="opt-title-n opt-desc-n" xmlns="http://www.w3.org/2000/svg">
+      <title id="opt-title-n">Long-run return against daily leverage</title>
+      <desc id="opt-desc-n">Two curves showing compound return rising with leverage, peaking, then falling. The S&amp;P 500 curve peaks near three times leverage. The Nasdaq-100 curve peaks near two times, which is where I sit, and is already falling by three times.</desc>
+
+      <!-- legend, one entry to a row -->
+      <line x1="14" y1="16" x2="44" y2="16" stroke="var(--k-blue)" stroke-width="3" stroke-dasharray="9 6"/>
+      <text x="53" y="20.5" font-family="EB Garamond,Georgia,serif" font-size="13" font-weight="600" fill="#3A2B31">S&amp;P 500, 1950 to 2009</text>
+      <line x1="14" y1="38" x2="44" y2="38" stroke="var(--k-orange)" stroke-width="3"/>
+      <text x="53" y="42.5" font-family="EB Garamond,Georgia,serif" font-size="13" font-weight="600" fill="#3A2B31">Nasdaq-100, 1971 to 2009</text>
+
+      <line x1="98.8" y1="88" x2="98.8" y2="292" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="163.5" y1="88" x2="163.5" y2="292" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="228.3" y1="88" x2="228.3" y2="292" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="293" y1="88" x2="293" y2="292" stroke="#3A2B31" stroke-opacity=".07"/>
+      <line x1="34" y1="88" x2="34" y2="292" stroke="#3A2B31" stroke-opacity=".18"/>
+      <line x1="34" y1="234.6" x2="306" y2="234.6" stroke="#3A2B31" stroke-opacity=".22" stroke-dasharray="4 5"/>
+      <text x="52.3" y="227.6" font-family="EB Garamond,Georgia,serif" font-size="12" fill="#8A7A7E">Break even</text>
+
+      <polyline fill="none" stroke="var(--k-blue)" stroke-width="2.8" stroke-dasharray="9 6" stroke-linecap="round" stroke-linejoin="round"
+        points="34,234.6 40.5,225.8 47,217.4 53.4,209.2 59.9,201.4 66.4,193.8 72.9,186.6 79.3,179.5 85.8,172.9 92.3,166.5 98.8,160.5 105.2,154.7 111.7,149.2 118.2,144 124.7,139.1 131.1,134.6 137.6,130.3 144.1,126.3 150.6,122.6 157,119.3 163.5,116.1 170,113.4 176.5,110.9 183,108.7 189.4,106.8 195.9,105.2 202.4,103.9 208.9,102.9 215.3,102.2 221.8,101.8 228.3,101.7 234.8,102 241.2,102.4 247.7,103.2 254.2,104.4 260.7,105.8 267.1,107.5 273.6,109.5 280.1,111.7 286.6,114.3 293,117.2 299.5,120.4 306,123.9"/>
+      <polyline fill="none" stroke="var(--k-orange)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
+        points="34,234.6 40.5,225.1 47,216 53.4,207.6 59.9,199.5 66.4,192.1 72.9,185.2 79.3,178.7 85.8,172.8 92.3,167.5 98.8,162.6 105.2,158.3 111.7,154.4 118.2,151.1 124.7,148.3 131.1,146.1 137.6,144.4 144.1,143.1 150.6,142.4 157,142.2 163.5,142.6 170,143.4 176.5,144.8 183,146.7 189.4,149.1 195.9,152.1 202.4,155.6 208.9,159.5 215.3,164 221.8,169.1 228.3,174.6 234.8,180.7 241.2,187.2 247.7,194.4 254.2,202 260.7,210.1 267.1,218.7 273.6,228 280.1,237.7 286.6,247.9 293,258.6 299.5,269.9 306,281.7"/>
+
+      <line x1="228.3" y1="92" x2="228.3" y2="292" stroke="var(--k-purple)" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <line x1="156.1" y1="192.2" x2="156.1" y2="292" stroke="var(--k-orange)" stroke-width="1.5" stroke-dasharray="3 5"/>
+
+      <circle cx="156.1" cy="142.2" r="5.5" fill="var(--k-orange)" stroke="#fff" stroke-width="1.5"/>
+      <text x="156.1" y="170.2" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" font-weight="700" fill="var(--k-orange-t)">Nasdaq-100</text>
+      <text x="156.1" y="185.2" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" font-weight="700" fill="var(--k-orange-t)">peaks near 2×</text>
+      <circle cx="227.1" cy="101.7" r="5.5" fill="var(--k-blue)" stroke="#fff" stroke-width="1.5"/>
+      <text x="218.1" y="90.7" text-anchor="end" font-family="EB Garamond,Georgia,serif" font-size="12.5" font-weight="700" fill="var(--k-blue-t)">S&amp;P 500 peaks near 3×</text>
+
+      <circle cx="228.3" cy="174.6" r="6" fill="var(--k-purple)" stroke="#fff" stroke-width="1.5"/>
+      <text x="237.3" y="148.6" font-family="EB Garamond,Georgia,serif" font-size="12.5" font-weight="600" fill="var(--k-purple-t)">3× Nasdaq-100</text>
+      <text x="237.3" y="163.6" font-family="EB Garamond,Georgia,serif" font-size="12" fill="var(--k-purple-t)">past its peak</text>
+
+      <text x="98.8" y="310" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#8A7A7E">1×</text>
+      <text x="163.5" y="310" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#8A7A7E">2×</text>
+      <text x="228.3" y="310" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#8A7A7E">3×</text>
+      <text x="293" y="310" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="12.5" fill="#8A7A7E">4×</text>
+      <text x="170" y="331" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="11.5" fill="#8A7A7E" letter-spacing="2">DAILY LEVERAGE</text>
+      <text transform="translate(17 190) rotate(-90)" text-anchor="middle" font-family="EB Garamond,Georgia,serif" font-size="11.5" fill="#8A7A7E" letter-spacing="2">LONG-RUN RETURN</text>
     </svg>
   </div>
   <p class="figcap">The shape of Cooper's result, drawn from his return and volatility figures for the two indexes. The vertical scale is left unlabelled because the height of the hill depends on which decades you measure, so the position of the peak is the only part worth reading off it.</p>

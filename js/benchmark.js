@@ -82,8 +82,7 @@
   function hideCompare() {
     var blk = $("bench-chart-block");
     if (blk) blk.classList.add("hidden");
-    var c = $("bench-chart");
-    if (c) c.innerHTML = "";
+    if (window.TTF_CHART) window.TTF_CHART.clear($("bench-chart"));
   }
 
   /* This section used to delete itself whenever anything went wrong, which
@@ -307,26 +306,18 @@
   }
   var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-  /* Gold for the fund held, cobalt for the unleveraged one. ΔE 125 between
-     them, the widest pair tested, and 126 and 118 under simulated
-     deuteranopia and protanopia, because blue against yellow is the axis
-     red-green colour blindness leaves intact.
-
-     A gold bright enough to read as yellow is too pale for text on white, so
-     the fund gets two shades: #B8860B for the line, shading and markers, at
-     3.3:1, which clears the 3:1 that graphics need, and #8F6A10 for the
-     figures printed in it, at 5.0:1, which clears the 4.5:1 text needs.
-     Cobalt is 8.4:1 and does both jobs.
-
-     The gold is 28.7 from the bright dip-tier yellow on the price chart and
-     sits in the same family as the brass on the profit chart, which also
-     means this fund's money. The cobalt is 41.8 from the record-high blue.
-     The benchmark stays dashed, so colour is never the only signal. */
-  var C_OWN = "#B8860B", C_OWN_TEXT = "#8F6A10", C_BASE = "#0047AB";
+  /* Orange for the fund held, blue for the unleveraged one, the same two
+     colours as the return chart further down the page: orange is the money
+     in the fund, blue is what it is measured against. They stay apart for
+     red-green colour blindness (blue against orange is the axis it leaves
+     intact), and the benchmark stays dashed, so colour is never the only
+     signal. Each has a darker step for the figures printed in it. The
+     colours are in js/chartkit.js. */
+  var CK = window.TTF_CHART;
+  var C_OWN = CK.K.orange, C_BASE = CK.K.blue;
 
   function drawCompare(host, pts, ownSym, baseSym) {
-    var E = window.TTF_ENGINE;
-    var W = 880, H = 340, L = 62, R = 132, T = 24, B = 46, n = pts.length;
+    var E = window.TTF_ENGINE, n = pts.length;
 
     var vals = [0];
     pts.forEach(function (p) { vals.push(p.own, p.base); });
@@ -334,97 +325,108 @@
     var pad = (hi - lo) * 0.15 || 0.01;
     hi += pad; lo -= pad;
 
-    var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
-    var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
+    CK.fit(host, 880, function (W, narrow) {
+      var H = narrow ? 300 : 340, L = narrow ? 44 : 62, R = narrow ? 74 : 132, T = 24, B = 46;
+      var x = function (i) { return n < 2 ? (L + W - R) / 2 : L + (W - L - R) * (i / (n - 1)); };
+      var y = function (v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); };
 
-    var s = svgEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
-      "aria-label": ownSym + " against " + baseSym + ", return on the same money, every trading day" });
-    s.setAttribute("preserveAspectRatio", "xMidYMid meet");
-    var txt = function (x0, y0, str, attrs) {
-      var a = { x: x0, y: y0, "font-family": "EB Garamond,Georgia,serif", "font-size": "11.5", fill: "#8A7A7E" };
-      for (var k in attrs) a[k] = attrs[k];
-      var t = svgEl("text", a); t.textContent = str; s.appendChild(t); return t;
-    };
+      var s = CK.svg(host, W, H, ownSym + " against " + baseSym + ", return on the same money, every trading day");
+      var txt = function (x0, y0, str, attrs) { return CK.text(s, x0, y0, str, attrs); };
 
-    var tk = E.ticks(lo, hi, 4);
-    tk.values.forEach(function (gv) {
-      var gy = y(gv);
-      if (gv !== 0) s.appendChild(svgEl("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: "#3A2B31", "stroke-opacity": ".07" }));
-      txt(L - 10, gy + 4, E.pct(gv, tk.step < 0.01 ? 1 : 0), { "text-anchor": "end" });
-    });
-    var z = y(0);
-    s.appendChild(svgEl("line", { x1: L, y1: z, x2: W - R, y2: z, stroke: "#3A2B31", "stroke-opacity": ".5", "stroke-width": "1.4" }));
-    txt(L + 4, z - 7, "break even", { fill: "#7A6A6F" });
+      var tk = E.ticks(lo, hi, 4);
+      tk.values.forEach(function (gv) {
+        var gy = y(gv);
+        if (gv !== 0) s.appendChild(svgEl("line", { x1: L, y1: gy, x2: W - R, y2: gy, stroke: CK.K.ink, "stroke-opacity": ".07" }));
+        txt(L - (narrow ? 7 : 10), gy + 4, E.pct(gv, tk.step < 0.01 ? 1 : 0), { "text-anchor": "end" });
+      });
+      var z = y(0);
+      s.appendChild(svgEl("line", { x1: L, y1: z, x2: W - R, y2: z, stroke: CK.K.ink, "stroke-opacity": ".5", "stroke-width": "1.4" }));
 
-    /* one label per month, on its first trading day, thinned so they never crowd */
-    var firsts = [];
-    pts.forEach(function (p, i) { if (i === 0 || p.d.slice(0, 7) !== pts[i - 1].d.slice(0, 7)) firsts.push(i); });
-    var step = Math.max(1, Math.ceil(firsts.length / 8));
-    firsts.forEach(function (i, k) {
-      if (k % step) return;
-      var d = pts[i].d;
-      txt(x(i), H - B + 22, MONTHS[+d.slice(5, 7) - 1] + " " + d.slice(0, 4), { "text-anchor": "middle" });
-    });
-
-    var line = function (key) {
-      return pts.map(function (p, i) { return (i ? "L" : "M") + x(i).toFixed(1) + "," + y(p[key]).toFixed(1); }).join(" ");
-    };
-    /* The space between the lines, tinted by whichever is ahead. A segment
-       where they cross is split at the crossing so neither tint leaks onto the
-       wrong side. */
-    if (n > 1) {
-      var ahead = "", behind = "";
-      var P = function (xx, v) { return xx.toFixed(1) + "," + y(v).toFixed(1); };
-      for (var i = 0; i < n - 1; i++) {
-        var a = pts[i], b = pts[i + 1], x0 = x(i), x1 = x(i + 1);
-        var d0 = a.own - a.base, d1 = b.own - b.base;
-        if (d0 * d1 >= 0) {
-          var poly = "M" + P(x0, a.own) + " L" + P(x1, b.own) + " L" + P(x1, b.base) + " L" + P(x0, a.base) + " Z ";
-          if (d0 + d1 >= 0) ahead += poly; else behind += poly;
-        } else {
-          var t = d0 / (d0 - d1), xm = x0 + t * (x1 - x0), vm = a.own + t * (b.own - a.own);
-          var first  = "M" + P(x0, a.own) + " L" + P(xm, vm) + " L" + P(x0, a.base) + " Z ";
-          var second = "M" + P(xm, vm) + " L" + P(x1, b.own) + " L" + P(x1, b.base) + " Z ";
-          if (d0 > 0) { ahead += first; behind += second; } else { behind += first; ahead += second; }
-        }
+      /* A label on the first trading day of a month: every month while they
+         fit, then every second, third, fourth, sixth or twelfth. The year is
+         printed with the first one and again when it changes. The first buy
+         can fall late in a month, which puts the next label almost on top of
+         the first, so they are measured once drawn and any that touch are
+         taken out. */
+      var firsts = [];
+      pts.forEach(function (p, i) { if (i === 0 || p.d.slice(0, 7) !== pts[i - 1].d.slice(0, 7)) firsts.push(i); });
+      var per = firsts.length > 1 ? (x(firsts[firsts.length - 1]) - x(firsts[0])) / (firsts.length - 1) : W;
+      var every = 24;
+      [1, 2, 3, 4, 6, 12].some(function (k) { if (per * k >= 58) { every = k; return true; } return false; });
+      var lastYear = "", foot = [];
+      firsts.forEach(function (i, k) {
+        if (k % every) return;
+        var d = pts[i].d, yr = d.slice(0, 4);
+        foot.push(txt(x(i), H - B + 22, MONTHS[+d.slice(5, 7) - 1] + (yr !== lastYear ? " " + yr : ""),
+          { "text-anchor": k === 0 ? "start" : "middle" }));
+        lastYear = yr;
+      });
+      foot = CK.thin(foot, 10);
+      if (foot.length > 1) {          // the last one must not run under the end labels
+        var fb = CK.box(foot[foot.length - 1]);
+        if (fb && fb.x + fb.width > W - R + 16) s.removeChild(foot[foot.length - 1]);
       }
-      if (ahead)  s.appendChild(svgEl("path", { d: ahead,  fill: C_OWN,  "fill-opacity": ".13", stroke: "none" }));
-      if (behind) s.appendChild(svgEl("path", { d: behind, fill: C_BASE, "fill-opacity": ".13", stroke: "none" }));
-    }
 
-    if (n > 1) {
-      s.appendChild(svgEl("path", { d: line("base"), fill: "none", stroke: C_BASE, "stroke-width": "2.2",
-        "stroke-dasharray": "6 5", "stroke-linecap": "round", "stroke-linejoin": "round" }));
-      s.appendChild(svgEl("path", { d: line("own"), fill: "none", stroke: C_OWN, "stroke-width": "2.4",
-        "stroke-linecap": "round", "stroke-linejoin": "round" }));
-    }
+      var line = function (key) {
+        return pts.map(function (p, i) { return (i ? "L" : "M") + x(i).toFixed(1) + "," + y(p[key]).toFixed(1); }).join(" ");
+      };
+      /* The space between the lines, tinted by whichever is ahead. A segment
+         where they cross is split at the crossing so neither tint leaks onto the
+         wrong side. */
+      if (n > 1) {
+        var ahead = "", behind = "";
+        var P = function (xx, v) { return xx.toFixed(1) + "," + y(v).toFixed(1); };
+        for (var i = 0; i < n - 1; i++) {
+          var a = pts[i], b = pts[i + 1], x0 = x(i), x1 = x(i + 1);
+          var d0 = a.own - a.base, d1 = b.own - b.base;
+          if (d0 * d1 >= 0) {
+            var poly = "M" + P(x0, a.own) + " L" + P(x1, b.own) + " L" + P(x1, b.base) + " L" + P(x0, a.base) + " Z ";
+            if (d0 + d1 >= 0) ahead += poly; else behind += poly;
+          } else {
+            var t = d0 / (d0 - d1), xm = x0 + t * (x1 - x0), vm = a.own + t * (b.own - a.own);
+            var first  = "M" + P(x0, a.own) + " L" + P(xm, vm) + " L" + P(x0, a.base) + " Z ";
+            var second = "M" + P(xm, vm) + " L" + P(x1, b.own) + " L" + P(x1, b.base) + " Z ";
+            if (d0 > 0) { ahead += first; behind += second; } else { behind += first; ahead += second; }
+          }
+        }
+        if (ahead)  s.appendChild(svgEl("path", { d: ahead,  fill: C_OWN,  "fill-opacity": ".16", stroke: "none" }));
+        if (behind) s.appendChild(svgEl("path", { d: behind, fill: C_BASE, "fill-opacity": ".13", stroke: "none" }));
+      }
 
-    /* each buy day marked on the real line, so a step in the line can be read
-       against the money that caused it */
-    pts.forEach(function (p, i) {
-      if (!p.buy) return;
-      s.appendChild(svgEl("circle", { cx: x(i), cy: y(p.own), r: "3.4", fill: "#FFFFFF", stroke: C_OWN, "stroke-width": "1.6" }));
+      if (n > 1) {
+        s.appendChild(svgEl("path", { d: line("base"), fill: "none", stroke: C_BASE, "stroke-width": "2.2",
+          "stroke-dasharray": "6 5", "stroke-linecap": "round", "stroke-linejoin": "round" }));
+        s.appendChild(svgEl("path", { d: line("own"), fill: "none", stroke: C_OWN, "stroke-width": "2.4",
+          "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      }
+
+      /* each buy day marked on the real line, so a step in the line can be read
+         against the money that caused it */
+      pts.forEach(function (p, i) {
+        if (!p.buy) return;
+        s.appendChild(svgEl("circle", { cx: x(i), cy: y(p.own), r: "3.4", fill: CK.K.card, stroke: C_OWN, "stroke-width": "1.6" }));
+      });
+
+      // after the lines, and placed where neither of them runs
+      CK.caption(s, "break even", z, L, W - R,
+        [pts.map(function (p, i) { return [x(i), y(p.own)]; }), pts.map(function (p, i) { return [x(i), y(p.base)]; })],
+        null, { fill: "#7A6A6F" });
+
+      /* end labels, placed after both are known so they cannot overlap */
+      var lp = pts[n - 1];
+      var ends = [
+        { y: y(lp.own) + 3,  h: 36, v: lp.own,  c: C_OWN,  name: ownSym },
+        { y: y(lp.base) + 3, h: 36, v: lp.base, c: C_BASE, name: baseSym }
+      ];
+      ends.forEach(function (e) {
+        s.appendChild(svgEl("circle", { cx: x(n - 1), cy: e.y - 3, r: "4.5", fill: e.c, stroke: CK.K.card, "stroke-width": "1.5" }));
+      });
+      CK.spread(ends, T, H - B + 8, 0);
+      ends.forEach(function (e) {
+        txt(W - R + (narrow ? 9 : 12), e.y - 4, shownPct(e.v), { "font-size": narrow ? "15" : "16", "font-weight": "700", fill: CK.txt(e.c) });
+        txt(W - R + (narrow ? 9 : 12), e.y + 12, e.name, { "font-size": narrow ? "11.5" : "12", fill: CK.txt(e.c) });
+      });
     });
-
-    /* end labels, placed after both are known so they cannot overlap */
-    var lp = pts[n - 1];
-    var ends = [
-      { y: y(lp.own),  v: lp.own,  c: C_OWN,  tc: C_OWN_TEXT, name: ownSym },
-      { y: y(lp.base), v: lp.base, c: C_BASE, tc: C_BASE,     name: baseSym }
-    ];
-    ends.forEach(function (e) {
-      s.appendChild(svgEl("circle", { cx: x(n - 1), cy: e.y, r: "4.5", fill: e.c, stroke: "#FFFFFF", "stroke-width": "1.5" }));
-    });
-    ends.sort(function (a, b) { return a.y - b.y; });
-    if (ends[1].y - ends[0].y < 36) ends[1].y = ends[0].y + 36;
-    var over = ends[1].y + 16 - (H - B);
-    if (over > 0) { ends[0].y -= over; ends[1].y -= over; }
-    ends.forEach(function (e) {
-      txt(W - R + 12, e.y - 1, shownPct(e.v), { "font-size": "16", "font-weight": "700", fill: e.tc });
-      txt(W - R + 12, e.y + 15, e.name, { "font-size": "12", fill: e.tc });
-    });
-
-    host.innerHTML = ""; host.appendChild(s);
   }
 
   /* One sentence under the chart, worked out from the last point rather than

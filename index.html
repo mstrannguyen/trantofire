@@ -31,6 +31,17 @@
     --muted:#8A7A7E;
     --hair:rgba(58,43,49,.14);
 
+    /* Chart colours. The same block on every page with a chart; what each
+       one is for is in js/chartkit.js. -t is the step for words. */
+    --k-blue:#2563EB;   --k-blue-t:#1D4ED8;
+    --k-orange:#F2641A; --k-orange-t:#C2410C;
+    --k-purple:#A21CAF; --k-purple-t:#A21CAF;
+    --k-up:#089981;     --k-up-t:#047857;
+    --k-h1:#D97706;     --k-h1-t:#B45309;
+    --k-h2:#D9480F;     --k-h2-t:#C2410C;
+    --k-h3:#B91C1C;     --k-h3-t:#B91C1C;
+    --k-red:#E11D48;    --k-red-t:#BE123C;
+
     --display:"Cormorant Garamond",Georgia,serif;
     --body:"EB Garamond",Georgia,serif;
   }
@@ -325,16 +336,19 @@
   /* engine: the growth-of-$10k chart */
   .cmp-chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:30px 26px 20px}
   .cmp-chart svg{width:100%;height:auto;display:block;overflow:visible}
+  @media (max-width:560px){ .cmp-chart{padding:22px 14px 14px} }
   .cmp-legend{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:22px;font-size:13.5px;color:#5A4850}
   .cmp-legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
+  .cmp-legend i.dot{background:repeating-linear-gradient(90deg,var(--k-blue) 0 3px,transparent 3px 6.3px);border-radius:0}
+  .cmp-legend i.dash{background:repeating-linear-gradient(90deg,#8A7A7E 0 7px,transparent 7px 11px);width:25px;border-radius:0}
   .annual{width:100%;border-collapse:collapse;font-size:15.5px;margin-top:38px}
   .annual caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
   .annual th{text-align:right;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
   .annual th:first-child,.annual td:first-child{text-align:left}
   .annual td{text-align:right;padding:13px 16px 13px 0;border-bottom:1px solid var(--hair)}
-  .annual .q{color:#5E7350}
-  .annual .t{color:#8A6A2E;font-weight:600}
-  .annual .qbal{color:#5E7350}
+  .annual .q{color:var(--k-blue-t)}
+  .annual .t{color:var(--k-purple-t);font-weight:600}
+  .annual .qbal{color:var(--k-blue-t)}
   .annual .neg{color:#A33220}
   .annual tr.crash td{background:rgba(168,90,72,.06)}
   .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
@@ -625,10 +639,10 @@
   <div class="wrap">
     <div class="cmp-chart" id="cmp-chart"></div>
     <div class="cmp-legend">
-      <span><i style="background:#2E7D32"></i>QQQ · the plain index</span>
-      <span><i style="background:#8A7A7E"></i>3× QQQ · what "triple" sounds like</span>
-      <span><i style="background:#B4532E"></i>QLD · 2×</span>
-      <span><i style="background:var(--brass)"></i>TQQQ · 3×</span>
+      <span><i class="dot"></i>QQQ · the plain index</span>
+      <span><i class="dash"></i>3× QQQ · what "triple" sounds like</span>
+      <span><i style="background:var(--k-orange)"></i>QLD · 2×</span>
+      <span><i style="background:var(--k-purple)"></i>TQQQ · 3×</span>
     </div>
   </div>
 
@@ -723,7 +737,8 @@
 <script src="js/signal.js?v=15" defer></script>
 <script src="js/marks.js?v=4" defer></script>
 
-<script src="js/compare.js?v=14" defer></script>
+<script src="js/chartkit.js?v=1" defer></script>
+<script src="js/compare.js?v=15" defer></script>
 <script src="js/comments.js?v=4" defer></script>
 </body>
 </html>

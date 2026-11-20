@@ -23,6 +23,17 @@
     --ivory:#FBF7F1;--blush:#EDD9D2;--blush-soft:#F6EAE6;--clay:#E3C7BE;
     --plum:#3A2B31;--plum-deep:#2A1E23;--brass:#B0894F;--sage:#8D9C86;--muted:#8A7A7E;
     --hair:rgba(58,43,49,.14);
+
+    /* Chart colours. The same block on every page with a chart; what each
+       one is for is in js/chartkit.js. -t is the step for words. */
+    --k-blue:#2563EB;   --k-blue-t:#1D4ED8;
+    --k-orange:#F2641A; --k-orange-t:#C2410C;
+    --k-purple:#A21CAF; --k-purple-t:#A21CAF;
+    --k-up:#089981;     --k-up-t:#047857;
+    --k-h1:#D97706;     --k-h1-t:#B45309;
+    --k-h2:#D9480F;     --k-h2-t:#C2410C;
+    --k-h3:#B91C1C;     --k-h3-t:#B91C1C;
+    --k-red:#E11D48;    --k-red-t:#BE123C;
     --display:"Cormorant Garamond",Georgia,serif;
     --body:"EB Garamond",Georgia,serif;
   }
@@ -129,8 +140,8 @@
   .bar-track{position:relative;height:18px;background:var(--blush-soft);border-radius:4px}
   .bars.has-zero .bar-track::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;
     width:1px;background:rgba(58,43,49,.28)}
-  .bar{position:absolute;top:0;bottom:0;background:var(--brass);border-radius:3px;min-width:2px}
-  .bar.neg{background:#A85A48}
+  .bar{position:absolute;top:0;bottom:0;background:var(--k-blue);border-radius:3px;min-width:2px}
+  .bar.neg{background:var(--k-red)}
   .bar-val{font-size:14px;text-align:right}
 
   .card-comments{margin-top:34px;padding-top:26px;border-top:1px solid var(--hair)}
@@ -161,7 +172,9 @@
     .band:not(.band-blush) + .band:not(.band-blush),
     .band-blush + .band-blush{padding-top:24px}
     .card{padding:28px 22px}
-    .bar-row{grid-template-columns:52px 1fr 66px;gap:9px}
+    /* the name on its own line above the bar: in a 52px column long names broke into three lines */
+    .bar-row{grid-template-columns:1fr 66px;column-gap:9px;row-gap:3px}
+    .bar-label{grid-column:1 / -1}
     .entry-table table{font-size:14.5px}
     .entry-figs{grid-template-columns:repeat(2,1fr)}
     .entry-figs div:nth-child(odd){border-left:0}

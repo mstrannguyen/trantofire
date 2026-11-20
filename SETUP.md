@@ -145,15 +145,15 @@ and how to undo a mistake, are in JOURNAL.md.
 
 ## Changing the settings
 
-`js/config.js` holds three things you may want to change one day:
+`js/config.js` holds two things you may want to change one day:
 
-    CONTRIBUTION      how much you put in each month, in US dollars
+    CONTRIBUTION      how much goes into each fund each month, in US dollars
     CASH_RATE         interest earned on the idle cash reserve (0.04 = 4% a year)
-    HIGH_WATER_MARK   fallback only
 
 The all-time high is pulled live from Yahoo Finance every time someone loads
-the page, so you never update it by hand. HIGH_WATER_MARK is only what shows
-if Yahoo cannot be reached.
+the page, so you never update it by hand, and none is stored in the file. If
+Yahoo cannot be reached, the page uses the last figure that browser fetched,
+kept for 120 days, and otherwise leaves the figure out.
 
 Both domains point at the same site, and trantofire.com redirects to
 trantofire.au so there is only ever one live version.
