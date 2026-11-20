@@ -174,7 +174,13 @@
         }
       }
 
-      var etfValue  = shares * price;
+      // A month's row values the shares at the price paid, the same price the
+      // cost was worked out from. The logged price, the last close before the
+      // order, decides the tier and the share count and nothing else. Valuing
+      // at that close as well put shares bought the next morning on the books
+      // at a price they were never bought at: November 2026's QLD row came
+      // out $14.30 lower than at the price paid.
+      var etfValue  = shares * fill;
       var portfolio = etfValue + reserve;
 
       // Estimate of the expense ratio borne this month. NOT subtracted from

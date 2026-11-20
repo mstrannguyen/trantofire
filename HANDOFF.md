@@ -51,6 +51,13 @@ one. Anything else you read in an old file or an old chat is superseded.
   only decides what the shares cost and what stays in the reserve, so an order
   sized the night before always matches the rules. Until November 2026 the
   price logged was the fill and the two were the same thing
+- **A month's row values the shares at the price paid** (`fill`, or `price`
+  where there is no fill), the same price the cost comes from (21 Nov 2026).
+  It used to value them at `price`, the close before the order, so November
+  2026's rows came out $14.30 (QLD) and $11.22 (SSO) lower than at the prices
+  paid.
+  The log table, the journal cards and the two return charts all read it from
+  `etfValue` in `js/engine.js`
 
 ### The 3× funds
 
@@ -195,6 +202,14 @@ Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Why not just buy every month, Lifecycle investing, What I
 didn't build this on, How this goes wrong, The mechanics, Comments.
 
+My Story's "Rates went up" paragraph is dated to 21 Nov 2026: the cash rate at
+4.85% after the rises of 29 September and 3 November, and the average
+owner-occupier variable home loan at about 6.7% (Canstar's estimate after
+November's rise, 6.74%). The table under it uses the same 6.7%. When the
+Reserve Bank moves again, change the paragraph, the table's caption and its
+mortgage column (6.7% in three rows), the "7.7% after tax beats 6.7%
+guaranteed" line and the source note together.
+
 ## The monthly routine
 
 Two buys a month now, QLD and SSO, in two arrays in the same file. The
@@ -238,10 +253,10 @@ page capital-gains paragraph, "The bigger point is" in My Story, and
   last complete year, so it matches the annual table beside it
 - Site copy must not use the word **"sleeve"**. It reads as AI jargon. Say
   "fund", "the two funds", "the Nasdaq side"
-- **Chart colours (20 Nov 2026).** Every chart uses one set, the same one as
-  the Studio. They are CSS variables in the `:root` block of Home, Strategy,
-  Progress and Journal, and the four blocks must stay the same. Each has a
-  darker step for words (`--k-*-t`):
+- **Chart colours (20 Nov 2026).** Every chart uses one set. They are CSS
+  variables in the `:root` block of Home, Strategy, Progress and Journal, and
+  the four blocks must stay the same. Each has a darker step for words
+  (`--k-*-t`):
   - **blue** `#2563EB`: the record high, and whatever a fund is measured
     against (QQQ or VOO, the return on money in, the S&P 500 on the leverage
     chart)
