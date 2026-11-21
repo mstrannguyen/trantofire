@@ -202,6 +202,17 @@ Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Why not just buy every month, Lifecycle investing, What I
 didn't build this on, How this goes wrong, The mechanics, Comments.
 
+What the funds hold (corrected 21 Nov 2026). The home page said none of these
+funds hold the shares in their index, only swaps. That was wrong. ProShares'
+daily holdings for 18 and 19 Nov 2026 show shares at about 66% of SSO's net
+assets, 78% of QLD's and 58% of TQQQ's (UPRO about the same as TQQQ), swaps
+with ten banks for most of the rest of the exposure (about 116%, 109% and
+226%), index futures (13% to 16%), and Treasury bills and a money market fund
+alongside. The home page now says so, and "the borrowing sits inside the fund"
+on My Story and Strategy reads "the leverage": the funds don't take a loan,
+they add swaps and futures to the shares they own. Don't write that they hold
+no shares.
+
 My Story's "Rates went up" paragraph is dated to 21 Nov 2026: the cash rate at
 4.85% after the rises of 29 September and 3 November, and the average
 owner-occupier variable home loan at about 6.7% (Canstar's estimate after

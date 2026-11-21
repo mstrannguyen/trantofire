@@ -113,7 +113,7 @@
 
            ln(1 + r_k) = k * ln(1 + r_1) - ((k * k - k) / 2) * D
 
-       where D covers the variance drag, the financing cost on the borrowed
+       where D covers the variance drag, the financing cost on the leveraged
        part and the fee. Both r_1 and r_3 are known for every year here, so D
        falls out of the 3x line and the 2x line follows from it. A 2x fund
        carries a third of the drag a 3x fund does.
