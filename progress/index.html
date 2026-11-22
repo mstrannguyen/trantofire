@@ -113,9 +113,9 @@
   .neg{color:#A33220}
 
   .tierpill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 16px;border-radius:100px;background:var(--brass);color:#fff}
-  .tierpill.t0{background:#fff;color:var(--plum);border:1px solid rgba(176,137,79,.55)}
-  .tierpill.t1{background:var(--blush);color:var(--plum)}
-  .tierpill.t2{background:var(--clay);color:var(--plum)}
+  .tierpill.t0{background:#F6EAE6;color:var(--plum-deep);border:1px solid rgba(176,137,79,.6)}
+  .tierpill.t1{background:#E6C6BA;color:var(--plum-deep)}
+  .tierpill.t2{background:#C08872;color:var(--plum-deep)}
   .tierpill.t3{background:var(--plum);color:#fff}
 
 
@@ -154,41 +154,55 @@
   .legend i.d2{background:repeating-linear-gradient(90deg,var(--k-h2) 0 5px,transparent 5px 8.5px)}
   .legend i.d3{background:repeating-linear-gradient(90deg,var(--k-h3) 0 5px,transparent 5px 8.5px)}
 
-  /* table */
+  /* Tables. The same look on every page of the site: a plum heading band with
+     ivory words and a brass rule under it, white rows on a rounded panel, and
+     the first column in the darker ink. A gain or a loss printed as a figure
+     is #2F6B33 or #A33220, as everywhere else, and a weight heavier here. */
+
   /* Tier tally. Same card as the log table below it, but narrower: four
-     columns do not need the full width the log needs. */
-  .tally{max-width:760px;margin:30px auto 0;border:1px solid var(--hair);border-radius:18px;background:#fff;padding:30px 30px 8px}
-  .tally h3{font-family:var(--display);font-size:25px;font-weight:400;margin:0 0 20px}
-  table.tally-table{width:100%;border-collapse:collapse;font-size:14.5px}
-  table.tally-table th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:0 10px 14px 0;border-bottom:1px solid var(--brass);white-space:nowrap}
-  table.tally-table td{text-align:right;padding:15px 10px 15px 0;border-bottom:1px solid var(--hair)}
-  table.tally-table th:first-child,table.tally-table td:first-child{text-align:left}
-  table.tally-table th:last-child,table.tally-table td:last-child{padding-right:0}
+     columns do not need the full width the log needs. The heading sits in
+     the card and the table runs edge to edge under it. */
+  .tally{max-width:760px;margin:30px auto 0;border:1px solid rgba(58,43,49,.22);border-radius:18px;background:#fff;overflow:hidden}
+  .tally h3{font-family:var(--display);font-size:25px;font-weight:400;margin:0;padding:26px 30px 20px}
+  table.tally-table{width:100%;border-collapse:separate;border-spacing:0;font-size:15px}
+  table.tally-table th{background:var(--plum);color:var(--ivory);text-align:right;font-size:13.5px;font-weight:600;letter-spacing:.03em;line-height:1.35;vertical-align:bottom;padding:14px 14px 12px;border-bottom:3px solid var(--brass)}
+  table.tally-table td{text-align:right;padding:15px 14px;border-bottom:1px solid var(--hair)}
+  table.tally-table th:first-child,table.tally-table td:first-child{text-align:left;padding-left:30px}
+  table.tally-table th:last-child,table.tally-table td:last-child{padding-right:30px}
   table.tally-table tr:last-child td{border-bottom:0}
-  table.tally-table td.none{color:var(--muted)}
+  table.tally-table td.none{color:#6B5A60}
   @media (max-width:560px){
-    .tally{padding:24px 22px 6px}
-    table.tally-table{font-size:13.5px}
+    .tally h3{padding:22px 20px 16px}
+    table.tally-table{font-size:14px}
+    table.tally-table th{font-size:12.5px}
+    table.tally-table th,table.tally-table td{padding-left:8px;padding-right:8px}
+    table.tally-table th:first-child,table.tally-table td:first-child{padding-left:20px}
+    table.tally-table th:last-child,table.tally-table td:last-child{padding-right:20px}
     table.tally-table th:nth-child(3),table.tally-table td:nth-child(3){display:none}
   }
-  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:30px;border:1px solid var(--hair);border-radius:18px;background:#fff}
-  table.log{width:100%;border-collapse:collapse;font-size:13.5px;min-width:0;table-layout:auto}
-  table.log th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:20px 14px;border-bottom:1px solid var(--brass);white-space:nowrap;background:#fff;position:sticky;top:0}
-  table.log th:first-child,table.log td:first-child{text-align:left;padding-left:18px}
-  table.log th:last-child,table.log td:last-child{padding-right:18px}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:30px;border:1px solid rgba(58,43,49,.22);border-radius:18px;background:#fff}
+  table.log{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;min-width:0;table-layout:auto}
+  table.log th{background:var(--plum);color:var(--ivory);text-align:right;font-size:13px;font-weight:600;letter-spacing:.03em;padding:16px 11px 14px;border-bottom:3px solid var(--brass);white-space:nowrap;position:sticky;top:0}
+  table.log th:first-child,table.log td:first-child{text-align:left;padding-left:20px}
+  table.log th:last-child,table.log td:last-child{padding-right:20px}
 
-  table.log tr.today td{background:rgba(176,137,79,.09);border-bottom:2px solid var(--brass);font-weight:500}
-  table.log tr.today .mth{font-family:var(--display);font-size:17px}
-  .sub-note{font-family:var(--body);font-size:11.5px;font-weight:400;color:var(--muted);letter-spacing:.04em}
-  table.log td{text-align:right;padding:14px 9px;border-bottom:1px solid var(--hair);white-space:nowrap}
+  table.log tr.today td{background:rgba(176,137,79,.17);border-bottom:2px solid var(--brass);font-weight:500}
+  table.log tr.today td:first-child{box-shadow:inset 4px 0 0 var(--brass)}
+  table.log tr.today .mth{font-size:17px;font-weight:600}
+  .sub-note{font-family:var(--body);font-size:11.5px;font-weight:400;color:#6B5A60;letter-spacing:.04em}
+  table.log td{text-align:right;padding:14px 11px;border-bottom:1px solid var(--hair);white-space:nowrap}
   table.log tr:last-child td{border-bottom:0}
   table.log tbody tr:hover{background:var(--blush-soft)}
-  .mth{font-family:var(--display);font-size:18px}
+  table.log .pos,table.log .neg{font-weight:600}
+  .mth{font-family:var(--display);font-size:18.5px;font-weight:600;color:var(--plum-deep)}
   .reb{display:block;font-family:var(--body);font-size:12px;color:#8F3F1C;letter-spacing:.02em;margin-top:3px}
-  .sig{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--blush-soft);color:#6B4E1E}
-  .sig.s1{background:var(--blush)}
-  .sig.s2{background:var(--clay)}
-  .sig.s3{background:var(--plum);color:#fff}
+  /* The tier a month landed on. The four step darker as the fall deepens, in
+     the same four colours as the tier cards on Home and the tier named at the
+     top of this page. */
+  .sig{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:#F6EAE6;color:var(--plum-deep);box-shadow:inset 0 0 0 1px rgba(176,137,79,.6)}
+  .sig.s1{background:#E6C6BA;box-shadow:none}
+  .sig.s2{background:#C08872;box-shadow:none}
+  .sig.s3{background:var(--plum);color:#fff;box-shadow:none}
 
 
   .sheet-embed{border:1px solid var(--hair);border-radius:18px;overflow:hidden;background:#fff}

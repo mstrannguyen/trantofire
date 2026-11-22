@@ -330,6 +330,44 @@ paragraphs that end on what SSO and QLD did in the same falls.
 - The page prints the end values in each figure's caption before the script
   runs. `resting()` in the script writes the same words, so change both
 
+## Tables (restyled 22 Nov 2026)
+
+Every table on the site has one look. It is written out in each page's own
+`<style>`, under a comment that starts "Tables.", so a change to one page's
+block is a change to make on all five (Home, Strategy, My Story, Progress,
+Journal).
+
+- **Heading row**: solid plum (`--plum`) with ivory words in sentence case,
+  13.5px at weight 600 (12.5px on a phone), and a 3px brass rule under it.
+  The old headings were 10px grey capitals with wide letter-spacing. Sentence
+  case is also narrower, which is why the monthly log now fits a 1200px
+  window and the smaller tables fit a phone
+- **Rows**: white, on a panel with a 1px `rgba(58,43,49,.22)` border and 16px
+  corners. The tables are `border-collapse:separate` with the four corner
+  cells rounded, because a collapsed table ignores `border-radius`. The first
+  column is `--plum-deep`, and where it names a fund, a month or an index it
+  is the display face at weight 600
+- **Captions and small labels** are `#5A4850` and `#6B5A60`. `--muted` is
+  under 4.5:1 on white and is no longer used inside a table
+- **Gains and losses** are still `#2F6B33` / `#A33220`, now at weight 600. In
+  the Journal, a table cell that is only a signed percentage ("+2.7%",
+  "-3.3%") is given the colour by `tone()` in `js/journal-render.js`; a
+  figure that is not a gain or a loss, such as an inflation rate, is written
+  without a sign
+- **The growth table on Home**: QQQ's two columns are `--k-blue-t` and TQQQ's
+  two are `--k-purple-t` (the "$10k in TQQQ" column used to be plain ink).
+  2022 has a loss-coloured bar down its left edge, and the totals row is on
+  blush
+- **Tier pills on Progress**, in the two tables (`.sig`) and at the top of the
+  page (`.tierpill`), take the four colours of Home's tier cards: `#F6EAE6`
+  with a brass ring, `#E6C6BA`, `#C08872`, plum. They were blush-soft, blush
+  and a pale clay, and Dip and Deep dip were hard to tell apart
+- **On a phone** every table fits the page from 360px up, except the fund
+  table on Home (eight columns) and the monthly log on Progress (fourteen),
+  which slide sideways inside their own box. The fund table's caption is held
+  to the width of the page so it can be read without sliding
+- Checked in the site's own typefaces at 1200, 768, 390, 375, 360 and 320px
+
 ## The monthly routine
 
 Two buys a month now, QLD and SSO, in two arrays in the same file. The
@@ -355,6 +393,11 @@ upload it to the chat, get the two files back, commit.
       The privacy page has a section saying they come from Google; take it out
       when this is done
 - [ ] Email signup section is commented out in `index.html`. Needs a provider
+- [ ] **The menu is too wide for a small phone** (found 22 Nov 2026, not
+      changed). In the site's own typefaces the five links need 384px. On a
+      375px phone the page slides 9px sideways and on a 360px phone 24px, and
+      "The Strategy" and "My Story" break onto two lines at any phone width.
+      A smaller gap and letter-spacing under 400px would fix it, on every page
 
 ---
 
@@ -391,8 +434,9 @@ upload it to the chat, get the two files back, commit.
     value chart's callouts too
   - Chosen with a colour-blind simulation and a contrast check, not by eye:
     every mark is 3:1 or better against the white card and every coloured
-    word 4.5:1 or better. The tier cards, pills and rungs keep the page's own
-    blush, clay and plum
+    word 4.5:1 or better. The tier cards and rungs keep the page's own
+    blush, clay and plum, and the pills on Progress take the tier cards' four
+    colours (see Tables)
 - **Charts are drawn at the width they are shown at** (20 Nov 2026). Each used
   to be drawn 880 wide and scaled down, and on a phone its labels came out at
   four or five pixels. `TTF_CHART.fit()` hands the painter the host's width,

@@ -46,7 +46,10 @@
 
    TABLE. Plain text in, table out. The first column is set in the serif face,
    the rest are right-aligned numbers. Every cell is text, so write "+12.8%"
-   or "-3.3%" or "$64.00" exactly as you want it to appear.
+   or "-3.3%" or "$64.00" exactly as you want it to appear. A cell that is
+   only a signed percentage, like "+12.8%" or "-3.3%", is printed green or
+   red as a gain or a loss. Leave the sign off a figure that is not one, such
+   as an inflation rate.
 
        table: {
          caption: "Where the majors finished the month.",

@@ -101,13 +101,20 @@
 
   /* comparison table */
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .compare{width:100%;border-collapse:collapse;font-size:16px;margin-top:40px}
-  .compare caption{text-align:center;font-size:14.5px;color:var(--muted);margin-bottom:24px;line-height:1.6}
-  .compare th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:0 16px 16px 0;border-bottom:1px solid var(--brass);vertical-align:bottom}
-  .compare td{padding:18px 16px 18px 0;border-bottom:1px solid var(--hair);vertical-align:top;line-height:1.5}
+  /* Tables. The same look on every page of the site: a plum heading band with
+     ivory words and a brass rule under it, white rows on a rounded panel, and
+     the first column in the darker ink. */
+  .compare{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid rgba(58,43,49,.22);border-radius:16px;font-size:16px;margin-top:40px}
+  .compare caption{caption-side:top;text-align:center;font-size:14.5px;line-height:1.6;color:#5A4850;margin-bottom:24px}
+  .compare th{background:var(--plum);color:var(--ivory);text-align:left;font-size:13.5px;font-weight:600;letter-spacing:.03em;line-height:1.35;vertical-align:bottom;padding:15px 16px 13px;border-bottom:3px solid var(--brass)}
+  .compare td{padding:17px 16px;border-bottom:1px solid var(--hair);vertical-align:top;line-height:1.5}
+  .compare th:first-child{border-top-left-radius:15px}
+  .compare th:last-child{border-top-right-radius:15px}
   .compare tr:last-child td{border-bottom:0}
-  .compare .rowlab{font-size:14px;color:var(--muted);white-space:nowrap}
-  .compare .hi{font-family:var(--display);font-size:26px;color:var(--plum)}
+  .compare tr:last-child td:first-child{border-bottom-left-radius:15px}
+  .compare tr:last-child td:last-child{border-bottom-right-radius:15px}
+  .compare .rowlab{font-size:14px;font-weight:600;color:#5A4850;white-space:nowrap}
+  .compare .hi{font-family:var(--display);font-size:27px;font-weight:600;line-height:1.2;color:var(--plum-deep)}
   .src-note{font-size:13.5px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:20px;margin-top:36px}
 
   /* misconception cards */
@@ -157,8 +164,13 @@
   }
   @media (max-width:640px){
     .wrap{padding:0 22px}
+    .compare{font-size:15px}
     .compare .hi{font-size:22px}
-    .compare td,.compare th{padding-right:12px}
+    .compare th{font-size:12.5px}
+    .compare td,.compare th{padding-left:8px;padding-right:8px}
+    .compare th:first-child,.compare td:first-child{padding-left:12px}
+    .compare th:last-child,.compare td:last-child{padding-right:12px}
+    .compare .rowlab{font-size:13px;white-space:normal}
     .hero{padding:58px 0 12px}
     .band,.ledger-band{padding:64px 0}
     .band:not(.band-blush) + .band:not(.band-blush),

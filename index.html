@@ -341,18 +341,47 @@
   .cmp-legend i{display:inline-block;width:22px;height:3px;border-radius:2px;margin-right:8px;vertical-align:middle}
   .cmp-legend i.dot{background:repeating-linear-gradient(90deg,var(--k-blue) 0 3px,transparent 3px 6.3px);border-radius:0}
   .cmp-legend i.dash{background:repeating-linear-gradient(90deg,#8A7A7E 0 7px,transparent 7px 11px);width:25px;border-radius:0}
-  .annual{width:100%;border-collapse:collapse;font-size:15.5px;margin-top:38px}
-  .annual caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
-  .annual th{text-align:right;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
-  .annual th:first-child,.annual td:first-child{text-align:left}
-  .annual td{text-align:right;padding:13px 16px 13px 0;border-bottom:1px solid var(--hair)}
-  .annual .q{color:var(--k-blue-t)}
-  .annual .t{color:var(--k-purple-t);font-weight:600}
-  .annual .qbal{color:var(--k-blue-t)}
-  .annual .neg{color:#A33220}
-  .annual tr.crash td{background:rgba(168,90,72,.06)}
-  .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
-  .annual tfoot .q,.annual tfoot .t{font-weight:400}
+  /* Tables. The same look on every page of the site: a plum heading band with
+     ivory words and a brass rule under it, white rows on a rounded panel, and
+     the first column in the darker ink. A gain or a loss printed as a figure
+     is #2F6B33 or #A33220, as everywhere else, and a weight heavier here. */
+  .annual,.funds{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid rgba(58,43,49,.22);border-radius:16px}
+  .annual caption,.funds caption{caption-side:top;text-align:center;font-size:13.5px;line-height:1.6;color:#5A4850;margin-bottom:22px}
+  .annual th,.funds th{background:var(--plum);color:var(--ivory);text-align:right;font-size:13.5px;font-weight:600;letter-spacing:.03em;line-height:1.35;border-bottom:3px solid var(--brass)}
+  .annual td,.funds td{text-align:right;border-bottom:1px solid var(--hair)}
+  .annual th:first-child,.annual td:first-child,.funds th:first-child,.funds td:first-child{text-align:left}
+  .annual td:first-child,.funds td:first-child{color:var(--plum-deep)}
+  .annual th:first-child,.funds th:first-child{border-top-left-radius:15px}
+  .annual th:last-child,.funds th:last-child{border-top-right-radius:15px}
+  .annual > :last-child > tr:last-child > td,.funds > :last-child > tr:last-child > td{border-bottom:0}
+  .annual > :last-child > tr:last-child > td:first-child,.funds > :last-child > tr:last-child > td:first-child{border-bottom-left-radius:15px}
+  .annual > :last-child > tr:last-child > td:last-child,.funds > :last-child > tr:last-child > td:last-child{border-bottom-right-radius:15px}
+
+  .annual{font-size:16px;margin-top:38px}
+  .annual th{padding:15px 18px 13px;vertical-align:bottom}
+  .annual td{padding:13px 18px}
+  .annual:not(.falls) td:first-child{font-weight:600}
+  .annual .q,.annual .qbal{color:var(--k-blue-t);font-weight:600}
+  .annual .t,.annual .tbal{color:var(--k-purple-t);font-weight:600}
+  .annual .neg{color:#A33220;font-weight:600}
+  .annual tr.crash td{background:rgba(163,50,32,.09)}
+  .annual tr.crash td:first-child{box-shadow:inset 4px 0 0 #A33220}
+  .annual tfoot td{background:var(--blush);border-top:2px solid var(--brass);padding-top:15px;padding-bottom:15px;font-family:var(--display);font-size:22px;font-weight:600;white-space:nowrap}
+  @media (max-width:560px){
+    .annual{font-size:14px}
+    .annual th{font-size:12.5px;padding:12px 4px 10px}
+    .annual td{padding:12px 4px}
+    .annual th:first-child,.annual td:first-child{padding-left:10px}
+    .annual th:last-child,.annual td:last-child{padding-right:10px}
+    .annual tfoot td{font-size:16.5px}
+  }
+  @media (max-width:380px){
+    .annual{font-size:13px}
+    .annual th{font-size:12px}
+    .annual th:first-child,.annual td:first-child{padding-left:8px}
+    .annual th:last-child,.annual td:last-child{padding-right:8px}
+    .annual tfoot td{font-size:15px}
+  }
   .cmp-note{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:18px;margin-top:8px}
   /* the two index charts */
   .ix-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:10px}
@@ -369,34 +398,31 @@
   .ix-key i.ixk-fall{width:18px;height:12px;background:rgba(58,43,49,.14);border-radius:2px}
   .ix-key i.ixk-low{width:9px;height:9px;border-radius:50%;background:#A33220;margin-left:16px}
   .ix-key span{white-space:nowrap}
-  .falls td:first-child{font-family:var(--display);font-size:19px;white-space:nowrap}
-  .falls .ix-sub{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:2px}
+  .falls th{white-space:normal}
+  .falls:not(.inside) th:nth-child(even){white-space:nowrap}   /* an index's name stays on one line */
   .falls td{vertical-align:top}
+  .falls td:first-child{font-family:var(--display);font-size:19.5px;font-weight:600;line-height:1.3;white-space:nowrap}
+  .falls .ix-sub{display:block;font-family:var(--body);font-size:12.5px;font-weight:400;line-height:1.5;color:#6B5A60;margin-top:2px}
   .inside{margin-top:6px}
   .inside td:first-child{white-space:normal}
-  @media (max-width:560px){ .inside th,.inside td{padding-right:6px} .inside th:last-child,.inside td:last-child{padding-right:0} .inside td:first-child{font-size:16px} }
-  .inside tbody tr:first-child td{color:var(--muted)}
-  .inside tr:last-child td{border-bottom:0}
-  .falls th{white-space:normal;line-height:1.5;vertical-align:bottom}
-  @media (max-width:560px){ .falls{font-size:14.5px} .falls th{font-size:10px;letter-spacing:.1em;padding-right:8px} .falls td{padding-right:8px} .falls td:first-child{font-size:16.5px} .falls .ix-sub{white-space:normal;font-size:12px} }
+  .inside tbody tr:first-child td{color:#6B5A60}
+  .inside strong{color:var(--plum-deep)}
+  @media (max-width:560px){ .falls td:first-child{font-size:16.5px} .falls .ix-sub{white-space:normal;font-size:12px} }
+  @media (max-width:380px){ .falls td:first-child{font-size:15px} }
 
 
   /* fund family */
-  .funds{width:100%;border-collapse:collapse;font-size:16.5px;margin-top:8px}
-  .funds caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
-  .funds th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 16px 14px 0;border-bottom:1px solid var(--brass)}
-  .funds th:first-child,.funds td:first-child{text-align:left}
-  .funds{font-size:15px}
-  .funds td{text-align:right;padding:15px 12px;border-bottom:1px solid var(--hair);white-space:nowrap}
-  .funds th{padding:0 12px 14px}
-  .fsub{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:3px}
-  .hsub{display:block;font-size:9.5px;font-weight:400;letter-spacing:.08em;text-transform:none;color:var(--muted);opacity:.85;margin-top:5px}
-  .funds th{white-space:nowrap}
-  .funds td.pos{color:#2F6B33}
-  .funds td.neg{color:#A33220}
-  @media (max-width:900px){ .funds th,.funds td{padding:12px 9px} .funds{font-size:14px} .funds .band-name{font-size:18px} }
-  .funds tr:last-child td{border-bottom:0}
-  .funds .band-name{font-family:var(--display);font-size:22px}
+  .funds{font-size:15.5px;margin-top:8px}
+  .funds th{padding:15px 14px 13px;vertical-align:top;white-space:nowrap}
+  .funds td{padding:15px 14px;white-space:nowrap}
+  .fsub{display:block;font-size:12px;letter-spacing:.04em;color:#6B5A60;margin-top:3px}
+  .hsub{display:block;font-size:11.5px;font-weight:400;letter-spacing:.02em;color:rgba(251,247,241,.78);margin-top:2px}
+  .funds td.pos{color:#2F6B33;font-weight:600}
+  .funds td.neg{color:#A33220;font-weight:600}
+  .funds .band-name{font-family:var(--display);font-size:23px;font-weight:600}
+  @media (max-width:900px){ .funds{font-size:14px} .funds th{font-size:12.5px} .funds th,.funds td{padding-left:9px;padding-right:9px} .funds .band-name{font-size:19px} }
+  /* On a phone this table is wider than the page and slides sideways. Its caption stays the width of the page, so it can be read without sliding. */
+  @media (max-width:600px){ .funds caption{width:calc(100vw - 44px)} }
   .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:36px 38px;margin-top:8px}
   .clarify-h{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
   .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
@@ -742,17 +768,17 @@
         <caption>Annual total return, dividends reinvested. The last column follows a single $10,000 invested once at the start of 2011 and never touched again, with no monthly buying and nothing added. Source: Yahoo Finance. "3× QQQ" is QQQ tripled, shown for scale, not a real fund.</caption>
         <thead><tr><th>Year</th><th>QQQ</th><th>TQQQ</th><th>$10k in QQQ</th><th>$10k in TQQQ</th></tr></thead>
         <tbody>
-          <tr><td>2011</td><td class="q">+3%</td><td class="t neg">−8%</td><td class="qbal">$10,340</td><td>$9,195</td></tr>
-          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td class="qbal">$16,681</td><td>$33,570</td></tr>
-          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td class="qbal">$30,944</td><td>$150,147</td></tr>
-          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td class="qbal">$63,851</td><td>$591,370</td></tr>
-          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td class="qbal">$81,347</td><td>$1,082,089</td></tr>
-          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td class="qbal">$54,828</td><td>$226,373</td></tr>
-          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td class="qbal">$84,928</td><td>$675,180</td></tr>
-          <tr><td>2025</td><td class="q">+21%</td><td class="t">+34%</td><td class="qbal">$128,804</td><td>$1,435,525</td></tr>
+          <tr><td>2011</td><td class="q">+3%</td><td class="t neg">−8%</td><td class="qbal">$10,340</td><td class="tbal">$9,195</td></tr>
+          <tr><td>2013</td><td class="q">+37%</td><td class="t">+140%</td><td class="qbal">$16,681</td><td class="tbal">$33,570</td></tr>
+          <tr><td>2017</td><td class="q">+33%</td><td class="t">+118%</td><td class="qbal">$30,944</td><td class="tbal">$150,147</td></tr>
+          <tr><td>2020</td><td class="q">+49%</td><td class="t">+110%</td><td class="qbal">$63,851</td><td class="tbal">$591,370</td></tr>
+          <tr><td>2021</td><td class="q">+27%</td><td class="t">+83%</td><td class="qbal">$81,347</td><td class="tbal">$1,082,089</td></tr>
+          <tr class="crash"><td>2022</td><td class="q neg">−33%</td><td class="t neg">−79%</td><td class="qbal">$54,828</td><td class="tbal">$226,373</td></tr>
+          <tr><td>2023</td><td class="q">+55%</td><td class="t">+198%</td><td class="qbal">$84,928</td><td class="tbal">$675,180</td></tr>
+          <tr><td>2025</td><td class="q">+21%</td><td class="t">+34%</td><td class="qbal">$128,804</td><td class="tbal">$1,435,525</td></tr>
         </tbody>
         <tfoot>
-          <tr><td>2011–25</td><td class="q">+1,188%</td><td class="t">+14,255%</td><td class="qbal">$129k</td><td>$1.44M</td></tr>
+          <tr><td>2011–25</td><td class="q">+1,188%</td><td class="t">+14,255%</td><td class="qbal">$129k</td><td class="tbal">$1.44M</td></tr>
         </tfoot>
       </table>
     </div>

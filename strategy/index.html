@@ -140,13 +140,28 @@
   .flag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;background:var(--brass);color:#fff;padding:6px 14px;border-radius:100px;margin-bottom:14px}
   .gauge-foot{text-align:center;font-size:14.5px;color:var(--muted);margin:30px 0 0}
 
-  .money{width:100%;border-collapse:collapse;font-size:16px;margin-top:44px}
-  .money caption{text-align:center;font-size:15.5px;color:var(--muted);margin-bottom:26px;line-height:1.6}
-  .money th{text-align:left;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:0 18px 16px 0;border-bottom:1px solid var(--brass)}
-  .money td{padding:22px 18px 22px 0;border-bottom:1px solid var(--hair)}
-  .money tr:last-child td{border-bottom:0}
-  .money .band-name{font-family:var(--display);font-size:23px;white-space:nowrap}
-  .money .total{font-weight:600}
+  /* Tables. The same look on every page of the site: a plum heading band with
+     ivory words and a brass rule under it, white rows on a rounded panel, and
+     the first column in the darker ink. A gain or a loss printed as a figure
+     is #2F6B33 or #A33220, as everywhere else, and a weight heavier here. */
+  .money,.methods{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid rgba(58,43,49,.22);border-radius:16px;font-size:16px}
+  .money caption,.methods caption{caption-side:top;text-align:center;line-height:1.6;color:#5A4850}
+  .money th,.methods th{background:var(--plum);color:var(--ivory);font-size:13.5px;font-weight:600;letter-spacing:.03em;line-height:1.35;vertical-align:bottom;padding:15px 18px 13px;border-bottom:3px solid var(--brass)}
+  .money td,.methods td{border-bottom:1px solid var(--hair)}
+  .money th:first-child,.methods th:first-child{border-top-left-radius:15px}
+  .money th:last-child,.methods th:last-child{border-top-right-radius:15px}
+  .money tr:last-child td,.methods tr:last-child td{border-bottom:0}
+  .money tr:last-child td:first-child,.methods tr:last-child td:first-child{border-bottom-left-radius:15px}
+  .money tr:last-child td:last-child,.methods tr:last-child td:last-child{border-bottom-right-radius:15px}
+  .money .band-name,.methods .band-name{font-family:var(--display);font-weight:600;line-height:1.25;color:var(--plum-deep)}
+  .money .sub,.methods .sub{display:block;font-family:var(--body);font-size:12.5px;font-weight:400;line-height:1.5;color:#6B5A60;margin-top:2px}
+  .money .total,.methods .total{font-weight:600;color:var(--plum-deep)}
+
+  .money{margin-top:44px}
+  .money caption{font-size:15.5px;margin-bottom:26px}
+  .money th{text-align:left}
+  .money td{padding:20px 18px;line-height:1.4;white-space:nowrap}
+  .money .band-name{font-size:23px;white-space:nowrap}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
   .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px;margin-top:52px;padding:0;list-style:none}
@@ -199,17 +214,40 @@
     .band-blush + .band-blush{padding-top:24px}
     .nav-links{gap:18px;font-size:10.5px}
   }
-  .methods{width:100%;border-collapse:collapse;font-size:16px;margin-top:8px}
-  .methods caption{caption-side:top;text-align:center;font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:22px}
-  .methods th{text-align:right;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 14px 14px 0;border-bottom:1px solid var(--brass)}
+  .methods{margin-top:8px}
+  .methods caption{font-size:13.5px;margin-bottom:22px}
+  .methods th{text-align:right}
+  .methods td{text-align:right;padding:18px;vertical-align:top}
   .methods th:first-child,.methods td:first-child{text-align:left}
-  .methods td{text-align:right;padding:18px 14px;border-bottom:1px solid var(--hair);vertical-align:top}
-  .methods tr:last-child td{border-bottom:0}
-  .methods .band-name{font-family:var(--display);font-size:20px;line-height:1.2}
-  .methods .sub{font-family:var(--body);font-size:12.5px;color:var(--muted)}
-  .methods .total{font-weight:600;color:var(--plum)}
-  .methods .ok{color:#2F6B33}
+  .methods .band-name{font-size:21px;white-space:nowrap}
+  .methods .ok{color:#2F6B33;font-weight:600}
   .methods .bad{color:#A33220;font-weight:600}
+  @media (max-width:560px){
+    .money,.methods{font-size:14.5px}
+    .money th,.methods th{font-size:12.5px;padding:12px 6px 10px}
+    .money td,.methods td{padding:14px 6px}
+    .money th:first-child,.money td:first-child,.methods th:first-child,.methods td:first-child{padding-left:12px}
+    .money th:last-child,.money td:last-child,.methods th:last-child,.methods td:last-child{padding-right:12px}
+    .money caption{font-size:14.5px}
+    .money .band-name{font-size:17.5px}
+    .methods .band-name{font-size:18px}
+  }
+  @media (max-width:420px){
+    .money{font-size:14px}
+    .money th{font-size:12px;padding-left:4px;padding-right:4px}
+    .money td{padding-left:4px;padding-right:4px}
+    .money th:first-child,.money td:first-child{padding-left:10px}
+    .money th:last-child,.money td:last-child{padding-right:10px}
+    .money .band-name{font-size:16.5px}
+  }
+  @media (max-width:380px){
+    .money{font-size:13.5px}
+    .money th{padding-left:3px;padding-right:3px}
+    .money td{padding-left:3px;padding-right:3px}
+    .money th:first-child,.money td:first-child{padding-left:8px}
+    .money th:last-child,.money td:last-child{padding-right:8px}
+    .money .band-name{font-size:16px}
+  }
   .bad-inline{color:#A85A48;font-weight:600}
   .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 36px}
   .clarify-h{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}

@@ -121,17 +121,36 @@
     text-transform:uppercase;color:var(--brass);margin:0 0 18px}
   .entry-macro p:last-child{margin-bottom:0}
   .card-full .entry-cap{font-size:13.5px;font-weight:600;color:var(--plum);line-height:1.5;margin:0 0 12px}
-  .card-full .entry-note{font-size:13.5px;line-height:1.65;color:var(--muted);margin:12px 0 0}
+  .card-full .entry-note{font-size:13.5px;line-height:1.65;color:#6B5A60;margin:12px 0 0}
 
   .entry-table{margin:24px 0}
   .entry-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .entry-table table{width:100%;border-collapse:collapse;font-size:15.5px}
-  .entry-table th{text-align:right;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--muted);padding:0 12px 10px 0;border-bottom:1px solid var(--brass);white-space:nowrap}
-  .entry-table td{text-align:right;padding:12px 12px 12px 0;border-bottom:1px solid var(--hair);white-space:nowrap}
-  .entry-table th:first-child,.entry-table td:first-child{text-align:left;padding-right:18px}
-  .entry-table td.k{font-family:var(--display);font-size:19px;line-height:1.25}
+  /* Tables. The same look on every page of the site: a plum heading band with
+     ivory words and a brass rule under it, white rows on a rounded panel, and
+     the first column in the darker ink. A gain or a loss printed as a figure
+     is #2F6B33 or #A33220, as everywhere else, and a weight heavier here. */
+  .entry-table table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid rgba(58,43,49,.22);border-radius:14px;font-size:15.5px}
+  .entry-table th{background:var(--plum);color:var(--ivory);text-align:right;font-size:13px;font-weight:600;letter-spacing:.03em;line-height:1.35;
+    padding:12px 14px 10px;border-bottom:3px solid var(--brass);white-space:nowrap}
+  .entry-table td{text-align:right;padding:12px 14px;line-height:1.45;border-bottom:1px solid var(--hair);white-space:nowrap}
+  .entry-table th:first-child,.entry-table td:first-child{text-align:left}
+  .entry-table th:first-child{border-top-left-radius:13px}
+  .entry-table th:last-child{border-top-right-radius:13px}
+  .entry-table td.k{font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;color:var(--plum-deep)}
+  .entry-table td.pos{color:#2F6B33;font-weight:600}
+  .entry-table td.neg{color:#A33220;font-weight:600}
   .entry-table tr:last-child td{border-bottom:0}
+  .entry-table tr:last-child td:first-child{border-bottom-left-radius:13px}
+  .entry-table tr:last-child td:last-child{border-bottom-right-radius:13px}
+  @media (max-width:560px){
+    .entry-table table{font-size:14.5px}
+    .entry-table th{font-size:12.5px}
+    .entry-table th,.entry-table td{padding-left:8px;padding-right:8px}
+    .entry-table th:first-child,.entry-table td:first-child{padding-left:12px}
+    .entry-table th:last-child,.entry-table td:last-child{padding-right:12px}
+    .entry-table td.k{font-size:16.5px}
+    .entry-table td:first-child,.entry-table td:last-child{white-space:normal}   /* words may wrap so the table fits the card */
+  }
 
   .entry-chart{margin:24px 0}
   .bars{display:grid;gap:10px}
@@ -232,7 +251,7 @@
 <script src="../js/engine.js?v=15" defer></script>
 <script src="../js/live.js?v=21" defer></script>
 <script src="../js/comments.js?v=4" defer></script>
-<script src="../js/journal.js?v=17" defer></script>
-<script src="../js/journal-render.js?v=14" defer></script>
+<script src="../js/journal.js?v=18" defer></script>
+<script src="../js/journal-render.js?v=15" defer></script>
 </body>
 </html>

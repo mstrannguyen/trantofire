@@ -74,12 +74,21 @@
            Math.abs(v).toFixed(d) + ((c && c.suffix) || "");
   }
 
+  /* A cell that is a signed percentage and nothing else is a gain or a loss,
+     and is printed in the gain or loss colour those figures have on every
+     other page. */
+  function tone(cell) {
+    var m = /^\s*([+\-\u2212])\d[\d,.]*%\s*$/.exec(String(cell));
+    return m ? (m[1] === "+" ? "pos" : "neg") : "";
+  }
+
   function tableHTML(t) {
     if (!t || !t.rows || !t.rows.length) return "";
     var head = (t.head || []).map(function (h) { return "<th>" + esc(h) + "</th>"; }).join("");
     var body = t.rows.map(function (r) {
       return "<tr>" + toParas(r).map(function (cell, i) {
-        return "<td" + (i === 0 ? ' class="k"' : "") + ">" + esc(cell) + "</td>";
+        var cls = i === 0 ? "k" : tone(cell);
+        return "<td" + (cls ? ' class="' + cls + '"' : "") + ">" + esc(cell) + "</td>";
       }).join("") + "</tr>";
     }).join("");
     return '<div class="entry-table">' + cap(t.caption) +
