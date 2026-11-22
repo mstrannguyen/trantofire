@@ -32,7 +32,7 @@
       daily chart below the cards.
 
    3. Closing prices are corrected for splits but not for distributions, the
-      same as everywhere else on this site. QQQ pays out the most of the
+      same as everywhere else on the Progress page. QQQ pays out the most of the
       three, so QQQ is the one understated by the most.
 
    4. The tier ladder is driven by the held fund's drawdown. A portfolio genuinely

@@ -33,7 +33,7 @@ one. Anything else you read in an old file or an old chat is superseded.
 - Each runs its own reserve and its own record high. Nothing is shared
 - Deploy % of ALL available cash (prior reserve + this month's contribution),
   by drawdown from the record high:
-  - Baseline (0 to −19%) → **20%**
+  - Baseline (less than 20% below) → **20%**
   - Dip (−20%) → **33%**
   - Deep dip (−40%) → **67%**
   - Crash (−60%) → **100%**
@@ -93,11 +93,17 @@ sits — the site says so.
 
 ## What is logged so far
 
-August 2026, the first month, in `js/data.js`:
+August to November 2026 in `js/data.js`, every month on the baseline tier:
 
-- **QLD $90.21**, 10.9% below its high, baseline tier, 1 share, $706.79 reserve
-- **SSO $67.62**, `shares: 2` pinned, baseline tier, $661.76 reserve
-- Combined $1,594 on $1,600 in, $1,368.55 cash, P/L −$6
+| Month | QLD | SSO |
+|---|---|---|
+| Aug 2026 | 1 at $90.21 | 2 at $67.62 |
+| Sep 2026 | 3 at $90.24 | 4 at $70.54 |
+| Oct 2026 | 4 at $95.27 | 5 at $69.98 |
+| Nov 2026 | 5 at $83.69, sized on a close of $82.59 | 6 at $68.33, sized on a close of $67.67. The rules said 7, so the month is marked ≠ |
+
+After November: QLD 13 shares and $2,039.53 in reserve, SSO 17 shares and
+$2,022.29, with $3,200 put into each.
 
 ---
 
@@ -170,8 +176,9 @@ happened and what it did to the position, not just a column of prices.
   (QQQ, VOO), same cash on the same buy days, same $3, priced at every close
 - `TTF_ENGINE.ticks()` — round-number gridlines for any chart that crosses
   zero. Use it for new charts; quarters of the range put "0%" off zero
-- `js/compare.js` — the home page growth-of-$10k chart (hardcoded Nasdaq
-  annual balances; QLD's line is derived from QQQ and TQQQ, not typed)
+- `js/compare.js` — the home page growth-of-$10k chart (typed annual balances
+  for QQQ, QLD and TQQQ, each from Yahoo's annual total returns; the table
+  under the chart prints the same QQQ and TQQQ figures)
 - `js/chartkit.js` — what every chart shares (`TTF_CHART`). The colours, read
   from the `--k-*` variables in each page's `:root`. `fit()` draws a chart at
   the width it is shown at and again when that changes. `plate()` puts a white
@@ -187,8 +194,9 @@ happened and what it did to the position, not just a column of prices.
   TQQQ, QQQ, QLD, UPRO, SSO, VOO; daily for TQQQ, QQQ, QLD, SSO, VOO, UPRO
 - `_headers` — CSP `script-src 'self'`, so NO inline scripts. HSTS commented out
 
-**Nothing on the site is a typed-in figure that could go stale**, with one
-deliberate exception: the home page growth chart's annual balances.
+**Nothing on the site is a typed-in figure that could go stale**, with two
+deliberate exceptions: the home page growth chart's annual balances, and the
+fee and size columns of the fund table, which are dated in its caption.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
 functions were tried first and did NOT work, because functions need a build
@@ -221,6 +229,46 @@ Reserve Bank moves again, change the paragraph, the table's caption and its
 mortgage column (6.7% in three rows), the "7.7% after tax beats 6.7%
 guaranteed" line and the source note together.
 
+## Corrections of 22 Nov 2026: what was checked, and what moves together
+
+Every page was read against its sources and against the other pages.
+
+- **Fund fees and sizes** are ProShares' own figures of 20 Nov 2026: net
+  expense ratios TQQQ 0.78%, QLD 0.89%, UPRO 0.88%, SSO 0.84% (gross 0.94%,
+  0.96%, 0.88%, 0.88%), net assets about $24b, $10b, $4b and $6b. The fees
+  are in four places that change together: the fund table and its caption,
+  "QLD's 0.89%" under it, the home page footer, and `EXPENSE_RATIO` in
+  `js/config.js` (three lines). They can change when ProShares renews its
+  prospectus each October, so check them then
+- **The growth chart and its table.** QQQ's 2025 return had been typed as
+  2024's (+25.6%); it was +20.8%. QLD's line had been worked out from QQQ and
+  TQQQ and finished $131k too high; it is now QLD's own annual returns.
+  $10,000 from the end of 2010 to the end of 2025: QQQ $128,804, QLD $564,971,
+  TQQQ $1,435,525. The table's QQQ and TQQQ cells are the same numbers as the
+  points in `js/compare.js`
+- **2022, two ways.** Calendar year: QQQ −32.6%, QLD −60.5%, TQQQ −79.1%. From
+  the November 2021 high to the December 2022 low: QLD −63.7%, TQQQ −81.7%.
+  Say which one a sentence means, and don't set one beside the other
+- **Collins, read from the book.** His plan is $83 a month, spent once a
+  quarter. The run from January 2003 is twenty years and the run from October
+  2007 is fifteen; both end on 3 October 2022 ($1,906,628 and $1,907,248
+  against $334,609 and $389,151). TQQQ before February 2010 is his
+  reconstruction from QQQ. His 80/20 ladder is 20% of the cash within 15% of
+  the Nasdaq-100's high, then 40%, 60% and 80%. His moving-average system is a
+  14-week average on a weekly chart with a sale after a 40% fall. His decay
+  example prints 2.88 and 1.48 times; worked exactly it is 2.75 and 1.50, and
+  My Story gives the exact figures and says so
+- **The rule reads the same everywhere.** Cash available is last month's
+  reserve, its interest and the month's $800. The fund's last close before the
+  order, against its record high (the highest price it has traded), picks the
+  tier: less than 20% below is Baseline, then 20%, 40% and 60%. That share of
+  all the cash buys whole shares at that close, rounded down. The price paid
+  decides the cost. $3 brokerage comes out of what is left
+- **Journal, September entry.** August's index moves are Nasdaq's own: S&P 500
+  +2.7%, Nasdaq-100 +4.2%, Dow +1.5%
+- **Footers.** The Journal's figures come from the log, so they include
+  brokerage. Strategy's worked example leaves it out and says so
+
 ## The monthly routine
 
 Two buys a month now, QLD and SSO, in two arrays in the same file. The
@@ -236,18 +284,16 @@ upload it to the chat, get the two files back, commit.
       logged price against daily closes, and the inferred date moves around
 - [ ] **Email is off the site entirely.** No address is published on any page;
       comments are the only contact route, and the privacy page's data-removal
-      answer points there. If tran@trantofire.au is ever created at VentraIP,
-      set SPF and DKIM at the same time or replies land in spam
+      answer points there. If a mailbox on the domain is ever created at
+      VentraIP, set SPF and DKIM at the same time or replies land in spam
 - [ ] **Force HTTPS** in Netlify, then uncomment the HSTS line in `_headers`
 - [ ] **Two-factor auth** on Netlify, VentraIP and GitHub
 - [ ] **Domain transfer lock** at VentraIP for both domains
 - [ ] Add trantofire.au as a site in the FastComments account
-- [ ] Self-host the two Google Fonts to remove the last third-party request
+- [ ] Self-host the two Google Fonts to remove the last third-party request.
+      The privacy page has a section saying they come from Google; take it out
+      when this is done
 - [ ] Email signup section is commented out in `index.html`. Needs a provider
-
-Known cosmetic leftovers, flagged and not actioned: `precisely` in the home
-page capital-gains paragraph, "The bigger point is" in My Story, and
-`.table-scroll` used in markup with no CSS rule.
 
 ---
 

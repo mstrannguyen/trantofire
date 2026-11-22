@@ -222,7 +222,7 @@ window.TTF_JOURNAL = [
       heading: "Markets and macro",
 
       body: [
-        "August finished with the S&P 500 up 2.5%, the Nasdaq-100 up 3.8% and the Dow up 1.4%. The headline hides the thing that matters to these two funds. The S&P closed out the summer selloff about a month ago and went back to setting records. The Nasdaq-100 ended the month around 4% below its 2 June peak, the last of the big American gauges yet to reclaim its high. Doubled, that gap is most of why one of these funds is much further from its record than the other.",
+        "August finished with the S&P 500 up 2.7%, the Nasdaq-100 up 4.2% and the Dow up 1.5%. The headline hides the thing that matters to these two funds. The S&P closed out the summer selloff about a month ago and went back to setting records. The Nasdaq-100 ended the month around 4% below its 2 June peak, the last of the big American gauges yet to reclaim its high. Doubled, that gap is most of why one of these funds is much further from its record than the other.",
 
         "Bonds set the tone. The ten-year Treasury finished August near 4.72%, up about four basis points on the month and roughly 46 higher than a year ago, with the two-year at 4.34%. Kevin Warsh used his first Jackson Hole speech as chair to say inflation has not meaningfully slowed and that policymakers may have work to do, that 2% is a fixed objective, and that financial conditions are not currently restrictive. He called interest rates the Fed's predominant tool. By the end of the month futures were pricing somewhere between a half and a 57% chance of a rate rise in September, up from about 40% a week earlier. Markets spent the year expecting cuts and are now pricing a hike.",
 
@@ -237,8 +237,8 @@ window.TTF_JOURNAL = [
         caption: "Two months of the same market, measured four ways.",
         head: [ "", "August", "Past 12 months" ],
         rows: [
-          [ "S&P 500",        "+2.5%",  "at record highs" ],
-          [ "Nasdaq-100",     "+3.8%",  "4% below its June peak" ],
+          [ "S&P 500",        "+2.7%",  "at record highs" ],
+          [ "Nasdaq-100",     "+4.2%",  "4% below its June peak" ],
           [ "Gold",           "+9.8%",  "+28%" ],
           [ "Bitcoin",        "",       "about $35,800 lower" ]
         ],
@@ -256,7 +256,7 @@ window.TTF_JOURNAL = [
         note: "The widest two-month gap in software's favour since at least 2001, and the mirror image of how 2026 started."
       },
 
-      note: "Sources: Trading Economics for index and commodity levels, Advisor Perspectives for Treasury yields, CME FedWatch pricing as reported at month end, Fortune for daily gold and bitcoin prices, Bloomberg on the Nasdaq-100's distance from its record, and TradeStation and GuruFocus on the software and semiconductor spread."
+      note: "Sources: Nasdaq's August review for the index moves, Trading Economics for commodity levels, Advisor Perspectives for Treasury yields, CME FedWatch pricing as reported at month end, Fortune for daily gold and bitcoin prices, Bloomberg on the Nasdaq-100's distance from its record, and TradeStation and GuruFocus on the software and semiconductor spread."
     }
   },
 
@@ -266,7 +266,7 @@ window.TTF_JOURNAL = [
     mood:  "Starting a long way under the high",
 
     body: [
-      "Both funds went in on the baseline tier, which releases a fifth of the available cash and not a share more. QLD was about 11% under its record and SSO under 6%, and neither is far enough down for the ladder to open up. That came to one share of QLD and two of SSO. The $1,369 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one."
+      "Both funds went in on the baseline tier, which releases a fifth of the available cash and not a share more. QLD was about 11% under its record and SSO under 4%, and neither is far enough down for the ladder to open up. That came to one share of QLD and two of SSO. The $1,369 left across the two reserves waits, earning interest while it does nothing, ready for a month that is worse than this one."
     ],
 
     macro: {

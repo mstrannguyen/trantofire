@@ -1,6 +1,6 @@
 /* Home-page growth chart: QQQ, QLD, a synthetic 3x QQQ line and TQQQ, from the
-   end of 2010. Compounded Yahoo Finance annual total returns, held in this
-   file, stopping at the last complete year.
+   end of 2010. Compounded Yahoo Finance annual total returns for the three
+   funds, held in this file, stopping at the last complete year.
 
    Colour carries the multiple, the same way as on the rest of the site: blue
    is the plain index, orange is 2x, purple is 3x. The line that is not a fund
@@ -93,49 +93,41 @@
     var host = document.getElementById("cmp-chart");
     if (!host) return;
 
-    // Growth of $10,000, dividends reinvested. Anchored to the compounded
-    // Yahoo Finance annual totals: QQQ +1,229% -> ~$133k over 2011 to 2025,
-    // TQQQ +14,255% -> ~$1.44M. The series stops at the end of 2025 because
-    // 2026 is not a complete year and nobody publishes an annual total return
-    // for it. Same figures as the table below the chart.
-    var qqq = [[2010,10000],[2011,10270],[2012,12131],[2013,16574],[2014,19753],
-               [2015,21620],[2016,23155],[2017,30718],[2018,30675],[2019,42626],
-               [2020,63342],[2021,80710],[2022,54415],[2023,84261],[2024,105815],
-               [2025,132903]];
+    // Growth of $10,000, dividends reinvested: each fund's Yahoo Finance annual
+    // total returns, compounded. QQQ +1,188% -> ~$129k over 2011 to 2025, QLD
+    // +5,550% -> ~$565k, TQQQ +14,255% -> ~$1.44M. The series stops at the end
+    // of 2025 because 2026 is not a complete year and nobody publishes an annual
+    // total return for it.
+    //
+    // The table under the chart prints QQQ and TQQQ for eight of these years.
+    // Those cells and these points are the same numbers: change one, change
+    // the other.
+    //
+    // QQQ by year, as published: +3.4, +18.1, +36.6, +19.2, +9.4, +7.1, +32.7,
+    // -0.1, +39.0, +48.6, +27.4, -32.6, +54.9, +25.6, +20.8. The points are
+    // held to the table's cells, so a year's step can sit a tenth of a point
+    // from these.
+    var qqq = [[2010,10000],[2011,10340],[2012,12213],[2013,16681],[2014,19880],
+               [2015,21757],[2016,23302],[2017,30944],[2018,30904],[2019,42944],
+               [2020,63851],[2021,81347],[2022,54828],[2023,84928],[2024,106653],
+               [2025,128804]];
     var tqqq = [[2010,10000],[2011,9195],[2012,14003],[2013,33570],[2014,52734],
                 [2015,61821],[2016,68856],[2017,150147],[2018,120403],[2019,281538],
                 [2020,591370],[2021,1082089],[2022,226373],[2023,675180],[2024,1068337],
                 [2025,1435525]];
 
-    /* QLD is worked out from the two series above rather than typed in.
-
-       Over a year, a fund tracking k times the index's daily move satisfies
-
-           ln(1 + r_k) = k * ln(1 + r_1) - ((k * k - k) / 2) * D
-
-       where D covers the variance drag, the financing cost on the leveraged
-       part and the fee. Both r_1 and r_3 are known for every year here, so D
-       falls out of the 3x line and the 2x line follows from it. A 2x fund
-       carries a third of the drag a 3x fund does.
-
-       Two checks on it. Year by year it lands on QLD's real calendar returns
-       within a point or two: -60.0% for 2022, +90.3% for 2020, +82.9% for
-       2013. Over the whole window it puts QLD at 5.3 times QQQ, against 5.5
-       times when the same period is priced straight off Yahoo's daily closes.
-
-       Computed here rather than pasted in, so it can never drift from the two
-       lines it is derived from. */
-    var qld = (function () {
-      var out = [[qqq[0][0], START]], bal = START;
-      for (var i = 1; i < qqq.length; i++) {
-        var r1 = qqq[i][1] / qqq[i - 1][1] - 1;
-        var r3 = tqqq[i][1] / tqqq[i - 1][1] - 1;
-        var D  = (3 * Math.log(1 + r1) - Math.log(1 + r3)) / 3;
-        bal *= Math.exp(2 * Math.log(1 + r1) - D);
-        out.push([qqq[i][0], Math.round(bal)]);
-      }
-      return out;
-    })();
+    // QLD's own record, the same way. By year: +0.0, +34.8, +82.1, +37.6,
+    // +14.7, +10.2, +70.3, -8.3, +81.7, +88.9, +54.7, -60.5, +117.1, +42.8,
+    // +30.4.
+    //
+    // Until 22 Nov 2026 this line was worked out from the other two, on the
+    // footing that a 2x fund carries a third of a 3x fund's yearly drag. The
+    // fee is much the same on both and the financing is half, not a third, so that
+    // ran about a point a year high and finished near $696k. Do not derive it.
+    var qld = [[2010,10000],[2011,10004],[2012,13482],[2013,24553],[2014,33782],
+               [2015,38762],[2016,42704],[2017,72742],[2018,66689],[2019,121168],
+               [2020,228886],[2021,354019],[2022,139767],[2023,303475],[2024,433393],
+               [2025,564971]];
 
     // QQQ's growth multiplied by three, arithmetically. Not a fund and not
     // buyable: it is what "triple the Nasdaq" sounds like it should produce.

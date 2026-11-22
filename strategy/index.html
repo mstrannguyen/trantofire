@@ -125,6 +125,7 @@
   .rung .depth{text-align:center}
   .rung .num{font-family:var(--display);font-size:clamp(38px,5vw,54px);font-weight:300;line-height:1;display:block}
   .rung .lab{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-top:12px;display:block}
+  .rung .num small{display:block;font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.62;margin-bottom:9px;line-height:1}
   .rung h3{font-size:27px;margin-bottom:12px}
   .deploy{font-size:16px;line-height:1.7;margin:0 0 12px;font-weight:500}
   .deploy .amt{font-family:var(--display);font-size:26px;color:var(--brass);font-weight:500}
@@ -185,6 +186,7 @@
     .rung{grid-template-columns:1fr;gap:20px;text-align:center;padding:34px 28px}
     .rung .depth{display:flex;align-items:baseline;justify-content:center;gap:16px}
     .rung .lab{margin-top:0}
+    .rung .num small{display:inline;margin:0 10px 0 0;vertical-align:.9em}
     .grid2,.risk-list{grid-template-columns:1fr;gap:0}
     .ruled li{grid-template-columns:1fr;gap:10px}
     .ruled li > .body{grid-column:1}
@@ -536,7 +538,7 @@
     <span class="orn"></span>
     <p class="eyebrow">The tier ladder</p>
     <h2>How much I deploy, by depth.</h2>
-    <p class="lede">One number decides everything: how far the fund has fallen from its record high. That sets the percentage. Each fund is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve plus this month's US$800. <strong>The price that decides it is the fund's last close before I place the order</strong>, not a month-end figure or an average. That close is the number in my log, with the price I paid beside it when the two differ, so anyone can check the tier against it.</p>
+    <p class="lede">One number decides everything: how far the fund has fallen from its record high, the highest price it has traded. That sets the percentage. Each fund is measured against its own high and runs its own ladder, so a crash in one does not touch the other's cash. The percentage applies to <strong>all the cash I have available</strong>, which is last month's reserve, the interest it earned, and this month's US$800. <strong>The price that decides it is the fund's last close before I place the order</strong>, not a month-end figure or an average. That close is the number in my log, with the price I paid beside it when the two differ, so anyone can check the tier against it.</p>
     <div class="hwm-pair">
       <dl class="hwm"><dt>QLD high-water mark</dt><dd><span data-hwm="QLD">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
       <dl class="hwm"><dt>SSO high-water mark</dt><dd><span data-hwm="SSO">loading</span><small>record high, live from Yahoo Finance</small></dd></dl>
@@ -545,7 +547,7 @@
   <div class="wrap">
     <div class="gauge">
       <div class="rung r0">
-        <div class="depth"><span class="num">0–19%</span><span class="lab">Baseline</span></div>
+        <div class="depth"><span class="num"><small>Under</small>20%</span><span class="lab">Baseline</span></div>
         <div>
           <span class="flag">Where we are now</span>
           <h3>Near the high</h3>
@@ -616,14 +618,14 @@
     <p class="eyebrow">Why not just buy every month</p>
     <h2>Because of when you start.</h2>
     <p class="lede">Buying the same amount every month, with no tiers at all, is the simpler version of this. It is a real strategy and for most people it is the better one. Holding a reserve only pays off if prices fall after I start, and nobody knows in advance whether they will.</p>
-    <p class="lede">Collins ran both against TQQQ over twenty years, changing nothing but the month you begin.</p>
+    <p class="lede">Collins ran both against TQQQ to the same day in October 2022, changing nothing but the month you begin.</p>
   </div>
 
   <div class="wrap narrow">
     <div class="table-scroll">
       <table class="money">
-        <caption>From Collins. Same fund, same monthly habit. His 80/20 method starts at a fifth near a high and buys more as prices fall. Figures rounded.</caption>
-        <thead><tr><th>When you started</th><th>Plain monthly buying</th><th>Holding cash for the falls</th></tr></thead>
+        <caption>From Collins. Same fund, the same $83 a month spent once a quarter, both runs ending on 3 October 2022: twenty years from the low and fifteen from the high. His 80/20 method spends a fifth of the cash near a high and more as prices fall. TQQQ began in February 2010, so the years before that are his reconstruction from QQQ. Figures rounded.</caption>
+        <thead><tr><th>When you started</th><th>The same amount every quarter</th><th>Holding cash for the falls</th></tr></thead>
         <tbody>
           <tr><td class="band-name">At a low<br><span class="sub">Jan 2003</span></td><td>$1.91m</td><td>$1.91m</td></tr>
           <tr><td class="band-name">At a high<br><span class="sub">Oct 2007</span></td><td>$335k</td><td class="total">$389k</td></tr>
@@ -631,7 +633,7 @@
       </table>
     </div>
 
-    <p style="margin-top:34px">Start at the bottom of 2003 and the two finish neck and neck. Nothing is gained by holding cash, because the market only went up from there. Start at the top of 2007, right before the crash, and holding cash finishes about sixteen percent ahead. Same fund, same contributions, same twenty years. The only difference was the starting point, and nobody gets to know theirs in advance.</p>
+    <p style="margin-top:34px">Start at the bottom of 2003 and the two finish neck and neck. Nothing is gained by holding cash, because the market only went up from there. Start at the top of 2007, right before the crash, and holding cash finishes about sixteen percent ahead. Same fund, the same $83 a month, the same finishing day. The second run is five years shorter, which is most of why its totals are smaller. Whether holding cash helped came down to the starting point, and nobody gets to know theirs in advance.</p>
     <p>I am beginning in August 2026 with the Nasdaq off its record high and the S&amp;P close to one, which is neither a clean low nor a fresh peak. Holding the reserve is what I am paying to not have to guess which one it turns out to be.</p>
 
     <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
@@ -642,7 +644,7 @@
       <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here.</p>
     </div>
 
-    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method starts at 20% near a high and deploys more as the market falls. My numbered tiers come from Henrique Centieiro; they put exact percentages on that same idea. The Waterloo paper is Forsyth, van Staden and Li, <a href="https://cs.uwaterloo.ca/~paforsyt/letf_explanation.pdf">Making Leveraged Exchange-Traded Funds Work for your Portfolio</a>, March 2026.</p>
+    <p class="src-note">Figures from B.D. Collins, <em>$1,000 to $1,000,000</em>. His 80/20 method spends 20% of the cash while the Nasdaq-100 is within 15% of its high, then 40%, 60% and 80% as it falls further, bought once a quarter. My tiers come from Henrique Centieiro. They run the same idea every month on each fund's own fall, with steps at 20%, 40% and 60%. The Waterloo paper is Forsyth, van Staden and Li, <a href="https://cs.uwaterloo.ca/~paforsyt/letf_explanation.pdf">Making Leveraged Exchange-Traded Funds Work for your Portfolio</a>, March 2026.</p>
   </div>
 </section>
 
@@ -681,13 +683,13 @@
         <div class="what">A higher multiple: TQQQ and UPRO</div>
         <div class="body">
         <p>TQQQ is 3× the Nasdaq-100 that QLD tracks. UPRO is 3× the S&amp;P 500 that SSO tracks. A higher multiple compounds harder through a bull run, and for a while that is what I intended to buy every month.</p>
-        <p>What changed my mind is the other side of it. Three times the daily move falls a great deal further when the index turns, and takes far longer to come back from it. QLD lost about 60% in 2022 and TQQQ lost 82%, on the same index in the same year. That is the difference between a drawdown I can keep buying through and one I might not.</p>
+        <p>What changed my mind is the other side of it. Three times the daily move falls a great deal further when the index turns, and takes far longer to come back from it. QLD lost about 60% in 2022 and TQQQ lost 79%, on the same index in the same year. That is the difference between a drawdown I can keep buying through and one I might not.</p>
         </div>
       </li>
       <li>
         <div class="what">The SMA method</div>
         <div class="body">
-        <p>Collins' second system uses a 14-period moving average to move in and out of the fund, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also asks me to read a signal every month and to be right about when to get back in. For now I would rather have rules that never ask me to make a call. That is a preference, not a verdict on the method, which on Collins' numbers works well.</p>
+        <p>Collins' second system buys when TQQQ's weekly price closes above its 14-week moving average and sells after a 40% fall from the high since, sitting in cash through downturns instead of riding them. It sidesteps the drawdowns that make TQQQ frightening, and on his numbers it works. It also asks me to read a chart every week and to be right about when to get back in. For now I would rather have rules that never ask me to make a call. That is a preference, not a verdict on the method, which on Collins' numbers works well.</p>
         </div>
       </li>
       <li>
@@ -709,7 +711,7 @@
   </div>
   <div class="wrap">
     <ul class="risk-list">
-      <li><h3>The bottom tier is the last one</h3><p>At −60% the rules spend the entire reserve. If the fall keeps going to −70% or −80%, and in 2022 QLD fell about 60% while TQQQ fell 82%, all I have left is the next US$800 a month. There is nothing below that.</p></li>
+      <li><h3>The bottom tier is the last one</h3><p>At −60% the rules spend the entire reserve. If the fall keeps going to −70% or −80%, and from its 2021 high to its 2022 low QLD fell 64% while TQQQ fell 82%, all I have left is the next US$800 a month. There is nothing below that.</p></li>
       <li><h3>Daily reset, not 2× the period</h3><p>QLD and SSO target twice their index's <em>daily</em> move. Over months and years in choppy markets, compounding drags the result well below 2× the index return, sometimes below zero while the index is flat.</p></li>
       <li><h3>Currency and concentration</h3><p>An Australian buying a US-domiciled fund is also taking an unhedged AUD/USD bet, in an index where a handful of companies carry most of the weight.</p></li>
       <li><h3>The rules have not met a crash yet</h3><p>The ladder is easy on a spreadsheet. Emptying the entire reserve into a market that has more than halved is a different thing on the day. Nothing here has been through that, so treat the deepest tiers as written rather than proven.</p></li>
@@ -726,9 +728,9 @@
   </div>
   <div class="wrap">
     <ul class="grid2">
-      <li><h3>The price I pay is the price that decides the tier</h3><p>There is only one price in play each month: whatever the fund costs when I place the order. That single number sets the drawdown, the tier, the deployment percentage and the share count, and it is the number published in the log. If I ever get filled at something different from the price I based the decision on, both figures go on the record.</p></li>
+      <li><h3>The last close decides the tier, and the price I pay decides the cost</h3><p>One number sets the drawdown, the tier, the deployment percentage and the share count: the fund's last close before I place the order. It is the number published in the log. The price I am filled at only decides what those shares cost and how much is left in the reserve, and when it differs from the close both figures go on the record.</p></li>
       <li><h3>Every trade costs $3</h3><p>That is what my broking app charges to place the trade, not anything the fund charges. The tier decides the share count on its own, and brokerage comes out of the cash afterwards, so the fee never shrinks the buy, it just leaves a little less in the reserve. Over twenty years that is 480 monthly buys across the two funds, $1,440, which the site tracks and reports rather than hiding.</p></li>
-      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. Take a baseline month and a price of $90: 20% of an $800 contribution is $160, which buys one share at $90. Brokerage of $3 comes out of the cash as well, and the other $707 waits in the reserve.</p></li>
+      <li><h3>Whole shares only</h3><p>Multiply the pile by the tier percentage, then round the purchase down to full shares. Take a baseline month and a last close of $90: 20% of an $800 contribution is $160, which buys one share at $90. Brokerage of $3 comes out of the cash as well, and the other $707 waits in the reserve.</p></li>
       <li><h3>Fixed in USD, not AUD</h3><p>I contribute US$800 a month to each fund, so the AUD it costs me changes with the exchange rate. I'm choosing a steady position size in the currency the fund actually trades in, and accepting a variable bill at home.</p></li>
     </ul>
   </div>
@@ -752,13 +754,13 @@
   <div class="wrap">
     <div class="foot-mark"><img class="mk" src="../mark.png" alt="" width="56" height="42"><span>Tran to Fire.</span></div>
     <p><strong>I am not a financial adviser.</strong> I do not hold an Australian Financial Services Licence, I am not an authorised representative of any licensee, and I am not a registered tax agent. Nothing on this website is personal advice, general advice, a recommendation, or an offer to deal in a financial product. It is a public record of one experiment run with a defined slice of my own money, not my whole portfolio, including the parts that don't work.</p>
-    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Consider your own circumstances and seek licensed advice before acting on anything you read here. Figures are in US dollars, because both funds are US-listed and I contribute a fixed US$800 to each of them every month; the AUD cost of that moves with the exchange rate. Figures ignore brokerage, FX conversion costs, tax and dividends.</p>
+    <p>Leveraged exchange-traded funds can and do lose the overwhelming majority of their value. Past performance says nothing about future returns. Consider your own circumstances and seek licensed advice before acting on anything you read here. Figures are in US dollars, because both funds are US-listed and I contribute a fixed US$800 to each of them every month; the AUD cost of that moves with the exchange rate. The worked example leaves out brokerage and interest, and every figure ignores FX conversion costs, tax and dividends.</p>
     <p class="foot-links"><a href="../privacy/index.html">Privacy</a></p>
     <p>© 2026 Tran to Fire</p>
   </div>
 </footer>
 
-<script src="../js/config.js?v=19" defer></script>
+<script src="../js/config.js?v=20" defer></script>
 <script src="../js/live.js?v=21" defer></script>
 <script src="../js/marks.js?v=4" defer></script>
 <script src="../js/comments.js?v=4" defer></script>

@@ -12,8 +12,10 @@ Everything below is done in a web browser. Nothing to install.
 4. At the bottom of the page there is a drop zone.
 5. Drag the **`site` folder** onto it. The folder itself, not the files inside.
 6. Wait about 30 seconds.
-7. Visit trantofire.au. The Progress page should say "Nothing logged yet".
-   That is correct — your first buy has not happened.
+7. Visit trantofire.au and check that the Progress page loads.
+
+Parts 1 and 2 were done in July 2026. They are kept here in case the site ever
+has to be set up again.
 
 ---
 
@@ -59,12 +61,19 @@ Do this after you place your buy order.
 26. Go to github.com and open your `trantofire` repository.
 27. Click the **`js`** folder, then click **`data.js`**.
 28. Click the **pencil icon** at the top right of the file.
-29. Add one line inside the square brackets:
+29. The file holds two lists, one for each fund: `TTF_DATA` is QLD and
+    `TTF_DATA_SSO` is SSO. Every month is already written and commented out.
+    In each list, find the month, delete the two slashes at the front and
+    fill it in:
 
-        { month: "2026-08", price: 66.00 },
+        { month: "2026-12", price: 84.10, fill: 84.35, date: "2026-12-01" },
 
     - `month` is the year and month, in quotes
-    - `price` is what TQQQ cost when you bought
+    - `price` is the fund's last close before you placed the order. It sets
+      the tier and the number of shares
+    - `fill` is the price you paid, when it was not that close. It sets what
+      the shares cost
+    - `date` is the day the order went in
     - the comma at the end is required
     - use straight quotes " and not curly quotes
 

@@ -46,7 +46,7 @@ window.TTF = {
       // forward split on 20 November 2025. Several sites still report an
       // all-time high of $153.33 from 29 October 2025, which is the pre-split
       // price. Halved, that peak is $76.67, and the June 2026 one is higher.
-      EXPENSE_RATIO:   0.0095,           // 0.95%, per the fund table on /
+      EXPENSE_RATIO:   0.0089,           // 0.89%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["QQQ", "TQQQ"]      // the same money into 1x and 3x
     },
@@ -62,7 +62,7 @@ window.TTF = {
       // forward split on 20 November 2025, and several sites still publish an
       // unadjusted all-time high in the $160s that predates it. Everything
       // here is post-split.
-      EXPENSE_RATIO:   0.0090,           // 0.90%, per the fund table on /
+      EXPENSE_RATIO:   0.0084,           // 0.84%, per the fund table on /
       BROKERAGE:       3,
       bench:        ["VOO", "UPRO"]      // the same money into 1x and 3x
     }
@@ -83,7 +83,7 @@ window.TTF = {
   // high anywhere on this site.
   HIGH_WATER_MARK: null,
   CONTRIBUTION:    800,
-  EXPENSE_RATIO:   0.0095
+  EXPENSE_RATIO:   0.0089
 };
 
 /* Convenience: the sleeve record for a symbol, with the shared settings

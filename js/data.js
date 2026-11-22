@@ -349,10 +349,10 @@ window.TTF_DATA = [
    its own reserve and its own high-water mark, so the two never touch.
 
    Edit it exactly the way you edit the QLD log above: find the month, delete
-   the two slashes, type the price you paid.
+   the two slashes, type the last close before the order went in, and add
+   fill: with the price you paid.
 
-   August 2026 is logged. Every later month is commented out, the same as the
-   QLD log above.
+   Every month not yet bought is commented out, the same as the QLD log above.
    --------------------------------------------------------------------------- */
 
 window.TTF_DATA_SSO = [
