@@ -201,8 +201,9 @@ happened and what it did to the position, not just a column of prices.
 
 **Nothing on the site is a typed-in figure that could go stale**, with three
 deliberate exceptions: the home page growth chart's annual balances, the two
-index charts above it, and the fee and size columns of the fund table, which
-are dated in its caption. Both sets of charts stop at the end of 2025, the
+index charts above it, and two things from ProShares that are dated where
+they are printed: the fee and size columns of the fund table, and what each
+fund holds in "What is inside them". Both sets of charts stop at the end of 2025, the
 last complete year, and get their next year together each January.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
@@ -221,16 +222,29 @@ Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Why not just buy every month, Lifecycle investing, What I
 didn't build this on, How this goes wrong, The mechanics, Comments.
 
-What the funds hold (corrected 21 Nov 2026). The home page said none of these
-funds hold the shares in their index, only swaps. That was wrong. ProShares'
-daily holdings for 18 and 19 Nov 2026 show shares at about 66% of SSO's net
-assets, 78% of QLD's and 58% of TQQQ's (UPRO about the same as TQQQ), swaps
-with ten banks for most of the rest of the exposure (about 116%, 109% and
-226%), index futures (13% to 16%), and Treasury bills and a money market fund
-alongside. The home page now says so, and "the borrowing sits inside the fund"
-on My Story and Strategy reads "the leverage": the funds don't take a loan,
-they add swaps and futures to the shares they own. Don't write that they hold
-no shares.
+What the funds hold (corrected 21 Nov 2026, set out in a table 22 Nov 2026).
+The home page once said none of these funds hold the shares in their index,
+only swaps. That was wrong. Each fund owns every company in its index, as a
+plain index fund does, and adds swaps (with about ten banks) and index futures
+on top until it carries two or three times the index. The funds section on
+Home has a card, "What is inside them", that says so and gives the split from
+ProShares' own website, as a share of net assets:
+
+| Fund | The shares | Swaps | Futures | Adds up to | Holdings of |
+|---|---|---|---|---|---|
+| SSO | 67.48% | 116.19% | 16.34% | 200.01% | 19 Nov 2026 |
+| QLD | 82.47% | 103.70% | 13.81% | 199.98% | 20 Nov 2026 |
+| UPRO | 57.61% | 226.08% | 16.23% | 299.92% | 19 Nov 2026 |
+| TQQQ | 60.88% | 222.70% | 16.44% | 300.02% | 19 Nov 2026 |
+
+The page prints them to one decimal with swaps and futures as one column, and
+its last column is the sum of the two it shows. They are on each fund's page
+at proshares.com, under Holdings: add up the Exposure Weight of the company
+lines, the swap lines and the futures line. The split moves a few points from
+day to day (QLD's shares were about 78% a day or two earlier), so the card dates
+it. Treasury bills and a money market fund hold the rest of the money. "The
+borrowing sits inside the fund" on My Story and Strategy reads "the leverage":
+the funds don't take a loan. Don't write that they hold no shares.
 
 My Story's "Rates went up" paragraph is dated to 21 Nov 2026: the cash rate at
 4.85% after the rises of 29 September and 3 November, and the average

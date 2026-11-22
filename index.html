@@ -372,6 +372,11 @@
   .falls td:first-child{font-family:var(--display);font-size:19px;white-space:nowrap}
   .falls .ix-sub{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:2px}
   .falls td{vertical-align:top}
+  .inside{margin-top:6px}
+  .inside td:first-child{white-space:normal}
+  @media (max-width:560px){ .inside th,.inside td{padding-right:6px} .inside th:last-child,.inside td:last-child{padding-right:0} .inside td:first-child{font-size:16px} }
+  .inside tbody tr:first-child td{color:var(--muted)}
+  .inside tr:last-child td{border-bottom:0}
   .falls th{white-space:normal;line-height:1.5;vertical-align:bottom}
   @media (max-width:560px){ .falls{font-size:14.5px} .falls th{font-size:10px;letter-spacing:.1em;padding-right:8px} .falls td{padding-right:8px} .falls td:first-child{font-size:16.5px} .falls .ix-sub{white-space:normal;font-size:12px} }
 
@@ -616,7 +621,27 @@
       </table>
     </div>
     <p class="note" id="f-asof" style="margin-top:16px"></p>
-    <p style="margin-top:28px">All four come from the same place. ProShares, based in Bethesda, Maryland, has run leveraged and inverse funds since 2006 and lists more than 160 ETFs holding about $120 billion, which makes it the thirteenth largest ETF provider in the United States. TQQQ is its biggest single fund and the largest leveraged ETF in the world. Each of these funds owns the shares in its index, though not two or three times the amount. ProShares publishes the holdings every day, and in November 2026 shares made up about two thirds of SSO, more than three quarters of QLD and more than half of each triple. The rest of the exposure comes from swap contracts with about ten investment banks and from index futures, with Treasury bills and a money market fund held alongside. That is how a fund the size of TQQQ can promise three times a daily move without owning three times the stock.</p>
+    <p style="margin-top:28px">All four come from the same place. ProShares, based in Bethesda, Maryland, has run leveraged and inverse funds since 2006 and lists more than 160 ETFs holding about $120 billion, which makes it the thirteenth largest ETF provider in the United States. TQQQ is its biggest single fund and the largest leveraged ETF in the world.</p>
+
+    <div class="clarify" id="inside" style="margin-top:34px">
+      <p class="clarify-h">What is inside them</p>
+      <p><strong>Each of these funds owns the shares in its index, the same companies a plain index fund owns.</strong> QLD holds every company in the Nasdaq-100, and on 20 November 2026 the largest was Apple, at 7.6% of the fund. SSO holds all of the S&amp;P 500's companies. A plain fund stops there, with all of its money in the shares.</p>
+      <p>A leveraged fund puts most of its money into those shares and then adds contracts on the same index, until each dollar in the fund moves like two dollars, or three. Most of that top layer is swaps with about ten investment banks, and the rest is index futures. About two thirds of SSO and about four fifths of QLD is the shares themselves. The contracts on top are what make the funds move twice as far.</p>
+      <div class="table-scroll">
+        <table class="annual falls inside">
+          <caption>Share of each fund's net assets, from the holdings ProShares publishes on its website every day: 19 November 2026 for SSO, UPRO and TQQQ, and 20 November for QLD. Futures are 14 to 16 points of the top layer in each fund and swaps are the rest. The split moves a few points from day to day as the funds reset.</caption>
+          <thead><tr><th>Fund</th><th>The shares</th><th>Swaps and futures on top</th><th>Adds up to</th></tr></thead>
+          <tbody>
+            <tr><td>A plain index fund<span class="ix-sub">QQQ or SPY</span></td><td>100%</td><td>none</td><td>100%</td></tr>
+            <tr><td>SSO<span class="ix-sub">2× S&amp;P 500</span></td><td><strong>67.5%</strong></td><td>132.5%</td><td>200.0%</td></tr>
+            <tr><td>QLD<span class="ix-sub">2× Nasdaq-100</span></td><td><strong>82.5%</strong></td><td>117.5%</td><td>200.0%</td></tr>
+            <tr><td>UPRO<span class="ix-sub">3× S&amp;P 500</span></td><td><strong>57.6%</strong></td><td>242.3%</td><td>299.9%</td></tr>
+            <tr><td>TQQQ<span class="ix-sub">3× Nasdaq-100</span></td><td><strong>60.9%</strong></td><td>239.1%</td><td>300.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:22px">The money that is not in shares sits in Treasury bills and a money market fund. That is how a fund the size of TQQQ can promise three times a daily move without owning three times the stock.</p>
+    </div>
     <div class="feenote" id="fees">
       <p class="feenote-h">Where that fee actually goes</p>
       <p>Nobody sends you a bill for it. An ETF takes its management fee out of its own assets, a little every day, which lowers the fund's net asset value. The market price follows that value. So QLD's 0.89% is not charged to you on top of the price, it is charged <em>inside</em> it.</p>
