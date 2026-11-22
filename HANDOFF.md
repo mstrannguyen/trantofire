@@ -225,12 +225,25 @@ step that drag-and-drop deploys skip. The proxy needs no build.
 
 Home, Strategy, Progress, Journal, My Story, Privacy.
 
-Home runs: the signal now, the overview, The tax backdrop, The two indexes,
-The family of funds, How it works (the two ideas, the ladder, then both of
-them in QLD's fall of 2022), The engine, Where to start, Comments. "What I'm
-trying" was taken out on 22 Nov 2026 at the owner's request. It said the plan
-holds most of the money in cash near a high, and the ladder does not: the
-reserve levels off at about four months of contributions.
+Home runs: the signal now, the overview, the four facts in a strip, The two
+indexes, The family of funds, How it works (the two ideas, the ladder, then
+both of them in QLD's fall of 2022), The engine, Where to start, Comments.
+
+Two sections were taken off Home on 22 Nov 2026 at the owner's request. "What
+I'm trying" said the plan holds most of the money in cash near a high, and
+the ladder does not: the reserve levels off at about four months of
+contributions. "The tax backdrop" (the 2027 capital gains change, in two
+cards and four points) was not about the plan and nothing on Home referred to
+it. The change is still told on My Story, with its source note, and Strategy
+keeps its sentence on what selling costs now. Do not put it back on Home.
+Home's footer lost the line that dated the tax settings "described here",
+because none are now. It still tells readers to see a tax agent about the
+2027 rules.
+
+The sections alternate ivory and blush from the strip down: the strip is
+blush, The two indexes ivory, The family of funds blush, How it works ivory,
+The engine blush, Where to start ivory. Take a section out or put one in and
+the classes after it (`band` or `band band-blush`) need to flip to keep that.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Dollar-cost averaging, Why not just buy every month, Lifecycle investing, What I
@@ -310,7 +323,7 @@ Every page was read against its sources and against the other pages.
 
 ## The two indexes (Home, added 22 Nov 2026)
 
-A section between the tax backdrop and the family of funds: what the S&P 500
+A section between the strip of four facts and the family of funds: what the S&P 500
 and the Nasdaq-100 have done undoubled, so the leveraged funds are read
 against it. One chart per index, a table of the four falls, and four
 paragraphs that end on what SSO and QLD did in the same falls.
@@ -599,7 +612,8 @@ upload it to the chat, get the two files back, commit.
   readers to the Journal
 - The site's wording follows the engine: **the tier is set on the fund's last
   close before the order**, and the capital gains change is described as law
-  (Treasury Laws Amendment (Tax Reform No. 1) Act 2026, 26 June 2026)
+  (Treasury Laws Amendment (Tax Reform No. 1) Act 2026, 26 June 2026). Since
+  22 Nov 2026 that is on My Story only
 
 ---
 
