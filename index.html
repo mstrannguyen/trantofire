@@ -354,6 +354,26 @@
   .annual tfoot td{border-top:2px solid var(--brass);border-bottom:0;padding-top:16px;font-family:var(--display);font-size:18px}
   .annual tfoot .q,.annual tfoot .t{font-weight:400}
   .cmp-note{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--hair);padding-top:18px;margin-top:8px}
+  /* the two index charts */
+  .ix-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:10px}
+  @media (max-width:860px){ .ix-grid{grid-template-columns:1fr;gap:26px} }
+  .ix-fig{margin:0;min-width:0}
+  .ix-fig figcaption{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 18px;margin:0 6px 12px}
+  .ix-name{font-family:var(--display);font-size:27px;line-height:1.2}
+  .ix-read{font-size:13.5px;line-height:1.5;color:#5A4850;min-height:1.5em}
+  .ix-chart{padding:22px 16px 12px;touch-action:pan-y}
+  .ix-chart:empty{padding:0;border:0;background:none}   /* nothing drawn yet: no empty card, but still a width to draw at */
+  @media (max-width:560px){ .ix-chart{padding:18px 10px 10px} .ix-name{font-size:24px} }
+  .ix-key{font-size:13.5px;line-height:1.7;color:#5A4850;text-align:center;max-width:74ch;margin:22px auto 0}
+  .ix-key i{display:inline-block;vertical-align:middle;margin-right:7px}
+  .ix-key i.ixk-fall{width:18px;height:12px;background:rgba(58,43,49,.14);border-radius:2px}
+  .ix-key i.ixk-low{width:9px;height:9px;border-radius:50%;background:#A33220;margin-left:16px}
+  .ix-key span{white-space:nowrap}
+  .falls td:first-child{font-family:var(--display);font-size:19px;white-space:nowrap}
+  .falls .ix-sub{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);margin-top:2px}
+  .falls td{vertical-align:top}
+  .falls th{white-space:normal;line-height:1.5;vertical-align:bottom}
+  @media (max-width:560px){ .falls{font-size:14.5px} .falls th{font-size:10px;letter-spacing:.1em;padding-right:8px} .falls td{padding-right:8px} .falls td:first-child{font-size:16.5px} .falls .ix-sub{white-space:normal;font-size:12px} }
 
 
   /* fund family */
@@ -527,6 +547,51 @@
     </ul>
   </div>
 
+</section>
+
+<section class="band band-blush" id="indexes">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">The two indexes</p>
+    <h2>Twenty-six years of the S&amp;P 500 and the Nasdaq-100.</h2>
+    <p class="lede">Both of my funds are built on an index. SSO follows the S&amp;P 500, about 500 of the largest companies listed in the United States. QLD follows the Nasdaq-100, the hundred largest non-financial companies on the Nasdaq exchange, weighted heavily towards technology. Before doubling either one, here is what each does on its own: $10,000 put in at the end of 1999 and left until the end of 2025, with the four big falls of those years shaded.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="ix-grid">
+      <figure class="ix-fig">
+        <figcaption><span class="ix-name">S&amp;P 500</span><span class="ix-read" id="ix-spx-read">$10,000 at the end of 1999 was $73,703 at the end of 2025</span></figcaption>
+        <div class="cmp-chart ix-chart" id="ix-spx"></div>
+      </figure>
+      <figure class="ix-fig">
+        <figcaption><span class="ix-name">Nasdaq-100</span><span class="ix-read" id="ix-ndx-read">$10,000 at the end of 1999 was $79,597 at the end of 2025</span></figcaption>
+        <div class="cmp-chart ix-chart" id="ix-ndx"></div>
+      </figure>
+    </div>
+    <p class="ix-key"><span><i class="ixk-fall"></i>From a high to the low that followed</span> <span><i class="ixk-low"></i>The low, with the fall to it</span><br>Both charts use the same log scale, so a fall of a given size is the same height wherever it happens. Move across a chart to read any month.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <p style="margin-top:40px">Over those 26 years the two finished close together. $10,000 in the S&amp;P 500 became $73,703, which is 8.0% a year. In the Nasdaq-100 it became $79,597, or 8.3% a year. Each index rose in 20 of the 26 calendar years.</p>
+    <p>They are close only because of where the count starts. The end of 1999 was three months before the top of the dot-com boom. The Nasdaq-100 then lost 83% and needed until February 2015 to get back to that top. Start the same $10,000 at the end of 2009 instead and by the end of 2025 the S&amp;P 500 has returned about 14% a year and the Nasdaq-100 almost 19%. Most of what is said about the Nasdaq-100 today comes from those later years.</p>
+
+    <div class="table-scroll">
+      <table class="annual falls">
+        <caption>The four falls. Each is measured from the high before it to the low. The years to get back run from that high until the index closed above it again.</caption>
+        <thead><tr><th>Fall</th><th>S&amp;P 500</th><th>Years to get back</th><th>Nasdaq-100</th><th>Years to get back</th></tr></thead>
+        <tbody>
+          <tr><td>2000 to 2002<span class="ix-sub">The dot-com bust</span></td><td class="neg">−47.5%</td><td>6.6</td><td class="neg">−83.0%</td><td>14.9</td></tr>
+          <tr><td>2007 to 2009<span class="ix-sub">The financial crisis</span></td><td class="neg">−55.2%</td><td>4.9</td><td class="neg">−53.4%</td><td>3.1</td></tr>
+          <tr><td>2020<span class="ix-sub">Covid</span></td><td class="neg">−33.7%</td><td>0.5</td><td class="neg">−28.6%</td><td>0.3</td></tr>
+          <tr><td>2022<span class="ix-sub">Inflation and rate rises</span></td><td class="neg">−24.5%</td><td>1.9</td><td class="neg">−35.1%</td><td>2.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">Both indexes went through all four. The S&amp;P 500 was cut by more than half once, in the financial crisis. The Nasdaq-100 was cut by more than half twice, and it also fell more than 20% in late 2018 and in early 2025, recovering inside a year both times. The speed varies as much as the depth. In 2020 the S&amp;P 500 lost a third in 33 days and had it back in under six months. The financial crisis took it 17 months to reach its low and almost five years to get back.</p>
+    <p>A fund that moves twice as far as its index every day goes through each of these falls and goes further. SSO and QLD both began in June 2006, so they have been through three of the four. In the financial crisis SSO lost about 85% and QLD 84%. In 2020 they lost 59% and 52% in about a month. In 2022 they lost 47% and 64%. Neither existed in 2000, and doubling the Nasdaq-100's daily moves through that fall works out to a loss of more than 98%. These are the two funds I buy every month.</p>
+    <p class="cmp-note">SPY and QQQ, the funds that track the two indexes, stand in for them: daily closes from Yahoo Finance with distributions reinvested, so some of the falls run a point or two under the figure usually quoted for the index itself. The yearly rates are compound. The Nasdaq-100's second fall is measured from its 2007 high, which was still 52% under its 2000 record, and its low came in November 2008. SSO's and QLD's falls are from their own daily prices, as ChartRow and PortfoliosLab list them. The figure for 2000 is my arithmetic on QQQ's daily moves, before any fund costs.</p>
+  </div>
 </section>
 
 <section class="band band-blush">
@@ -738,6 +803,7 @@
 <script src="js/marks.js?v=4" defer></script>
 
 <script src="js/chartkit.js?v=1" defer></script>
+<script src="js/indexes.js?v=1" defer></script>
 <script src="js/compare.js?v=16" defer></script>
 <script src="js/comments.js?v=4" defer></script>
 </body>

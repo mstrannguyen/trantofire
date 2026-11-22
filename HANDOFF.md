@@ -179,6 +179,11 @@ happened and what it did to the position, not just a column of prices.
 - `js/compare.js` — the home page growth-of-$10k chart (typed annual balances
   for QQQ, QLD and TQQQ, each from Yahoo's annual total returns; the table
   under the chart prints the same QQQ and TQQQ figures)
+- `js/indexes.js` — the two index charts on Home, the S&P 500 and the
+  Nasdaq-100: $10,000 from the end of 1999 to the end of 2025 with the four
+  big falls shaded. The series are typed into the file (SPY's and QQQ's
+  adjusted closes at each month end, plus each fall's high, low and recovery
+  day). See "The two indexes" below
 - `js/chartkit.js` — what every chart shares (`TTF_CHART`). The colours, read
   from the `--k-*` variables in each page's `:root`. `fit()` draws a chart at
   the width it is shown at and again when that changes. `plate()` puts a white
@@ -194,9 +199,11 @@ happened and what it did to the position, not just a column of prices.
   TQQQ, QQQ, QLD, UPRO, SSO, VOO; daily for TQQQ, QQQ, QLD, SSO, VOO, UPRO
 - `_headers` — CSP `script-src 'self'`, so NO inline scripts. HSTS commented out
 
-**Nothing on the site is a typed-in figure that could go stale**, with two
-deliberate exceptions: the home page growth chart's annual balances, and the
-fee and size columns of the fund table, which are dated in its caption.
+**Nothing on the site is a typed-in figure that could go stale**, with three
+deliberate exceptions: the home page growth chart's annual balances, the two
+index charts above it, and the fee and size columns of the fund table, which
+are dated in its caption. Both sets of charts stop at the end of 2025, the
+last complete year, and get their next year together each January.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
 functions were tried first and did NOT work, because functions need a build
@@ -205,6 +212,10 @@ step that drag-and-drop deploys skip. The proxy needs no build.
 ### Pages
 
 Home, Strategy, Progress, Journal, My Story, Privacy.
+
+Home runs: the signal now, the overview, The tax backdrop, The two indexes,
+The family of funds, How it works, What I'm trying, The engine, Where to
+start, Comments.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Why not just buy every month, Lifecycle investing, What I
@@ -268,6 +279,42 @@ Every page was read against its sources and against the other pages.
   +2.7%, Nasdaq-100 +4.2%, Dow +1.5%
 - **Footers.** The Journal's figures come from the log, so they include
   brokerage. Strategy's worked example leaves it out and says so
+
+## The two indexes (Home, added 22 Nov 2026)
+
+A section between the tax backdrop and the family of funds: what the S&P 500
+and the Nasdaq-100 have done undoubled, so the leveraged funds are read
+against it. One chart per index, a table of the four falls, and four
+paragraphs that end on what SSO and QLD did in the same falls.
+
+- **The data** is in `js/indexes.js`: SPY and QQQ stand in for the indexes,
+  adjusted closes from Yahoo (distributions reinvested), $10,000 at the close
+  of 31 Dec 1999, to the close of 31 Dec 2025. Month-end points, plus the day
+  of each fall's high, low and recovery so the line reaches them
+- **Every figure in the section comes from those points**, so they move
+  together: the end values ($73,703 and $79,597, 8.0% and 8.3% a year), the
+  falls (S&P 500 −47.5%, −55.2%, −33.7%, −24.5%; Nasdaq-100 −83.0%, −53.4%,
+  −28.6%, −35.1%) and the years to get back (6.6, 4.9, 0.5, 1.9 and 14.9,
+  3.1, 0.3, 2.0). From the end of 2009 the yearly rates are 14.0% and 18.7%.
+  With dividends in, each fall is a point or two under the figure usually
+  quoted for the index
+- **The Nasdaq-100's second fall** is measured from its 31 Oct 2007 high to
+  its 20 Nov 2008 low. It never got back to its 2000 record in between (the
+  2007 high was 52% under it), so a fall measured from the record would not
+  show 2008 at all
+- **SSO's and QLD's falls** in the last paragraph are from their own prices
+  (ChartRow, PortfoliosLab): about 85% and 84% in 2007 to 2009, 59% and 52%
+  in 2020, 47% and 64% in 2022. The 98% for 2000 is arithmetic on QQQ's daily
+  moves, since neither fund existed
+- **Blue for both lines**, the colour of the plain index on this page (QQQ on
+  the growth chart). Both charts share one log scale so they can be compared.
+  Shading runs from each high to its low. The fall is named at the low, and
+  the script tries a list of places for each name until one clears the line,
+  the other names and the edges. Checked at eleven widths from 300 to 1200
+- **Moving across a chart** reads out the month under the pointer in the line
+  beside the index's name. It is the only chart on the site that does this
+- The page prints the end values in each figure's caption before the script
+  runs. `resting()` in the script writes the same words, so change both
 
 ## The monthly routine
 
