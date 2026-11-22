@@ -355,9 +355,10 @@ Journal).
   figure that is not a gain or a loss, such as an inflation rate, is written
   without a sign
 - **The growth table on Home**: QQQ's two columns are `--k-blue-t` and TQQQ's
-  two are `--k-purple-t` (the "$10k in TQQQ" column used to be plain ink).
+  two are `--k-cyan-t` (the "$10k in TQQQ" column used to be plain ink).
   2022 has a loss-coloured bar down its left edge, and the totals row is on
-  blush
+  blush-soft, the darkest tint that keeps the teal figures at 4.5:1 at the
+  size a phone shows them
 - **Tier pills on Progress**, in the two tables (`.sig`) and at the top of the
   page (`.tierpill`), take the four colours of Home's tier cards: `#F6EAE6`
   with a brass ring, `#E6C6BA`, `#C08872`, plum. They were blush-soft, blush
@@ -424,8 +425,14 @@ upload it to the chat, get the two files back, commit.
   - **orange** `#F2641A`: the fund itself (what the rules bought, the return
     on money invested, QLD on the growth chart, the Nasdaq-100 on the leverage
     chart)
-  - **purple** `#A21CAF`: 3× (TQQQ on the growth chart, the 3× marker on the
-    leverage chart)
+  - **teal** `#0891B2` (`--k-cyan`, words `#0E7490`): 3× (TQQQ on the growth
+    chart and in its table, the 3× marker on the leverage chart). It was
+    purple `#A21CAF` until 22 Nov 2026. **No purple is used anywhere on the
+    site** (Tran, 22 Nov 2026: "I don't like this purple or any other
+    purple"), so do not bring one back for a new chart. Teal was the one hue
+    left that is not already a tier, a gain, a loss or another line: 16 from
+    blue and 31 from orange in OKLab x 100 with full colour vision, and 14.7
+    at worst with red-green colour blindness (the purple managed 9.7)
   - **green** `#089981`, **amber** `#D97706`, **deep orange** `#D9480F`,
     **red** `#B91C1C`: Baseline, Dip, Deep dip, Crash, on the price chart's
     markers and boundaries and the drawdown chart's bands

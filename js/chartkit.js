@@ -11,7 +11,7 @@
               the unleveraged fund, the return on every dollar in
      orange   the fund itself: what the rules bought, the return on the
               money spent on shares
-     purple   3x (TQQQ on the growth chart, 3x on the leverage chart)
+     cyan     3x (TQQQ on the growth chart, 3x on the leverage chart)
      up       Baseline, the first tier
      h1 h2 h3 Dip, Deep dip, Crash, lighter to darker
      red      a bar below zero in a Journal chart
@@ -30,7 +30,7 @@
   var FONT = "EB Garamond,Georgia,serif";
 
   var K = {
-    blue: "var(--k-blue)", orange: "var(--k-orange)", purple: "var(--k-purple)",
+    blue: "var(--k-blue)", orange: "var(--k-orange)", cyan: "var(--k-cyan)",
     up: "var(--k-up)", h1: "var(--k-h1)", h2: "var(--k-h2)", h3: "var(--k-h3)",
     red: "var(--k-red)",
     ink: "#3A2B31", grey: "#8A7A7E", greyText: "#6B5F62", axis: "#8A7A7E", card: "#FFFFFF"

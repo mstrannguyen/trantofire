@@ -35,7 +35,7 @@
        one is for is in js/chartkit.js. -t is the step for words. */
     --k-blue:#2563EB;   --k-blue-t:#1D4ED8;
     --k-orange:#F2641A; --k-orange-t:#C2410C;
-    --k-purple:#A21CAF; --k-purple-t:#A21CAF;
+    --k-cyan:#0891B2;   --k-cyan-t:#0E7490;
     --k-up:#089981;     --k-up-t:#047857;
     --k-h1:#D97706;     --k-h1-t:#B45309;
     --k-h2:#D9480F;     --k-h2-t:#C2410C;
@@ -362,11 +362,11 @@
   .annual td{padding:13px 18px}
   .annual:not(.falls) td:first-child{font-weight:600}
   .annual .q,.annual .qbal{color:var(--k-blue-t);font-weight:600}
-  .annual .t,.annual .tbal{color:var(--k-purple-t);font-weight:600}
+  .annual .t,.annual .tbal{color:var(--k-cyan-t);font-weight:600}
   .annual .neg{color:#A33220;font-weight:600}
   .annual tr.crash td{background:rgba(163,50,32,.09)}
   .annual tr.crash td:first-child{box-shadow:inset 4px 0 0 #A33220}
-  .annual tfoot td{background:var(--blush);border-top:2px solid var(--brass);padding-top:15px;padding-bottom:15px;font-family:var(--display);font-size:22px;font-weight:600;white-space:nowrap}
+  .annual tfoot td{background:var(--blush-soft);border-top:2px solid var(--brass);padding-top:15px;padding-bottom:15px;font-family:var(--display);font-size:22px;font-weight:600;white-space:nowrap}
   @media (max-width:560px){
     .annual{font-size:14px}
     .annual th{font-size:12.5px;padding:12px 4px 10px}
@@ -758,7 +758,7 @@
       <span><i class="dot"></i>QQQ · the plain index</span>
       <span><i class="dash"></i>3× QQQ · what "triple" sounds like</span>
       <span><i style="background:var(--k-orange)"></i>QLD · 2×</span>
-      <span><i style="background:var(--k-purple)"></i>TQQQ · 3×</span>
+      <span><i style="background:var(--k-cyan)"></i>TQQQ · 3×</span>
     </div>
   </div>
 
@@ -853,9 +853,9 @@
 <script src="js/signal.js?v=15" defer></script>
 <script src="js/marks.js?v=4" defer></script>
 
-<script src="js/chartkit.js?v=1" defer></script>
+<script src="js/chartkit.js?v=2" defer></script>
 <script src="js/indexes.js?v=1" defer></script>
-<script src="js/compare.js?v=16" defer></script>
+<script src="js/compare.js?v=17" defer></script>
 <script src="js/comments.js?v=4" defer></script>
 </body>
 </html>

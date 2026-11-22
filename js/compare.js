@@ -3,7 +3,7 @@
    funds, held in this file, stopping at the last complete year.
 
    Colour carries the multiple, the same way as on the rest of the site: blue
-   is the plain index, orange is 2x, purple is 3x. The line that is not a fund
+   is the plain index, orange is 2x, cyan is 3x. The line that is not a fund
    stays grey. The colours themselves are in js/chartkit.js.
 
    Pure SVG, no library, log scale, defensive against a missing host. */
@@ -142,7 +142,7 @@
         { name: "QQQ",         pts: qqq,  colour: CK.K.blue,   labelColour: CK.txt(CK.K.blue),   w: "2.2", dash: "2 4" },
         { name: "3\u00d7 QQQ", pts: trip, colour: CK.K.grey,   labelColour: CK.K.greyText,       w: "1.8", dash: "7 5" },
         { name: "QLD",         pts: qld,  colour: CK.K.orange, labelColour: CK.txt(CK.K.orange), w: "2.2" },
-        { name: "TQQQ",        pts: tqqq, colour: CK.K.purple, labelColour: CK.txt(CK.K.purple), w: "3" }
+        { name: "TQQQ",        pts: tqqq, colour: CK.K.cyan, labelColour: CK.txt(CK.K.cyan), w: "3" }
       ]
     });
   }
