@@ -184,13 +184,17 @@ happened and what it did to the position, not just a column of prices.
   big falls shaded. The series are typed into the file (SPY's and QQQ's
   adjusted closes at each month end, plus each fall's high, low and recovery
   day). See "The two indexes" below
+- `js/dca.js` — the two dollar-cost averaging charts on Strategy: TQQQ from
+  the 27 Mar 2000 high to the end of 2025, bought once and bought every
+  month. One series is typed into the file and both holdings are worked out
+  from it. See "Dollar-cost averaging" below
 - `js/chartkit.js` — what every chart shares (`TTF_CHART`). The colours, read
   from the `--k-*` variables in each page's `:root`. `fit()` draws a chart at
   the width it is shown at and again when that changes. `plate()` puts a white
   plate behind words on the plot, `spread()` moves right-hand labels apart,
   `caption()` puts "break even" where no line runs, `thin()` drops a date
-  along the foot that would touch its neighbour. Loaded on Home and Progress,
-  before the chart scripts
+  along the foot that would touch its neighbour. Loaded on Home, Strategy and
+  Progress, before the chart scripts
 - `js/journal.js` / `js/journal-render.js` — the Journal, one figures block
   per fund
 - `js/funds.js` — fills the return columns in the home page fund table
@@ -199,12 +203,13 @@ happened and what it did to the position, not just a column of prices.
   TQQQ, QQQ, QLD, UPRO, SSO, VOO; daily for TQQQ, QQQ, QLD, SSO, VOO, UPRO
 - `_headers` — CSP `script-src 'self'`, so NO inline scripts. HSTS commented out
 
-**Nothing on the site is a typed-in figure that could go stale**, with three
+**Nothing on the site is a typed-in figure that could go stale**, with four
 deliberate exceptions: the home page growth chart's annual balances, the two
-index charts above it, and two things from ProShares that are dated where
-they are printed: the fee and size columns of the fund table, and what each
-fund holds in "What is inside them". Both sets of charts stop at the end of 2025, the
-last complete year, and get their next year together each January.
+index charts above it, the two dollar-cost averaging charts on Strategy, and
+two things from ProShares that are dated where they are printed: the fee and
+size columns of the fund table, and what each fund holds in "What is inside
+them". All three sets of charts stop at the end of 2025, the last complete
+year, and get their next year together each January.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
 functions were tried first and did NOT work, because functions need a build
@@ -219,7 +224,7 @@ The family of funds, How it works, What I'm trying, The engine, Where to
 start, Comments.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
-Worked example, Why not just buy every month, Lifecycle investing, What I
+Worked example, Dollar-cost averaging, Why not just buy every month, Lifecycle investing, What I
 didn't build this on, How this goes wrong, The mechanics, Comments.
 
 What the funds hold (corrected 21 Nov 2026, set out in a table 22 Nov 2026).
@@ -329,6 +334,56 @@ paragraphs that end on what SSO and QLD did in the same falls.
   beside the index's name. It is the only chart on the site that does this
 - The page prints the end values in each figure's caption before the script
   runs. `resting()` in the script writes the same words, so change both
+
+## Dollar-cost averaging (Strategy, added 22 Nov 2026)
+
+A section between the worked example and "Why not just buy every month": what
+dollar-cost averaging is, and what it did in the hardest case there is. Two
+charts of TQQQ from the Nasdaq-100's high on 27 Mar 2000 to the end of 2025:
+$10,000 put in that day and nothing after, and the same $10,000 followed by
+$800 at the first close of every month. It answers "a 3x fund gets wiped
+out": true of one purchase, and silent about the purchases after it. Home's
+"The engine" has one sentence pointing here (`strategy/index.html#dca`).
+
+- **TQQQ is here as the case the warning is about. It is not in the plan**,
+  and the section says so. The plan's funds are still never called 3x
+- **The data** is one series in `js/dca.js`: what the first $10,000 was worth
+  at 629 closes (the first day, each month's first and last close, and the
+  days the page names), to seven significant figures. `hold()` works out both
+  holdings from it, and every figure in the section was worked out from that
+  same series, so they move together: the captions, the table, the paragraphs
+- **From 11 Feb 2010 it is the real fund**: TQQQ's adjusted closes from Yahoo.
+  **Before that it is rebuilt from QQQ's adjusted closes**: three times each
+  day's move, less 0.95% a year for the fee and twice (the federal funds
+  rate + 0.471%) a year for what the swaps cost. The federal funds rate is
+  the yearly average from the Economic Report of the President (6.24% in
+  2000, 3.88, 1.67, 1.13, 1.35, 3.22, 4.97, 5.02, 1.92, 0.16 in 2009). The
+  0.471% is fitted: with it the same sum from 11 Feb 2010 to the end of 2025
+  multiplies 255.4 times, as the real fund did, and its falls in 2018, 2020
+  and 2022 come out within half a point of the real ones. With no costs at
+  all the fall to 9 Oct 2002 is 99.94%, the figure other rebuilds publish
+- **The figures**: bought once, $4.76 on 9 Oct 2002 (a fall of 99.95%),
+  $2.10 on 9 Mar 2009, $2,270 at the end of 2025, still 77% short. Bought
+  every month, $257,200 put in and $20,873,993 at the end; furthest behind on
+  29 Mar 2001 ($1,150 on $19,600 put in, 94% under); first level on 23 Nov
+  2005; under again from June 2008, 90% under on 20 Nov 2008; ahead for good
+  from 5 Jan 2012; behind on 85% of closes until then. The 309 monthly
+  purchases run from 3 Apr 2000 to 1 Dec 2025. Fractions of a share, no
+  brokerage, currency or tax
+- **Both charts run the same number of steps of ten** (0.4 to 100,000 and 400
+  to 100 million), so a given height is the same change on both. The tint
+  between the lines is the loss colour: the holding was worth less than the
+  money put in. A dotted line at February 2010 marks where the rebuilt fund
+  ends. Labels are placed the way the index charts' are, and the label check
+  passes at sixteen widths from 300 to 1440
+- **Collins's line in the next section was corrected to match.** The page
+  used to say his figure was $1,000 in January 2000 still worth about $1,000
+  twenty years on. His book says it "would likely be around breakeven", which
+  is a guess, and the rebuilt fund makes it about $70 ($68.53 on 3 Jan 2020).
+  The page now gives both
+- **Each January**: add the year's closes to `D`, `P` and `BUY` (the header of
+  `js/dca.js` says how), then change the captions, the table's last row and
+  the paragraphs that quote the end figures
 
 ## Tables (restyled 22 Nov 2026)
 

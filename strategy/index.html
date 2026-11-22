@@ -249,6 +249,29 @@
     .money .band-name{font-size:16px}
   }
   .bad-inline{color:#A85A48;font-weight:600}
+  /* the two dollar-cost averaging charts, laid out as the two index charts on Home are */
+  .dca-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+  @media (max-width:860px){ .dca-grid{grid-template-columns:1fr;gap:26px} }
+  .dca-fig{margin:0;min-width:0}
+  .dca-fig figcaption{margin:0 6px 12px}
+  .dca-name{display:block;font-family:var(--display);font-size:27px;line-height:1.2}
+  .dca-read{display:block;font-size:13.5px;line-height:1.5;color:#5A4850;min-height:1.5em;margin-top:2px}
+  .dca-chart{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:22px 16px 12px;touch-action:pan-y}
+  .dca-chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .dca-chart:empty{padding:0;border:0;background:none}   /* nothing drawn yet: no empty card, but still a width to draw at */
+  @media (max-width:560px){ .dca-chart{padding:18px 10px 10px} .dca-name{font-size:24px} }
+  .dca-key{font-size:13.5px;line-height:1.7;color:#5A4850;text-align:center;max-width:74ch;margin:8px auto 0}
+  .dca-swatches{max-width:none;margin-top:22px;line-height:2}
+  .dca-key i{display:inline-block;vertical-align:middle;margin-right:7px}
+  .dca-key span{white-space:nowrap;margin:0 9px}
+  .dca-key i.k-line{width:22px;height:3px;border-radius:2px;background:var(--k-cyan)}
+  .dca-key i.k-dash{width:26px;height:0;border-top:2px dashed var(--plum)}
+  .dca-key i.k-under{width:18px;height:12px;border-radius:2px;background:rgba(163,50,32,.16)}
+  .dca-table{margin-top:34px}
+  .dca-table td{white-space:nowrap}
+  .dca-table th{white-space:normal}
+  .dca-table .band-name .sub{white-space:normal}
+  @media (max-width:560px){ .dca-table .band-name{font-size:16.5px} .dca-table .sub{font-size:12px} }
   .clarify{background:#fff;border:1px solid var(--hair);border-radius:18px;padding:34px 36px}
   .clarify-h{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:0 0 18px}
   .clarify p{margin:0 0 18px;font-size:16.5px;line-height:1.7}
@@ -650,6 +673,58 @@
 </section>
 
 
+<section class="band band-blush" id="dca">
+  <div class="wrap narrow center">
+    <span class="orn"></span>
+    <p class="eyebrow">Dollar-cost averaging</p>
+    <h2>The same amount every month, whatever the price.</h2>
+    <p class="lede">Dollar-cost averaging is putting in the same amount on a fixed schedule and never waiting for a better price. A fixed amount buys more shares when the price is low and fewer when it is high. $800 buys 8 shares at $100 and 16 shares at $50. That is 24 shares for $1,600, or $66.67 each, when the two prices average $75.</p>
+    <p class="lede">The warning people give about a 3× fund is that one crash wipes it out. I tested that on the worst day I could find to start: 27 March 2000, the top of the dot-com boom, in TQQQ, the 3× fund on the Nasdaq-100. One chart is $10,000 put in that day and left alone. The other is the same $10,000 followed by $800 a month, the amount I put into each of my own funds.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="dca-grid">
+      <figure class="dca-fig">
+        <figcaption><span class="dca-name">Bought once</span><span class="dca-read" id="dca-once-read">$10,000 on 27 March 2000 was $2,270 at the end of 2025</span></figcaption>
+        <div class="dca-chart" id="dca-once"></div>
+      </figure>
+      <figure class="dca-fig">
+        <figcaption><span class="dca-name">Bought every month</span><span class="dca-read" id="dca-monthly-read">$257,200 put in by the end of 2025 was worth $20,873,993</span></figcaption>
+        <div class="dca-chart" id="dca-monthly"></div>
+      </figure>
+    </div>
+    <p class="dca-key dca-swatches"><span><i class="k-line"></i>What the holding was worth</span> <span><i class="k-dash"></i>Money put in</span> <span><i class="k-under"></i>Worth less than the money put in</span></p>
+    <p class="dca-key">Each step up the side is ten times the one below, on both charts. Left of the dotted line the fund is rebuilt from QQQ, because TQQQ only began in February 2010.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <p style="margin-top:44px">The warning holds for the single purchase. The $10,000 was worth $4.76 at the low in October 2002, a fall of 99.95%, and $2.10 in March 2009. Then came one of the strongest runs the Nasdaq-100 has had, and at the end of 2025 the holding was worth $2,270. The fund would have to multiply another 4.4 times to give that money back.</p>
+    <p>The monthly buyer's first $10,000 is the same $10,000 and did exactly as badly. A year in, they had put in $19,600 and held $1,150. Until January 2012, almost twelve years on, they were behind on 85 days out of every 100, and in November 2008 they were 90% down again, this time on $93,200. Buying every month did not make any of that comfortable.</p>
+    <p>What it did was keep buying at the bottom. The $800 that went in on 1 October 2002 bought the fund at 0.06% of its peak price, and by the end of 2025 that one purchase was worth $287,861. The sixteen purchases from September 2008 to December 2009 cost $12,800 and ended as $5.8 million, more than a quarter of the total. By the end of 2025, $257,200 of contributions was worth about $20.9 million.</p>
+
+    <div class="table-scroll">
+      <table class="methods dca-table">
+        <caption>What each holding was worth on six days. The percentage under a figure is against the money put in by that day: $10,000 for the single purchase.</caption>
+        <thead><tr><th>Day</th><th>Bought once</th><th>Bought every month: put in</th><th>Bought every month: worth</th></tr></thead>
+        <tbody>
+          <tr><td class="band-name">9 Oct 2002<br><span class="sub">the low of the dot-com crash</span></td><td>$4.76<span class="sub bad">−99.95%</span></td><td>$34,800</td><td>$3,242<span class="sub bad">−91%</span></td></tr>
+          <tr><td class="band-name">31 Oct 2007<br><span class="sub">the next high</span></td><td>$39.63<span class="sub bad">−99.60%</span></td><td>$82,800</td><td>$136,902<span class="sub ok">+65%</span></td></tr>
+          <tr><td class="band-name">9 Mar 2009<br><span class="sub">the fund's lowest close</span></td><td>$2.10<span class="sub bad">−99.98%</span></td><td>$96,400</td><td>$10,849<span class="sub bad">−89%</span></td></tr>
+          <tr><td class="band-name">End of 2021<br><span class="sub">before 2022's fall</span></td><td>$1,713<span class="sub bad">−82.9%</span></td><td>$218,800</td><td>$15,678,825<span class="sub ok">+7,066%</span></td></tr>
+          <tr><td class="band-name">End of 2022<br><span class="sub">after it</span></td><td>$358<span class="sub bad">−96.4%</span></td><td>$228,400</td><td>$3,283,571<span class="sub ok">+1,338%</span></td></tr>
+          <tr><td class="band-name">End of 2025<br><span class="sub">where the charts stop</span></td><td>$2,270<span class="sub bad">−77.3%</span></td><td>$257,200</td><td>$20,873,993<span class="sub ok">+8,016%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">So the warning is right about money that is already in the fund when it falls, and it says nothing about money that goes in afterwards. The same fall that takes almost everything from the first purchase puts the fund on sale for every purchase after it. The first chart assumes the buyer never adds another dollar. I add money every month.</p>
+    <p>Three cautions. TQQQ did not exist before February 2010, so nobody lived through the first ten years of these charts, and the rebuilt fund is my arithmetic on QQQ's daily moves. The final figure owes a great deal to the years from February 2010 to the end of 2021, when the real fund multiplied about 190 times, and one year can take most of it back: in 2022 the monthly buyer went from $15.7 million to $3.3 million. And it needed someone who kept paying in while 94% down, which is easier to draw than to do.</p>
+    <p>TQQQ is not one of the two funds in this plan. I used it because it is the fund the warning is about and the hardest case I could build. QLD and SSO aim for twice their index's move each day, so they fall less far. My rules also do one thing a fixed monthly amount doesn't: they hold part of each month's money back near the high and spend more of it as the fund falls. That is the ladder above.</p>
+    <p class="src-note" style="margin-top:30px">Both charts run from the close of 27 March 2000, the Nasdaq-100's high, to the close of 31 December 2025. From 11 February 2010 the fund is TQQQ's own adjusted closes from Yahoo Finance. Before that it is rebuilt from QQQ's adjusted closes: three times each day's move, less 0.95% a year for the fee, and less twice the sum of the federal funds rate and 0.47% a year for what the swaps cost. The 0.47% is the figure that makes the same sum, run from February 2010 to the end of 2025, land on the real fund's result. The $800 goes in at the first close of each month from April 2000. Fractions of a share are allowed, and brokerage, currency and tax are left out. This is arithmetic on the past, not a forecast and not advice.</p>
+  </div>
+</section>
+
+
 <section class="band">
   <div class="wrap narrow center">
     <span class="orn"></span>
@@ -677,7 +752,7 @@
     <p style="margin-top:34px">There is a second reason, and it is the one I think actually keeps a person in the game. A plain monthly buyer has to <em>endure</em> a crash. Someone holding a reserve gets to <em>use</em> one. On a twenty-year horizon you end up hoping for the pullbacks, because that is when the shares go on sale. That is a completely different experience to watching the number fall with nothing to do about it, and I suspect it is the difference between still being here in year four and quietly giving up.</p>
     <div class="clarify" style="margin-top:34px">
       <p class="clarify-h">The discipline this actually requires</p>
-      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and what is left is whatever I happened to buy before it started. Collins has a figure for that version: $1,000 put into TQQQ once, in January 2000, was still worth about $1,000 twenty years later. A simulated 3× Nasdaq fell around 99% in the crash that followed, and a position that stops being added to has no way back from a fall like that.</p>
+      <p>None of the numbers on this page happen without one boring behaviour: contributing on schedule, and deploying the reserve when the rules say to, in exactly the months it feels most insane to do so. The 80/20 and tier methods only beat plain buying because they <strong>spend into the fear</strong>. Skip the contributions during a crash, or freeze and hold the cash "until things calm down," and what is left is whatever I happened to buy before it started. Collins reckons $1,000 put into TQQQ once, in January 2000, would be about level twenty years later. Rebuilt day by day, the way the charts above are, it is about $70. The fund fell 99.95% from its high that March, and a position that stops being added to has no way back from a fall like that.</p>
       <p>A 2026 paper out of the University of Waterloo gets to the same place from another direction. Forsyth, van Staden and Li test leveraged funds against a century of market data, rebuilt back to 1926 because the funds themselves only date from 2006 and their real record covers an unusually kind stretch of history. They find these funds reward a strategy that decides how much to hold and keeps changing it, and punish one that buys and then sits. Their other warning is about which index sits underneath: a leveraged fund on a broad market behaves nothing like one on a narrow, volatile sector, and most of the horror stories come from the second kind.</p>
       <p>So the hard part was never picking the fund. It is being the kind of person who still sends money in during the month the headlines are worst. That is the real experiment here.</p>
     </div>
@@ -798,6 +873,8 @@
   </div>
 </footer>
 
+<script src="../js/chartkit.js?v=2" defer></script>
+<script src="../js/dca.js?v=1" defer></script>
 <script src="../js/config.js?v=20" defer></script>
 <script src="../js/live.js?v=21" defer></script>
 <script src="../js/marks.js?v=4" defer></script>
