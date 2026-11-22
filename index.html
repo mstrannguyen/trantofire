@@ -398,6 +398,26 @@
   .ix-key i.ixk-fall{width:18px;height:12px;background:rgba(58,43,49,.14);border-radius:2px}
   .ix-key i.ixk-low{width:9px;height:9px;border-radius:50%;background:#A33220;margin-left:16px}
   .ix-key span{white-space:nowrap}
+
+  /* How it works: the two charts of QLD's fall of 2022, and the table under them.
+     The caption is stacked, with room for a readout of two lines, so the chart
+     does not move when a pointer crosses it. */
+  .dp-h{font-size:30px;margin:76px 0 14px}
+  .dp-grid{margin-top:30px}
+  .dp-grid .ix-fig figcaption{display:block}
+  .dp-grid .ix-name,.dp-grid .ix-read{display:block}
+  .dp-grid .ix-read{min-height:3em;margin-top:3px}
+  .dp-key i.dpk-line{width:20px;height:2px;background:var(--k-orange)}
+  .dp-key i.dpk-avg{width:20px;height:0;border-top:2px dashed #3A2B31;margin-left:16px}
+  .dp-key i.dpk-high{width:20px;height:0;border-top:2px dashed var(--k-blue);margin-left:16px}
+  .dp-key i.dpk-t{width:11px;height:11px;border-radius:2px;margin-left:14px}
+  .dp-key i.t0{margin-left:0}
+  .dp-key i.t0{background:var(--k-up)} .dp-key i.t1{background:var(--k-h1)} .dp-key i.t2{background:var(--k-h2)} .dp-key i.t3{background:var(--k-h3)}
+  .annual .pos{color:#2F6B33;font-weight:600}
+  .annual.dp-table th,.annual.dp-table td:first-child{white-space:normal}
+  .annual.dp-table td:first-child{min-width:7.5em}
+  .annual.dp-table .ix-sub{white-space:normal}
+  @media (max-width:560px){ .dp-h{font-size:26px;margin-top:60px} .annual.dp-table td:first-child{min-width:6.2em} }
   .falls th{white-space:normal}
   .falls:not(.inside) th:nth-child(even){white-space:nowrap}   /* an index's name stays on one line */
   .falls td{vertical-align:top}
@@ -733,14 +753,43 @@
     </div>
     <p class="fine center ladder-note">Each figure is a share of all the cash on hand: this month's US$800 plus everything already waiting in reserve, with the interest it has earned. Whole shares only, and the remainder rolls into next month. Brokerage of $3 a buy, charged by my broking app rather than the fund, comes out of the cash separately. Drawdown is measured from each fund's own record high, the highest price it has traded, taken live from Yahoo Finance: QLD's <span data-hwm="QLD">record high</span> and SSO's <span data-hwm="SSO">record high</span>. The price on the other side of that sum is the fund's last close before I buy.</p>
   </div>
-</section>
 
-<section class="band band-blush">
-  <div class="wrap narrow center">
-    <span class="orn"></span>
-    <p class="eyebrow">What I'm trying</p>
-    <h2>A question I couldn't answer, so I'm answering it slowly.</h2>
-    <p class="lede">The standard Australian answer is a low-cost index fund held forever. It's a good answer and I'm not arguing with it. But I wanted to know what happens if you hold most of your money in cash while the market is near its high, then convert it into 2× funds on the Nasdaq-100 and the S&amp;P 500 as the market falls. 20% of the pile near the high. A third at −20%. Two thirds at −40%. All of it at −60%. Nobody in Australia seems to have written that down over a full cycle, so I'm doing it.</p>
+  <div class="wrap narrow" id="fall-2022">
+    <h3 class="dp-h">Both of them, in QLD's fall of 2022.</h3>
+    <p>QLD closed 2021 at US$44.51, within 6% of its record high. A year later it closed at US$17.52. It was the end of May 2024 before it finished a month above where it had started, at US$44.56. Each chart starts with nothing and puts in US$800 on the first trading day of every month from January 2022, 29 times.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="ix-grid dp-grid">
+      <figure class="ix-fig">
+        <figcaption><span class="ix-name">Dollar-cost averaging</span><span class="ix-read" id="dp-dca-read">29 buys of US$800 at an average of US$27.73 a share</span></figcaption>
+        <div class="cmp-chart ix-chart" id="dp-dca"></div>
+      </figure>
+      <figure class="ix-fig">
+        <figcaption><span class="ix-name">Buying the dips</span><span class="ix-read" id="dp-ladder-read">29 buys from US$160 to US$1,513 at an average of US$26.17 a share</span></figcaption>
+        <div class="cmp-chart ix-chart" id="dp-ladder"></div>
+      </figure>
+    </div>
+    <p class="ix-key dp-key"><span><i class="dpk-line"></i>QLD's month-end close</span> <span><i class="dpk-avg"></i>Average price paid</span> <span><i class="dpk-high"></i>Record high</span><br>Under Dollar-cost averaging, the bars are the shares each US$800 bought. Under Buying the dips, they are the dollars the ladder spent, in the colour of the rung.<br><span><i class="dpk-t t0"></i>Near the high</span> <span><i class="dpk-t t1"></i>−20%</span> <span><i class="dpk-t t2"></i>−40%</span> <span><i class="dpk-t t3"></i>−60%</span><br>Move across a chart to read any month.</p>
+  </div>
+
+  <div class="wrap narrow">
+    <div class="table-scroll" style="margin-top:40px">
+      <table class="annual falls dp-table">
+        <caption>What each was worth at the close of 31 May 2024, in US dollars.</caption>
+        <thead><tr><th>Bought</th><th>Put in</th><th>Worth</th><th>Gain</th></tr></thead>
+        <tbody>
+          <tr><td>Once<span class="ix-sub">31 December 2021</span></td><td>$10,000</td><td>$10,011</td><td class="pos">+0.1%</td></tr>
+          <tr><td>US$800 every month<span class="ix-sub">29 buys</span></td><td>$23,200</td><td>$37,285</td><td class="pos">+60.7%</td></tr>
+          <tr><td>US$800 a month, by the ladder<span class="ix-sub">29 buys</span></td><td>$23,200</td><td>$37,749<span class="ix-sub">$35,258 in shares, $2,491 in reserve</span></td><td class="pos">+62.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:34px">Money that went in once at the end of 2021 waited 29 months to get back to level. US$10,000 was US$3,936 a year later and US$10,011 at the end of May 2024. The monthly buyer put in US$23,200 over those months and held shares worth US$37,285, which is 61% more than they paid. Every purchase after the first was made below the starting price. The US$800 of January 2023 bought 45.7 shares, where the first US$800 had bought 18.0. Their average price came to US$27.73 a share, in a fund that ended at US$44.56.</p>
+    <p>The ladder put in the same US$23,200 and changed the size of each purchase. It spent US$160 of the first US$800 and kept the rest. As QLD fell through each rung it spent a larger share of the cash it held, and twice, in October 2022 and January 2023, it spent all of it. Its average price was US$26.17 a share. It finished with US$35,258 in shares and US$2,491 in reserve, US$464 more than the monthly buyer.</p>
+    <p>That is a small gain, and it comes from starting at the top, which is the case the reserve is for. The reserve is never large. Near the high, at a fifth of the cash each month, it levels off at about four months of contributions. When the fund climbs instead, that waiting cash is a cost. Start both again at the end of 2022 and run them to the end of 2025, and each puts in US$28,800. The monthly buyer finishes with US$52,544 and the ladder with US$50,049, which is 4.7% less. In both periods most of the result came from buying every month. Why I hold a reserve anyway is <a href="strategy/index.html#why">on the Strategy page</a>.</p>
+    <p class="cmp-note">QLD's month-end closes are from Digrin's price history. They agree with ChartRow's year-end prices, and with Yahoo Finance on the twelve month-ends I checked. Prices are on today's share count. QLD split two for one in November 2025, so in 2022 a share traded at twice these figures. Each buy is sized and filled at the last close before the first trading day of the month. The ladder measures that close against the highest price QLD had traded, which was on 22 November 2021. Month-end closes cannot show that day, so I worked it out from QQQ's high: US$47.26. Fractions of a share are allowed. Distributions, interest on the reserve, brokerage, currency and tax are left out. QLD is the one charted because it fell further of my two funds. This is arithmetic on the past, not a forecast and not advice.</p>
   </div>
 </section>
 
@@ -855,6 +904,7 @@
 
 <script src="js/chartkit.js?v=2" defer></script>
 <script src="js/indexes.js?v=1" defer></script>
+<script src="js/dips.js?v=1" defer></script>
 <script src="js/compare.js?v=17" defer></script>
 <script src="js/comments.js?v=4" defer></script>
 </body>

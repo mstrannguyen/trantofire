@@ -188,6 +188,10 @@ happened and what it did to the position, not just a column of prices.
   the 27 Mar 2000 high to the end of 2025, bought once and bought every
   month. One series is typed into the file and both holdings are worked out
   from it. See "Dollar-cost averaging" below
+- `js/dips.js` — the two charts in Home's "How it works": US$800 a month into
+  QLD through its fall of 2022, spent plainly and spent by the ladder. QLD's
+  30 month-end closes are typed into the file and the ladder comes from
+  `TTF_ENGINE.tierFor`. See "The fall of 2022" below
 - `js/chartkit.js` — what every chart shares (`TTF_CHART`). The colours, read
   from the `--k-*` variables in each page's `:root`. `fit()` draws a chart at
   the width it is shown at and again when that changes. `plate()` puts a white
@@ -209,7 +213,9 @@ index charts above it, the two dollar-cost averaging charts on Strategy, and
 two things from ProShares that are dated where they are printed: the fee and
 size columns of the fund table, and what each fund holds in "What is inside
 them". All three sets of charts stop at the end of 2025, the last complete
-year, and get their next year together each January.
+year, and get their next year together each January. The two charts of the
+fall of 2022 in "How it works" are typed too, but they are a closed piece of
+history (31 Dec 2021 to 31 May 2024) and never need a new year.
 
 **Live price:** Yahoo via a Netlify **proxy rule** in `_redirects`. Serverless
 functions were tried first and did NOT work, because functions need a build
@@ -220,8 +226,11 @@ step that drag-and-drop deploys skip. The proxy needs no build.
 Home, Strategy, Progress, Journal, My Story, Privacy.
 
 Home runs: the signal now, the overview, The tax backdrop, The two indexes,
-The family of funds, How it works, What I'm trying, The engine, Where to
-start, Comments.
+The family of funds, How it works (the two ideas, the ladder, then both of
+them in QLD's fall of 2022), The engine, Where to start, Comments. "What I'm
+trying" was taken out on 22 Nov 2026 at the owner's request. It said the plan
+holds most of the money in cash near a high, and the ladder does not: the
+reserve levels off at about four months of contributions.
 
 Strategy runs: The intention, Optimal leverage (Cooper), The tier ladder,
 Worked example, Dollar-cost averaging, Why not just buy every month, Lifecycle investing, What I
@@ -384,6 +393,63 @@ out": true of one purchase, and silent about the purchases after it. Home's
 - **Each January**: add the year's closes to `D`, `P` and `BUY` (the header of
   `js/dca.js` says how), then change the captions, the table's last row and
   the paragraphs that quote the end figures
+
+## The fall of 2022 (Home, "How it works", added 22 Nov 2026)
+
+Under the ladder, the two ideas in the section's heading are run through a
+real fall in one of the plan's own funds. QLD closed 2021 at $44.51, was
+$17.52 a year later, and on 31 May 2024 closed a month above where it started
+for the first time, at $44.56. Two charts of those 29 months, each starting
+with nothing and putting in US$800 on the first trading day of every month:
+"Dollar-cost averaging" spends all of it, "Buying the dips" spends what the
+ladder says. A table and three paragraphs give the result, and the last one
+gives the cost of the reserve in a rise. The anchor is `#fall-2022`.
+
+- **What it found, and the page says so.** Bought once at the end of 2021,
+  $10,000 was $10,011 on 31 May 2024. $800 every month: $23,200 put in, worth
+  $37,285 (+60.7%), at an average of $27.73 a share. By the ladder: the same
+  $23,200, $35,258 in shares and $2,491 in reserve, $37,749 (+62.7%), at an
+  average of $26.17. **The ladder's gain over plain monthly buying was $464.**
+  Started again at the end of 2022 and run to the end of 2025 ($28,800 put
+  in), the monthly buyer had $52,544 and the ladder $50,049, **4.7% less**.
+  The reserve is small, about four months of contributions near a high, so
+  most of the result in both periods comes from buying every month. Do not
+  write the ladder up as doing more than this
+- **The data** is in `js/dips.js`: QLD's last close of each month from Dec
+  2021 to May 2024 as it traded then, with the day of the buy that followed.
+  The closes are from Digrin's monthly price history ("Real price"). They
+  were checked three ways: every year-end from 2006 to 2025 matches
+  ChartRow's; the twelve month-ends from October 2025 match Yahoo's daily
+  history to the cent; and Digrin's adjusted column moves in step with them
+  in every month of the charts
+- **Today's share count.** QLD split two for one on 20 Nov 2025, so each
+  typed close is halved (`SPLIT`). In 2022 a share traded at twice the prices
+  the page prints. Another split means changing `SPLIT`, `HIGH` and every
+  price in the section
+- **The record high** (`HIGH`, $47.26) is the highest price QLD had traded
+  before the fall, on 22 Nov 2021. Month-end closes cannot show it, so it is
+  worked out: QLD's path between two real month-ends is twice QQQ's daily
+  move, and the high is the close before moved by twice QQQ's move to its
+  high. The same sum lands within a few cents of Yahoo's real daily highs,
+  lows and closes on the nine days of 2025 and 2026 it was tried on. No month
+  in the charts is within half a percent of a rung
+- **The rule is the engine's.** `js/dips.js` calls `TTF_ENGINE.tierFor`, so
+  the charts cannot drift from the ladder above them. What the sum leaves out
+  is printed under it: fractions of a share are allowed, each buy is filled
+  at the close it is sized on, and distributions, interest on the reserve,
+  brokerage, currency and tax are left out
+- **The second sum** (end of 2022 to end of 2025) is not in the file. It is
+  the same arithmetic on Digrin's month-ends from 30 Dec 2022 ($17.52) to 31
+  Dec 2025 ($70.41), 36 buys, with the record high taken as the highest price
+  traded so far at each close ($47.26 until June 2024, then $51.74, $55.01,
+  $55.63, $60.40, $63.50, $65.21, $69.24 and $76.70)
+- **What moves together**: the two captions under the chart names (the script
+  rewrites them and they must read the same before it runs), the table, the
+  three paragraphs after it, and one paragraph in Strategy's "Why not just buy
+  every month", which quotes the $464 and the 4.7% and links here. Home links
+  the other way to `strategy/index.html#why`
+- **Colours**: orange is the fund, blue the record high, and the rung colours
+  are the tier colours. The bars under "Dollar-cost averaging" are ink
 
 ## Tables (restyled 22 Nov 2026)
 
